@@ -89,12 +89,20 @@ Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
  disse eksisterer.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Hensikt
+\end_layout
+
+\begin_layout Standard
+Dokumentet har som hensikt å definere høy-nivå krav i forhold til sluttbrukerne.
 \end_layout
 
 \begin_layout Subsection
 Referanser
+\end_layout
+
+\begin_layout Standard
+Ingen.
 \end_layout
 
 \begin_layout Section
