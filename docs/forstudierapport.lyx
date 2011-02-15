@@ -81,12 +81,28 @@ LatexCommand tableofcontents
 Innledning
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
+ krav og funksjoner for en Android-applikasjon, som skal hjelpe privatpersoner
+ med sin økonomi.
+ Dokumentet fokuserer på funksjonene som kreves av interessentene og hvorfor
+ disse eksisterer.
+\end_layout
+
+\begin_layout Subsection
 Hensikt
+\end_layout
+
+\begin_layout Standard
+Dokumentet har som hensikt å definere høy-nivå krav i forhold til sluttbrukerne.
 \end_layout
 
 \begin_layout Subsection
 Referanser
+\end_layout
+
+\begin_layout Standard
+Ingen.
 \end_layout
 
 \begin_layout Section
