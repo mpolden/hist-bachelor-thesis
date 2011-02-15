@@ -1,11 +1,9 @@
 package no.kantega.android;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class OverviewActivity extends Activity {
+public class OverviewActivity extends MenuActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
