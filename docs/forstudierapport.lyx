@@ -113,6 +113,13 @@ Referanser
 Ingen.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Sammendrag problem og produkt
 \end_layout
@@ -126,13 +133,13 @@ Problemsammendrag
 <lyxtabular version="3" rows="4" columns="2">
 <features>
 <column alignment="left" valignment="top" width="0">
-<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="80text%">
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Problem med
+Problemet med
 \end_layout
 
 \end_inset
@@ -141,8 +148,10 @@ Problem med
 \begin_inset Text
 
 \begin_layout Plain Layout
-å holde orden på sin personlige økonomi.
- 
+dagens løsning er å holde orden på sin personlige økonomi ved å manuelt
+ sette opp budsjetter og regnskap.
+ Dette er noe som tar lang tid for privatpersoner å gjøre, og er ofte et
+ strev å få til.
 \end_layout
 
 \end_inset
@@ -153,7 +162,7 @@ Problem med
 \begin_inset Text
 
 \begin_layout Plain Layout
-Berører
+Prosjektet berører
 \end_layout
 
 \end_inset
@@ -162,7 +171,11 @@ Berører
 \begin_inset Text
 
 \begin_layout Plain Layout
-brukere med en Android-enhet.
+alle brukere av systemet.
+ Hovedsaklig vil det si privatpersoner som ønsker å få en oversikt over
+ sin økonomi.
+ Siden prosjektet befinner seg på Android-plattformen må en bruker være
+ innehaver av en Android-enhet.
 \end_layout
 
 \end_inset
@@ -173,7 +186,7 @@ brukere med en Android-enhet.
 \begin_inset Text
 
 \begin_layout Plain Layout
-Som resultat av dette
+Som resultat av problemet
 \end_layout
 
 \end_inset
@@ -182,7 +195,8 @@ Som resultat av dette
 \begin_inset Text
 
 \begin_layout Plain Layout
-har man ikke oversikt over sin egen økonomi.
+har privatpersoner ofte ikke oversikt over sin egen økonomi, eller bruker
+ verdifull tid på å sette opp egne budsjetter og regnskap.
 \end_layout
 
 \end_inset
@@ -203,6 +217,8 @@ En vellykket løsning vil
 
 \begin_layout Plain Layout
 gi brukere en bedre innsikt og forståelse av egen økonomi og forbruk.
+ Ved hjelp av et enkelt grensesnitt vil man sleppe å bruke kostbar tid,
+ og få en stor gevinst igjen i form av økonomisk innsikt.
 \end_layout
 
 \end_inset
@@ -217,6 +233,13 @@ gi brukere en bedre innsikt og forståelse av egen økonomi og forbruk.
 
 \begin_layout Subsection
 Produktsammendrag
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -247,6 +270,13 @@ Sammendrag av brukernes behov
 Alternativer til vårt produkt
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Produktoversikt
 \end_layout
@@ -259,8 +289,22 @@ Produktets rolle i brukermiljøet
 Forutsetninger og avhengigheter
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Produktets funksjonelle egenskaper
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
