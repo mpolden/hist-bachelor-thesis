@@ -106,12 +106,30 @@ Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
  disse eksisterer.
 \end_layout
 
+\begin_layout Standard
+Prosjektet går ut på å lage en applikasjon for Android som skal hjelpe privatper
+soner med sin økonomi.
+ Applikasjonen skal gjøre det mulig å planlegge sin økonomi på sikt, samt
+ hjelpe brukeren å forstå hvordan vedkommedes forbruk er fordelt på ulike
+ poster.
+\end_layout
+
+\begin_layout Standard
+I dokumentet vil det komme frem hvilke krav applikasjonen bør oppfylle og
+ hvordan vi som utviklere skal gå frem for å til dette.
+ Vi må også finne ut hvilke eventuelle risikoelementer prosjektet har slik
+ at vi kan imøtekomme disse.
+\end_layout
+
 \begin_layout Subsection
 Hensikt
 \end_layout
 
 \begin_layout Standard
 Dokumentet har som hensikt å definere høy-nivå krav i forhold til sluttbrukerne.
+ Det skal være til hjelp for oss som systemutviklere og oppdragsgiverne,
+ for å oppsummere hvilke krav og funksjoner som vi mener applikasjonen skal
+ ha.
 \end_layout
 
 \begin_layout Subsection
@@ -226,6 +244,14 @@ gi brukere en bedre innsikt og forståelse av egen økonomi og forbruk.
 
 \begin_layout Subsection
 Produktsammendrag
+\end_layout
+
+\begin_layout Standard
+I en oppgave gitt av Kantega AS skal vi utvikle en Android-applikasjon som
+ skal hjelpe privatpersoner med sin økonomi.
+ Applikasjonen skal gjøre det mulig å planlegge sin økonomi på sikt, samt
+ hjelpe brukeren å forstå hvordan vedkommendes forbruk er fordelt på ulike
+ poster.
 \end_layout
 
 \begin_layout Section
