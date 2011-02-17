@@ -275,9 +275,146 @@ Produktsammendrag
 \begin_layout Standard
 I en oppgave gitt av Kantega AS skal vi utvikle en Android-applikasjon som
  skal hjelpe privatpersoner med sin økonomi.
- Applikasjonen skal gjøre det mulig å planlegge sin økonomi på sikt, samt
- hjelpe brukeren å forstå hvordan vedkommendes forbruk er fordelt på ulike
- poster.
+ Applikasjonen skal forenkle prosessen som vedrører planlegging og oppsett
+ av personlig økonomi.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="80text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+For
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+privatpersoner
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Som
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+har behov for øknomisk planlegging og oversikt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Produktet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+er en applikasjon for Android
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Som
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lar personer planlegge og motta en oversikt over sin økonomi
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I motsetning til
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Microsoft Excel
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vil vårt produkt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ha et oversiktlig og intuitivt grensesnitt, som i tillegg er mobilt
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -835,8 +972,21 @@ Produktoversikt
 Produktets rolle i brukermiljøet
 \end_layout
 
+\begin_layout Standard
+Produktets rolle er å hjelpe personer med sin privatøkonomi.
+ Produktet blir benyttet av privatpersoner i situasjoner hvor det er naturlig
+ å planlegge eller organisere transaksjoner.
+\end_layout
+
 \begin_layout Subsection
 Forutsetninger og avhengigheter
+\end_layout
+
+\begin_layout Standard
+Forutsetningene er at brukeren enten fører transaksjoner manuelt eller at
+ man setter opp en integrasjon mot banken.
+ Hvis integrasjon er mulig skal man kunne kategorisere bevegelser automatisk.
+ Produktet er avhengig av å kjøre på en Android-basert smarttelefon.
 \end_layout
 
 \begin_layout Standard
@@ -850,6 +1000,54 @@ Forutsetninger og avhengigheter
 Produktets funksjonelle egenskaper
 \end_layout
 
+\begin_layout Itemize
+Må kunne vise en enkelt oversikt over privatøkonomi
+\end_layout
+
+\begin_layout Itemize
+Kategorisert oversikt over forbruk (mat, klær, fornøyelser o.l.)
+\end_layout
+
+\begin_layout Itemize
+Synkronisering med bankkonto
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Automatisert kategorisering av bevegelser
+\end_layout
+
+\begin_layout Itemize
+Mulighet for å bytte bank
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Fortløpende oversikt over transaksjoner
+\end_layout
+
+\begin_layout Itemize
+Mulighet for å planlegge utgifter på sikt
+\end_layout
+
+\begin_layout Itemize
+Visuell indikasjon på egen økonomisk situasjon
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Figur som viser nåværende balanse
+\end_layout
+
+\begin_layout Itemize
+Simpel statistikk
+\end_layout
+
+\begin_layout Itemize
+Diagram som viser forbruk over en gitt periode
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -859,6 +1057,10 @@ Produktets funksjonelle egenskaper
 
 \begin_layout Section
 Ikke-funksjonelle egenskaper og andre krav
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body
