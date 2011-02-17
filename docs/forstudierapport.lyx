@@ -104,20 +104,30 @@ Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
  med sin økonomi.
  Dokumentet fokuserer på funksjonene som kreves av interessentene og hvorfor
  disse eksisterer.
-\end_layout
+ 
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
+
+\begin_inset Newline newline
+\end_inset
+
 Prosjektet går ut på å lage en applikasjon for Android som skal hjelpe privatper
 soner med sin økonomi.
  Applikasjonen skal gjøre det mulig å planlegge sin økonomi på sikt, samt
  hjelpe brukeren å forstå hvordan vedkommedes forbruk er fordelt på ulike
  poster.
-\end_layout
+ 
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
+
+\begin_inset Newline newline
+\end_inset
+
 I dokumentet vil det komme frem hvilke krav applikasjonen bør oppfylle og
- hvordan vi som utviklere skal gå frem for å til dette.
- Vi må også finne ut hvilke eventuelle risikoelementer prosjektet har slik
+ hvordan vi som utviklere skal gå frem for å få til dette.
+ Vi må også finne ut hvilke eventuelle risikoelementer prosjektet har, slik
  at vi kan imøtekomme disse.
 \end_layout
 
@@ -289,20 +299,525 @@ test :D:D:
 Oppsummering interessenter
 \end_layout
 
+\begin_layout Standard
+Vi har identifisert følgende interessenter: 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Brukere:
+\end_layout
+
+\begin_layout Itemize
+Sluttbrukere
+\end_layout
+
+\begin_layout Standard
+Oppdragsgiver:
+\end_layout
+
+\begin_layout Itemize
+Kantega AS
+\end_layout
+
+\begin_layout Standard
+Samarbeidspartner:
+\end_layout
+
+\begin_layout Itemize
+BNBank
+\end_layout
+
+\begin_layout Standard
+Veileder:
+\end_layout
+
+\begin_layout Itemize
+Mildrid Ljosland
+\end_layout
+
+\begin_layout Standard
+Utviklere:
+\end_layout
+
+\begin_layout Itemize
+Utviklingsgruppen
+\end_layout
+
 \begin_layout Subsection
 Oppsummering brukere
+\end_layout
+
+\begin_layout Standard
+Her følger en beskrivelse av interessentene og hvilken rolle de vil ha under
+ utviklingen av prosjektet.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="30text%">
+<column alignment="left" valignment="top" width="30text%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Interessent
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Utdypende beskrivelse
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Rolle under utviklingen
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Sluttbrukere
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Sluttbrukere er kunder som skal dra nytte av systemet.
+ Målet for en sluttbruker er og oppfylle problemet som er beskrevt i problemsamm
+endraget.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Kundens rolle under utviklingen er å komme med innsyn på hvilke behov som
+ de ønsker å få tilfredsstilt.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Kantega AS
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Er oppdragsgiver til prosjektet og tar avgjørelser rundt oppgavens omfang.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bestemmer rammene rundt oppgaven og retningslinjene som skal følges.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+BNBank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tilknyttes prosjektet i form av interesser for en integrasjon mot deres
+ bank og kunder.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Kommer med betingelser rundt en integrasjon mot deres system.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Mildrid Ljosland
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Er veileder for prosjektet.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Veilederens rolle er å assistere utviklingsgruppen hvor det er behov for
+ dette.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Utviklingsgruppen
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Utviklerene er de som skal gjennomføre prosjektet.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Skal realisere prosjektet til et produkt.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Brukermiljøet
 \end_layout
 
-\begin_layout Subsection
-Sammendrag av brukernes behov
+\begin_layout Standard
+?
 \end_layout
 
 \begin_layout Subsection
-Alternativer til vårt produkt
+Sammendrag av interessentenes behov
+\end_layout
+
+\begin_layout Standard
+I dette avsnittet skal vi kartlegge suksesskriteriene for hver enkelt interessen
+t.
+ Kartleggingen vil også avdekke hvilken handlingsplan vi skal følge i forhold
+ til interessentenes informasjonsbehov.
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="35text%">
+<column alignment="left" valignment="top" width="35text%">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Interessent
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Suksesskriterier
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Infomasjonsbehov
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Sluttbrukere
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Får tilgang til en applikasjon som de kan installere på sin Android-enhet
+ for å hjelpe og gi innsyn i sin private økonomi.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Sluttbrukere vil kontaktes angående innsyn på hvilke behov som ønskes tilfredsst
+ilt.
+ Sluttbrukere kan også kontaktes for testing av produktet.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Kantega AS
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Utvikle en applikasjon som tilfredsstiller behovet til sluttbrukeren.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Jevnlig kontakt for å gi oppdateringen på prosjektets status og videre arbeid.
+ Vi arbeider fra deres kontor, så interessenten konsulteres når nødvendig.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+BNBank
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Utvikle en applikasjon som tiltrekker seg nye kunder, samt tilfredsstiller
+ bankens nåværende kunder.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Kontaktes for å gi oppdatering på prosjektets status.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Mildrid Ljosland
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tilfredsstillende gjennomføring av prosjekt.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Kontaktes jevnlig i form av møter og ved eventuelt større avgjørelser.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Utviklingsgruppen
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Er tilfreds med gjennomføringen av prosjektet og har kommet i mål med de
+ rammene som er satt.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Arbeider tett på samme kontor.
+ Informasjonen deles til en hver tid daglig.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Rammebetingelser
+\end_layout
+
+\begin_layout Itemize
+Prosjektoppgaven skal være ferdigstilt og innlevert innen 25.
+ mail 2011
+\end_layout
+
+\begin_layout Itemize
+Vi skal følge scrum som utviklingsprosess under prosjektet.
+\end_layout
+
+\begin_layout Itemize
+Git skal brukes til versjonskontroll av det som blir utviklet.
+\end_layout
+
+\begin_layout Itemize
+Utviklingen skal foregå på Android-plattformen.
 \end_layout
 
 \begin_layout Standard
