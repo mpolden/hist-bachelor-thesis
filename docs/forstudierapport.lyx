@@ -605,9 +605,13 @@ I dette prosjektet skal vi utvikle en mobilapplikasjon for Android.
  Applikasjonen skal hjelpe privatpersoner med sin økonomi.
  Ideelt sett skal applikasjonen synkronisere med kundens bank og alltid
  kunne tilby oppdatert informasjon.
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
+
+\begin_inset Newline newline
+\end_inset
+
 For eksempel skal transaksjonene som kunder foretar automatisk presenteres
  i applikasjonen, og i en passende kategori.
  I tillegg skal en totaloversikt presenteres som blant annet viser hvor
@@ -622,9 +626,13 @@ til gode
  for øyeblikket.
  Det skal også være mulig å vise et gjennomsnittelig forbruk i en gitt periode,
  for eksempel per uke, måned eller år.
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Standard
+
+\begin_inset Newline newline
+\end_inset
+
 Sluttbrukere som ikke har mulighet for synkronisering mot bank (ikke er
  kunde i støttet bank), skal ha muligheten for å føre transaksjoner manuelt
  og få opp tilsvarende oversikt som ved synkronisering.
