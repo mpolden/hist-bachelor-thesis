@@ -103,7 +103,7 @@ Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
  krav og funksjoner for en Android-applikasjon
 \begin_inset CommandInset citation
 LatexCommand citet
-key "Android:2011:MISC"
+key "whatisandroid"
 
 \end_inset
 
@@ -948,7 +948,14 @@ Prosjektoppgaven skal være ferdigstilt og innlevert innen 25.
 \end_layout
 
 \begin_layout Itemize
-Vi skal følge Extreme Programming som utviklingsprosess under prosjektet.
+Vi skal følge Extreme Programming
+\begin_inset CommandInset citation
+LatexCommand cite
+key "extremeprogramming"
+
+\end_inset
+
+ som utviklingsprosess under prosjektet.
 \end_layout
 
 \begin_layout Itemize
@@ -1072,6 +1079,25 @@ Ikke-funksjonelle egenskaper og andre krav
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+cleardoublepage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+phantomsection
+\end_layout
+
+\end_inset
+
 
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
