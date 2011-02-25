@@ -425,6 +425,165 @@ ha et oversiktlig og intuitivt grensesnitt, som i tillegg er mobilt
 \end_layout
 
 \begin_layout Section
+Prosjektmål
+\end_layout
+
+\begin_layout Subsection
+Effektmål
+\end_layout
+
+\begin_layout Standard
+Effektmål beskriver hensikten med prosjektet, og hva oppdragsgiver ønsker
+ å oppnå med prosjektet.
+ Vi har følgende effektmål:
+\end_layout
+
+\begin_layout Subsubsection
+Oversikt over nåværende forbruk
+\end_layout
+
+\begin_layout Standard
+Det ønskes at en bruker enkelt skal kunne sjekke sitt nåværende forbruk
+ ved bruk av applikasjonen.
+ Dette skal framstilles ved hjelp av enkle figurer som gir en oversikt over
+ brukerens økonomiske status.
+\end_layout
+
+\begin_layout Subsubsection
+Føre transaksjoner
+\end_layout
+
+\begin_layout Standard
+Det skal være mulig for en bruker å føre transaksjoner som man tar for seg,
+ og tilordne transaksjonen til en kategori, slik at man for en oversikt
+ over hva man bruker penger til.
+\end_layout
+
+\begin_layout Subsubsection
+Historikk
+\end_layout
+
+\begin_layout Standard
+En bruker skal ha mulighet til å se historikk over sine bevegelser, kategorisert
+ etter en tidsperiode, slik at man kan få oversikt over forbruket sitt i
+ valgt periode.
+\end_layout
+
+\begin_layout Subsubsection
+Banksynkronisering
+\end_layout
+
+\begin_layout Standard
+Som kunde i en bank som er støttet av applikasjonen, ønsker man å kunne
+ automatisk hente transaksjoner som blir utført på kundens konto.
+ Dette vil føre til at informasjonen som befinner seg på brukerens enhet
+ er korrekt og oppdatert til enhver tid.
+\end_layout
+
+\begin_layout Subsubsection
+Budsjettering
+\end_layout
+
+\begin_layout Standard
+En bruker skal kunne sette seg et budjsett for en gitt kategori, og visuelt
+ framstille dette så brukeren kan se om en holder seg under satt grense.
+\end_layout
+
+\begin_layout Subsection
+Resultatmål
+\end_layout
+
+\begin_layout Standard
+Resultatmål beskriver hva som skal oppnås i løpet av prosjektets levetid.
+ Vi har følgende resultatmål:
+\end_layout
+
+\begin_layout Subsubsection
+Applikasjon
+\end_layout
+
+\begin_layout Standard
+Det skal utvikles en applikasjon som har ønsket funksjonalitet integrert.
+ Applikasjonen skal kunne kjøre på Android-enheter.
+\end_layout
+
+\begin_layout Subsubsection
+Web service
+\end_layout
+
+\begin_layout Standard
+Det skal utvikles en web service som er et mellomlag mellom applikasjonen
+ og banksystemet.
+ Web service-en gjør data tilgjengelig for applikasjonen.
+\end_layout
+
+\begin_layout Subsubsection
+Dokumentasjon
+\end_layout
+
+\begin_layout Standard
+Det skal utarbeides en sluttrapport som beskriver gjennomførselen av prosjektopp
+gaven.
+\end_layout
+
+\begin_layout Subsubsection
+Presentasjon
+\end_layout
+
+\begin_layout Standard
+Det skal foreligge en presentasjon av det utviklede produktet.
+\end_layout
+
+\begin_layout Subsection
+Prosessmål
+\end_layout
+
+\begin_layout Standard
+Prosessmål beskriver hva vi forventer å få i utnytter av å gjennomføre prosjekte
+t.
+\end_layout
+
+\begin_layout Subsubsection
+Erfaring
+\end_layout
+
+\begin_layout Standard
+Prosjektet vil være med på å gi oss erfaring fra arbeidslivet, og gi oss
+ et godt innblikk i hvordan det er å jobbe på større prosjekter.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Karakter
+\end_layout
+
+\begin_layout Standard
+Vi ser på dette prosjektet som den delen av studiet som teller mest med
+ tanke på arbeidsmuligheter i fremtiden, og ønsker dermed å oppnå en god
+ karakter.
+ Vi har som ønske å havne i den øvre delen av skalaen, det vil si karakteren
+ A eller B, når prosjektet er ferdigstilt.
+\end_layout
+
+\begin_layout Subsubsection
+Innsikt
+\end_layout
+
+\begin_layout Standard
+Prosjektet vil være med på å gi oss innsikt i en teknologi som er i stor
+ vekst.
+ Kunnskap om Android-utvikling, og mobil-utvikling generelt, vil være en
+ bra egenskap å ta med seg videre i arbeidslivet.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Overordnet beskrivelse av interessenter og brukere
 \end_layout
 
@@ -697,14 +856,6 @@ Skal realisere prosjektet til et produkt.
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Brukermiljøet
-\end_layout
-
-\begin_layout Standard
-?
 \end_layout
 
 \begin_layout Subsection
