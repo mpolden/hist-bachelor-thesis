@@ -17,7 +17,7 @@
 
 \graphics default
 \paperfontsize default
-\spacing single
+\spacing onehalf
 \use_hyperref true
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -146,14 +146,6 @@ Dokumentet har som hensikt å definere høy-nivå krav i forhold til sluttbruker
  Det skal være til hjelp for oss som systemutviklere og oppdragsgiverne,
  for å oppsummere hvilke krav og funksjoner som vi mener applikasjonen skal
  ha.
-\end_layout
-
-\begin_layout Subsection
-Referanser
-\end_layout
-
-\begin_layout Standard
-Ingen.
 \end_layout
 
 \begin_layout Standard
@@ -614,6 +606,72 @@ til gode
 Sluttbrukere som ikke har mulighet for synkronisering mot bank (ikke er
  kunde i støttet bank), skal ha muligheten for å føre transaksjoner manuelt
  og få opp tilsvarende oversikt som ved synkronisering.
+Suksessfaktorer
+\end_layout
+
+\begin_layout Standard
+Suksessfaktorer er det vi mener prosjektet må tilføres for at det skal bli
+ bra.
+ Vi har følgende suksessfaktorer:
+\end_layout
+
+\begin_layout Itemize
+Mye planlegging
+\end_layout
+
+\begin_layout Itemize
+Høy motivasjon
+\end_layout
+
+\begin_layout Itemize
+God oppfølging
+\end_layout
+
+\begin_layout Subsection
+Prosjektets milepæler og hovedaktiviteter
+\end_layout
+
+\begin_layout Standard
+Oppsumering av hovedaktiviteter:
+\end_layout
+
+\begin_layout Itemize
+Forstudierapport: 25.
+ februar 2011
+\end_layout
+
+\begin_layout Itemize
+Sprint 1 - Sprint 9: 05.
+ mai 2011
+\end_layout
+
+\begin_layout Itemize
+Tittelside og presentasjon: 06.
+ mai 2011
+\end_layout
+
+\begin_layout Itemize
+Sluttrapport: 25.
+ mai 2011
+\end_layout
+
+\begin_layout Standard
+Hver sprint har en varighet på en uke, og er fordelt på følgende måte:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename /home/vegardoj/Dropbox/bachelor/Skisser/timeline.png
+	scale 50
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
