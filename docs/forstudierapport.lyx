@@ -100,8 +100,14 @@ Innledning
 
 \begin_layout Standard
 Formålet med dette dokumentet er å beskrive, analysere og definere høy-nivå
- krav og funksjoner for en Android-applikasjon, som skal hjelpe privatpersoner
- med sin økonomi.
+ krav og funksjoner for en Android-applikasjon
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Android:2011:MISC"
+
+\end_inset
+
+, som skal hjelpe privatpersoner med sin økonomi.
  Dokumentet fokuserer på funksjonene som kreves av interessentene og hvorfor
  disse eksisterer.
  
@@ -461,7 +467,7 @@ Samarbeidspartner:
 \end_layout
 
 \begin_layout Itemize
-BNBank
+BN Bank
 \end_layout
 
 \begin_layout Standard
@@ -604,7 +610,7 @@ Bestemmer rammene rundt oppgaven og retningslinjene som skal følges.
 \begin_layout Plain Layout
 
 \series bold
-BNBank
+BN Bank
 \end_layout
 
 \end_inset
@@ -835,7 +841,7 @@ Jevnlig kontakt for å gi oppdateringen på prosjektets status og videre arbeid.
 \begin_layout Plain Layout
 
 \series bold
-BNBank
+BN Bank
 \end_layout
 
 \end_inset
@@ -942,7 +948,7 @@ Prosjektoppgaven skal være ferdigstilt og innlevert innen 25.
 \end_layout
 
 \begin_layout Itemize
-Vi skal følge Scrum som utviklingsprosess under prosjektet.
+Vi skal følge Extreme Programming som utviklingsprosess under prosjektet.
 \end_layout
 
 \begin_layout Itemize
@@ -996,8 +1002,11 @@ Forutsetningene er at brukeren enten fører transaksjoner manuelt eller at
 Produktets funksjonelle egenskaper
 \end_layout
 
-\begin_layout Itemize
-Må kunne vise en enkelt oversikt over privatøkonomi
+\begin_layout Standard
+Produktet i sin ferdige form skal kunne vise en enkel oversikt over privatøkonom
+i.
+ Oversikten over fforbruk bør bære kategorisert og delt opp i ulike deler,
+ som for eksempel mat, klær og fornøyelser.
 \end_layout
 
 \begin_layout Itemize
@@ -1056,6 +1065,22 @@ Ikke-funksjonelle egenskaper og andre krav
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "references"
+options "bibtotoc,plain"
+
+\end_inset
+
 
 \end_layout
 
