@@ -582,6 +582,40 @@ Prosjektet vil være med på å gi oss innsikt i en teknologi som er i stor
  bra egenskap å ta med seg videre i arbeidslivet.
 \end_layout
 
+\begin_layout Subsection
+Prosjektets omfang
+\end_layout
+
+\begin_layout Standard
+I dette prosjektet skal vi utvikle en mobilapplikasjon for Android.
+ Applikasjonen skal hjelpe privatpersoner med sin økonomi.
+ Ideelt sett skal applikasjonen synkronisere med kundens bank og alltid
+ kunne tilby oppdatert informasjon.
+\end_layout
+
+\begin_layout Standard
+For eksempel skal transaksjonene som kunder foretar automatisk presenteres
+ i applikasjonen, og i en passende kategori.
+ I tillegg skal en totaloversikt presenteres som blant annet viser hvor
+ mye penger kunder har 
+\begin_inset Quotes eld
+\end_inset
+
+til gode
+\begin_inset Quotes erd
+\end_inset
+
+ for øyeblikket.
+ Det skal også være mulig å vise et gjennomsnittelig forbruk i en gitt periode,
+ for eksempel per uke, måned eller år.
+\end_layout
+
+\begin_layout Standard
+Sluttbrukere som ikke har mulighet for synkronisering mot bank (ikke er
+ kunde i støttet bank), skal ha muligheten for å føre transaksjoner manuelt
+ og få opp tilsvarende oversikt som ved synkronisering.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
