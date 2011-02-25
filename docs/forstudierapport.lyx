@@ -575,6 +575,28 @@ Prosjektet vil være med på å gi oss innsikt i en teknologi som er i stor
 \end_layout
 
 \begin_layout Subsection
+Suksessfaktorer
+\end_layout
+
+\begin_layout Standard
+Suksessfaktorer er det vi mener prosjektet må tilføres for at det skal bli
+ bra.
+ Vi har følgende suksessfaktorer:
+\end_layout
+
+\begin_layout Itemize
+Mye planlegging
+\end_layout
+
+\begin_layout Itemize
+Høy motivasjon
+\end_layout
+
+\begin_layout Itemize
+God oppfølging
+\end_layout
+
+\begin_layout Subsection
 Prosjektets omfang
 \end_layout
 
@@ -606,25 +628,6 @@ til gode
 Sluttbrukere som ikke har mulighet for synkronisering mot bank (ikke er
  kunde i støttet bank), skal ha muligheten for å føre transaksjoner manuelt
  og få opp tilsvarende oversikt som ved synkronisering.
-Suksessfaktorer
-\end_layout
-
-\begin_layout Standard
-Suksessfaktorer er det vi mener prosjektet må tilføres for at det skal bli
- bra.
- Vi har følgende suksessfaktorer:
-\end_layout
-
-\begin_layout Itemize
-Mye planlegging
-\end_layout
-
-\begin_layout Itemize
-Høy motivasjon
-\end_layout
-
-\begin_layout Itemize
-God oppfølging
 \end_layout
 
 \begin_layout Subsection
@@ -666,7 +669,7 @@ Hver sprint har en varighet på en uke, og er fordelt på følgende måte:
 
 
 \begin_inset Graphics
-	filename /home/vegardoj/Dropbox/bachelor/Skisser/timeline.png
+	filename timeline.png
 	scale 50
 
 \end_inset
