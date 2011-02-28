@@ -8,23 +8,46 @@
     <artifactId>server</artifactId>
     <version>1.0</version>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <repositories>
         <repository>
             <id>maven-restlet</id>
-            <name>Public online Restlet repository</name>
+            <name>Restlet</name>
             <url>http://maven.restlet.org</url>
         </repository>
         <repository>
             <id>codehaus</id>
-            <name>Public online Codehaus repository</name>
+            <name>Codehaus</name>
             <url>http://repository.codehaus.org/org/codehaus</url>
         </repository>
+        <!-- <repository>
+            <id>jboss-maven2-release-repository</id>
+            <name>JBoss</name>
+            <url>http://repository.jboss.org/maven2/</url>
+        </repository> -->
     </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
