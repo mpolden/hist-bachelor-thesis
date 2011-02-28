@@ -22,6 +22,11 @@
     </repositories>
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.6.4</version>
@@ -80,11 +85,6 @@
         <dependency>
             <groupId>org.restlet.jse</groupId>
             <artifactId>org.restlet.ext.simple</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restlet.jse</groupId>
-            <artifactId>org.restlet.ext.jackson</artifactId>
             <version>2.0.0</version>
         </dependency>
         <dependency>

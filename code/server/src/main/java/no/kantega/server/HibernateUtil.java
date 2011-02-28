@@ -1,3 +1,5 @@
+package no.kantega.server;
+
 import no.kantega.server.model.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.HibernateException;
