@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">Hello World, MenuActivity!</string>
     <string name="app_name">android</string>
+    <string name="overview">Overview</string>
+    <string name="synchronize">Synchronize</string>
 </resources>
