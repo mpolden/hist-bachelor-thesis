@@ -1228,6 +1228,407 @@ Utviklingen skal foregå på Android-plattformen.
 \end_layout
 
 \begin_layout Section
+Risikoanalyse
+\end_layout
+
+\begin_layout Subsection
+Forord
+\end_layout
+
+\begin_layout Standard
+Vi har utført en risikoanalyse av prosjektet for å stadfeste aktuelle risikoer,
+ og sett på hva eventuelle konsekvenser kan bli.
+ Vi kan ved hjelp av dette gå mer forberedt inn i utviklingsprosessen.
+ Vi vil i analysen ta fatt i uønskede hendelser, klassifisere dem, finne
+ fram til sannsynligheten og se på hva konsekvensen vil føre til.
+ For hver av risikoene gis det en sannsynlighetsfaktor mellom 0 og 1, samt
+ et tall for graden av konsekvenser mellom 1 og 10.
+ Ut i fra disse faktorene kan vi regne ut et resultat som forteller oss
+ om relativ viktighet for hver risiko.
+\end_layout
+
+\begin_layout Subsection
+Generelle risikoer
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+R1: Sykdom
+\end_layout
+
+\begin_layout Paragraph*
+
+\series medium
+Ved sykdom blant prosjektmedlemmene mister vi verdifull arbeidstid, som
+ kan føre til overtredelse av deadline eller lavere kvalitet på sluttproduktet.
+ Dette er en ufrivillig risiko som vi må akseptere, men vi kan gjøre tiltak
+ som kan gjennomføres for å holde sykefraværet nede.
+ Ekesmpler på dette er å opprettholde et godt arbeidsmiljø, god luft og
+ hygiene på arbeidsplassen.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Å opprettholde en god kumminkasjon mellom prosjektmedlemmene underveis,
+ samt god dokumentasjon i koden kan være med på å minske konsekvensen hvis
+ et gruppemedlem blir syk.
+ Sannsynligheten for sykdom som vil ha en større innvirkning på prosjektet
+ annser vi for lav, og lander dermed på en sannsynlighetsfaktor på 0.15.
+ Konsekvensfaktoren har vi valgt å sette til 7, da dette vil ha en ganske
+ stor innvirkning på prosjektet.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+
+\series bold
+R2: Urealistiske tidsplane
+\end_layout
+
+\begin_layout Paragraph*
+
+\series medium
+Urealistiske tidsplaner kan være meget stressende for prosjektdeltakere,
+ noe som kan føre til svekket arbeidsmoral og økt sykefravær.
+ Det vil også kunne bli vanskelig å ferdigstille produktet uten å ofre kvalitet.
+ Vi kan sette i verk tiltak for å kontrollere risikoen, som for eksempel
+ å samarbeide på estimater med produkteieren.
+ Å beregne tid når det kommer til utvikling er en vankelig oppgave, og sannsynli
+gheten for at prosjektet vil lide noe av dette er derfor ganske høy.
+ Vi setter sannsynlighetsfaktoren til 0.6.
+ Konsekvensen av dette kan være at vi ikke klarer å oppfylle alle mål vi
+ har satt oss.
+ Vi setter dermed konsekvensen til 4.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+R3: 
+\begin_inset Quotes eld
+\end_inset
+
+Gold plating
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+
+\series medium
+Det kan hende vi ender opp med å bruke mye tid på pynt og design framfor
+ funksjonalitet, noe som kan føre til at vesentlig funksjonalitet uteblir.
+ Dette kan bli et problem siden det er en mobilapplikasjon det er snakk
+ om, noe som krever et bra design for å tiltrekke seg brukere.
+ Sannsynligheten for at dette skjer i alvorlig grad er ganske lav, hvis
+ man er gode til å følge tidsplaner.
+ Sannsynligheten for at dette skal oppstå settes til 0.1, mens konsekvensfaktoren
+ settes til 4.
+\end_layout
+
+\begin_layout Subsection
+Prosjektspesifikke risikoer
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+R4: Ustabile servere
+\end_layout
+
+\begin_layout Paragraph*
+
+\series medium
+Siden prosjektet også skal bestå av en web-service, er det viktig at denne
+ ligger på en stabil server.
+ Dersom serveren går offline vil ikke kunder få tilgang til vesentlige funksjone
+r, noe som blir sett på som uakseptabelt.
+ Dersom dette viser seg til å bli et stort problem, kan kunder bli misfornøyde
+ og slutte å ta i bruk applikasjonen.
+ Sannsynligheten for at nedetid vil oppstå er ganske høy, men lengre nedetid
+ skal ikke forekomme hvis man har valgt kvalitetservere.
+ Vi anslår dermed sannsynlighetsfaktoren til 0.15.
+ Konsekvensfaktoren settes her til 6.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Risiko-oversikt
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Risikofaktor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Sannsynlighet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Konsekvens
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Risikoindeks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.05
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+R4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\series medium
+Når vi nå plotter verdiene inn i et sannsynlighet-/konsekvens-diagram, kan
+ vi se at risikoindeksen stort sett er lav, og kvadranten med høy sannsynlighet
+ og konsekvens ikke inneholder noen risikofaktor.
+ Det er spesielt en risikofaktor vi må fokusere på, R2 (urealistiske tidsplaner)
+, som vi bør følge opp tett.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /home/vegardoj/Dropbox/bachelor/Skisser/risiko-oversikt.png
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Produktoversikt
 \end_layout
 
