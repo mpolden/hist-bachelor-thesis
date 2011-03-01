@@ -24,7 +24,7 @@ public class TransactionServerResource extends ServerResource
         List<Transaction> transactionList = session.createCriteria(Transaction.
                 class).list();
         session.close();
-        return transactionList.get(0);
+        return transactionList.size() > 0 ? transactionList.get(0) : null;
     }
 
     @Override
