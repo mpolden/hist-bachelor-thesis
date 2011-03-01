@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "transactionCategories")
-public class TransactionCategory implements Serializable {
+@Table(name = "transactionTags")
+public class TransactionTag implements Serializable {
 
     @Id
     @GeneratedValue
@@ -31,7 +31,7 @@ public class TransactionCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "TransactionCategory{" +
+        return "TransactionTag{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

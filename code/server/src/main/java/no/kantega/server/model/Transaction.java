@@ -1,14 +1,10 @@
 package no.kantega.server.model;
 
-import org.hibernate.annotations.Fetch;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "transactions")
@@ -28,8 +24,8 @@ public class Transaction implements Serializable {
     private TransactionType type;
 
     @ManyToMany(fetch=FetchType.EAGER)
-    private List<TransactionCategory> catgories =
-            new ArrayList<TransactionCategory>();
+    private List<TransactionTag> catgories =
+            new ArrayList<TransactionTag>();
 
     public TransactionType getType() {
         return type;
@@ -39,11 +35,11 @@ public class Transaction implements Serializable {
         this.type = type;
     }
 
-    public List<TransactionCategory> getCatgories() {
+    public List<TransactionTag> getCatgories() {
         return catgories;
     }
 
-    public void setCatgories(List<TransactionCategory> catgories) {
+    public void setCatgories(List<TransactionTag> catgories) {
         this.catgories = catgories;
     }
 

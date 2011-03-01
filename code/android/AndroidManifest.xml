@@ -13,7 +13,7 @@
                   android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <transactionCategory android:name="android.intent.transactionCategory.LAUNCHER" />
+                <transactionTag android:name="android.intent.transactionTag.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".OverviewActivity"></activity>

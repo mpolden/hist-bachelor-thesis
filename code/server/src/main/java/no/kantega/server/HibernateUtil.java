@@ -1,16 +1,12 @@
 package no.kantega.server;
 
 import no.kantega.server.model.Transaction;
-import no.kantega.server.model.TransactionCategory;
+import no.kantega.server.model.TransactionTag;
 import no.kantega.server.model.TransactionType;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
-import org.hibernate.Query;
-import org.hibernate.metadata.ClassMetadata;
-
-import java.util.Map;
 
 public class HibernateUtil {
 
@@ -22,7 +18,7 @@ public class HibernateUtil {
                     addPackage("no.kantega.server.model").
                     addAnnotatedClass(Transaction.class).
                     addAnnotatedClass(TransactionType.class).
-                    addAnnotatedClass(TransactionCategory.class).
+                    addAnnotatedClass(TransactionTag.class).
                     configure("hibernate.cfg.xml").
                     buildSessionFactory();
         } catch (Throwable ex) {

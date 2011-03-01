@@ -1,12 +1,10 @@
 package no.kantega.server;
 
-import no.kantega.server.model.TransactionCategory;
+import no.kantega.server.model.TransactionTag;
 import no.kantega.server.model.Transaction;
 import no.kantega.server.model.TransactionType;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.*;
 import java.text.ParseException;
@@ -64,7 +62,7 @@ public class Import {
             String text = s[4];
             Double out = Double.parseDouble(s[5]);
             Double in = Double.parseDouble(s[6]);
-            TransactionCategory transactionCategory = addCategory(s[8]);
+            TransactionTag transactionTag = addCategory(s[8]);
 
             Transaction t = new Transaction();
             t.setAccountingDate(accountingDate);
@@ -74,7 +72,7 @@ public class Import {
             t.setText(text);
             t.setAmountOut(out);
             t.setAmountIn(in);
-            t.getCatgories().add(transactionCategory);
+            t.getCatgories().add(transactionTag);
 
 
             addTransaction(t);
@@ -92,18 +90,18 @@ public class Import {
     }
 
     @SuppressWarnings("unchecked")
-    private static TransactionCategory addCategory(String name) {
+    private static TransactionTag addCategory(String name) {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        List<TransactionCategory> categories = session.createCriteria(
-                TransactionCategory.class).add(Restrictions.eq("name", name)).
+        List<TransactionTag> tags = session.createCriteria(
+                TransactionTag.class).add(Restrictions.eq("name", name)).
                 list();
-        if (categories.size() > 0) {
+        if (tags.size() > 0) {
             session.close();
-            return categories.get(0);
+            return tags.get(0);
         } else {
-            TransactionCategory c = new TransactionCategory();
+            TransactionTag c = new TransactionTag();
             c.setName(name);
             session.saveOrUpdate(c);
             session.getTransaction().commit();
