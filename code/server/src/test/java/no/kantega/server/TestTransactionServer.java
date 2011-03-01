@@ -1,18 +1,14 @@
 package no.kantega.server;
 
-import no.kantega.server.TransactionServerResource;
 import no.kantega.server.model.Transaction;
 import no.kantega.server.model.TransactionResource;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.Server;
-import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.resource.ClientResource;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -33,17 +29,8 @@ public class TestTransactionServer {
                 TransactionResource.class);
 
         Transaction transaction = new Transaction();
-        transaction.setActor("Big Bite");
-        transaction.setAmount(45);
-        transaction.setDate(new Date());
 
-        /*transactionResource.store(transaction);
-        List<Transaction> transactionList = clientResource.get(List.class);
-        assertNotNull(transactionList);
-        assertEquals(transactionList.size(), 1);
-        Transaction otherTransaction = transactionList.get(0);
-        assertEquals(transaction.getActor(), otherTransaction.getActor());
-        assertEquals(transaction.getDate(), otherTransaction.getDate());
-        assertEquals(transaction.getAmount(), otherTransaction.getAmount());*/
+        transactionResource.store(transaction);
+        Transaction otherTransaction = transactionResource.retrieve();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface TransactionResource {
 
     @Get
-    public List<Transaction> retrieve();
+    public Transaction retrieve();
     @Put
     public void store(Transaction transaction);
     @Delete

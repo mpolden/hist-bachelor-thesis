@@ -15,27 +15,16 @@ import java.util.List;
 public class TransactionServerResource extends ServerResource
         implements TransactionResource {
 
-    public static void main(String[] args) throws Exception {
-        Session session = HibernateUtil.getSession();
-        session.beginTransaction();
-        Transaction t = new Transaction();
-        t.setActor("Big bite");
-        t.setAmount(45);
-        session.save(t);
-        session.getTransaction().commit();
-        new Server(Protocol.HTTP, 8182, TransactionServerResource.class).
-                start();
-    }
-
     @Override
     @Get
-    public List<Transaction> retrieve() {
+    @SuppressWarnings("unchecked")
+    public Transaction retrieve() {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
         List<Transaction> transactionList = session.createCriteria(Transaction.
                 class).list();
         session.close();
-        return transactionList;
+        return transactionList.get(0);
     }
 
     @Override

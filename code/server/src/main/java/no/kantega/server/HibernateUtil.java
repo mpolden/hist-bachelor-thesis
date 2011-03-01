@@ -1,6 +1,8 @@
 package no.kantega.server;
 
 import no.kantega.server.model.Transaction;
+import no.kantega.server.model.TransactionCategory;
+import no.kantega.server.model.TransactionType;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -19,6 +21,8 @@ public class HibernateUtil {
             ourSessionFactory = new AnnotationConfiguration().
                     addPackage("no.kantega.server.model").
                     addAnnotatedClass(Transaction.class).
+                    addAnnotatedClass(TransactionType.class).
+                    addAnnotatedClass(TransactionCategory.class).
                     configure("hibernate.cfg.xml").
                     buildSessionFactory();
         } catch (Throwable ex) {
@@ -28,32 +32,5 @@ public class HibernateUtil {
 
     public static Session getSession() throws HibernateException {
         return ourSessionFactory.openSession();
-    }
-
-    public static void main(final String[] args) throws Exception {
-        final Session session = getSession();
-        try {
-            Transaction t = new Transaction();
-            t.setActor("Big Bite");
-            t.setAmount(45);
-
-            session.beginTransaction();
-            session.save(t);
-            session.getTransaction().commit();
-
-            System.out.println("querying all the managed entities...");
-            final Map metadataMap = session.getSessionFactory().getAllClassMetadata();
-            for (Object key : metadataMap.keySet()) {
-                final ClassMetadata classMetadata = (ClassMetadata) metadataMap.get(key);
-                final String entityName = classMetadata.getEntityName();
-                final Query query = session.createQuery("from " + entityName);
-                System.out.println("executing: " + query.getQueryString());
-                for (Object o : query.list()) {
-                    System.out.println("  " + o);
-                }
-            }
-        } finally {
-            session.close();
-        }
     }
 }

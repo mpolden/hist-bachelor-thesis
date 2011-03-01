@@ -1,29 +1,50 @@
 package no.kantega.server.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "transactions")
 public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
-    private String actor;
-    private Integer amount;
-    private Date date;
+    private Date accountingDate;
+    private Date fixedDate;
+    private Double amountIn;
+    private Double amountOut;
+    private String text;
+    private String archiveRef;
 
-    public Date getDate() {
-        return date;
+    @ManyToOne(fetch=FetchType.EAGER)
+    private TransactionType type;
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    private List<TransactionCategory> catgories =
+            new ArrayList<TransactionCategory>();
+
+    public TransactionType getType() {
+        return type;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
+
+    public List<TransactionCategory> getCatgories() {
+        return catgories;
+    }
+
+    public void setCatgories(List<TransactionCategory> catgories) {
+        this.catgories = catgories;
     }
 
     public Long getId() {
@@ -34,38 +55,66 @@ public class Transaction implements Serializable {
         this.id = id;
     }
 
-    public String getActor() {
-        return actor;
+    public Date getAccountingDate() {
+        return accountingDate;
     }
 
-    public void setActor(String actor) {
-        this.actor = actor;
+    public void setAccountingDate(Date accountingDate) {
+        this.accountingDate = accountingDate;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public Date getFixedDate() {
+        return fixedDate;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setFixedDate(Date fixedDate) {
+        this.fixedDate = fixedDate;
+    }
+
+    public Double getAmountIn() {
+        return amountIn;
+    }
+
+    public void setAmountIn(Double amountIn) {
+        this.amountIn = amountIn;
+    }
+
+    public Double getAmountOut() {
+        return amountOut;
+    }
+
+    public void setAmountOut(Double amountOut) {
+        this.amountOut = amountOut;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getArchiveRef() {
+        return archiveRef;
+    }
+
+    public void setArchiveRef(String archiveRef) {
+        this.archiveRef = archiveRef;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Transaction)) return false;
-        Transaction that = (Transaction) o;
-        if (!actor.equals(that.actor)) return false;
-        if (!amount.equals(that.amount)) return false;
-        if (!date.equals(that.date)) return false;
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = actor.hashCode();
-        result = 31 * result + amount.hashCode();
-        result = 31 * result + date.hashCode();
-        return result;
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", accountingDate=" + accountingDate +
+                ", fixedDate=" + fixedDate +
+                ", amountIn=" + amountIn +
+                ", amountOut=" + amountOut +
+                ", text='" + text + '\'' +
+                ", archiveRef='" + archiveRef + '\'' +
+                ", type=" + type +
+                ", catgories=" + catgories +
+                '}';
     }
 }
