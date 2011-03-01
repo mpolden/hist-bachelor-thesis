@@ -15,5 +15,6 @@ gen
 out
 bin
 target
+tmp
 local.properties
 build.xml
