@@ -1,11 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
   <TextView 
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:text="Overview!">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Overview!">
   </TextView>
+  <TableLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1">
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090"/>
+    <TableRow>
+        <TextView            
+            android:text="Top 3 Categories"
+            android:padding="3dip"/>
+        <TextView
+            android:text="Amount"       
+            android:padding="3dip"/>        
+    </TableRow>
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090"/>
+    <TableRow>
+        <TextView
+            android:text="Category 1"            
+            android:id="@+id/top3_category_1"
+            android:padding="3dip"/>
+        <TextView
+            android:text="Amount 1"
+            android:id="@+id/top3_amount_1" 
+            android:padding="3dip"/>        
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:text="Category 2"            
+            android:id="@+id/top3_category_2"
+            android:padding="3dip"/>
+        <TextView
+            android:text="Amount 2"
+            android:id="@+id/top3_amount_2" 
+            android:padding="3dip"/>        
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:text="Category 3"            
+            android:id="@+id/top3_category_3"
+            android:padding="3dip"/>
+        <TextView
+            android:text="Amount 3"
+            android:id="@+id/top3_amount_3" 
+            android:padding="3dip"/>        
+    </TableRow>
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090"/>
+  </TableLayout> 
+  
 </LinearLayout>
