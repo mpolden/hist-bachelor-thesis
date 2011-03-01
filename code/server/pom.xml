@@ -30,7 +30,9 @@
         <repository>
             <id>jboss</id>
             <name>JBoss</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+            <url>
+                https://repository.jboss.org/nexus/content/repositories/releases/
+            </url>
         </repository>
     </repositories>
     <dependencies>
@@ -48,6 +50,11 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.0-801.jdbc4</version>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
