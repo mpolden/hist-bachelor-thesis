@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SynchronizeActivity extends Activity {	
@@ -13,7 +14,9 @@ public class SynchronizeActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			CharSequence text = "Synchronized";			
-			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();		
+			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+			TextView top3_category_1 = (TextView)findViewById(R.id.top3_category_1);
+			top3_category_1.setText("Øl");
 		}
 	};
 	
