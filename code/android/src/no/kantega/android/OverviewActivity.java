@@ -40,7 +40,7 @@ public class OverviewActivity extends Activity {
 		addTransaction("02.03.11", "pizza", "Food", "110");
 		addTransaction("02.03.11", "BURGER!", "Food", "120");
 
-		fetchData();
+		//fetchData();
 	}
 
 	private void populateAverageConsumption(String average_day_amount,
@@ -86,6 +86,7 @@ public class OverviewActivity extends Activity {
 		tr.addView(tv);
 
 		transactions.addView(tr, 4);
+		
 	}
 
 	private void fetchData() {
