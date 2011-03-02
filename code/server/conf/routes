@@ -10,8 +10,7 @@ GET     /public/                                staticDir:public
 
 GET     /t/tags/{count}                         Transactions.topTags
 GET     /t/avg                                  Transactions.avg
-#GET     /t/avg/week                             Transactions.avgWeek
-#GET     /t/last/{count}                        Transactions.last
+GET     /t/transactions/{count}                 Transactions.transactions
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

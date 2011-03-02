@@ -56,4 +56,10 @@ public class Transactions extends Controller {
         ac.setMonth(avgDay() * 30.4368499); // Google approves
         renderJSON(ac);
     }
+
+    public static void transactions(int count) {
+        List<Transaction> transactions = Transaction.
+                find("order by accountingDate desc").fetch(count);
+        renderJSON(transactions);
+    }
 }
