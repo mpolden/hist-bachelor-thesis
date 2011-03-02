@@ -5,6 +5,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.vfs.VirtualFile;
 
 import java.io.*;
 import java.text.ParseException;
@@ -19,7 +20,8 @@ public class Import extends Job {
 
     public void doJob() {
         if (Transaction.count() == 0) {
-            File f = new File("/home/martin/Downloads/transactions.csv");
+            File f = VirtualFile.fromRelativePath(
+                    "/conf/fixture-transactions.csv").getRealFile();
             try {
                 FileInputStream fis = new FileInputStream(f);
                 BufferedReader reader = new BufferedReader(
