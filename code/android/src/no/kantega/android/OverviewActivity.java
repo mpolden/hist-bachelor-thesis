@@ -1,24 +1,27 @@
 package no.kantega.android;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
+
+import no.kantega.android.models.AggregatedTag;
+import no.kantega.android.models.AverageConsumption;
+import no.kantega.android.models.Transaction;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import no.kantega.android.models.AggregatedTag;
-import no.kantega.android.models.AverageConsumption;
-import no.kantega.android.models.Transaction;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.List;
 
 public class OverviewActivity extends Activity {
 
