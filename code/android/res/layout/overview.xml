@@ -1,166 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:weightSum="100"
-    android:orientation="vertical">
-  <TextView 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Overview!">
-  </TextView>
-  <TableLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="50"
-    android:stretchColumns="1">
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090"/>
-    <TableRow>
-        <TextView            
-            android:text="Top 3 Categories"
-            android:padding="3dip" 
-            android:textStyle="bold"/>
-        <TextView
-            android:text="Amount"       
-            android:padding="3dip" 
-            android:textStyle="bold"/>        
-    </TableRow>
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090"/>
-    <TableRow>
-        <TextView
-            android:text="Category 1"            
-            android:id="@+id/top3_category_1"
-            android:padding="3dip"/>
-        <TextView
-            android:text="Amount 1"
-            android:id="@+id/top3_amount_1" 
-            android:padding="3dip"/>        
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:text="Category 2"            
-            android:id="@+id/top3_category_2"
-            android:padding="3dip"/>
-        <TextView
-            android:text="Amount 2"
-            android:id="@+id/top3_amount_2" 
-            android:padding="3dip"/>        
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:text="Category 3"            
-            android:id="@+id/top3_category_3"
-            android:padding="3dip"/>
-        <TextView
-            android:text="Amount 3"
-            android:id="@+id/top3_amount_3" 
-            android:padding="3dip"/>        
-    </TableRow>
-    <View
-        android:layout_height="2dip"
-        android:background="#FF909090"/>
-	<TableRow>
-	    <TextView            
-	       android:text="Average Consumption"
-	       android:padding="3dip" 
-	       android:textStyle="bold"/>      
-	</TableRow>     
-	    <View
-	      android:layout_height="2dip"
-	      android:background="#FF909090"/>    
-	<TableRow>
-        <TextView
-            android:text="Per day"            
-            android:padding="3dip"/>
-        <TextView
-            android:text="average_day"
-            android:id="@+id/average_day" 
-            android:padding="3dip"/>        
-    </TableRow> 
-    <TableRow>
-        <TextView
-            android:text="Per week"            
-            android:padding="3dip"/>
-        <TextView
-            android:text="average_week"
-            android:id="@+id/average_week" 
-            android:padding="3dip"/>        
-    </TableRow>  
-        <View
-          android:layout_height="2dip"
-          android:background="#FF909090"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:weightSum="100" android:orientation="vertical">
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Overview!">
+	</TextView>
+	<TableLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_weight="50"
+		android:stretchColumns="1">
+		<View android:layout_height="2dip" android:background="#FF909090" />
+		<TableRow>
+			<TextView android:text="Top 3 Categories" android:padding="3dip"
+				android:textStyle="bold" />
+			<TextView android:text="Amount" android:padding="3dip"
+				android:textStyle="bold" />
+		</TableRow>
+		<View android:layout_height="2dip" android:background="#FF909090" />
+		<TableRow>
+			<TextView android:text="Category 1" android:id="@+id/top3_category_1"
+				android:padding="3dip" />
+			<TextView android:text="Amount 1" android:id="@+id/top3_amount_1"
+				android:padding="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView android:text="Category 2" android:id="@+id/top3_category_2"
+				android:padding="3dip" />
+			<TextView android:text="Amount 2" android:id="@+id/top3_amount_2"
+				android:padding="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView android:text="Category 3" android:id="@+id/top3_category_3"
+				android:padding="3dip" />
+			<TextView android:text="Amount 3" android:id="@+id/top3_amount_3"
+				android:padding="3dip" />
+		</TableRow>
+		<View android:layout_height="2dip" android:background="#FF909090" />
+		<TableRow>
+			<TextView android:text="Average Consumption"
+				android:padding="3dip" android:textStyle="bold" />
+		</TableRow>
+		<View android:layout_height="2dip" android:background="#FF909090" />
+		<TableRow>
+			<TextView android:text="Per day" android:padding="3dip" />
+			<TextView android:text="average_day" android:id="@+id/average_day"
+				android:padding="3dip" />
+		</TableRow>
+		<TableRow>
+			<TextView android:text="Per week" android:padding="3dip" />
+			<TextView android:text="average_week" android:id="@+id/average_week"
+				android:padding="3dip" />
+		</TableRow>
+		<View android:layout_height="2dip" android:background="#FF909090" />
 
-  </TableLayout>
-  <TableLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="50"
-    android:stretchColumns="1">
-    <TableRow>
-        <TextView
-            android:text="Last transactions"
-            android:padding="3dip"
-            android:textStyle="bold"/>
-    </TableRow>        
-        <View
-          android:layout_height="2dip"
-          android:background="#FF909090"/>
-    <TableRow>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"            
-            android:text="Date"
-            android:padding="3dip" 
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"  
-            android:text="Text"       
-            android:padding="3dip" 
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"              
-            android:text="Category"
-            android:padding="3dip" 
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"  
-            android:text="Amount"       
-            android:padding="3dip" 
-            android:textStyle="bold"/>            
-    </TableRow>
-        <View
-          android:layout_height="2dip"
-          android:background="#FF909090"/>
-    <TableRow>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"            
-            android:text="date_01"
-            android:padding="3dip"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"  
-            android:text="kebab n burger"       
-            android:padding="3dip"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"              
-            android:text="Food"
-            android:padding="3dip"/>
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dip"  
-            android:text="125"       
-            android:padding="3dip"/>            
-    </TableRow>
-  </TableLayout>
-  
+	</TableLayout>
+	<FrameLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_weight="50">
+		<ScrollView android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:fillViewport="true">
+			<TableLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:stretchColumns="1"
+				android:id="@+id/transactionTableLayout">
+				<TableRow>
+					<TextView android:text="Last transactions"
+						android:padding="3dip" android:textStyle="bold" />
+				</TableRow>
+				<View android:layout_height="2dip" android:background="#FF909090" />
+				<TableRow>
+					<TextView android:layout_weight="1" android:layout_width="0dip"
+						android:text="Date" android:padding="3dip" android:textStyle="bold" />
+					<TextView android:layout_weight="1" android:layout_width="0dip"
+						android:text="Text" android:padding="3dip" android:textStyle="bold" />
+					<TextView android:layout_weight="1" android:layout_width="0dip"
+						android:text="Category" android:padding="3dip" android:textStyle="bold" />
+					<TextView android:layout_weight="1" android:layout_width="0dip"
+						android:text="Amount" android:padding="3dip" android:textStyle="bold" />
+				</TableRow>
+				<View android:layout_height="2dip" android:background="#FF909090" />
+
+			</TableLayout>
+		</ScrollView>
+	</FrameLayout>
+
 </LinearLayout>
