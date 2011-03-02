@@ -5,9 +5,7 @@ import play.db.jpa.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Transaction extends Model {
@@ -21,5 +19,5 @@ public class Transaction extends Model {
     @ManyToOne
     public TransactionType type;
     @ManyToMany
-    public Set<TransactionTag> tags = new HashSet<TransactionTag>();
+    public List<TransactionTag> tags = new ArrayList<TransactionTag>();
 }

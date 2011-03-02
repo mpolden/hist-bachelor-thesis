@@ -8,7 +8,9 @@ GET     /                                       Application.index
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
-GET     /transactions/topTags/{count}           Transactions.topTags
+GET     /t/tags/{count}                         Transactions.topTags
+GET     /t/avg                                  Transactions.avg
+GET     /t/transactions/{count}                 Transactions.transactions
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
