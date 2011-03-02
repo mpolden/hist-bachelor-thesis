@@ -1,6 +1,8 @@
 import models.Transaction;
 import models.TransactionTag;
 import models.TransactionType;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
@@ -8,31 +10,27 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
+@OnApplicationStart
 public class Import extends Job {
 
-    public void doJob() {
-        System.out.println("hello?");
-        File f = new File("/home/martin/Downloads/transactions.csv");
-        try {
-            FileInputStream fis = new FileInputStream(f);
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(fis));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                addTransaction(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        printObjects();
-    }
+    private static final Logger logger = Logger.getLogger(
+            Import.class.getName());
 
-    private void printObjects() {
-        List<Transaction> transactionList = Transaction.all().fetch();
-        for (Transaction t : transactionList) {
-            System.out.println(t);
+    public void doJob() {
+        if (Transaction.count() == 0) {
+            File f = new File("/home/martin/Downloads/transactions.csv");
+            try {
+                FileInputStream fis = new FileInputStream(f);
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(fis));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    addTransaction(line);
+                }
+            } catch (IOException e) {
+                logger.log(Level.ERROR, e);
+            }
         }
     }
 
@@ -61,7 +59,7 @@ public class Import extends Job {
             t.tags.add(transactionTag);
             t.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e);
         }
     }
 

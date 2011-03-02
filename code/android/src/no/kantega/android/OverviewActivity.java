@@ -1,5 +1,17 @@
 package no.kantega.android;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +40,7 @@ public class OverviewActivity extends Activity {
 		addTransaction("02.03.11", "pizza", "Food", "110");
 		addTransaction("02.03.11", "BURGER!", "Food", "120");
 
+		fetchData();
 	}
 
 	private void populateAverageConsumption(String average_day_amount,
@@ -73,6 +86,45 @@ public class OverviewActivity extends Activity {
 		tr.addView(tv);
 
 		transactions.addView(tr, 4);
+	}
+
+	private void fetchData() {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpContext localContext = new BasicHttpContext();
+		HttpGet httpGet = new HttpGet(
+				"http://10.10.10.77:9000/transactions/topTags/3");
+		try {
+			HttpResponse response = httpClient.execute(httpGet, localContext);
+			String body = EntityUtils.toString(response.getEntity());
+			Map<String, String> map = new HashMap<String, String>();
+			int i = 1;
+			for (String line : body.split("\n")) {
+				String[] parts = line.split(" ");
+				if (parts.length >= 2) {
+					map.put("category" + i, parts[0]);
+					map.put("amount" + i, parts[1]);
+					i++;
+				}
+			}
+			populateCategories(map);
+		} catch (IOException e) {
+			Log.d("Exception", "IOException", e);
+		}
+	}
+
+	private void populateCategories(Map<String, String> values) {
+		TextView category1 = (TextView) findViewById(R.id.top3_category_1);
+		TextView category2 = (TextView) findViewById(R.id.top3_category_2);
+		TextView category3 = (TextView) findViewById(R.id.top3_category_3);
+		TextView amount1 = (TextView) findViewById(R.id.top3_amount_1);
+		TextView amount2 = (TextView) findViewById(R.id.top3_amount_2);
+		TextView amount3 = (TextView) findViewById(R.id.top3_amount_3);
+		category1.setText(values.get("category1"));
+		category2.setText(values.get("category2"));
+		category3.setText(values.get("category3"));
+		amount1.setText(values.get("amount1"));
+		amount2.setText(values.get("amount2"));
+		amount3.setText(values.get("amount3"));
 	}
 
 }
