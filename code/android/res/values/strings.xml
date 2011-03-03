@@ -4,4 +4,5 @@
     <string name="app_name">android</string>
     <string name="overview">Overview</string>
     <string name="synchronize">Synchronize</string>
+    <string name="transactions">Transactions</string>
 </resources>

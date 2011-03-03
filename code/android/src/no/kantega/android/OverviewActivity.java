@@ -25,11 +25,11 @@ public class OverviewActivity extends Activity {
 
     private void populate() {
         populateAverageConsumption(GsonUtil.parseAvg(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/avg")));
+                getJSON("http://10.10.10.14:9000/t/avg")));
         populateTransactions(GsonUtil.parseTransactions(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/avg")));
+                getJSON("http://10.10.10.14:9000/t/transactions/10")));
         populateCategories(GsonUtil.parseTags(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/tags/3")));
+                getJSON("http://10.10.10.14:9000/t/tags/3")));
     }
 
     private void populateAverageConsumption(AverageConsumption averageConsumption) {
