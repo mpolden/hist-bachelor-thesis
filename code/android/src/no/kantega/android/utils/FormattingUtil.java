@@ -17,4 +17,9 @@ public class FormattingUtil {
         nf.setMaximumFractionDigits(2);
         return nf.format(number);
     }
+
+    public static String trimTransactionText(String text) {
+        final String pattern = "(\\d+\\*+\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?";
+        return text.replaceAll(pattern, "");
+    }
 }
