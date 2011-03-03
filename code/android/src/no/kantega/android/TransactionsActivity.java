@@ -1,5 +1,13 @@
 package no.kantega.android;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Properties;
+
+import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.utils.GsonUtil;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -10,14 +18,6 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FmtUtil;
-import no.kantega.android.utils.GsonUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Properties;
 
 public class TransactionsActivity extends Activity {
 
