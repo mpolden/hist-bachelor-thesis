@@ -1,11 +1,11 @@
 package controllers;
 
-import com.google.gson.GsonBuilder;
 import models.AggregatedTag;
 import models.AverageConsumption;
 import models.Transaction;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
+import utils.GsonUtils;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
@@ -61,12 +61,8 @@ public class Transactions extends Controller {
     public static void transactions(int count) {
         List<Transaction> transactions = Transaction.
                 find("order by accountingDate desc").fetch(count);
-        renderJSON(renderJSONWithCustomDate(transactions));
-    }
-
-    private static String renderJSONWithCustomDate(Object o) {
-        GsonBuilder gson = new GsonBuilder().
-                setDateFormat("yyyy-MM-dd HH:mm:ss");
-        return gson.create().toJson(o);
+        String json = GsonUtils.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
+                transactions);
+        renderJSON(json);
     }
 }
