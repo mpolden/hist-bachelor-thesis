@@ -1,11 +1,11 @@
 import org.junit.Test;
 import play.test.UnitTest;
-import utils.GsonUtils;
+import utils.GsonUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GsonUtilsTest extends UnitTest {
+public class GsonUtilTest extends UnitTest {
 
     @Test
     public void testRenderJSONWithDateFmt() {
@@ -13,7 +13,7 @@ public class GsonUtilsTest extends UnitTest {
         final SimpleDateFormat sdf = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss");
         String expected = String.format("\"%s\"", sdf.format(now));
-        String actual = GsonUtils.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
+        String actual = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
                 now);
         assertEquals(expected, actual);
     }

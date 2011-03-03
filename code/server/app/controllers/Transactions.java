@@ -5,7 +5,7 @@ import models.AverageConsumption;
 import models.Transaction;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
-import utils.GsonUtils;
+import utils.GsonUtil;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class Transactions extends Controller {
     public static void transactions(int count) {
         List<Transaction> transactions = Transaction.
                 find("order by accountingDate desc").fetch(count);
-        String json = GsonUtils.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
+        String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
                 transactions);
         renderJSON(json);
     }
