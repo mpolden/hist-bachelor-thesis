@@ -1,79 +1,35 @@
 package no.kantega.android;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
+import no.kantega.android.utils.GsonUtil;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 public class OverviewActivity extends Activity {
+
+    private static final String TAG = OverviewActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
-        parseTags(getJSON("http://10.10.10.78:9000/t/tags/3"));
-        parseAvg(getJSON("http://10.10.10.78:9000/t/avg"));
-        parseTransactions(getJSON("http://10.10.10.78:9000/t/transactions/10"));
-    }
-    
-    private void addRow(View view) {
-    	
-    	
+        populate();
     }
 
-    private String getJSON(String url) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpGet method = new HttpGet(url);
-        String body = null;
-        try {
-            HttpResponse response = httpClient.execute(method);
-            body = EntityUtils.toString(response.getEntity());
-        } catch (IOException e) {
-            Log.d("Exception", "IOException", e);
-        }
-        return body;
-    }
-
-    private void parseTags(String json) {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<AggregatedTag>>() {
-        }.getType();
-        List<AggregatedTag> tags = gson.fromJson(json, listType);
-        populateCategories(tags);
-    }
-
-    private void parseAvg(String json) {
-        Gson gson = new Gson();
-        AverageConsumption averageConsumption = gson.fromJson(json,
-                AverageConsumption.class);
-        populateAverageConsumption(averageConsumption);
-    }
-
-    private void parseTransactions(String json) {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Transaction>>() {
-        }.getType();
-        List<Transaction> transactions = gson.fromJson(json, listType);
-        populateTransactions(transactions);
+    private void populate() {
+        populateAverageConsumption(GsonUtil.parseAvg(GsonUtil.
+                getJSON("http://10.10.10.77:9000/t/avg")));
+        populateTransactions(GsonUtil.parseTransactions(GsonUtil.
+                getJSON("http://10.10.10.77:9000/t/avg")));
+        populateCategories(GsonUtil.parseTags(GsonUtil.
+                getJSON("http://10.10.10.77:9000/t/tags/3")));
     }
 
     private void populateAverageConsumption(AverageConsumption averageConsumption) {
