@@ -17,4 +17,5 @@ bin
 target
 tmp
 local.properties
+url.properties
 build.xml
