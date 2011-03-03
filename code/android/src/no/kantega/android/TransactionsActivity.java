@@ -59,6 +59,10 @@ public class TransactionsActivity extends Activity {
                 tvParams, false));
         tl.addView(tr);
         tr = new TableRow(this);
+        tr.addView(getTextView("Type", tvParams, false));
+        tr.addView(getTextView(t.type.name, tvParams, false));
+        tl.addView(tr);
+        tr = new TableRow(this);
         tr.addView(getTextView("Category", tvParams, false));
         tr.addView(getTextView(t.tags.get(0).name, tvParams, false));
         tl.addView(tr);
