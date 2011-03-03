@@ -2,9 +2,27 @@ package no.kantega.android.utils;
 
 import org.junit.Test;
 
+import java.util.Date;
+import java.util.Locale;
+
 import static org.junit.Assert.assertEquals;
 
 public class FmtUtilTest {
+
+    @Test
+    public void testDate() {
+        String expected = "2010-01-01 00:00:00";
+        String actual = FmtUtil.date("yyyy-MM-dd HH:mm:ss",
+                new Date(1262300400000L));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCurrency() {
+        String expected = "$1,199.49";
+        String actual = FmtUtil.currency(1199.492349, Locale.US);
+        assertEquals(expected, actual);
+    }
 
     @Test
     public void testTrimTransactionText() {

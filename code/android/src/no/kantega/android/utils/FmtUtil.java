@@ -3,6 +3,7 @@ package no.kantega.android.utils;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class FmtUtil {
 
@@ -12,7 +13,11 @@ public class FmtUtil {
     }
 
     public static String currency(Double number) {
-        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        return currency(number, Locale.getDefault());
+    }
+
+    public static String currency(Double number, Locale locale) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
         nf.setMinimumFractionDigits(2);
         nf.setMaximumFractionDigits(2);
         return nf.format(number);
