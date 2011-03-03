@@ -10,7 +10,7 @@ import android.widget.TextView;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FormattingUtil;
+import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.GsonUtil;
 
 import java.io.IOException;
@@ -47,16 +47,16 @@ public class OverviewActivity extends Activity {
     private void populateAverageConsumption(AverageConsumption avg) {
         TextView average_day = (TextView) findViewById(R.id.average_day);
         TextView average_week = (TextView) findViewById(R.id.average_week);
-        average_day.setText(FormattingUtil.currency(avg.getDay()));
-        average_week.setText(FormattingUtil.currency(avg.getWeek()));
+        average_day.setText(FmtUtil.currency(avg.getDay()));
+        average_week.setText(FmtUtil.currency(avg.getWeek()));
     }
 
     private void populateTransactions(List<Transaction> transactions) {
         for (Transaction t : transactions) {
-            addTransaction(FormattingUtil.date("yyyy-MM-dd",
+            addTransaction(FmtUtil.date("yyyy-MM-dd",
                     t.accountingDate), t.type.name,
                     t.tags.get(0).name,
-                    FormattingUtil.currency(t.amountOut));
+                    FmtUtil.currency(t.amountOut));
         }
     }
 
@@ -94,11 +94,11 @@ public class OverviewActivity extends Activity {
         TextView amount3 = (TextView) findViewById(R.id.top3_amount_3);
         if (tags.size() == 3) {
             category1.setText(tags.get(0).getName());
-            amount1.setText(FormattingUtil.currency(tags.get(0).getAmount()));
+            amount1.setText(FmtUtil.currency(tags.get(0).getAmount()));
             category2.setText(tags.get(1).getName());
-            amount2.setText(FormattingUtil.currency(tags.get(1).getAmount()));
+            amount2.setText(FmtUtil.currency(tags.get(1).getAmount()));
             category3.setText(tags.get(2).getName());
-            amount3.setText(FormattingUtil.currency(tags.get(2).getAmount()));
+            amount3.setText(FmtUtil.currency(tags.get(2).getAmount()));
         }
     }
 
