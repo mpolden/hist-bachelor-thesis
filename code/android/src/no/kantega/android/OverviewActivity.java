@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,9 +30,14 @@ public class OverviewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
-        parseTags(getJSON("http://10.10.10.77:9000/t/tags/3"));
-        parseAvg(getJSON("http://10.10.10.77:9000/t/avg"));
-        parseTransactions(getJSON("http://10.10.10.77:9000/t/transactions/10"));
+        parseTags(getJSON("http://10.10.10.78:9000/t/tags/3"));
+        parseAvg(getJSON("http://10.10.10.78:9000/t/avg"));
+        parseTransactions(getJSON("http://10.10.10.78:9000/t/transactions/10"));
+    }
+    
+    private void addRow(View view) {
+    	
+    	
     }
 
     private String getJSON(String url) {
