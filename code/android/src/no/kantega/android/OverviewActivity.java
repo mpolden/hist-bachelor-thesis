@@ -1,16 +1,22 @@
 package no.kantega.android;
 
-import java.util.List;
-
-import no.kantega.android.models.AggregatedTag;
-import no.kantega.android.models.AverageConsumption;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.GsonUtil;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import no.kantega.android.models.AggregatedTag;
+import no.kantega.android.models.AverageConsumption;
+import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.FormattingUtil;
+import no.kantega.android.utils.GsonUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Properties;
 
 public class OverviewActivity extends Activity {
 
@@ -20,36 +26,43 @@ public class OverviewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
-        populate();
+        readProperties();
     }
 
-    private void populate() {
-        populateAverageConsumption(GsonUtil.parseAvg(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/avg")));
-        populateTransactions(GsonUtil.parseTransactions(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/avg")));
-        populateCategories(GsonUtil.parseTags(GsonUtil.
-                getJSON("http://10.10.10.77:9000/t/tags/3")));
+    private void readProperties() {
+        try {
+            InputStream inputStream = getAssets().open("url.properties");
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            new TransactionsTask().execute(
+                    properties.get("transactions").toString());
+            new TagsTask().execute(properties.get("tags").toString());
+            new AverageConsumptionTask().execute(properties.get("avg").
+                    toString());
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        }
     }
 
-    private void populateAverageConsumption(AverageConsumption averageConsumption) {
+    private void populateAverageConsumption(AverageConsumption avg) {
         TextView average_day = (TextView) findViewById(R.id.average_day);
         TextView average_week = (TextView) findViewById(R.id.average_week);
-        average_day.setText(averageConsumption.getDay().toString());
-        average_week.setText(averageConsumption.getWeek().toString());
+        average_day.setText(FormattingUtil.currency(avg.getDay()));
+        average_week.setText(FormattingUtil.currency(avg.getWeek()));
     }
 
     private void populateTransactions(List<Transaction> transactions) {
         for (Transaction t : transactions) {
-            addTransaction(t.accountingDate.toString(), t.type.name, t.tags.get(0).name,
-                    t.amountOut.toString());
+            addTransaction(FormattingUtil.date("yyyy-MM-dd",
+                    t.accountingDate), t.type.name,
+                    t.tags.get(0).name,
+                    FormattingUtil.currency(t.amountOut));
         }
     }
 
     private void addTransaction(String date, String text, String category,
                                 String amount) {
         TableLayout transactions = (TableLayout) findViewById(R.id.transactionTableLayout);
-        // int children = transactions.getChildCount();
         TableRow tr = new TableRow(this);
         TextView tv = new TextView(this);
         TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT,
@@ -81,11 +94,47 @@ public class OverviewActivity extends Activity {
         TextView amount3 = (TextView) findViewById(R.id.top3_amount_3);
         if (tags.size() == 3) {
             category1.setText(tags.get(0).getName());
-            amount1.setText(tags.get(0).getAmount().toString());
+            amount1.setText(FormattingUtil.currency(tags.get(0).getAmount()));
             category2.setText(tags.get(1).getName());
-            amount2.setText(tags.get(1).getAmount().toString());
+            amount2.setText(FormattingUtil.currency(tags.get(1).getAmount()));
             category3.setText(tags.get(2).getName());
-            amount3.setText(tags.get(2).getAmount().toString());
+            amount3.setText(FormattingUtil.currency(tags.get(2).getAmount()));
+        }
+    }
+
+    private class TransactionsTask
+            extends AsyncTask<String, Integer, List<Transaction>> {
+
+        protected List<Transaction> doInBackground(String... urls) {
+            return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
+        }
+
+        protected void onPostExecute(List<Transaction> transactions) {
+            populateTransactions(transactions);
+        }
+    }
+
+    private class TagsTask
+            extends AsyncTask<String, Integer, List<AggregatedTag>> {
+
+        protected List<AggregatedTag> doInBackground(String... urls) {
+            return GsonUtil.parseTags(GsonUtil.getJSON(urls[0]));
+        }
+
+        protected void onPostExecute(List<AggregatedTag> tags) {
+            populateCategories(tags);
+        }
+    }
+
+    private class AverageConsumptionTask
+            extends AsyncTask<String, Integer, AverageConsumption> {
+
+        protected AverageConsumption doInBackground(String... urls) {
+            return GsonUtil.parseAvg(GsonUtil.getJSON(urls[0]));
+        }
+
+        protected void onPostExecute(AverageConsumption avg) {
+            populateAverageConsumption(avg);
         }
     }
 }
