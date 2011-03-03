@@ -11,7 +11,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FormattingUtil;
+import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.GsonUtil;
 
 import java.io.IOException;
@@ -49,13 +49,13 @@ public class TransactionsActivity extends Activity {
         tl.addView(getSeparator());
         TableRow tr = new TableRow(this);
         tr.addView(getTextView("Date", tvParams, true));
-        tr.addView(getTextView(FormattingUtil.date("yyyy-MM-dd", t
+        tr.addView(getTextView(FmtUtil.date("yyyy-MM-dd", t
                 .accountingDate), tvParams, true));
         tl.addView(tr);
         tl.addView(getSeparator());
         tr = new TableRow(this);
         tr.addView(getTextView("Text", tvParams, false));
-        tr.addView(getTextView(FormattingUtil.trimTransactionText(t.text),
+        tr.addView(getTextView(FmtUtil.trimTransactionText(t.text),
                 tvParams, false));
         tl.addView(tr);
         tr = new TableRow(this);
@@ -68,7 +68,7 @@ public class TransactionsActivity extends Activity {
         tl.addView(tr);
         tr = new TableRow(this);
         tr.addView(getTextView("Amount", tvParams, false));
-        tr.addView(getTextView(FormattingUtil.currency(t.amountOut),
+        tr.addView(getTextView(FmtUtil.currency(t.amountOut),
                 tvParams, false));
         tl.addView(tr);
         tl.addView(getSeparator());

@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FormattingUtil {
+public class FmtUtil {
 
     public static String date(String format, Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
@@ -19,7 +19,7 @@ public class FormattingUtil {
     }
 
     public static String trimTransactionText(String text) {
-        final String pattern = "(\\d+\\*+\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?";
+        final String pattern = "(\\d+\\*+\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?(TIL\\:\\s)?";
         return text.replaceAll(pattern, "");
     }
 }
