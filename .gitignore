@@ -16,6 +16,7 @@ out
 bin
 target
 tmp
+test-result
 local.properties
 url.properties
 build.xml
