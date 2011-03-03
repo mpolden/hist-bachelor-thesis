@@ -17,6 +17,8 @@ public class Import extends Job {
 
     private static final Logger logger = Logger.getLogger(
             Import.class.getName());
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(
+            "dd.MM.yyyy");
 
     public void doJob() {
         if (Transaction.count() == 0) {
@@ -35,9 +37,6 @@ public class Import extends Job {
             }
         }
     }
-
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "dd.MM.yyyy");
 
     private void addTransaction(String line) {
         String[] s = line.split("\\|");
