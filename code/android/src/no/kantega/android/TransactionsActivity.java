@@ -1,86 +1,105 @@
 package no.kantega.android;
 
-import java.util.List;
-
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.GsonUtil;
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.FormattingUtil;
+import no.kantega.android.utils.GsonUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Properties;
 
 public class TransactionsActivity extends Activity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.transactions);
-		populateTransactions();
-	}
+    private static final String TAG = OverviewActivity.class.getSimpleName();
 
-	private void populateTransactions() {
-		List<Transaction> transactions = GsonUtil.parseTransactions(GsonUtil
-				.getJSON("http://10.10.10.14:9000/t/transactions/10"));
-		for (Transaction t : transactions) {
-            addTransaction(t);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.transactions);
+        readProperties();
+    }
+
+    private void readProperties() {
+        try {
+            InputStream inputStream = getAssets().open("url.properties");
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            new TransactionsTask().execute(
+                    properties.get("allTransactions").toString());
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
         }
-	}
+    }
 
-	private void addTransaction(Transaction t) {
-		TableLayout tl = (TableLayout) findViewById(R.id.transaction_table_layout);
-		TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0,
-				TableRow.LayoutParams.WRAP_CONTENT, 1f);
+    private void addTransaction(Transaction t) {
+        TableLayout tl = (TableLayout) findViewById(R.id.transaction_table_layout);
+        TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0,
+                TableRow.LayoutParams.WRAP_CONTENT, 1f);
+        tl.addView(getSeparator());
+        TableRow tr = new TableRow(this);
+        tr.addView(getTextView("Date", tvParams, true));
+        tr.addView(getTextView(FormattingUtil.date("yyyy-MM-dd", t
+                .accountingDate), tvParams, true));
+        tl.addView(tr);
+        tl.addView(getSeparator());
+        tr = new TableRow(this);
+        tr.addView(getTextView("Text", tvParams, false));
+        tr.addView(getTextView(t.type.name, tvParams, false));
+        tl.addView(tr);
+        tr = new TableRow(this);
+        tr.addView(getTextView("Category", tvParams, false));
+        tr.addView(getTextView(t.tags.get(0).name, tvParams, false));
+        tl.addView(tr);
+        tr = new TableRow(this);
+        tr.addView(getTextView("Amount", tvParams, false));
+        tr.addView(getTextView(FormattingUtil.currency(t.amountOut),
+                tvParams, false));
+        tl.addView(tr);
+        tl.addView(getSeparator());
+    }
 
-		tl.addView(getSeparator());
+    private TextView getTextView(String s, TableRow.LayoutParams lp,
+                                 boolean bold) {
+        TextView tv = new TextView(this);
+        if (bold) {
+            tv.setText(Html.fromHtml("<b>" + s + "</b>"));
+        } else {
+            tv.setText(s);
+        }
+        tv.setLayoutParams(lp);
+        return tv;
+    }
 
-		TableRow tr = new TableRow(this);
-		tr.addView(getTextView("Date", tvParams, true));
-		tr.addView(getTextView(t.accountingDate.toString(), tvParams, true));
-		tl.addView(tr);
+    private View getSeparator() {
+        View v = new View(this);
+        v.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT, 2));
+        v.setBackgroundColor(Color.GRAY);
+        return v;
+    }
 
-		tl.addView(getSeparator());
+    private class TransactionsTask
+            extends AsyncTask<String, Integer, List<Transaction>> {
 
-		tr = new TableRow(this);
-		tr.addView(getTextView("Text", tvParams, false));
-		tr.addView(getTextView(t.type.name, tvParams, false));
-		tl.addView(tr);
+        protected List<Transaction> doInBackground(String... urls) {
+            return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
+        }
 
-		tr = new TableRow(this);
-		tr.addView(getTextView("Category", tvParams, false));
-		tr.addView(getTextView(t.tags.get(0).name, tvParams, false));
-		tl.addView(tr);
-
-		tr = new TableRow(this);
-		tr.addView(getTextView("Amount", tvParams, false));
-		tr.addView(getTextView(t.amountOut.toString(), tvParams, false));
-		tl.addView(tr);
-
-		tl.addView(getSeparator());
-
-	}
-
-	private TextView getTextView(String s, TableRow.LayoutParams lp,
-			boolean bold) {
-		TextView tv = new TextView(this);
-		if (bold) {
-			tv.setText(Html.fromHtml("<b>" + s + "</b>"));
-		} else {
-			tv.setText(s);
-		}
-		tv.setLayoutParams(lp);
-		return tv;
-	}
-
-	private View getSeparator() {
-		View v = new View(this);
-		v.setLayoutParams(new TableRow.LayoutParams(
-				TableRow.LayoutParams.FILL_PARENT, 2));
-		v.setBackgroundColor(Color.GRAY);
-		return v;
-	}
-
+        protected void onPostExecute(List<Transaction> transactions) {
+            for (Transaction t : transactions) {
+                addTransaction(t);
+            }
+        }
+    }
 }
