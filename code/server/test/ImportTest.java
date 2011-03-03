@@ -14,7 +14,6 @@ public class ImportTest extends UnitTest {
     @Test
     public void testImportTransactionTag() {
         assertTrue(TransactionTag.count() > 0);
-        assertTrue(TransactionType.count() > 0);
     }
 
     @Test
