@@ -29,7 +29,7 @@ public class MenuActivity extends TabActivity {
     	
     	intent = new Intent().setClass(this, TransactionsActivity.class);
     	String transactions = res.getString(R.string.transactions);    	
-    	spec = tabHost.newTabSpec(transactions).setIndicator(transactions, res.getDrawable(R.drawable.tab_synchronize)).setContent(intent);
+    	spec = tabHost.newTabSpec(transactions).setIndicator(transactions, res.getDrawable(R.drawable.tab_transactions)).setContent(intent);
     	tabHost.addTab(spec);
     	
     	intent = new Intent().setClass(this, SynchronizeActivity.class);
