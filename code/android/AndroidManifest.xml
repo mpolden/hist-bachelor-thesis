@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".OverviewActivity"></activity>
+        <activity android:name=".TransactionsActivity"></activity>
         <activity android:name=".SynchronizeActivity"></activity>
 
     </application>
