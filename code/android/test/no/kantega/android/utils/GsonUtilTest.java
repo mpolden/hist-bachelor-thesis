@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GsonUtilTest {
@@ -47,7 +48,6 @@ public class GsonUtilTest {
             add(t);
         }};
         List<Transaction> actual = GsonUtil.parseTransactions(json);
-        //assertEquals(expected, actual);
-        assertTrue(true);
+        assertEquals(expected, actual);
     }
 }
