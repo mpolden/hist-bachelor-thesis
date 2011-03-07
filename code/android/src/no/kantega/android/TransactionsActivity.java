@@ -83,6 +83,7 @@ public class TransactionsActivity extends Activity {
             tv.setText(s);
         }
         tv.setLayoutParams(lp);
+        tv.setTextColor(Color.WHITE);
         return tv;
     }
 
