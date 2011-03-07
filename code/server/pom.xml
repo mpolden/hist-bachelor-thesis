@@ -28,6 +28,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
             </plugin>
             <!-- Keeping this order is very important for packaging phase (copy-dependency must run before antrun) -->
             <plugin>
@@ -43,6 +44,7 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+                <version>2.3.2</version>
             </plugin>
             <!-- End -->
         </plugins>
