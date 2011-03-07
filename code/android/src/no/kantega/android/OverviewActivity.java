@@ -41,7 +41,7 @@ public class OverviewActivity extends Activity {
             new AverageConsumptionTask().execute(properties.get("avg").
                     toString());
         } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
+            Log.e(TAG, "Could not read properties file", e);
         }
     }
 
@@ -110,36 +110,48 @@ public class OverviewActivity extends Activity {
     private class TransactionsTask
             extends AsyncTask<String, Integer, List<Transaction>> {
 
+        @Override
         protected List<Transaction> doInBackground(String... urls) {
             return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
         }
 
+        @Override
         protected void onPostExecute(List<Transaction> transactions) {
-            populateTransactions(transactions);
+            if (transactions != null) {
+                populateTransactions(transactions);
+            }
         }
     }
 
     private class TagsTask
             extends AsyncTask<String, Integer, List<AggregatedTag>> {
 
+        @Override
         protected List<AggregatedTag> doInBackground(String... urls) {
             return GsonUtil.parseTags(GsonUtil.getJSON(urls[0]));
         }
 
+        @Override
         protected void onPostExecute(List<AggregatedTag> tags) {
-            populateCategories(tags);
+            if (tags != null) {
+                populateCategories(tags);
+            }
         }
     }
 
     private class AverageConsumptionTask
             extends AsyncTask<String, Integer, AverageConsumption> {
 
+        @Override
         protected AverageConsumption doInBackground(String... urls) {
             return GsonUtil.parseAvg(GsonUtil.getJSON(urls[0]));
         }
 
+        @Override
         protected void onPostExecute(AverageConsumption avg) {
-            populateAverageConsumption(avg);
+            if (avg != null) {
+                populateAverageConsumption(avg);
+            }
         }
     }
 }
