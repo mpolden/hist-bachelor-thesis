@@ -1,6 +1,7 @@
 package no.kantega.android;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,18 +70,22 @@ public class OverviewActivity extends Activity {
                 1f);
         tv.setText(date);
         tv.setLayoutParams(tvParams);
+        tv.setTextColor(Color.WHITE);
         tr.addView(tv);
         tv = new TextView(this);
         tv.setText(text);
         tv.setLayoutParams(tvParams);
+        tv.setTextColor(Color.WHITE);
         tr.addView(tv);
         tv = new TextView(this);
         tv.setText(category);
         tv.setLayoutParams(tvParams);
+        tv.setTextColor(Color.WHITE);
         tr.addView(tv);
         tv = new TextView(this);
         tv.setText(amount);
         tv.setLayoutParams(tvParams);
+        tv.setTextColor(Color.WHITE);
         tr.addView(tv);
         transactions.addView(tr, 4);
     }
