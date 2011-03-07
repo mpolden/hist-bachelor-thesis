@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>no.kantega.android</groupId>
+    <artifactId>android</artifactId>
+    <version>1.0</version>
+
+    <packaging>apk</packaging>
+    <name>android</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>6</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>gson</id>
+            <url>http://google-gson.googlecode.com/svn/mavenrepo</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>2.3.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- This should be just the artifact identifier, no version on the APK file,
+             because this is what IntelliJ will use by default.
+        -->
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>maven-android-plugin</artifactId>
+                <version>2.6.0</version>
+                <configuration>
+                    <sdk>
+
+                        <!-- Don't forget to set your ANDROID_HOME environment variable to your SDK directory! -->
+                        <path>env.ANDROID_HOME</path>
+
+                        <!-- Platform 10 is Android 2.3.3 -->
+                        <platform>10</platform>
+
+                    </sdk>
+
+                    <!-- All of these go into the /src/main/android/ directory, we don't
+             want to polute the project root directory. -->
+                    <androidManifestFile>
+                        ${project.basedir}/src/main/android/AndroidManifest.xml
+                    </androidManifestFile>
+                    <resourceDirectory>${project.basedir}/src/main/android/res
+                    </resourceDirectory>
+                    <assetsDirectory>${project.basedir}/src/main/android/assets
+                    </assetsDirectory>
+                    <nativeLibrariesDirectory>
+                        ${project.basedir}/src/main/android/native
+                    </nativeLibrariesDirectory>
+                    <resourceOverlayDirectory>
+                        ${project.basedir}/src/main/android/overlay
+                    </resourceOverlayDirectory>
+
+                    <!-- Read the Android Maven plugin documentation about these settings -->
+                    <deleteConflictingFiles>true</deleteConflictingFiles>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+
+                </configuration>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
