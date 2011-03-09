@@ -1,6 +1,7 @@
 package no.kantega.android.utils;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,5 +27,14 @@ public class FmtUtil {
     public static String trimTransactionText(String text) {
         final String pattern = "(\\d+\\*+\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?(TIL\\:\\s)?";
         return text.replaceAll(pattern, "");
+    }
+
+    public static Date stringToDate(String format, String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
