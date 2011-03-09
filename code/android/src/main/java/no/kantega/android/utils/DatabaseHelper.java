@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.models.TransactionTag;
-import no.kantega.android.models.TransactionType;
+import no.kantega.android.models.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseHelper {
@@ -69,7 +68,7 @@ public class DatabaseHelper {
                 , new String[]{"*", "transactiontype.name as type",
                         "transactiontag.name as tag"}, null, null,
                 null, null, "accountingdate DESC", String.valueOf(limit));
-        final List<Transaction> transactionList = new ArrayList<Transaction>();
+        final List<Transaction> transactions = new ArrayList<Transaction>();
         cursor.moveToFirst();
         do {
             Transaction t = new Transaction();
@@ -87,9 +86,68 @@ public class DatabaseHelper {
             TransactionType type = new TransactionType();
             type.setName(getValue(cursor, "type"));
             t.setType(type);
-            transactionList.add(t);
+            transactions.add(t);
         } while (cursor.moveToNext());
         cursor.close();
-        return transactionList;
+        return transactions;
+    }
+
+    public static List<AggregatedTag> getTags(final SQLiteDatabase db,
+                                              final int limit) {
+        final Cursor cursor = db.query("\"transaction\" " +
+                "INNER JOIN transactiontag " +
+                "ON transactiontag.id = \"transaction\".tag_id ",
+                new String[]{"transactiontag.name",
+                        "SUM(\"transaction\".amountout) AS sum"},
+                null, null, "transactiontag.name", "sum DESC",
+                String.valueOf(limit));
+        final List<AggregatedTag> aggregatedTags =
+                new ArrayList<AggregatedTag>();
+        cursor.moveToFirst();
+        do {
+            AggregatedTag at = new AggregatedTag();
+            at.setAmount(Double.parseDouble(getValue(cursor, "sum")));
+            at.setName(getValue(cursor, "name"));
+            aggregatedTags.add(at);
+        } while (cursor.moveToNext());
+        cursor.close();
+        return null;
+    }
+
+    private static Double getAvgDay(final SQLiteDatabase db) {
+        // Get start date
+        Cursor cursor = db.query("\transaction\"",
+                new String[]{"accountingdate"}, null, null, null,
+                "accountingDate ASC", "1");
+        cursor.moveToFirst();
+        final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
+                cursor, "accountingdate"));
+        cursor.close();
+        // Get stop date
+        cursor = db.query("\transaction\"",
+                new String[]{"accountingdate"}, null, null, null,
+                "accountingDate DESC", "1");
+        cursor.moveToFirst();
+        final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
+                cursor, "accountingdate"));
+        // Calculate number of days
+        final int days =
+                (int) ((stop.getTime() - start.getTime()) / 1000) / 86400;
+        cursor.close();
+        // Sum
+        cursor = db.query("\transaction\"",
+                new String[]{"SUM(amountout) AS sum"}, null, null, null,
+                null, "1");
+        cursor.moveToFirst();
+        return Double.parseDouble(getValue(cursor, "sum")) / days;
+    }
+
+    public static AverageConsumption getAvg(final SQLiteDatabase db) {
+        final double avgPerDay = getAvgDay(db);
+        final AverageConsumption avg = new AverageConsumption();
+        avg.setDay(avgPerDay);
+        avg.setWeek(avgPerDay * 7);
+        avg.setMonth(avgPerDay * 30.4368499);
+        return avg;
     }
 }
