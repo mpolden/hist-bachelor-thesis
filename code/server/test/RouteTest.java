@@ -15,7 +15,7 @@ public class RouteTest extends FunctionalTest {
 
     @Test
     public void testRouteTags() {
-        Response response = GET("/t/tag/1");
+        Response response = GET("/t/tags/1");
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
