@@ -1,56 +1,59 @@
 package no.kantega.android;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.DatabaseHelper;
+import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
-import no.kantega.android.utils.GsonUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class TransactionsActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
+    private SQLiteDatabase db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
-        readProperties();
+        DatabaseOpenHelper helper = new DatabaseOpenHelper(
+                getApplicationContext());
+        this.db = helper.getReadableDatabase();
     }
 
-    private void readProperties() {
-        try {
-            InputStream inputStream = getAssets().open("url.properties");
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            new TransactionsTask().execute(
-                    properties.get("allTransactions").toString());
-        } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populate();
+    }
+
+    private void populate() {
+        clearTransactions();
+        List<Transaction> transactions = DatabaseHelper.
+                getOrderedByDateDesc(db, 20);
+        for (Transaction t : transactions) {
+            addTransaction(t);
         }
     }
-    
+
     private void clearTransactions() {
-    	TableLayout transactions = (TableLayout) findViewById(R.id.
+        TableLayout transactions = (TableLayout) findViewById(R.id.
                 transaction_table_layout);
-    	int transaction_count = transactions.getChildCount();
-    	if(transactions.getChildAt(0) != null) {
-    		transactions.removeViews(0, transaction_count);
-    	}    	
+        int transaction_count = transactions.getChildCount();
+        if (transactions.getChildAt(0) != null) {
+            transactions.removeViews(0, transaction_count);
+        }
     }
-    
+
     private void addTransaction(Transaction t) {
         TableLayout tl = (TableLayout) findViewById(R.id.transaction_table_layout);
         TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0,
@@ -101,23 +104,5 @@ public class TransactionsActivity extends Activity {
                 TableRow.LayoutParams.FILL_PARENT, 2));
         v.setBackgroundColor(Color.GRAY);
         return v;
-    }
-
-    private class TransactionsTask
-            extends AsyncTask<String, Integer, List<Transaction>> {
-
-        @Override
-        protected List<Transaction> doInBackground(String... urls) {
-            return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
-        }
-
-        @Override
-        protected void onPostExecute(List<Transaction> transactions) {
-            if (transactions != null) {
-                for (Transaction t : transactions) {
-                    addTransaction(t);
-                }
-            }
-        }
     }
 }
