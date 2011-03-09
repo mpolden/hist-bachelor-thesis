@@ -47,7 +47,7 @@ public class TransactionsActivity extends Activity {
                 transaction_table_layout);
     	int transaction_count = transactions.getChildCount();
     	if(transactions.getChildAt(0) != null) {
-    		transactions.removeViews(4, transaction_count);
+    		transactions.removeViews(0, transaction_count);
     	}    	
     }
     
