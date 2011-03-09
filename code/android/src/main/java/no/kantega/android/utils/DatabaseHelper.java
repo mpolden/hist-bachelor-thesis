@@ -16,23 +16,50 @@ public class DatabaseHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    private static boolean rowExists(SQLiteDatabase db, String table,
+                                     String columName, String param) {
+        final Cursor cursor = db.query(table,
+                new String[]{"1"}, columName + " = ?", new String[]{param},
+                null, null, null, "1");
+        cursor.moveToFirst();
+        return cursor.getCount() > 0;
+    }
+
     private static long insertType(final SQLiteDatabase db,
                                    final TransactionType t) {
-        final ContentValues values = new ContentValues();
-        values.put("name", t.getName());
-        final long typeId = db.insertWithOnConflict("transactiontype", null,
-                values, SQLiteDatabase.CONFLICT_IGNORE);
-        Log.d(TAG, "Inserted transaction type with ID: " + typeId);
+        if (!rowExists(db, "transactiontype", "name", t.getName())) {
+            final ContentValues values = new ContentValues();
+            values.put("name", t.getName());
+            db.insert("transactiontype", null, values);
+        }
+        Cursor cursor = db.query("transactiontype", new String[]{"id"},
+                " name = ?", new String[]{t.getName()}, null, null, null, "1");
+        cursor.moveToFirst();
+        long typeId;
+        if (cursor.getCount() > 0) {
+            typeId = Long.parseLong(getValue(cursor, "id"));
+        } else {
+            typeId = -1;
+        }
         return typeId;
     }
 
     private static long insertTag(final SQLiteDatabase db,
                                   final TransactionTag t) {
-        final ContentValues values = new ContentValues();
-        values.put("name", t.getName());
-        final long tagId = db.insertWithOnConflict("transactiontag", null,
-                values, SQLiteDatabase.CONFLICT_IGNORE);
-        Log.d(TAG, "Inserted transaction tag with ID: " + tagId);
+        if (!rowExists(db, "transactiontag", "name", t.getName())) {
+            final ContentValues values = new ContentValues();
+            values.put("name", t.getName());
+            db.insert("transactiontag", null, values);
+        }
+        Cursor cursor = db.query("transactiontag", new String[]{"id"},
+                " name = ?", new String[]{t.getName()}, null, null, null, "1");
+        cursor.moveToFirst();
+        long tagId;
+        if (cursor.getCount() > 0) {
+            tagId = Long.parseLong(getValue(cursor, "id"));
+        } else {
+            tagId = -1;
+        }
         return tagId;
     }
 
