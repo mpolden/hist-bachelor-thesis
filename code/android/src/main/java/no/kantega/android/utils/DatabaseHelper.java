@@ -15,9 +15,21 @@ public class DatabaseHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private SQLiteDatabase db;
 
-    private static boolean rowExists(SQLiteDatabase db, String table,
-                                     String columName, String param) {
+    public DatabaseHelper(SQLiteDatabase db) {
+        this.db = db;
+    }
+
+    public SQLiteDatabase getDb() {
+        return db;
+    }
+
+    public void setDb(SQLiteDatabase db) {
+        this.db = db;
+    }
+
+    private boolean rowExists(String table, String columName, String param) {
         final Cursor cursor = db.query(table,
                 new String[]{"1"}, columName + " = ?", new String[]{param},
                 null, null, null, "1");
@@ -25,9 +37,8 @@ public class DatabaseHelper {
         return cursor.getCount() > 0;
     }
 
-    private static long insertType(final SQLiteDatabase db,
-                                   final TransactionType t) {
-        if (!rowExists(db, "transactiontype", "name", t.getName())) {
+    private long insertType(final TransactionType t) {
+        if (!rowExists("transactiontype", "name", t.getName())) {
             final ContentValues values = new ContentValues();
             values.put("name", t.getName());
             db.insert("transactiontype", null, values);
@@ -44,9 +55,8 @@ public class DatabaseHelper {
         return typeId;
     }
 
-    private static long insertTag(final SQLiteDatabase db,
-                                  final TransactionTag t) {
-        if (!rowExists(db, "transactiontag", "name", t.getName())) {
+    private long insertTag(final TransactionTag t) {
+        if (!rowExists("transactiontag", "name", t.getName())) {
             final ContentValues values = new ContentValues();
             values.put("name", t.getName());
             db.insert("transactiontag", null, values);
@@ -63,9 +73,9 @@ public class DatabaseHelper {
         return tagId;
     }
 
-    public static void insert(final SQLiteDatabase db, final Transaction t) {
-        final long typeId = insertType(db, t.getType());
-        final long tagId = insertTag(db, t.getTag());
+    public void insert(final Transaction t) {
+        final long typeId = insertType(t.getType());
+        final long tagId = insertTag(t.getTag());
         final ContentValues values = new ContentValues();
         values.put("accountingdate", FmtUtil.date(SQLITE_DATE_FORMAT,
                 t.getAccountingDate()));
@@ -81,18 +91,17 @@ public class DatabaseHelper {
         Log.d(TAG, "Inserted transaction with ID: " + transactionId);
     }
 
-    private static String getValue(Cursor cursor, String columnName) {
+    private String getValue(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
     }
 
-    public static void emptyTables(SQLiteDatabase db) {
+    public void emptyTables() {
         db.execSQL("DELETE FROM \"transaction\"");
         db.execSQL("DELETE FROM \"transactiontag\"");
         db.execSQL("DELETE FROM \"transactiontype\"");
     }
 
-    public static List<Transaction> getOrderedByDateDesc(SQLiteDatabase db,
-                                                         int limit) {
+    public List<Transaction> getOrderedByDateDesc(int limit) {
         final Cursor cursor = db.query(
                 "\"transaction\" " +
                         "INNER JOIN \"transactiontype\" " +
@@ -128,8 +137,7 @@ public class DatabaseHelper {
         return transactions;
     }
 
-    public static List<AggregatedTag> getTags(final SQLiteDatabase db,
-                                              final int limit) {
+    public List<AggregatedTag> getTags(final int limit) {
         final Cursor cursor = db.query("\"transaction\" " +
                 "INNER JOIN transactiontag " +
                 "ON transactiontag.id = \"transaction\".tag_id ",
@@ -152,7 +160,7 @@ public class DatabaseHelper {
         return aggregatedTags;
     }
 
-    private static Double getAvgDay(final SQLiteDatabase db) {
+    private Double getAvgDay() {
         if (DatabaseUtils.queryNumEntries(db, "\"transaction\"") == 0) {
             return 0D;
         }
@@ -183,8 +191,8 @@ public class DatabaseHelper {
         return Double.parseDouble(getValue(cursor, "sum")) / days;
     }
 
-    public static AverageConsumption getAvg(final SQLiteDatabase db) {
-        final double avgPerDay = getAvgDay(db);
+    public AverageConsumption getAvg() {
+        final double avgPerDay = getAvgDay();
         final AverageConsumption avg = new AverageConsumption();
         avg.setDay(avgPerDay);
         avg.setWeek(avgPerDay * 7);

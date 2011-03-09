@@ -1,7 +1,6 @@
 package no.kantega.android;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +21,7 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private DatabaseOpenHelper helper;
-    private SQLiteDatabase db;
+    private DatabaseHelper db;
     private OnClickListener syncButtonListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -38,8 +36,8 @@ public class SynchronizeActivity extends Activity {
         ImageButton syncButton = (ImageButton) findViewById(R.id.syncButton);
         syncButton.setImageResource(R.drawable.syncbutton);
         syncButton.setOnClickListener(syncButtonListener);
-        helper = new DatabaseOpenHelper(getApplicationContext());
-        db = helper.getWritableDatabase();
+        this.db = new DatabaseHelper(new DatabaseOpenHelper(
+                getApplicationContext()).getWritableDatabase());
     }
 
     private void populateDatabase() {
@@ -65,9 +63,9 @@ public class SynchronizeActivity extends Activity {
         @Override
         protected void onPostExecute(List<Transaction> transactions) {
             if (transactions != null && !transactions.isEmpty()) {
-                DatabaseHelper.emptyTables(db);
+                db.emptyTables();
                 for (Transaction t : transactions) {
-                    DatabaseHelper.insert(db, t);
+                    db.insert(t);
                 }
                 Toast.makeText(getApplicationContext(), "Synchronized database",
                         Toast.LENGTH_LONG).show();

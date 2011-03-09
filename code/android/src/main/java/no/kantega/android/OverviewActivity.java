@@ -1,7 +1,6 @@
 package no.kantega.android;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TableLayout;
@@ -19,15 +18,14 @@ import java.util.List;
 public class OverviewActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
-    private SQLiteDatabase db;
+    private DatabaseHelper db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
-        DatabaseOpenHelper helper = new DatabaseOpenHelper(
-                getApplicationContext());
-        this.db = helper.getReadableDatabase();
+        this.db = new DatabaseHelper(new DatabaseOpenHelper(
+                getApplicationContext()).getReadableDatabase());
     }
 
     @Override
@@ -37,9 +35,9 @@ public class OverviewActivity extends Activity {
     }
 
     private void populate() {
-        populateCategories(DatabaseHelper.getTags(db, 3));
-        populateTransactions(DatabaseHelper.getOrderedByDateDesc(db, 1));
-        populateAverageConsumption(DatabaseHelper.getAvg(db));
+        populateCategories(db.getTags(3));
+        populateTransactions(db.getOrderedByDateDesc(1));
+        populateAverageConsumption(db.getAvg());
     }
 
     private void populateAverageConsumption(AverageConsumption avg) {
@@ -48,18 +46,18 @@ public class OverviewActivity extends Activity {
         average_day.setText(FmtUtil.currency(avg.getDay()));
         average_week.setText(FmtUtil.currency(avg.getWeek()));
     }
-    
+
     private void clearTransactions() {
-    	TableLayout transactions = (TableLayout) findViewById(R.id.
+        TableLayout transactions = (TableLayout) findViewById(R.id.
                 transactionTableLayout);
-    	int transaction_count = transactions.getChildCount() - 4;
-    	if(transactions.getChildAt(4) != null) {
-    		transactions.removeViews(4, transaction_count);
-    	}    	
+        int transaction_count = transactions.getChildCount() - 4;
+        if (transactions.getChildAt(4) != null) {
+            transactions.removeViews(4, transaction_count);
+        }
     }
 
     private void populateTransactions(List<Transaction> transactions) {
-    	clearTransactions();
+        clearTransactions();
         for (Transaction t : transactions) {
             addTransaction(FmtUtil.date("yyyy-MM-dd",
                     t.getAccountingDate()), t.getType().getName(),

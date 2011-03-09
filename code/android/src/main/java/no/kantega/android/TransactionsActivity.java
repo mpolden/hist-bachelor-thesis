@@ -1,7 +1,6 @@
 package no.kantega.android;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -19,15 +18,14 @@ import java.util.List;
 public class TransactionsActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
-    private SQLiteDatabase db;
+    private DatabaseHelper db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
-        DatabaseOpenHelper helper = new DatabaseOpenHelper(
-                getApplicationContext());
-        this.db = helper.getReadableDatabase();
+        this.db = new DatabaseHelper(new DatabaseOpenHelper(
+                getApplicationContext()).getReadableDatabase());
     }
 
     @Override
@@ -38,8 +36,7 @@ public class TransactionsActivity extends Activity {
 
     private void populate() {
         clearTransactions();
-        List<Transaction> transactions = DatabaseHelper.
-                getOrderedByDateDesc(db, 20);
+        List<Transaction> transactions = db.getOrderedByDateDesc(20);
         for (Transaction t : transactions) {
             addTransaction(t);
         }
