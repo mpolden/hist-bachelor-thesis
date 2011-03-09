@@ -9,7 +9,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DatabaseOpenHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "transaction.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TRANSACTIONTYPE_TABLE_CREATE =
             "CREATE TABLE \"transactiontype\" (" +
                     "    id INTEGER PRIMARY KEY," +
@@ -30,14 +30,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "fixeddate TEXT," +
                     "text TEXT," +
                     "type_id INTEGER," +
+                    "tag_id INTEGER," +
                     "FOREIGN KEY(type_id) REFERENCES transactiontype(id)" +
-                    ");";
-    private static final String TRANSACTION_TRANSACTIONTAG_TABLE_CREATE =
-            "CREATE TABLE \"transaction_transactiontag\" (" +
-                    "    transaction_id INTEGER NOT NULL," +
-                    "    tags_id INTEGER NOT NULL," +
-                    "    FOREIGN KEY(transaction_id) REFERENCES \"transaction\" (id)," +
-                    "    FOREIGN KEY(tags_id) REFERENCES transactiontag(id)" +
+                    "FOREIGN KEY(tag_id) REFERENCES transactiontag(id)" +
                     ");";
     private static final String INDEXES_CREATE =
             "CREATE UNIQUE INDEX transactiontype_name_key ON transactiontype (name);" +
@@ -53,7 +48,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         db.execSQL(TRANSACTIONTYPE_TABLE_CREATE);
         db.execSQL(TRANSACTIONTAG_TABLE_CREATE);
         db.execSQL(TRANSACTION_TABLE_CREATE);
-        db.execSQL(TRANSACTION_TRANSACTIONTAG_TABLE_CREATE);
         db.execSQL(INDEXES_CREATE);
     }
 
@@ -61,7 +55,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         Log.d(TAG, "Upgrading database");
         // XXX: Implement proper upgrading
-        db.execSQL("DROP TABLE IF EXISTS \"transaction_transactiontag\"");
         db.execSQL("DROP TABLE IF EXISTS \"transaction\"");
         db.execSQL("DROP TABLE IF EXISTS \"transactiontag\"");
         db.execSQL("DROP TABLE IF EXISTS \"transactiontype\"");
