@@ -48,8 +48,18 @@ public class OverviewActivity extends Activity {
         average_day.setText(FmtUtil.currency(avg.getDay()));
         average_week.setText(FmtUtil.currency(avg.getWeek()));
     }
+    
+    private void clearTransactions() {
+    	TableLayout transactions = (TableLayout) findViewById(R.id.
+                transactionTableLayout);
+    	int transaction_count = transactions.getChildCount() - 4;
+    	if(transactions.getChildAt(4) != null) {
+    		transactions.removeViews(4, transaction_count);
+    	}    	
+    }
 
     private void populateTransactions(List<Transaction> transactions) {
+    	clearTransactions();
         for (Transaction t : transactions) {
             addTransaction(FmtUtil.date("yyyy-MM-dd",
                     t.getAccountingDate()), t.getType().getName(),

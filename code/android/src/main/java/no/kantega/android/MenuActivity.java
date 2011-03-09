@@ -36,7 +36,7 @@ public class MenuActivity extends TabActivity {
         
         setContentView(R.layout.main);
         
-        customTitleBar(getText(R.string.app_name).toString(), getText(R.string.overview).toString());
+        customTitleBar(getText(R.string.app_name).toString());
         ImageButton addButton = (ImageButton) findViewById(R.id.addButton);
         addButton.setOnClickListener(addButtonListener);
         setupTabs();
@@ -68,20 +68,15 @@ public class MenuActivity extends TabActivity {
     	
     }
     
-    private void customTitleBar(String left, String right) {
-		if (right.length() > 20)
-			right = right.substring(0, 20);
+    private void customTitleBar(String left) {
 		// set up custom title
 		if (customTitleSupported) {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 					R.layout.titlebar);
 			TextView titleTvLeft = (TextView) findViewById(R.id.titleTvLeft);
-			// TextView titleTvRight = (TextView)
-			// findViewById(R.id.titleTvRight);
 			titleTvLeft.setText(left);
-			// titleTvRight.setText(right);
-			ProgressBar titleProgressBar = (ProgressBar) findViewById(R.id.leadProgressBar);
 
+			ProgressBar titleProgressBar = (ProgressBar) findViewById(R.id.leadProgressBar);
 			titleProgressBar.setVisibility(View.GONE);
 		}
 	}

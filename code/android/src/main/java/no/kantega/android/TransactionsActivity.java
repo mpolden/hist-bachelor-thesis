@@ -41,7 +41,16 @@ public class TransactionsActivity extends Activity {
             Log.e(TAG, "IOException", e);
         }
     }
-
+    
+    private void clearTransactions() {
+    	TableLayout transactions = (TableLayout) findViewById(R.id.
+                transaction_table_layout);
+    	int transaction_count = transactions.getChildCount();
+    	if(transactions.getChildAt(0) != null) {
+    		transactions.removeViews(4, transaction_count);
+    	}    	
+    }
+    
     private void addTransaction(Transaction t) {
         TableLayout tl = (TableLayout) findViewById(R.id.transaction_table_layout);
         TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0,
