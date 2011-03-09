@@ -1,7 +1,6 @@
 package no.kantega.android.models;
 
 import java.util.Date;
-import java.util.List;
 
 public class Transaction {
 
@@ -12,7 +11,7 @@ public class Transaction {
     private String text;
     private String archiveRef;
     private TransactionType type;
-    private List<TransactionTag> tags;
+    private TransactionTag tag;
 
     @Override
     public boolean equals(Object o) {
@@ -29,7 +28,7 @@ public class Transaction {
             return false;
         if (getFixedDate() != null ? !getFixedDate().equals(that.getFixedDate()) : that.getFixedDate() != null)
             return false;
-        if (getTags() != null ? !getTags().equals(that.getTags()) : that.getTags() != null)
+        if (getTag() != null ? !getTag().equals(that.getTag()) : that.getTag() != null)
             return false;
         if (getText() != null ? !getText().equals(that.getText()) : that.getText() != null)
             return false;
@@ -47,7 +46,7 @@ public class Transaction {
         result = 31 * result + (getText() != null ? getText().hashCode() : 0);
         result = 31 * result + (getArchiveRef() != null ? getArchiveRef().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
+        result = 31 * result + (getTag() != null ? getTag().hashCode() : 0);
         return result;
     }
 
@@ -107,11 +106,11 @@ public class Transaction {
         this.type = type;
     }
 
-    public List<TransactionTag> getTags() {
-        return tags;
+    public TransactionTag getTag() {
+        return tag;
     }
 
-    public void setTags(List<TransactionTag> tags) {
-        this.tags = tags;
+    public void setTag(TransactionTag tag) {
+        this.tag = tag;
     }
 }
