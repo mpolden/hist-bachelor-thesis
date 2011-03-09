@@ -18,7 +18,7 @@ public class Transactions extends Controller {
     public static void topTags(int count) {
         Query query = JPA.em().createQuery(
                 "select tag.name, sum(t.amountOut) from Transaction t" +
-                        " join t.tags as tag" +
+                        " join t.tag as tag" +
                         " group by tag.name order by sum(t.amountOut) desc").
                 setMaxResults(count);
         List<Object[]> result = query.getResultList();

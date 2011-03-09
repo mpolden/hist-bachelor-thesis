@@ -18,6 +18,14 @@ public class FmtUtilTest {
     }
 
     @Test
+    public void testStringToDate() {
+        Date expected = new Date(1262300400000L);
+        Date actual = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss",
+                "2010-01-01 00:00:00");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testCurrency() {
         String expected = "$1,199.49";
         String actual = FmtUtil.currency(1199.492349, Locale.US);
