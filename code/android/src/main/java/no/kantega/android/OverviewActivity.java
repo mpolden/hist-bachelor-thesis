@@ -134,7 +134,7 @@ public class OverviewActivity extends Activity {
         @Override
         protected void onPostExecute(List<AggregatedTag> tags) {
             if (tags != null) {
-                populateCategories(tags);
+                //populateCategories(tags);
             }
         }
     }

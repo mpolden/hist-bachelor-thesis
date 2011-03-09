@@ -22,7 +22,7 @@ public class MenuActivity extends TabActivity {
             CharSequence text = "Synchronized";
             Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             
-            Intent intent = new Intent().setClass(getApplicationContext(), OverviewActivity.class);
+            Intent intent = new Intent().setClass(getApplicationContext(), AddTransactionActivity.class);
             startActivity(intent);
             
         }
