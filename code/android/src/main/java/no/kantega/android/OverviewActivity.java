@@ -3,23 +3,18 @@ package no.kantega.android;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
-import no.kantega.android.utils.GsonUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 public class OverviewActivity extends Activity {
 
@@ -30,24 +25,21 @@ public class OverviewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
-        readProperties();
-        DatabaseOpenHelper helper = new DatabaseOpenHelper(getApplicationContext());
-        this.db = helper.getWritableDatabase();
+        DatabaseOpenHelper helper = new DatabaseOpenHelper(
+                getApplicationContext());
+        this.db = helper.getReadableDatabase();
     }
 
-    private void readProperties() {
-        try {
-            InputStream inputStream = getAssets().open("url.properties");
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            new TransactionsTask().execute(
-                    properties.get("transactions").toString());
-            new TagsTask().execute(properties.get("tags").toString());
-            new AverageConsumptionTask().execute(properties.get("avg").
-                    toString());
-        } catch (IOException e) {
-            Log.e(TAG, "Could not read properties file", e);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populate();
+    }
+
+    private void populate() {
+        populateCategories(DatabaseHelper.getTags(db, 3));
+        populateTransactions(DatabaseHelper.getOrderedByDateDesc(db, 1));
+        populateAverageConsumption(DatabaseHelper.getAvg(db));
     }
 
     private void populateAverageConsumption(AverageConsumption avg) {
@@ -68,10 +60,12 @@ public class OverviewActivity extends Activity {
 
     private void addTransaction(String date, String text, String category,
                                 String amount) {
-        TableLayout transactions = (TableLayout) findViewById(R.id.transactionTableLayout);
+        TableLayout transactions = (TableLayout) findViewById(R.id.
+                transactionTableLayout);
         TableRow tr = new TableRow(this);
         TextView tv = new TextView(this);
-        TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT,
+        TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0, TableRow.
+                LayoutParams.WRAP_CONTENT,
                 1f);
         tv.setText(date);
         tv.setLayoutParams(tvParams);
@@ -102,61 +96,13 @@ public class OverviewActivity extends Activity {
         TextView amount1 = (TextView) findViewById(R.id.top3_amount_1);
         TextView amount2 = (TextView) findViewById(R.id.top3_amount_2);
         TextView amount3 = (TextView) findViewById(R.id.top3_amount_3);
-        if (tags.size() == 3) {
+        if (tags != null && tags.size() == 3) {
             category1.setText(tags.get(0).getName());
             amount1.setText(FmtUtil.currency(tags.get(0).getAmount()));
             category2.setText(tags.get(1).getName());
             amount2.setText(FmtUtil.currency(tags.get(1).getAmount()));
             category3.setText(tags.get(2).getName());
             amount3.setText(FmtUtil.currency(tags.get(2).getAmount()));
-        }
-    }
-
-    private class TransactionsTask
-            extends AsyncTask<String, Integer, List<Transaction>> {
-
-        @Override
-        protected List<Transaction> doInBackground(String... urls) {
-            return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
-        }
-
-        @Override
-        protected void onPostExecute(List<Transaction> transactions) {
-            if (transactions != null) {
-                populateTransactions(transactions);
-            }
-        }
-    }
-
-    private class TagsTask
-            extends AsyncTask<String, Integer, List<AggregatedTag>> {
-
-        @Override
-        protected List<AggregatedTag> doInBackground(String... urls) {
-            return GsonUtil.parseTags(GsonUtil.getJSON(urls[0]));
-        }
-
-        @Override
-        protected void onPostExecute(List<AggregatedTag> tags) {
-            if (tags != null) {
-                //populateCategories(tags);
-            }
-        }
-    }
-
-    private class AverageConsumptionTask
-            extends AsyncTask<String, Integer, AverageConsumption> {
-
-        @Override
-        protected AverageConsumption doInBackground(String... urls) {
-            return GsonUtil.parseAvg(GsonUtil.getJSON(urls[0]));
-        }
-
-        @Override
-        protected void onPostExecute(AverageConsumption avg) {
-            if (avg != null) {
-                populateAverageConsumption(avg);
-            }
         }
     }
 }
