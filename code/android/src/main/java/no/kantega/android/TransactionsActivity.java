@@ -49,26 +49,25 @@ public class TransactionsActivity extends Activity {
         tl.addView(getSeparator());
         TableRow tr = new TableRow(this);
         tr.addView(getTextView("Date", tvParams, true));
-        tr.addView(getTextView(FmtUtil.date("yyyy-MM-dd", t
-                .accountingDate), tvParams, true));
+        tr.addView(getTextView(FmtUtil.date("yyyy-MM-dd", t.getAccountingDate()), tvParams, true));
         tl.addView(tr);
         tl.addView(getSeparator());
         tr = new TableRow(this);
         tr.addView(getTextView("Text", tvParams, false));
-        tr.addView(getTextView(FmtUtil.trimTransactionText(t.text),
+        tr.addView(getTextView(FmtUtil.trimTransactionText(t.getText()),
                 tvParams, false));
         tl.addView(tr);
         tr = new TableRow(this);
         tr.addView(getTextView("Type", tvParams, false));
-        tr.addView(getTextView(t.type.name, tvParams, false));
+        tr.addView(getTextView(t.getType().getName(), tvParams, false));
         tl.addView(tr);
         tr = new TableRow(this);
         tr.addView(getTextView("Category", tvParams, false));
-        tr.addView(getTextView(t.tags.get(0).name, tvParams, false));
+        tr.addView(getTextView(t.getTags().get(0).getName(), tvParams, false));
         tl.addView(tr);
         tr = new TableRow(this);
         tr.addView(getTextView("Amount", tvParams, false));
-        tr.addView(getTextView(FmtUtil.currency(t.amountOut),
+        tr.addView(getTextView(FmtUtil.currency(t.getAmountOut()),
                 tvParams, false));
         tl.addView(tr);
         tl.addView(getSeparator());

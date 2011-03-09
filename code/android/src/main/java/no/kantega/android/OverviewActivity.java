@@ -1,6 +1,7 @@
 package no.kantega.android;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.GsonUtil;
 
@@ -22,12 +24,15 @@ import java.util.Properties;
 public class OverviewActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
+    private SQLiteDatabase db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
         readProperties();
+        DatabaseOpenHelper helper = new DatabaseOpenHelper(getApplicationContext());
+        this.db = helper.getWritableDatabase();
     }
 
     private void readProperties() {
@@ -55,9 +60,9 @@ public class OverviewActivity extends Activity {
     private void populateTransactions(List<Transaction> transactions) {
         for (Transaction t : transactions) {
             addTransaction(FmtUtil.date("yyyy-MM-dd",
-                    t.accountingDate), t.type.name,
-                    t.tags.get(0).name,
-                    FmtUtil.currency(t.amountOut));
+                    t.getAccountingDate()), t.getType().getName(),
+                    t.getTags().get(0).getName(),
+                    FmtUtil.currency(t.getAmountOut()));
         }
     }
 

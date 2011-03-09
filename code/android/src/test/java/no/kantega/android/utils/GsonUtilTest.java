@@ -27,20 +27,20 @@ public class GsonUtilTest {
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final Transaction t = new Transaction();
         try {
-            t.accountingDate = sdf.parse("2009-04-15 00:00:00");
-            t.fixedDate = sdf.parse("2009-04-15 00:00:00");
-            t.amountIn = 0.0;
-            t.amountOut = 1272.56;
-            t.text = "456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)";
-            t.archiveRef = "50001685147";
+            t.setAccountingDate(sdf.parse("2009-04-15 00:00:00"));
+            t.setFixedDate(sdf.parse("2009-04-15 00:00:00"));
+            t.setAmountIn(0.0);
+            t.setAmountOut(1272.56);
+            t.setText("456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)");
+            t.setArchiveRef("50001685147");
             final TransactionType type = new TransactionType();
-            type.name = "Visa";
-            t.type = type;
+            type.setName("Visa");
+            t.setType(type);
             final TransactionTag tag = new TransactionTag();
-            tag.name = "Datautstyr";
-            t.tags = new ArrayList<TransactionTag>() {{
+            tag.setName("Datautstyr");
+            t.setTags(new ArrayList<TransactionTag>() {{
                 add(tag);
-            }};
+            }});
         } catch (ParseException e) {
             assertTrue(false);
         }
