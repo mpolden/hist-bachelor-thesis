@@ -16,8 +16,7 @@ public class ModelTest extends UnitTest {
         assertNotNull(t.text);
         assertNotNull(t.archiveRef);
         assertNotNull(t.type);
-        assertNotNull(t.tags);
-        assertTrue(t.tags.size() > 0);
+        assertNotNull(t.tag);
     }
 
     @Test

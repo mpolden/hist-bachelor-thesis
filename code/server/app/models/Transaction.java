@@ -3,9 +3,8 @@ package models;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import java.util.*;
+import java.util.Date;
 
 @Entity
 public class Transaction extends Model {
@@ -18,6 +17,6 @@ public class Transaction extends Model {
     public String archiveRef;
     @ManyToOne
     public TransactionType type;
-    @ManyToMany
-    public List<TransactionTag> tags = new ArrayList<TransactionTag>();
+    @ManyToOne
+    public TransactionTag tag;
 }
