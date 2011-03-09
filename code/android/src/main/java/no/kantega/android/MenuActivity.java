@@ -4,14 +4,41 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuActivity extends TabActivity {
-
+	private boolean customTitleSupported;
+	
+	private OnClickListener addButtonListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CharSequence text = "Synchronized";
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            
+            Intent intent = new Intent().setClass(getApplicationContext(), OverviewActivity.class);
+            startActivity(intent);
+            
+        }
+    };
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);        
+        
+        customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        
+        setContentView(R.layout.main);
+        
+        customTitleBar(getText(R.string.app_name).toString(), getText(R.string.overview).toString());
+        ImageButton addButton = (ImageButton) findViewById(R.id.addButton);
+        addButton.setOnClickListener(addButtonListener);
         setupTabs();
         
     }
@@ -40,4 +67,22 @@ public class MenuActivity extends TabActivity {
     	tabHost.setCurrentTab(0);
     	
     }
+    
+    private void customTitleBar(String left, String right) {
+		if (right.length() > 20)
+			right = right.substring(0, 20);
+		// set up custom title
+		if (customTitleSupported) {
+			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+					R.layout.titlebar);
+			TextView titleTvLeft = (TextView) findViewById(R.id.titleTvLeft);
+			// TextView titleTvRight = (TextView)
+			// findViewById(R.id.titleTvRight);
+			titleTvLeft.setText(left);
+			// titleTvRight.setText(right);
+			ProgressBar titleProgressBar = (ProgressBar) findViewById(R.id.leadProgressBar);
+
+			titleProgressBar.setVisibility(View.GONE);
+		}
+	}
 }
