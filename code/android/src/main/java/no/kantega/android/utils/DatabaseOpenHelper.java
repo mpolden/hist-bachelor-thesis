@@ -34,9 +34,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(type_id) REFERENCES transactiontype(id)" +
                     "FOREIGN KEY(tag_id) REFERENCES transactiontag(id)" +
                     ");";
-    private static final String INDEXES_CREATE =
-            "CREATE UNIQUE INDEX transactiontype_name_key ON transactiontype (name);" +
-                    "CREATE UNIQUE INDEX transactiontag_name_key ON transactiontag (name);";
+    private static final String TRANSACTIONTYPE_INDEX_CREATE =
+            "CREATE UNIQUE INDEX transactiontype_name_key ON transactiontype (name);";
+    private static final String TRANSACTIONTAG_INDEX_CREATE =
+            "CREATE UNIQUE INDEX transactiontag_name_key ON transactiontag (name);";
 
     public DatabaseOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,18 +49,23 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         db.execSQL(TRANSACTIONTYPE_TABLE_CREATE);
         db.execSQL(TRANSACTIONTAG_TABLE_CREATE);
         db.execSQL(TRANSACTION_TABLE_CREATE);
-        db.execSQL(INDEXES_CREATE);
+        db.execSQL(TRANSACTIONTYPE_INDEX_CREATE);
+        db.execSQL(TRANSACTIONTAG_INDEX_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         Log.d(TAG, "Upgrading database");
         // XXX: Implement proper upgrading
+        dropTables(db);
+        onCreate(db);
+    }
+
+    public void dropTables(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS \"transaction\"");
         db.execSQL("DROP TABLE IF EXISTS \"transactiontag\"");
         db.execSQL("DROP TABLE IF EXISTS \"transactiontype\"");
         db.execSQL("DROP INDEX IF EXISTS \"transactiontag_name_key\"");
         db.execSQL("DROP INDEX IF EXISTS \"transactiontype_name_key\"");
-        onCreate(db);
     }
 }

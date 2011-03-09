@@ -2,6 +2,7 @@ package no.kantega.android.utils;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import no.kantega.android.models.*;
@@ -57,6 +58,12 @@ public class DatabaseHelper {
         return cursor.getString(cursor.getColumnIndex(columnName));
     }
 
+    public static void emptyTables(SQLiteDatabase db) {
+        db.execSQL("DELETE FROM \"transaction\"");
+        db.execSQL("DELETE FROM \"transactiontag\"");
+        db.execSQL("DELETE FROM \"transactiontype\"");
+    }
+
     public static List<Transaction> getOrderedByDateDesc(SQLiteDatabase db,
                                                          int limit) {
         final Cursor cursor = db.query(
@@ -70,24 +77,26 @@ public class DatabaseHelper {
                 null, null, "accountingdate DESC", String.valueOf(limit));
         final List<Transaction> transactions = new ArrayList<Transaction>();
         cursor.moveToFirst();
-        do {
-            Transaction t = new Transaction();
-            t.setAccountingDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
-                    getValue(cursor, "accountingdate")));
-            t.setAmountIn(Double.parseDouble(getValue(cursor, "amountin")));
-            t.setAmountOut(Double.parseDouble(getValue(cursor, "amountout")));
-            t.setArchiveRef(getValue(cursor, "archiveref"));
-            t.setFixedDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
-                    getValue(cursor, "fixeddate")));
-            t.setText(getValue(cursor, "text"));
-            TransactionTag tag = new TransactionTag();
-            tag.setName(getValue(cursor, "tag"));
-            t.setTag(tag);
-            TransactionType type = new TransactionType();
-            type.setName(getValue(cursor, "type"));
-            t.setType(type);
-            transactions.add(t);
-        } while (cursor.moveToNext());
+        if (cursor.getCount() > 0) {
+            do {
+                Transaction t = new Transaction();
+                t.setAccountingDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
+                        getValue(cursor, "accountingdate")));
+                t.setAmountIn(Double.parseDouble(getValue(cursor, "amountin")));
+                t.setAmountOut(Double.parseDouble(getValue(cursor, "amountout")));
+                t.setArchiveRef(getValue(cursor, "archiveref"));
+                t.setFixedDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
+                        getValue(cursor, "fixeddate")));
+                t.setText(getValue(cursor, "text"));
+                TransactionTag tag = new TransactionTag();
+                tag.setName(getValue(cursor, "tag"));
+                t.setTag(tag);
+                TransactionType type = new TransactionType();
+                type.setName(getValue(cursor, "type"));
+                t.setType(type);
+                transactions.add(t);
+            } while (cursor.moveToNext());
+        }
         cursor.close();
         return transactions;
     }
@@ -99,33 +108,38 @@ public class DatabaseHelper {
                 "ON transactiontag.id = \"transaction\".tag_id ",
                 new String[]{"transactiontag.name",
                         "SUM(\"transaction\".amountout) AS sum"},
-                null, null, "transactiontag.name", "sum DESC",
+                null, null, "transactiontag.name", null, "sum DESC",
                 String.valueOf(limit));
         final List<AggregatedTag> aggregatedTags =
                 new ArrayList<AggregatedTag>();
         cursor.moveToFirst();
-        do {
-            AggregatedTag at = new AggregatedTag();
-            at.setAmount(Double.parseDouble(getValue(cursor, "sum")));
-            at.setName(getValue(cursor, "name"));
-            aggregatedTags.add(at);
-        } while (cursor.moveToNext());
+        if (cursor.getCount() > 0) {
+            do {
+                AggregatedTag at = new AggregatedTag();
+                at.setAmount(Double.parseDouble(getValue(cursor, "sum")));
+                at.setName(getValue(cursor, "name"));
+                aggregatedTags.add(at);
+            } while (cursor.moveToNext());
+        }
         cursor.close();
-        return null;
+        return aggregatedTags;
     }
 
     private static Double getAvgDay(final SQLiteDatabase db) {
+        if (DatabaseUtils.queryNumEntries(db, "\"transaction\"") == 0) {
+            return 0D;
+        }
         // Get start date
-        Cursor cursor = db.query("\transaction\"",
-                new String[]{"accountingdate"}, null, null, null,
+        Cursor cursor = db.query("\"transaction\"",
+                new String[]{"accountingdate"}, null, null, null, null,
                 "accountingDate ASC", "1");
         cursor.moveToFirst();
         final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
                 cursor, "accountingdate"));
         cursor.close();
         // Get stop date
-        cursor = db.query("\transaction\"",
-                new String[]{"accountingdate"}, null, null, null,
+        cursor = db.query("\"transaction\"",
+                new String[]{"accountingdate"}, null, null, null, null,
                 "accountingDate DESC", "1");
         cursor.moveToFirst();
         final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
@@ -135,8 +149,8 @@ public class DatabaseHelper {
                 (int) ((stop.getTime() - start.getTime()) / 1000) / 86400;
         cursor.close();
         // Sum
-        cursor = db.query("\transaction\"",
-                new String[]{"SUM(amountout) AS sum"}, null, null, null,
+        cursor = db.query("\"transaction\"",
+                new String[]{"SUM(amountout) AS sum"}, null, null, null, null,
                 null, "1");
         cursor.moveToFirst();
         return Double.parseDouble(getValue(cursor, "sum")) / days;
