@@ -66,6 +66,7 @@ public class SynchronizeActivity extends Activity {
         switch (id) {
             case PROGRESS_DIALOG: {
                 progressDialog.setProgress(0);
+                progressDialog.setMax(0);
                 populateDatabase();
             }
         }
