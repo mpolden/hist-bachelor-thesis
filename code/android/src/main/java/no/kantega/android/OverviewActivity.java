@@ -19,6 +19,9 @@ public class OverviewActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private DatabaseHelper db;
+    private AverageConsumption avg;
+    private List<AggregatedTag> tags;
+    private List<Transaction> transactions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,14 +34,25 @@ public class OverviewActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        populate();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                tags = db.getTags(3);
+                transactions = db.getOrderedByDateDesc(1);
+                avg = db.getAvg();
+                runOnUiThread(populate);
+            }
+        }).start();
     }
 
-    private void populate() {
-        populateCategories(db.getTags(3));
-        populateTransactions(db.getOrderedByDateDesc(1));
-        populateAverageConsumption(db.getAvg());
-    }
+    private Runnable populate = new Runnable() {
+        @Override
+        public void run() {
+            populateCategories(tags);
+            populateTransactions(transactions);
+            populateAverageConsumption(avg);
+        }
+    };
 
     private void populateAverageConsumption(AverageConsumption avg) {
         TextView average_day = (TextView) findViewById(R.id.average_day);
