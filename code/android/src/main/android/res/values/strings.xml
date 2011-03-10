@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">Awesome Finance Planer</string>
     <string name="overview">Overview</string>
     <string name="synchronize">Synchronize</string>
     <string name="transactions">Transactions</string>
