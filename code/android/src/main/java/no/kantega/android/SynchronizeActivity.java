@@ -1,13 +1,16 @@
 package no.kantega.android;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.DatabaseOpenHelper;
@@ -21,13 +24,9 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
+    private static final int PROGRESS_DIALOG = 0;
     private DatabaseHelper db;
-    private OnClickListener syncButtonListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            populateDatabase();
-        }
-    };
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,9 +34,42 @@ public class SynchronizeActivity extends Activity {
         setContentView(R.layout.synchronize);
         ImageButton syncButton = (ImageButton) findViewById(R.id.syncButton);
         syncButton.setImageResource(R.drawable.syncbutton);
-        syncButton.setOnClickListener(syncButtonListener);
-        this.db = new DatabaseHelper(new DatabaseOpenHelper(
+        syncButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(PROGRESS_DIALOG);
+            }
+        });
+        db = new DatabaseHelper(new DatabaseOpenHelper(
                 getApplicationContext()).getWritableDatabase());
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case PROGRESS_DIALOG: {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage(getResources().getString(
+                        R.string.wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.
+                        STYLE_HORIZONTAL);
+                return progressDialog;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case PROGRESS_DIALOG: {
+                progressDialog.setProgress(0);
+                populateDatabase();
+            }
+        }
     }
 
     private void populateDatabase() {
@@ -52,24 +84,47 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.setProgress(msg.arg1);
+        }
+    };
+
     private class TransactionsTask
             extends AsyncTask<String, Integer, List<Transaction>> {
 
         @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
         protected List<Transaction> doInBackground(String... urls) {
-            return GsonUtil.parseTransactions(GsonUtil.getJSON(urls[0]));
+            List<Transaction> transactions = GsonUtil.parseTransactions(
+                    GsonUtil.getJSON(urls[0]));
+            if (transactions != null && !transactions.isEmpty()) {
+                progressDialog.setMax(transactions.size());
+                db.emptyTables();
+                int i = 0;
+                for (Transaction t : transactions) {
+                    db.insert(t);
+                    publishProgress(++i);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            final Message msg = handler.obtainMessage();
+            msg.arg1 = values[0];
+            handler.sendMessage(msg);
         }
 
         @Override
         protected void onPostExecute(List<Transaction> transactions) {
-            if (transactions != null && !transactions.isEmpty()) {
-                db.emptyTables();
-                for (Transaction t : transactions) {
-                    db.insert(t);
-                }
-                Toast.makeText(getApplicationContext(), "Synchronized database",
-                        Toast.LENGTH_LONG).show();
-            }
+            progressDialog.dismiss();
         }
     }
 }
