@@ -10,7 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
+import android.widget.Button;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.DatabaseOpenHelper;
@@ -32,8 +32,7 @@ public class SynchronizeActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.synchronize);
-        ImageButton syncButton = (ImageButton) findViewById(R.id.syncButton);
-        syncButton.setImageResource(R.drawable.syncbutton);
+        Button syncButton = (Button) findViewById(R.id.syncButton);
         syncButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

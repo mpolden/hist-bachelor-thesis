@@ -7,10 +7,12 @@
   <TextView android:layout_width="wrap_content"
     android:layout_height="wrap_content">
   </TextView>
-  <ImageButton android:id="@+id/syncButton"
+  <Button android:id="@+id/syncButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:width="150dp"
+    android:text="@string/synchronize"
     android:layout_marginTop="10dp"
     android:layout_marginLeft="10dp">
-  </ImageButton>  
+  </Button>
 </LinearLayout>

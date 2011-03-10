@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MenuActivity!</string>
-    <string name="app_name">android</string>
+    <string name="app_name"></string>
     <string name="overview">Overview</string>
     <string name="synchronize">Synchronize</string>
     <string name="transactions">Transactions</string>
-    <string name="wait">Synkroniserer transaksjoner...</string>
-    <string name="category_prompt">Choose a planet</string>
-    <string-array name="category_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <string name="transactions_no_items">No transactions to display</string>
+    <string name="wait">Synchronizing transactions...</string>
 </resources>
