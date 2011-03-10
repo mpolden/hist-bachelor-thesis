@@ -5,6 +5,7 @@
 	<string name="overview">Overview</string>
 	<string name="synchronize">Synchronize</string>
 	<string name="transactions">Transactions</string>
+	<string name="transactions_no_items">No transactions to display</string>
 
 	<string name="category_prompt">Choose a planet</string>
 	<string-array name="category_array">

@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent" android:layout_height="match_parent"
-	android:weightSum="100" android:orientation="vertical">
-	<FrameLayout android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-		<ScrollView android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:fillViewport="true">
-			<TableLayout android:layout_width="fill_parent"
-				android:layout_height="fill_parent" android:stretchColumns="1"
-				android:id="@+id/transaction_table_layout">
-
-			</TableLayout>
-		</ScrollView>
-	</FrameLayout>
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
+	<TextView android:id="@+id/android:empty"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:text="@string/transactions_no_items" />
 </LinearLayout>
