@@ -4,6 +4,7 @@
 *.class
 *.lyx#
 *.iml
+*.ipr
 *.old
 .idea
 .classpath
