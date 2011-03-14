@@ -57,7 +57,7 @@ public class AddTransactionActivity extends Activity {
                 t.setFixedDate(d);
                 t.setInternal(true);
                 t.setTimestamp(new Date().getTime());
-                db.insert(t);
+                db.add(t);
                 Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -94,7 +94,7 @@ public class AddTransactionActivity extends Activity {
     }
 
     private void fillCategoryList() {
-        ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getAllTags());
+        ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getTags());
         list = new ArrayList<CharSequence>();
         for (int i = 0; i < transactionTagList.size(); i++) {
             list.add(transactionTagList.get(i).getName());

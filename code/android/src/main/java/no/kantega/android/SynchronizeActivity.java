@@ -134,7 +134,7 @@ public class SynchronizeActivity extends Activity {
                 db.emptyTables();
                 int i = 0;
                 for (Transaction t : transactions) {
-                    db.insert(t);
+                    db.add(t);
                     publishProgress(++i);
                 }
             }

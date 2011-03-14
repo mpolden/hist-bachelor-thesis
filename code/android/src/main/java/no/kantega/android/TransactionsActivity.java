@@ -51,7 +51,7 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        long transactionCount = db.getTransactionCount();
+        long transactionCount = db.getCount();
         if (m_transactions.size() < transactionCount) {
             m_adapter.notifyDataSetInvalidated(); // clear?
             refreshList();
@@ -60,7 +60,7 @@ public class TransactionsActivity extends ListActivity {
 
     private void getTransactions() {
         try {
-            m_transactions = new ArrayList<Transaction>(db.getOrderedByDateDesc(1000));
+            m_transactions = new ArrayList<Transaction>(db.get(1000));
             Thread.sleep(2000);
             Log.i("ARRAY", "" + m_transactions.size());
         } catch (Exception e) {

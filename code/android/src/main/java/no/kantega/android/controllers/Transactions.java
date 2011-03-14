@@ -30,7 +30,13 @@ public class Transactions {
         transactionTypeDao = helper.getTransactionTypeDao();
     }
 
-    private TransactionTag insertTag(TransactionTag tag) {
+    /**
+     * Add a new transaction tag
+     *
+     * @param tag
+     * @return The newly added tag or the existing one
+     */
+    private TransactionTag addOrGetExistingTag(TransactionTag tag) {
         try {
 
             QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
@@ -49,7 +55,13 @@ public class Transactions {
         }
     }
 
-    private TransactionType insertType(TransactionType type) {
+    /**
+     * Add a new transaction type
+     *
+     * @param type
+     * @return The newly added tag or the existing one
+     */
+    private TransactionType addOrGetExistingType(TransactionType type) {
         try {
             QueryBuilder<TransactionType, Integer> queryBuilder = transactionTypeDao.queryBuilder();
             queryBuilder.where().eq("name", type.getName());
@@ -67,18 +79,30 @@ public class Transactions {
         }
     }
 
-    public int insert(Transaction t) {
+    /**
+     * Add a new transaction
+     *
+     * @param t
+     * @return True on success
+     */
+    public boolean add(Transaction t) {
         try {
-            t.setTag(insertTag(t.getTag()));
-            t.setType(insertType(t.getType()));
-            return transactionDao.create(t);
+            t.setTag(addOrGetExistingTag(t.getTag()));
+            t.setType(addOrGetExistingType(t.getType()));
+            return transactionDao.create(t) == 1;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
-            return -1;
         }
+        return false;
     }
 
-    public List<Transaction> getOrderedByDateDesc(final int limit) {
+    /**
+     * Retrieve a list of transactions ordered descending by date
+     *
+     * @param limit
+     * @return List of transactions
+     */
+    public List<Transaction> get(final int limit) {
         List<Transaction> transactions = Collections.emptyList();
         try {
             QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
@@ -90,7 +114,28 @@ public class Transactions {
         return transactions;
     }
 
-    public List<AggregatedTag> getTags(final int limit) {
+    /**
+     * Retrieve total transaction count
+     *
+     * @return Transaction count
+     */
+    public int getCount() {
+        try {
+            GenericRawResults<String[]> rawResults = transactionDao.queryRaw("SELECT COUNT(*) FROM transactions");
+            return Integer.parseInt(rawResults.getResults().get(0)[0]);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve transaction count", e);
+        }
+        return 0;
+    }
+
+    /**
+     * Retrieve a list of aggregated tags sorted by sum of all transactions in that tag
+     *
+     * @param limit
+     * @return List of aggregated tags
+     */
+    public List<AggregatedTag> getAggregatedTags(final int limit) {
         List<AggregatedTag> aggregatedTags = new ArrayList<AggregatedTag>();
         try {
             GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
@@ -112,7 +157,12 @@ public class Transactions {
         return aggregatedTags;
     }
 
-    public List<TransactionTag> getAllTags() {
+    /**
+     * Get all transaction tags ordered descending by usage count
+     *
+     * @return List of transaction tags
+     */
+    public List<TransactionTag> getTags() {
         List<TransactionTag> transactionTags = new ArrayList<TransactionTag>();
         try {
             GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
@@ -128,16 +178,11 @@ public class Transactions {
         return transactionTags;
     }
 
-    public int getTransactionCount() {
-        try {
-            GenericRawResults<String[]> rawResults = transactionDao.queryRaw("SELECT COUNT(*) FROM transactions");
-            return Integer.parseInt(rawResults.getResults().get(0)[0]);
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve transaction count", e);
-        }
-        return 0;
-    }
-
+    /**
+     * Calculate the average per day using the oldest and newest transaction date
+     *
+     * @return Average consumption per day
+     */
     private double getAvgDay() {
         try {
             GenericRawResults<String[]> rawResults = transactionDao.
@@ -165,6 +210,11 @@ public class Transactions {
         return 0D;
     }
 
+    /**
+     * Calculate average consumption per day, week and month
+     *
+     * @return Average consumption
+     */
     public AverageConsumption getAvg() {
         final double avgPerDay = getAvgDay();
         final AverageConsumption avg = new AverageConsumption();
@@ -174,6 +224,9 @@ public class Transactions {
         return avg;
     }
 
+    /**
+     * Empty all tables
+     */
     public void emptyTables() {
         try {
             transactionDao.queryRaw("DELETE FROM transactions");

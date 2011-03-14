@@ -35,8 +35,8 @@ public class OverviewActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                tags = db.getTags(3);
-                transactions = db.getOrderedByDateDesc(1);
+                tags = db.getAggregatedTags(3);
+                transactions = db.get(1);
                 avg = db.getAvg();
                 runOnUiThread(populate);
             }
