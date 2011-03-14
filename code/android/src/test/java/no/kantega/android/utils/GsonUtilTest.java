@@ -21,7 +21,8 @@ public class GsonUtilTest {
                 "\"fixedDate\":\"2009-04-15 00:00:00\",\"amountIn\":0.0," +
                 "\"amountOut\":1272.56," +
                 "\"text\":\"456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)\"," +
-                "\"archiveRef\":\"50001685147\",\"type\":{\"name\":\"Visa\",\"id\":1}," +
+                "\"archiveRef\":\"50001685147\",\"internal\":false," +
+                "\"timestamp\":1239746400000,\"type\":{\"name\":\"Visa\",\"id\":1}," +
                 "\"tag\":{\"name\":\"Datautstyr\",\"id\":4},\"id\":7}]";
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final Transaction t = new Transaction();
@@ -38,6 +39,8 @@ public class GsonUtilTest {
             final TransactionTag tag = new TransactionTag();
             tag.setName("Datautstyr");
             t.setTag(tag);
+            t.setTimestamp(1239746400000L);
+            t.setInternal(false);
         } catch (ParseException e) {
             assertTrue(false);
         }
