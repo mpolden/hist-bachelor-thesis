@@ -9,7 +9,7 @@ import java.util.Date;
 public class Transaction {
 
     @DatabaseField(generatedId = true)
-    private Long id;
+    private Integer id;
     @DatabaseField
     private Date accountingDate;
     @DatabaseField
@@ -114,11 +114,11 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

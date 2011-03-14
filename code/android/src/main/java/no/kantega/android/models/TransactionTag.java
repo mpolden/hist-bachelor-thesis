@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class TransactionTag {
 
     @DatabaseField(generatedId = true)
-    private Long id;
+    private Integer id;
     @DatabaseField(unique = true)
     private String name;
 
@@ -41,11 +41,11 @@ public class TransactionTag {
         this.name = name;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
