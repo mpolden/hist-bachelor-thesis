@@ -28,6 +28,12 @@ public class SynchronizeActivity extends Activity {
     private DatabaseHelper db;
     private ProgressDialog progressDialog;
 
+    /**
+     * Called when the activity is starting. Attaches click listeners and
+     * creates a database handle.
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,12 @@ public class SynchronizeActivity extends Activity {
                 getApplicationContext()).getWritableDatabase());
     }
 
+    /**
+     * Called when a dialog is created. Configures the progress dialog.
+     *
+     * @param id
+     * @return The configured dialog
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -61,6 +73,12 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    /**
+     * Called when preparing the dialog.
+     *
+     * @param id
+     * @param dialog
+     */
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
@@ -71,6 +89,10 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    /**
+     * Read URL from properties file and start a task that populates the
+     * database
+     */
     private void populateDatabase() {
         try {
             InputStream inputStream = getAssets().open("url.properties");
@@ -83,6 +105,9 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    /**
+     * Handler that updates the progress dialog
+     */
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -90,6 +115,10 @@ public class SynchronizeActivity extends Activity {
         }
     };
 
+    /**
+     * Task that retrieves transactions, deserializes them from JSON and inserts
+     * them into the local database
+     */
     private class TransactionsTask
             extends AsyncTask<String, Integer, List<Transaction>> {
 

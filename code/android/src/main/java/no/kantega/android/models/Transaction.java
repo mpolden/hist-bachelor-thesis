@@ -12,58 +12,9 @@ public class Transaction {
     private String archiveRef;
     private TransactionType type;
     private TransactionTag tag;
+    private Boolean internal;
 
     public Transaction() {
-    }
-
-    public Transaction(Date accountingDate, Date fixedDate, Double amountIn,
-                       Double amountOut, String text, String archiveRef,
-                       TransactionType type, TransactionTag tag) {
-        this.accountingDate = accountingDate;
-        this.fixedDate = fixedDate;
-        this.amountIn = amountIn;
-        this.amountOut = amountOut;
-        this.text = text;
-        this.archiveRef = archiveRef;
-        this.type = type;
-        this.tag = tag;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Transaction)) return false;
-        Transaction that = (Transaction) o;
-        if (getAccountingDate() != null ? !getAccountingDate().equals(that.getAccountingDate()) : that.getAccountingDate() != null)
-            return false;
-        if (getAmountIn() != null ? !getAmountIn().equals(that.getAmountIn()) : that.getAmountIn() != null)
-            return false;
-        if (getAmountOut() != null ? !getAmountOut().equals(that.getAmountOut()) : that.getAmountOut() != null)
-            return false;
-        if (getArchiveRef() != null ? !getArchiveRef().equals(that.getArchiveRef()) : that.getArchiveRef() != null)
-            return false;
-        if (getFixedDate() != null ? !getFixedDate().equals(that.getFixedDate()) : that.getFixedDate() != null)
-            return false;
-        if (getTag() != null ? !getTag().equals(that.getTag()) : that.getTag() != null)
-            return false;
-        if (getText() != null ? !getText().equals(that.getText()) : that.getText() != null)
-            return false;
-        if (getType() != null ? !getType().equals(that.getType()) : that.getType() != null)
-            return false;
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getAccountingDate() != null ? getAccountingDate().hashCode() : 0;
-        result = 31 * result + (getFixedDate() != null ? getFixedDate().hashCode() : 0);
-        result = 31 * result + (getAmountIn() != null ? getAmountIn().hashCode() : 0);
-        result = 31 * result + (getAmountOut() != null ? getAmountOut().hashCode() : 0);
-        result = 31 * result + (getText() != null ? getText().hashCode() : 0);
-        result = 31 * result + (getArchiveRef() != null ? getArchiveRef().hashCode() : 0);
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getTag() != null ? getTag().hashCode() : 0);
-        return result;
     }
 
     public Date getAccountingDate() {
@@ -128,5 +79,13 @@ public class Transaction {
 
     public void setTag(TransactionTag tag) {
         this.tag = tag;
+    }
+
+    public Boolean getInternal() {
+        return internal;
+    }
+
+    public void setInternal(Boolean internal) {
+        this.internal = internal;
     }
 }
