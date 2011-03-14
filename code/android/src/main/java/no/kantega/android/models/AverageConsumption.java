@@ -6,6 +6,15 @@ public class AverageConsumption {
     private Double week;
     private Double month;
 
+    public AverageConsumption() {
+    }
+
+    public AverageConsumption(Double day, Double week, Double month) {
+        this.day = day;
+        this.week = week;
+        this.month = month;
+    }
+
     public Double getDay() {
         return day;
     }

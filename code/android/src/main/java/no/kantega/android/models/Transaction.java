@@ -13,6 +13,22 @@ public class Transaction {
     private TransactionType type;
     private TransactionTag tag;
 
+    public Transaction() {
+    }
+
+    public Transaction(Date accountingDate, Date fixedDate, Double amountIn,
+                       Double amountOut, String text, String archiveRef,
+                       TransactionType type, TransactionTag tag) {
+        this.accountingDate = accountingDate;
+        this.fixedDate = fixedDate;
+        this.amountIn = amountIn;
+        this.amountOut = amountOut;
+        this.text = text;
+        this.archiveRef = archiveRef;
+        this.type = type;
+        this.tag = tag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

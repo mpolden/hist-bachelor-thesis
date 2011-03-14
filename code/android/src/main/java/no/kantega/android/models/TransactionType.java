@@ -4,6 +4,13 @@ public class TransactionType {
 
     private String name;
 
+    public TransactionType() {
+    }
+
+    public TransactionType(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
