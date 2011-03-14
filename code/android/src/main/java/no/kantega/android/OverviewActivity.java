@@ -73,7 +73,7 @@ public class OverviewActivity extends Activity {
     private void populateTransactions(List<Transaction> transactions) {
         clearTransactions();
         for (Transaction t : transactions) {
-            addTransaction(FmtUtil.date("yyyy-MM-dd",
+            addTransaction(FmtUtil.dateToString("yyyy-MM-dd",
                     t.getAccountingDate()), t.getType().getName(),
                     t.getTag().getName(),
                     FmtUtil.currency(t.getAmountOut()));

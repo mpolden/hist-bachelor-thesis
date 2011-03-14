@@ -34,20 +34,17 @@ public class TransactionsActivity extends ListActivity {
         m_transactions = new ArrayList<Transaction>();
         m_adapter = new OrderAdapter(this, R.layout.transactionrow, m_transactions);
         setListAdapter(m_adapter);
-
         refreshList();
         m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...", true);
     }
 
     private void refreshList() {
         viewOrders = new Runnable() {
-
             @Override
             public void run() {
                 getTransactions();
             }
         };
-
         Thread thread = new Thread(null, viewOrders, "MagentoBackground");
         thread.start();
     }
@@ -68,7 +65,6 @@ public class TransactionsActivity extends ListActivity {
             Log.e("BACKGROUND_PROC", e.getMessage());
         }
         runOnUiThread(returnRes);
-
     }
 
     private Runnable returnRes = new Runnable() {
@@ -109,7 +105,7 @@ public class TransactionsActivity extends ListActivity {
                 TextView category = (TextView) v.findViewById(R.id.trow_tv_category);
                 TextView amount = (TextView) v.findViewById(R.id.trow_tv_amount);
                 if (date != null) {
-                    date.setText(FmtUtil.date("yyyy-MM-dd", t.getAccountingDate()));
+                    date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
                 }
                 if (text != null) {
                     text.setText(FmtUtil.trimTransactionText(t.getText()));
@@ -123,6 +119,5 @@ public class TransactionsActivity extends ListActivity {
             }
             return v;
         }
-
     }
 }

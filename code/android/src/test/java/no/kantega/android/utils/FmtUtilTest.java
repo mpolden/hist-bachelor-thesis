@@ -10,9 +10,9 @@ import static org.junit.Assert.assertEquals;
 public class FmtUtilTest {
 
     @Test
-    public void testDate() {
+    public void testDateToString() {
         String expected = "2010-01-01 00:00:00";
-        String actual = FmtUtil.date("yyyy-MM-dd HH:mm:ss",
+        String actual = FmtUtil.dateToString("yyyy-MM-dd HH:mm:ss",
                 new Date(1262300400000L));
         assertEquals(expected, actual);
     }

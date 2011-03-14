@@ -102,12 +102,12 @@ public class DatabaseHelper {
         final long typeId = insertType(t.getType());
         final long tagId = insertTag(t.getTag());
         final ContentValues values = new ContentValues();
-        values.put("accountingdate", FmtUtil.date(SQLITE_DATE_FORMAT,
+        values.put("accountingdate", FmtUtil.dateToString(SQLITE_DATE_FORMAT,
                 t.getAccountingDate()));
         values.put("amountin", t.getAmountIn());
         values.put("amountout", t.getAmountOut());
         values.put("archiveref", t.getArchiveRef());
-        values.put("fixeddate", FmtUtil.date(SQLITE_DATE_FORMAT,
+        values.put("fixeddate", FmtUtil.dateToString(SQLITE_DATE_FORMAT,
                 t.getFixedDate()));
         values.put("text", t.getText());
         values.put("type_id", typeId);
