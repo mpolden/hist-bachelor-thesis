@@ -59,6 +59,7 @@ public class Import extends Job {
             t.amountIn = in;
             t.tag = transactionTag;
             t.internal = false;
+            t.timestamp = t.accountingDate.getTime();
             t.save();
         } catch (ParseException e) {
             logger.log(Level.ERROR, e);
