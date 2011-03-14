@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.kantega.android</groupId>
-    <artifactId>android</artifactId>
+    <artifactId>afp</artifactId>
     <version>1.0</version>
     <packaging>apk</packaging>
-    <name>android</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -78,6 +77,13 @@
                     <target>1.6</target>
                 </configuration>
                 <version>2.3.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-idea-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
