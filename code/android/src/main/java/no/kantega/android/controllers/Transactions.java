@@ -30,6 +30,12 @@ public class Transactions {
         transactionTypeDao = helper.getTransactionTypeDao();
     }
 
+    public Transactions(Context context, DatabaseHelper helper) {
+        transactionDao = helper.getTransactionDao();
+        transactionTagDao = helper.getTransactionTagDao();
+        transactionTypeDao = helper.getTransactionTypeDao();
+    }
+
     /**
      * Add a new transaction tag
      *
