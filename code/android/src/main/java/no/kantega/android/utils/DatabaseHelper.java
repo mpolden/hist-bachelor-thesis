@@ -207,6 +207,11 @@ public class DatabaseHelper {
         return aggregatedTags;
     }
 
+    /**
+     * Retrieve a list of all transaction tags ordered by most used
+     *
+     * @return List of transaction tags
+     */
     public List<TransactionTag> getAllTags() {
         final Cursor cursor = db.query("\"transaction\" " +
                 "INNER JOIN transactiontag ON " +
@@ -225,6 +230,11 @@ public class DatabaseHelper {
         return tags;
     }
 
+    /**
+     * Calculate the average amount spent per day
+     *
+     * @return Average amount spent per day
+     */
     private Double getAvgDay() {
         if (DatabaseUtils.queryNumEntries(db, "\"transaction\"") == 0) {
             return 0D;
@@ -256,6 +266,11 @@ public class DatabaseHelper {
         return Double.parseDouble(getValue(cursor, "sum")) / days;
     }
 
+    /**
+     * Calculate average consumpetion per day, week and month
+     *
+     * @return Average consumption
+     */
     public AverageConsumption getAvg() {
         final double avgPerDay = getAvgDay();
         final AverageConsumption avg = new AverageConsumption();
