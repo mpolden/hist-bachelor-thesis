@@ -12,7 +12,6 @@ import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
 import no.kantega.android.models.TransactionType;
 import no.kantega.android.utils.DatabaseHelper;
-import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -86,8 +85,7 @@ public class AddTransactionActivity extends Activity {
         Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
         //        this, R.array.category_array, android.R.layout.simple_spinner_item);
-        this.db = new DatabaseHelper(new DatabaseOpenHelper(
-                getApplicationContext()).getReadableDatabase());
+        this.db = new DatabaseHelper(getApplicationContext());
         fillCategoryList();
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

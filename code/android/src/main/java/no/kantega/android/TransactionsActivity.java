@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.DatabaseHelper;
-import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -30,11 +29,11 @@ public class TransactionsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
-        this.db = new DatabaseHelper(new DatabaseOpenHelper(getApplicationContext()).getReadableDatabase());
+        this.db = new DatabaseHelper(getApplicationContext());
         m_transactions = new ArrayList<Transaction>();
         m_adapter = new OrderAdapter(this, R.layout.transactionrow, m_transactions);
         setListAdapter(m_adapter);
-        
+
     }
 
     private void refreshList() {
@@ -53,7 +52,7 @@ public class TransactionsActivity extends ListActivity {
     protected void onResume() {
         super.onResume();
         long transactionCount = db.getTransactionCount();
-        if(m_transactions.size() < transactionCount) {
+        if (m_transactions.size() < transactionCount) {
             m_adapter.notifyDataSetInvalidated(); // clear?
             refreshList();
         }

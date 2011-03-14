@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.DatabaseHelper;
-import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.GsonUtil;
 
 import java.io.IOException;
@@ -45,8 +44,7 @@ public class SynchronizeActivity extends Activity {
                 showDialog(PROGRESS_DIALOG);
             }
         });
-        db = new DatabaseHelper(new DatabaseOpenHelper(
-                getApplicationContext()).getWritableDatabase());
+        db = new DatabaseHelper(getApplicationContext());
     }
 
     /**

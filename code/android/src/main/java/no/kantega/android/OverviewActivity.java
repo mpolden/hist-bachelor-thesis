@@ -10,7 +10,6 @@ import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.DatabaseHelper;
-import no.kantega.android.utils.DatabaseOpenHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.List;
@@ -26,9 +25,8 @@ public class OverviewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.db = new DatabaseHelper(getApplicationContext());
         setContentView(R.layout.overview);
-        this.db = new DatabaseHelper(new DatabaseOpenHelper(
-                getApplicationContext()).getReadableDatabase());
     }
 
     @Override
