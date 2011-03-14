@@ -1,18 +1,34 @@
 package no.kantega.android.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.Date;
 
+@DatabaseTable(tableName = "transactions")
 public class Transaction {
 
+    @DatabaseField(generatedId = true)
+    private Long id;
+    @DatabaseField
     private Date accountingDate;
+    @DatabaseField
     private Date fixedDate;
+    @DatabaseField
     private Double amountIn;
+    @DatabaseField
     private Double amountOut;
+    @DatabaseField
     private String text;
+    @DatabaseField
     private String archiveRef;
+    @DatabaseField(foreign = true, columnName = "type_id")
     private TransactionType type;
+    @DatabaseField(foreign = true, columnName = "tag_id")
     private TransactionTag tag;
+    @DatabaseField
     private Boolean internal;
+    @DatabaseField
     private Long timestamp;
 
     public Transaction() {
@@ -96,6 +112,14 @@ public class Transaction {
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
