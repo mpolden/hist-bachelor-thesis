@@ -22,7 +22,7 @@ import java.util.List;
 
 public class AddTransactionActivity extends Activity {
     private DatabaseHelper db;
-    private TextView mDateDisplay;
+    //private TextView mDateDisplay;
     private Button mPickDate;
     private List<CharSequence> list;
 
@@ -66,6 +66,7 @@ public class AddTransactionActivity extends Activity {
                 t.setAccountingDate(d);
                 t.setFixedDate(d);
                 db.insert(t);
+                Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
                 finish();
             }
 
@@ -79,7 +80,7 @@ public class AddTransactionActivity extends Activity {
         Button addTransaction = (Button) findViewById(R.id.button_add_transaction);
         addTransaction.setOnClickListener(addTransactionButtonListener);
 
-        mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
+        //mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
 
         mPickDate.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +130,7 @@ public class AddTransactionActivity extends Activity {
 
     // updates the date we display in the TextView
     private void updateDisplay() {
-        mDateDisplay.setText(new StringBuilder()
+        mPickDate.setText(new StringBuilder()
                 // Month is 0 based so add 1
                 .append(mMonth + 1).append("-").append(mDay).append("-")
                 .append(mYear).append(" "));

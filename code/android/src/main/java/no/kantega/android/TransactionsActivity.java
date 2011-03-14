@@ -52,13 +52,15 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //ArrayList<Transaction> transactionList
+        //if(m_transactions.size() < )
         //m_adapter.clear();
         //refreshList();
     }
 
     private void getTransactions() {
         try {
-            m_transactions = new ArrayList<Transaction>(db.getOrderedByDateDesc(20));
+            m_transactions = new ArrayList<Transaction>(db.getOrderedByDateDesc(1000));
             Thread.sleep(2000);
             Log.i("ARRAY", "" + m_transactions.size());
         } catch (Exception e) {
