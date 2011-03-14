@@ -52,6 +52,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    /**
+     * Retrieve a DAO for Transaction
+     *
+     * @return DAO
+     */
     public Dao<Transaction, Integer> getTransactionDao() {
         if (transactionDao == null) {
             try {
@@ -63,6 +68,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return transactionDao;
     }
 
+    /**
+     * Retrieve a DAO for TransactionTag
+     *
+     * @return DAO
+     */
     public Dao<TransactionTag, Integer> getTransactionTagDao() {
         if (transactionTagDao == null) {
             try {
@@ -74,6 +84,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return transactionTagDao;
     }
 
+    /**
+     * Retrieve a DAO for TransactionType
+     *
+     * @return DAO
+     */
     public Dao<TransactionType, Integer> getTransactionTypeDao() {
         if (transactionTypeDao == null) {
             try {
