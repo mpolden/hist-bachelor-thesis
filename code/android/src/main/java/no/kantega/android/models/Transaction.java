@@ -22,9 +22,9 @@ public class Transaction {
     private String text;
     @DatabaseField
     private String archiveRef;
-    @DatabaseField(foreign = true, columnName = "type_id")
+    @DatabaseField(foreign = true, columnName = "type_id", foreignAutoRefresh = true)
     private TransactionType type;
-    @DatabaseField(foreign = true, columnName = "tag_id")
+    @DatabaseField(foreign = true, columnName = "tag_id", foreignAutoRefresh = true)
     private TransactionTag tag;
     @DatabaseField
     private Boolean internal;
