@@ -9,7 +9,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DatabaseOpenHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "transaction.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String TRANSACTIONTYPE_TABLE_CREATE =
             "CREATE TABLE \"transactiontype\" (" +
                     "    id INTEGER PRIMARY KEY," +
@@ -29,6 +29,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     "archiveref TEXT," +
                     "fixeddate TEXT," +
                     "text TEXT," +
+                    "timestamp INTEGER," +
+                    "internal INTEGER," +
                     "type_id INTEGER," +
                     "tag_id INTEGER," +
                     "FOREIGN KEY(type_id) REFERENCES transactiontype(id)" +

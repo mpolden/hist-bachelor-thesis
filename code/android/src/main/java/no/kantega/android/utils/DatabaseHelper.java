@@ -62,10 +62,11 @@ public class DatabaseHelper {
         cursor.moveToFirst();
         long typeId;
         if (cursor.getCount() > 0) {
-            typeId = Long.parseLong(getValue(cursor, "id"));
+            typeId = Long.parseLong(getStringValue(cursor, "id"));
         } else {
             typeId = -1;
         }
+        cursor.close();
         return typeId;
     }
 
@@ -86,10 +87,11 @@ public class DatabaseHelper {
         cursor.moveToFirst();
         long tagId;
         if (cursor.getCount() > 0) {
-            tagId = Long.parseLong(getValue(cursor, "id"));
+            tagId = Long.parseLong(getStringValue(cursor, "id"));
         } else {
             tagId = -1;
         }
+        cursor.close();
         return tagId;
     }
 
@@ -112,6 +114,8 @@ public class DatabaseHelper {
         values.put("text", t.getText());
         values.put("type_id", typeId);
         values.put("tag_id", tagId);
+        values.put("timestamp", t.getTimestamp());
+        values.put("internal", t.getInternal() ? 1 : 0);
         final long transactionId = db.insert("\"transaction\"", null, values);
         Log.d(TAG, "Inserted transaction with ID: " + transactionId);
     }
@@ -121,10 +125,21 @@ public class DatabaseHelper {
      *
      * @param cursor
      * @param columnName
-     * @return The value of the column
+     * @return The string value
      */
-    private String getValue(Cursor cursor, String columnName) {
+    private String getStringValue(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+
+    /**
+     * Helper method for retrieving the integer value of the given column
+     *
+     * @param cursor
+     * @param columnName
+     * @return The integer value
+     */
+    private Integer getIntValue(Cursor cursor, String columnName) {
+        return cursor.getInt(cursor.getColumnIndex(columnName));
     }
 
     /**
@@ -158,19 +173,25 @@ public class DatabaseHelper {
             do {
                 Transaction t = new Transaction();
                 t.setAccountingDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
-                        getValue(cursor, "accountingdate")));
-                t.setAmountIn(Double.parseDouble(getValue(cursor, "amountin")));
-                t.setAmountOut(Double.parseDouble(getValue(cursor, "amountout")));
-                t.setArchiveRef(getValue(cursor, "archiveref"));
+                        getStringValue(cursor, "accountingdate")));
+                t.setAmountIn(Double.parseDouble(getStringValue(cursor,
+                        "amountin")));
+                t.setAmountOut(Double.parseDouble(getStringValue(cursor,
+                        "amountout")));
+                t.setArchiveRef(getStringValue(cursor, "archiveref"));
                 t.setFixedDate(FmtUtil.stringToDate(SQLITE_DATE_FORMAT,
-                        getValue(cursor, "fixeddate")));
-                t.setText(getValue(cursor, "text"));
+                        getStringValue(cursor, "fixeddate")));
+                t.setText(getStringValue(cursor, "text"));
                 TransactionTag tag = new TransactionTag();
-                tag.setName(getValue(cursor, "tag"));
+                tag.setName(getStringValue(cursor, "tag"));
                 t.setTag(tag);
                 TransactionType type = new TransactionType();
-                type.setName(getValue(cursor, "type"));
+                type.setName(getStringValue(cursor, "type"));
                 t.setType(type);
+                t.setInternal(
+                        getIntValue(cursor, "internal") == 1 ? true : false);
+                t.setTimestamp(Long.parseLong(getStringValue(cursor,
+                        "timestamp")));
                 transactions.add(t);
             } while (cursor.moveToNext());
         }
@@ -198,8 +219,8 @@ public class DatabaseHelper {
         if (cursor.getCount() > 0) {
             do {
                 AggregatedTag at = new AggregatedTag();
-                at.setAmount(Double.parseDouble(getValue(cursor, "sum")));
-                at.setName(getValue(cursor, "name"));
+                at.setAmount(Double.parseDouble(getStringValue(cursor, "sum")));
+                at.setName(getStringValue(cursor, "name"));
                 aggregatedTags.add(at);
             } while (cursor.moveToNext());
         }
@@ -223,10 +244,11 @@ public class DatabaseHelper {
         if (cursor.getCount() > 0) {
             do {
                 TransactionTag tag = new TransactionTag();
-                tag.setName(getValue(cursor, "tag"));
+                tag.setName(getStringValue(cursor, "tag"));
                 tags.add(tag);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return tags;
     }
 
@@ -244,7 +266,7 @@ public class DatabaseHelper {
                 new String[]{"accountingdate"}, null, null, null, null,
                 "accountingDate ASC", "1");
         cursor.moveToFirst();
-        final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
+        final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getStringValue(
                 cursor, "accountingdate"));
         cursor.close();
         // Get stop date
@@ -252,7 +274,7 @@ public class DatabaseHelper {
                 new String[]{"accountingdate"}, null, null, null, null,
                 "accountingDate DESC", "1");
         cursor.moveToFirst();
-        final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getValue(
+        final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, getStringValue(
                 cursor, "accountingdate"));
         // Calculate number of days
         final int days =
@@ -263,7 +285,9 @@ public class DatabaseHelper {
                 new String[]{"SUM(amountout) AS sum"}, null, null, null, null,
                 null, "1");
         cursor.moveToFirst();
-        return Double.parseDouble(getValue(cursor, "sum")) / days;
+        Double avg = Double.parseDouble(getStringValue(cursor, "sum")) / days;
+        cursor.close();
+        return avg;
     }
 
     /**
