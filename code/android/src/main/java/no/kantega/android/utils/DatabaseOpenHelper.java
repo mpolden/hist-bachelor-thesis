@@ -43,6 +43,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Called when creating the initial database
+     *
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "Creating database");
@@ -53,6 +58,13 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         db.execSQL(TRANSACTIONTAG_INDEX_CREATE);
     }
 
+    /**
+     * Called when upgrading an existing database
+     *
+     * @param db
+     * @param i
+     * @param i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         Log.d(TAG, "Upgrading database");
@@ -61,6 +73,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Drop all tables
+     *
+     * @param db
+     */
     public void dropTables(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS \"transaction\"");
         db.execSQL("DROP TABLE IF EXISTS \"transactiontag\"");
