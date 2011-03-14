@@ -23,7 +23,13 @@ public class GsonUtil {
     private static final String TAG = GsonUtil.class.getSimpleName();
     private static final Gson gson = new Gson();
 
-    public static String getJSON(String url) {
+    /**
+     * Retrieve body of the given URL
+     *
+     * @param url
+     * @return URL body
+     */
+    public static String getBody(String url) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet method = new HttpGet(url);
         String body = null;
@@ -36,16 +42,34 @@ public class GsonUtil {
         return body;
     }
 
+    /**
+     * Parse aggregated tags from the given JSON
+     *
+     * @param json
+     * @return List of aggregated tags
+     */
     public static List<AggregatedTag> parseTags(String json) {
         Type listType = new TypeToken<List<AggregatedTag>>() {
         }.getType();
         return gson.fromJson(json, listType);
     }
 
+    /**
+     * Parse average consumption from the given JSON
+     *
+     * @param json
+     * @return Average consumption
+     */
     public static AverageConsumption parseAvg(String json) {
         return gson.fromJson(json, AverageConsumption.class);
     }
 
+    /**
+     * Parse transactions from the given JSON
+     *
+     * @param json
+     * @return List of transactions
+     */
     public static List<Transaction> parseTransactions(String json) {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
