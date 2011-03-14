@@ -13,6 +13,7 @@ public class Transaction {
     private TransactionType type;
     private TransactionTag tag;
     private Boolean internal;
+    private Long timestamp;
 
     public Transaction() {
     }
@@ -87,5 +88,13 @@ public class Transaction {
 
     public void setInternal(Boolean internal) {
         this.internal = internal;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }
