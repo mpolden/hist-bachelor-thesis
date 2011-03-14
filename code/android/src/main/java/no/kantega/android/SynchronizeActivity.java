@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.GsonUtil;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG = 0;
-    private DatabaseHelper db;
+    private Transactions db;
     private ProgressDialog progressDialog;
 
     /**
@@ -44,7 +44,7 @@ public class SynchronizeActivity extends Activity {
                 showDialog(PROGRESS_DIALOG);
             }
         });
-        db = new DatabaseHelper(getApplicationContext());
+        db = new Transactions(getApplicationContext());
     }
 
     /**

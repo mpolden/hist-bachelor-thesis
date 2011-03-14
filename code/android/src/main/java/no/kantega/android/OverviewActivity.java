@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class OverviewActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
-    private DatabaseHelper db;
+    private Transactions db;
     private AverageConsumption avg;
     private List<AggregatedTag> tags;
     private List<Transaction> transactions;
@@ -25,7 +25,7 @@ public class OverviewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.db = new DatabaseHelper(getApplicationContext());
+        this.db = new Transactions(getApplicationContext());
         setContentView(R.layout.overview);
     }
 

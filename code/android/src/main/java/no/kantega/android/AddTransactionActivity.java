@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
 import no.kantega.android.models.TransactionType;
-import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AddTransactionActivity extends Activity {
 
-    private DatabaseHelper db;
+    private Transactions db;
     //private TextView mDateDisplay;
     private Button mPickDate;
     private List<CharSequence> list;
@@ -85,7 +85,7 @@ public class AddTransactionActivity extends Activity {
         Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
         //        this, R.array.category_array, android.R.layout.simple_spinner_item);
-        this.db = new DatabaseHelper(getApplicationContext());
+        this.db = new Transactions(getApplicationContext());
         fillCategoryList();
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.DatabaseHelper;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class TransactionsActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
-    private DatabaseHelper db;
+    private Transactions db;
     private ProgressDialog m_ProgressDialog = null;
     private ArrayList<Transaction> m_transactions = null;
     private OrderAdapter m_adapter;
@@ -29,7 +29,7 @@ public class TransactionsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
-        this.db = new DatabaseHelper(getApplicationContext());
+        this.db = new Transactions(getApplicationContext());
         m_transactions = new ArrayList<Transaction>();
         m_adapter = new OrderAdapter(this, R.layout.transactionrow, m_transactions);
         setListAdapter(m_adapter);
