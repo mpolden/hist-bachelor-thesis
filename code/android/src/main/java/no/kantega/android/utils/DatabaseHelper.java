@@ -152,6 +152,15 @@ public class DatabaseHelper {
     }
 
     /**
+     * Get total number of transactions
+     *
+     * @return Number of transactions
+     */
+    public long getTransactionCount() {
+        return DatabaseUtils.queryNumEntries(db, "\"transaction\"");
+    }
+
+    /**
      * Retrieve an limited ordered list of transactions
      *
      * @param limit
