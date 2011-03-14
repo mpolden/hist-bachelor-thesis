@@ -101,7 +101,7 @@ public class SynchronizeActivity extends Activity {
         @Override
         protected List<Transaction> doInBackground(String... urls) {
             List<Transaction> transactions = GsonUtil.parseTransactions(
-                    GsonUtil.getJSON(urls[0]));
+                    GsonUtil.getBody(urls[0]));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
                 db.emptyTables();
