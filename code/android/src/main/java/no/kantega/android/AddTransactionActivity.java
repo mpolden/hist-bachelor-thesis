@@ -21,37 +21,54 @@ import java.util.Date;
 import java.util.List;
 
 public class AddTransactionActivity extends Activity {
-
     private DatabaseHelper db;
     private TextView mDateDisplay;
     private Button mPickDate;
     private List<CharSequence> list;
+
     private int mYear;
     private int mMonth;
     private int mDay;
+
     private String selectedTransactionTag;
+
     static final int DATE_DIALOG_ID = 0;
+
     private OnClickListener addTransactionButtonListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            boolean newTransactionOk = true;
+
             Transaction t = new Transaction();
             TransactionTag ttag = new TransactionTag();
             TransactionType ttype = new TransactionType();
+
             ttag.setName(selectedTransactionTag);
             ttype.setName("Kontant");
+
             Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", mYear, mMonth, mDay));
+
             EditText etamount = (EditText) findViewById(R.id.edittext_amount);
             EditText ettext = (EditText) findViewById(R.id.edittext_text);
-            t.setAmountOut(Double.parseDouble(etamount.getText().toString()));
-            t.setAmountIn(0.0);
-            t.setText(ettext.getText().toString());
-            t.setTag(ttag);
-            t.setType(ttype);
-            t.setAccountingDate(d);
-            t.setFixedDate(d);
-            t.setInternal(true);
-            db.insert(t);
-            finish();
+
+            if (etamount.getText().toString().trim() != "" && FmtUtil.isNumber(etamount.getText().toString())) {
+                t.setAmountOut(Double.parseDouble(etamount.getText().toString()));
+            } else {
+                Toast.makeText(getApplicationContext(), "Invalid amount", Toast.LENGTH_LONG).show();
+                newTransactionOk = false;
+            }
+
+            if (newTransactionOk) {
+                t.setAmountIn(0.0);
+                t.setText(ettext.getText().toString());
+                t.setTag(ttag);
+                t.setType(ttype);
+                t.setAccountingDate(d);
+                t.setFixedDate(d);
+                db.insert(t);
+                finish();
+            }
+
         }
     };
 
@@ -61,18 +78,23 @@ public class AddTransactionActivity extends Activity {
         setContentView(R.layout.addtransaction);
         Button addTransaction = (Button) findViewById(R.id.button_add_transaction);
         addTransaction.setOnClickListener(addTransactionButtonListener);
+
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         mPickDate = (Button) findViewById(R.id.pickDate);
+
         mPickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
             }
         });
+
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
+
         updateDisplay();
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
         //        this, R.array.category_array, android.R.layout.simple_spinner_item);
@@ -88,9 +110,11 @@ public class AddTransactionActivity extends Activity {
     private void fillCategoryList() {
         ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getAllTags());
         list = new ArrayList<CharSequence>();
+
         for (int i = 0; i < transactionTagList.size(); i++) {
             list.add(transactionTagList.get(i).getName());
         }
+
     }
 
     @Override
@@ -112,6 +136,7 @@ public class AddTransactionActivity extends Activity {
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             mYear = year;
@@ -134,4 +159,5 @@ public class AddTransactionActivity extends Activity {
             // Do nothing.
         }
     }
+
 }
