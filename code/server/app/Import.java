@@ -58,7 +58,7 @@ public class Import extends Job {
             t.amountOut = out;
             t.amountIn = in;
             t.tag = transactionTag;
-            t.external = false;
+            t.internal = false;
             t.save();
         } catch (ParseException e) {
             logger.log(Level.ERROR, e);

@@ -15,7 +15,7 @@ public class Transaction extends Model {
     public Double amountOut;
     public String text;
     public String archiveRef;
-    public Boolean external;
+    public Boolean internal;
     @ManyToOne
     public TransactionType type;
     @ManyToOne
