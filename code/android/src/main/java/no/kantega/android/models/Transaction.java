@@ -12,7 +12,7 @@ public class Transaction {
     private String archiveRef;
     private TransactionType type;
     private TransactionTag tag;
-    private Boolean external;
+    private Boolean internal;
 
     public Transaction() {
     }
@@ -81,11 +81,11 @@ public class Transaction {
         this.tag = tag;
     }
 
-    public Boolean getExternal() {
-        return external;
+    public Boolean getInternal() {
+        return internal;
     }
 
-    public void setExternal(Boolean external) {
-        this.external = external;
+    public void setInternal(Boolean internal) {
+        this.internal = internal;
     }
 }
