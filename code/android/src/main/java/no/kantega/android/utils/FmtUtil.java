@@ -70,4 +70,8 @@ public class FmtUtil {
             return null;
         }
     }
+
+    public static boolean isNumber(String s) {
+        return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
+    }
 }
