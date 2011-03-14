@@ -6,7 +6,7 @@
     <string name="transactions">Transactions</string>
     <string name="transactions_no_items">No transactions to display</string>
     <string name="wait">Synchronizing transactions...</string>
-    <string name="category_prompt">Choose a planet</string>
+    <string name="category_prompt">Choose a category</string>
     <string-array name="category_array">
         <item>Mercury</item>
         <item>Venus</item>

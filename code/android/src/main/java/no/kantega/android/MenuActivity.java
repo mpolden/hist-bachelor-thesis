@@ -19,8 +19,6 @@ public class MenuActivity extends TabActivity {
 	private OnClickListener addButtonListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            CharSequence text = "Synchronized";
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
             
             Intent intent = new Intent().setClass(getApplicationContext(), AddTransactionActivity.class);
             startActivity(intent);

@@ -1,6 +1,9 @@
 package no.kantega.android;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,28 +11,53 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import no.kantega.android.models.Transaction;
+import no.kantega.android.models.TransactionTag;
+import no.kantega.android.models.TransactionType;
+import no.kantega.android.utils.DatabaseHelper;
+import no.kantega.android.utils.DatabaseOpenHelper;
+import no.kantega.android.utils.FmtUtil;
 
 public class AddTransactionActivity extends Activity {
+    private DatabaseHelper db;
 	private TextView mDateDisplay;
 	private Button mPickDate;
+    private List<CharSequence> list;
 
 	private int mYear;
 	private int mMonth;
 	private int mDay;
+
+    private String selectedTransactionTag;
 
 	static final int DATE_DIALOG_ID = 0;
 
 	private OnClickListener addTransactionButtonListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
+            Transaction t = new Transaction();
+            TransactionTag ttag = new TransactionTag();
+            TransactionType ttype = new TransactionType();
+
+            ttag.setName(selectedTransactionTag);
+            ttype.setName("Kontant");
+
+            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", mYear, mMonth, mDay));
+
+            EditText etamount = (EditText)findViewById(R.id.edittext_amount);
+            EditText ettext = (EditText)findViewById(R.id.edittext_text);
+            t.setAmountOut(Double.parseDouble(etamount.getText().toString()));
+            t.setAmountIn(0.0);
+            t.setText(ettext.getText().toString());
+            t.setTag(ttag);
+            t.setType(ttype);
+            t.setAccountingDate(d);
+            t.setFixedDate(d);
+
+            db.insert(t);
+
 			finish();
 		}
 	};
@@ -56,14 +84,28 @@ public class AddTransactionActivity extends Activity {
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 
 		updateDisplay();
-		
+
 		Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
-	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-	            this, R.array.category_array, android.R.layout.simple_spinner_item);
+	    //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+	    //        this, R.array.category_array, android.R.layout.simple_spinner_item);
+        this.db = new DatabaseHelper(new DatabaseOpenHelper(
+                getApplicationContext()).getReadableDatabase());
+        fillCategoryList();
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, list);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner.setAdapter(adapter);
 	    spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 	}
+
+    private void fillCategoryList() {
+        ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getAllTags());
+        list = new ArrayList<CharSequence>();
+
+        for(int i = 0; i<transactionTagList.size(); i++) {
+            list.add(transactionTagList.get(i).getName());
+        }
+
+    }
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -93,13 +135,14 @@ public class AddTransactionActivity extends Activity {
 			updateDisplay();
 		}
 	};
-	
+
 	class MyOnItemSelectedListener implements OnItemSelectedListener {
 
 	    public void onItemSelected(AdapterView<?> parent,
 	        View view, int pos, long id) {
+            selectedTransactionTag = parent.getItemAtPosition(pos).toString();
 	      Toast.makeText(parent.getContext(), "The category is " +
-	          parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
+	          selectedTransactionTag, Toast.LENGTH_LONG).show();
 	    }
 
 	    public void onNothingSelected(AdapterView parent) {
