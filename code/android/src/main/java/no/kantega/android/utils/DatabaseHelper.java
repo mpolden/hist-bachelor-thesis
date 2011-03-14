@@ -179,10 +179,10 @@ public class DatabaseHelper {
     }
 
     /**
-     * Retrieve a list
+     * Retrieve a limited list of aggregated tags
      *
      * @param limit
-     * @return
+     * @return List of aggregated tags
      */
     public List<AggregatedTag> getTags(final int limit) {
         final Cursor cursor = db.query("\"transaction\" " +
@@ -208,15 +208,17 @@ public class DatabaseHelper {
     }
 
     public List<TransactionTag> getAllTags() {
-        final Cursor cursor = db.query("\"transaction\"",
-                new String[]{"transactiontag.name", "COUNT(*) AS count"},
-                null, null, "transactiontag.name", null, "count DESC", null);
+        final Cursor cursor = db.query("\"transaction\" " +
+                "INNER JOIN transactiontag ON " +
+                "transactiontag.id = \"transaction\".tag_id",
+                new String[]{"transactiontag.name AS tag", "COUNT(*) AS count"},
+                null, null, "tag", null, "count DESC", null);
         final List<TransactionTag> tags = new ArrayList<TransactionTag>();
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 TransactionTag tag = new TransactionTag();
-                tag.setName(getValue(cursor, "transactiontag.name"));
+                tag.setName(getValue(cursor, "tag"));
                 tags.add(tag);
             } while (cursor.moveToNext());
         }
