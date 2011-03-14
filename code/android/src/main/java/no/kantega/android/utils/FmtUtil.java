@@ -16,7 +16,7 @@ public class FmtUtil {
      * @return The date
      */
     public static String dateToString(String format, Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
         return simpleDateFormat.format(date);
     }
 
@@ -26,7 +26,7 @@ public class FmtUtil {
      * @param number
      * @return Formatted currency
      */
-    public static String currency(Double number) {
+    public static String currency(double number) {
         return currency(number, Locale.getDefault());
     }
 
@@ -37,8 +37,8 @@ public class FmtUtil {
      * @param locale
      * @return Formatted currency
      */
-    public static String currency(Double number, Locale locale) {
-        NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+    public static String currency(double number, Locale locale) {
+        final NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
         nf.setMinimumFractionDigits(2);
         nf.setMaximumFractionDigits(2);
         return nf.format(number);
@@ -52,7 +52,7 @@ public class FmtUtil {
      */
     public static String trimTransactionText(String text) {
         final String pattern = "(\\d+\\*+\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?(TIL\\:\\s)?";
-        return text.replaceAll(pattern, "");
+        return text == null ? "" : text.replaceAll(pattern, "");
     }
 
     /**
@@ -63,7 +63,7 @@ public class FmtUtil {
      * @return The date
      */
     public static Date stringToDate(String format, String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
         try {
             return simpleDateFormat.parse(date);
         } catch (ParseException e) {
@@ -71,6 +71,12 @@ public class FmtUtil {
         }
     }
 
+    /**
+     * Check if given string is a number with optional decimals
+     *
+     * @param s
+     * @return True if string contains only numbers
+     */
     public static boolean isNumber(String s) {
         return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
     }

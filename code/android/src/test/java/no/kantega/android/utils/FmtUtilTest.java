@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class FmtUtilTest {
 
@@ -52,5 +52,20 @@ public class FmtUtilTest {
         actual = FmtUtil.trimTransactionText(
                 "TIL: SATS Norge AS                      BETNR:       279");
         assertEquals(expected, actual);
+        expected = "";
+        actual = FmtUtil.trimTransactionText(null);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testIsNumber() {
+        assertFalse(FmtUtil.isNumber(null));
+        assertFalse(FmtUtil.isNumber(""));
+        assertFalse(FmtUtil.isNumber("foo"));
+        assertFalse(FmtUtil.isNumber(("123.")));
+        assertFalse(FmtUtil.isNumber(("123,")));
+        assertTrue(FmtUtil.isNumber("123"));
+        assertTrue(FmtUtil.isNumber("123,45"));
+        assertTrue(FmtUtil.isNumber("123.45"));
     }
 }
