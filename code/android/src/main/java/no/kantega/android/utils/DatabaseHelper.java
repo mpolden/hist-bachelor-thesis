@@ -160,6 +160,22 @@ public class DatabaseHelper {
         return aggregatedTags;
     }
 
+    public List<TransactionTag> getAllTags() {
+        final Cursor cursor = db.query("\"transaction\"",
+                new String[]{"transactiontag.name", "COUNT(*) AS count"},
+                null, null, null, "count DESC", null);
+        final List<TransactionTag> tags = new ArrayList<TransactionTag>();
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            do {
+                TransactionTag tag = new TransactionTag();
+                tag.setName(getValue(cursor, "transactiontag.name"));
+                tags.add(tag);
+            } while (cursor.moveToNext());
+        }
+        return tags;
+    }
+
     private Double getAvgDay() {
         if (DatabaseUtils.queryNumEntries(db, "\"transaction\"") == 0) {
             return 0D;
