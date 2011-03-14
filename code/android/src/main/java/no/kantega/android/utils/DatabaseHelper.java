@@ -29,6 +29,14 @@ public class DatabaseHelper {
         this.db = db;
     }
 
+    /**
+     * Check if a row exists in the given table with columnName = param
+     *
+     * @param table
+     * @param columName
+     * @param param
+     * @return True if row exists
+     */
     private boolean rowExists(String table, String columName, String param) {
         final Cursor cursor = db.query(table,
                 new String[]{"1"}, columName + " = ?", new String[]{param},
@@ -37,6 +45,12 @@ public class DatabaseHelper {
         return cursor.getCount() > 0;
     }
 
+    /**
+     * Insert a new transaction type while respecting the unique constraint
+     *
+     * @param t
+     * @return The id of the newly inserted row, or id of the existing row
+     */
     private long insertType(final TransactionType t) {
         if (!rowExists("transactiontype", "name", t.getName())) {
             final ContentValues values = new ContentValues();
@@ -55,6 +69,12 @@ public class DatabaseHelper {
         return typeId;
     }
 
+    /**
+     * Insert a new transaction tag while respecting the unique constraint
+     *
+     * @param t
+     * @return The id of the newly inserted row, or id of the existing row
+     */
     private long insertTag(final TransactionTag t) {
         if (!rowExists("transactiontag", "name", t.getName())) {
             final ContentValues values = new ContentValues();
@@ -73,6 +93,11 @@ public class DatabaseHelper {
         return tagId;
     }
 
+    /**
+     * Insert a new transaction into the database
+     *
+     * @param t
+     */
     public void insert(final Transaction t) {
         final long typeId = insertType(t.getType());
         final long tagId = insertTag(t.getTag());
@@ -91,16 +116,32 @@ public class DatabaseHelper {
         Log.d(TAG, "Inserted transaction with ID: " + transactionId);
     }
 
+    /**
+     * Helper method for retrieving the value of the given column
+     *
+     * @param cursor
+     * @param columnName
+     * @return The value of the column
+     */
     private String getValue(Cursor cursor, String columnName) {
         return cursor.getString(cursor.getColumnIndex(columnName));
     }
 
+    /**
+     * Empty all tables
+     */
     public void emptyTables() {
         db.execSQL("DELETE FROM \"transaction\"");
         db.execSQL("DELETE FROM \"transactiontag\"");
         db.execSQL("DELETE FROM \"transactiontype\"");
     }
 
+    /**
+     * Retrieve an limited ordered list of transactions
+     *
+     * @param limit
+     * @return List of transactions
+     */
     public List<Transaction> getOrderedByDateDesc(int limit) {
         final Cursor cursor = db.query(
                 "\"transaction\" " +
@@ -137,6 +178,12 @@ public class DatabaseHelper {
         return transactions;
     }
 
+    /**
+     * Retrieve a list
+     *
+     * @param limit
+     * @return
+     */
     public List<AggregatedTag> getTags(final int limit) {
         final Cursor cursor = db.query("\"transaction\" " +
                 "INNER JOIN transactiontag " +
@@ -163,7 +210,7 @@ public class DatabaseHelper {
     public List<TransactionTag> getAllTags() {
         final Cursor cursor = db.query("\"transaction\"",
                 new String[]{"transactiontag.name", "COUNT(*) AS count"},
-                null, null, null, "count DESC", null);
+                null, null, "transactiontag.name", null, "count DESC", null);
         final List<TransactionTag> tags = new ArrayList<TransactionTag>();
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
