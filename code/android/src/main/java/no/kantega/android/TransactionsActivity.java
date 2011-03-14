@@ -34,8 +34,7 @@ public class TransactionsActivity extends ListActivity {
         m_transactions = new ArrayList<Transaction>();
         m_adapter = new OrderAdapter(this, R.layout.transactionrow, m_transactions);
         setListAdapter(m_adapter);
-        refreshList();
-        m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...", true);
+        
     }
 
     private void refreshList() {
@@ -47,18 +46,22 @@ public class TransactionsActivity extends ListActivity {
         };
         Thread thread = new Thread(null, viewOrders, "MagentoBackground");
         thread.start();
+        m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...", true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //m_adapter.clear();
-        //refreshList();
+        long transactionCount = db.getTransactionCount();
+        if(m_transactions.size() < transactionCount) {
+            m_adapter.notifyDataSetInvalidated(); // clear?
+            refreshList();
+        }
     }
 
     private void getTransactions() {
         try {
-            m_transactions = new ArrayList<Transaction>(db.getOrderedByDateDesc(20));
+            m_transactions = new ArrayList<Transaction>(db.getOrderedByDateDesc(1000));
             Thread.sleep(2000);
             Log.i("ARRAY", "" + m_transactions.size());
         } catch (Exception e) {
