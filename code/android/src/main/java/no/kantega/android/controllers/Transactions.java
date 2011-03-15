@@ -19,6 +19,7 @@ public class Transactions {
 
     private static final String TAG = Transactions.class.getSimpleName();
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final int INSERT_SUCCESS = 1;
     private Dao<Transaction, Integer> transactionDao;
     private Dao<TransactionTag, Integer> transactionTagDao;
     private Dao<TransactionType, Integer> transactionTypeDao;
@@ -44,7 +45,6 @@ public class Transactions {
      */
     private TransactionTag addOrGetExistingTag(TransactionTag tag) {
         try {
-
             QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
             queryBuilder.where().eq("name", tag.getName());
             List<TransactionTag> tags = transactionTagDao.query(queryBuilder.prepare());
@@ -95,7 +95,7 @@ public class Transactions {
         try {
             t.setTag(addOrGetExistingTag(t.getTag()));
             t.setType(addOrGetExistingType(t.getType()));
-            return transactionDao.create(t) == 1;
+            return transactionDao.create(t) == INSERT_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
         }
