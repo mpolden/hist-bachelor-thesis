@@ -128,7 +128,7 @@ public class AddTransactionActivity extends Activity {
         }
     };
 
-    class MyOnItemSelectedListener implements OnItemSelectedListener {
+    private class MyOnItemSelectedListener implements OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {

@@ -21,8 +21,8 @@ public class TransactionsActivity extends ListActivity {
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private Transactions db;
     private ProgressDialog m_ProgressDialog = null;
-    private ArrayList<Transaction> m_transactions = null;
-    private OrderAdapter m_adapter;
+    private ArrayList<Transaction> transactions = null;
+    private OrderAdapter listAdapter;
     private Runnable viewOrders;
 
     @Override
@@ -30,9 +30,9 @@ public class TransactionsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
-        m_transactions = new ArrayList<Transaction>();
-        m_adapter = new OrderAdapter(this, R.layout.transactionrow, m_transactions);
-        setListAdapter(m_adapter);
+        transactions = new ArrayList<Transaction>();
+        listAdapter = new OrderAdapter(this, R.layout.transactionrow, transactions);
+        setListAdapter(listAdapter);
 
     }
 
@@ -45,24 +45,25 @@ public class TransactionsActivity extends ListActivity {
         };
         Thread thread = new Thread(null, viewOrders, "MagentoBackground");
         thread.start();
-        m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...", true);
+        m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...",
+                true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         long transactionCount = db.getCount();
-        if (m_transactions.size() < transactionCount) {
-            m_adapter.notifyDataSetInvalidated(); // clear?
+        if (transactions.size() < transactionCount) {
+            listAdapter.notifyDataSetInvalidated(); // clear?
             refreshList();
         }
     }
 
     private void getTransactions() {
         try {
-            m_transactions = new ArrayList<Transaction>(db.get(1000));
+            transactions = new ArrayList<Transaction>(db.get(1000));
             Thread.sleep(2000);
-            Log.i("ARRAY", "" + m_transactions.size());
+            Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
             Log.e("BACKGROUND_PROC", e.getMessage());
         }
@@ -72,14 +73,14 @@ public class TransactionsActivity extends ListActivity {
     private Runnable returnRes = new Runnable() {
         @Override
         public void run() {
-            if (m_transactions != null && m_transactions.size() > 0) {
-                m_adapter.notifyDataSetChanged();
-                for (int i = 0; i < m_transactions.size(); i++) {
-                    m_adapter.add(m_transactions.get(i));
+            if (transactions != null && transactions.size() > 0) {
+                listAdapter.notifyDataSetChanged();
+                for (int i = 0; i < transactions.size(); i++) {
+                    listAdapter.add(transactions.get(i));
                 }
             }
             m_ProgressDialog.dismiss();
-            m_adapter.notifyDataSetChanged();
+            listAdapter.notifyDataSetChanged();
         }
     };
 
