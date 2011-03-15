@@ -22,14 +22,13 @@ import java.util.List;
 public class AddTransactionActivity extends Activity {
 
     private Transactions db;
-    //private TextView mDateDisplay;
-    private Button mPickDate;
-    private List<CharSequence> list;
-    private int mYear;
-    private int mMonth;
-    private int mDay;
+    private Button pickDate;
+    private List<String> categories;
+    private int pickYear;
+    private int pickMonth;
+    private int pickDay;
     private String selectedTransactionTag;
-    static final int DATE_DIALOG_ID = 0;
+    private static final int DATE_DIALOG_ID = 0;
     private OnClickListener addTransactionButtonListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -39,7 +38,7 @@ public class AddTransactionActivity extends Activity {
             TransactionType ttype = new TransactionType();
             ttag.setName(selectedTransactionTag);
             ttype.setName("Kontant");
-            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", mYear, mMonth, mDay));
+            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth, pickDay));
             EditText etamount = (EditText) findViewById(R.id.edittext_amount);
             EditText ettext = (EditText) findViewById(R.id.edittext_text);
             if (etamount.getText().toString().trim() != "" && FmtUtil.isNumber(etamount.getText().toString())) {
@@ -71,23 +70,23 @@ public class AddTransactionActivity extends Activity {
         Button addTransaction = (Button) findViewById(R.id.button_add_transaction);
         addTransaction.setOnClickListener(addTransactionButtonListener);
         //mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        mPickDate = (Button) findViewById(R.id.pickDate);
-        mPickDate.setOnClickListener(new View.OnClickListener() {
+        pickDate = (Button) findViewById(R.id.pickDate);
+        pickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
             }
         });
         final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        pickYear = c.get(Calendar.YEAR);
+        pickMonth = c.get(Calendar.MONTH);
+        pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
         Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
         //        this, R.array.category_array, android.R.layout.simple_spinner_item);
         this.db = new Transactions(getApplicationContext());
         fillCategoryList();
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
@@ -95,9 +94,9 @@ public class AddTransactionActivity extends Activity {
 
     private void fillCategoryList() {
         ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getTags());
-        list = new ArrayList<CharSequence>();
+        categories = new ArrayList<String>();
         for (int i = 0; i < transactionTagList.size(); i++) {
-            list.add(transactionTagList.get(i).getName());
+            categories.add(transactionTagList.get(i).getName());
         }
     }
 
@@ -105,26 +104,26 @@ public class AddTransactionActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
-                        mDay);
+                return new DatePickerDialog(this, mDateSetListener, pickYear, pickMonth,
+                        pickDay);
         }
         return null;
     }
 
     // updates the date we display in the TextView
     private void updateDisplay() {
-        mPickDate.setText(new StringBuilder()
+        pickDate.setText(new StringBuilder()
                 // Month is 0 based so add 1
-                .append(mMonth + 1).append("-").append(mDay).append("-")
-                .append(mYear).append(" "));
+                .append(pickMonth + 1).append("-").append(pickDay).append("-")
+                .append(pickYear).append(" "));
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            mYear = year;
-            mMonth = monthOfYear;
-            mDay = dayOfMonth;
+            pickYear = year;
+            pickMonth = monthOfYear;
+            pickDay = dayOfMonth;
             updateDisplay();
         }
     };
