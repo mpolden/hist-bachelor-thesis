@@ -1,14 +1,19 @@
 Awesome Finance Planner
-================================
+=======================
 
-This is Android application that intends to help you easily plan and organize
-your finances.
+This is an Android application that intends to help you easily plan and
+organize your finances.
 
-Tags
-----
+Git tags
+--------
 Tags are created after each sprint is finished. The tag format is vX.Y.Z where
 X, Y and Z are integers. X is the major version, Y is the sprint number and Z
 is the day number in that sprint.
+
+Git branches
+------------
+When implementing major components, we usually create a new branch with an
+appropiate name, like 'sqlite' or 'ormlite'.
 
 Building the project
 --------------------
@@ -36,4 +41,4 @@ Starting a shell on the emulator
 To start a shell on the emulator, use the following command:
     $ANDROID_HOME/adb -s emulator-5554 shell
 To remove the existing database:
-    rm /data/data/no.kantega.android/databases/transaction.db
+    rm /data/data/no.kantega.android/databases/app.db
