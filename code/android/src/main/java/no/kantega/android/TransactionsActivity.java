@@ -20,8 +20,8 @@ public class TransactionsActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private Transactions db;
-    private ProgressDialog m_ProgressDialog = null;
-    private ArrayList<Transaction> transactions = null;
+    private ProgressDialog progressDialog;
+    private ArrayList<Transaction> transactions;
     private OrderAdapter listAdapter;
     private Runnable viewOrders;
 
@@ -45,7 +45,7 @@ public class TransactionsActivity extends ListActivity {
         };
         Thread thread = new Thread(null, viewOrders, "MagentoBackground");
         thread.start();
-        m_ProgressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...",
+        progressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...",
                 true);
     }
 
@@ -79,7 +79,7 @@ public class TransactionsActivity extends ListActivity {
                     listAdapter.add(transactions.get(i));
                 }
             }
-            m_ProgressDialog.dismiss();
+            progressDialog.dismiss();
             listAdapter.notifyDataSetChanged();
         }
     };
