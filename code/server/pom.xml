@@ -4,9 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>no.kantega.server</groupId>
-    <artifactId>server</artifactId>
-    <version>1.0</version>
-    
+    <artifactId>afp-server</artifactId>
+    <version>0.1</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>postgresql</groupId>
@@ -21,7 +24,6 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>2.4.1</version>
             </plugin>
-            <!-- Keeping this order is very important for packaging phase (copy-dependency must run before antrun) -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
@@ -37,7 +39,6 @@
                 </configuration>
                 <version>2.3.2</version>
             </plugin>
-            <!-- End -->
         </plugins>
     </build>
 

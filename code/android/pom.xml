@@ -6,7 +6,7 @@
 
     <groupId>no.kantega.android</groupId>
     <artifactId>afp</artifactId>
-    <version>1.0</version>
+    <version>0.1</version>
     <packaging>apk</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
