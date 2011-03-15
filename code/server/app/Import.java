@@ -1,6 +1,7 @@
 import models.Transaction;
 import models.TransactionTag;
 import models.TransactionType;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import play.jobs.Job;
@@ -24,16 +25,17 @@ public class Import extends Job {
         if (Transaction.count() == 0) {
             File f = VirtualFile.fromRelativePath(
                     "/conf/fixture-transactions.csv").getRealFile();
+            BufferedReader reader = null;
             try {
-                FileInputStream fis = new FileInputStream(f);
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(fis));
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     addTransaction(line);
                 }
             } catch (IOException e) {
                 logger.log(Level.ERROR, e);
+            } finally {
+                IOUtils.closeQuietly(reader);
             }
         }
     }
