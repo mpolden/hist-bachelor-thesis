@@ -133,8 +133,8 @@ public class TransactionsActivity extends ListActivity {
                 if (text != null) {
                     text.setText(FmtUtil.trimTransactionText(t.getText()));
                 }
-                if (category != null) {
-                    category.setText(t.getTag() == null ? "" : t.getTag().getName());
+                if (category != null && t.getTag() != null) {
+                    category.setText(t.getTag().getName());
                     image.setImageDrawable(getImageIdByTag(t.getTag()));
                 }
                 if (amount != null) {
