@@ -3,9 +3,11 @@
               android:layout_width="fill_parent"
               android:layout_height="?android:attr/listPreferredItemHeight"
               android:padding="6dip">
-    <ImageView android:id="@+id/tag_icon" android:layout_width="wrap_content"
-               android:layout_height="fill_parent"
-               android:layout_marginRight="6dip"/>
+    <LinearLayout android:layout_height="fill_parent" android:layout_width="34dip">
+        <ImageView android:id="@+id/tag_icon" android:layout_width="wrap_content"
+                   android:layout_height="fill_parent"
+                   android:layout_marginRight="6dip"/>
+    </LinearLayout>
     <LinearLayout android:orientation="vertical"
                   android:layout_width="0dip" android:layout_weight="1"
                   android:layout_height="fill_parent">
