@@ -7,14 +7,8 @@
     <string name="transactions_no_items">No transactions to display</string>
     <string name="wait">Synchronizing transactions...</string>
     <string name="category_prompt">Choose a category</string>
-    <string-array name="category_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <string name="last_synchronized">Synchronized:</string>
+    <string name="internal_t_count">Transactions:</string>
+    <string name="internal_tag_count">Tags:</string>
+    <string name="not_synchronized">Never</string>
 </resources>

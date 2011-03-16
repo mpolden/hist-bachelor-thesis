@@ -1,18 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"  
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
-  <TextView android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-  </TextView>
-  <Button android:id="@+id/syncButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:width="150dp"
-    android:text="@string/synchronize"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp">
-  </Button>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
+                 android:layout_height="wrap_content"
+                 android:stretchColumns="1">
+
+        <TableRow>
+            <TextView android:layout_weight="0.5"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/last_synchronized">
+            </TextView>
+            <TextView android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:gravity="right"
+                      android:id="@+id/last_synchronized">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_weight="0.5"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/internal_t_count">
+            </TextView>
+            <TextView android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:gravity="right"
+                      android:id="@+id/internal_t_count">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_weight="0.5"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/internal_tag_count">
+            </TextView>
+            <TextView android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:gravity="right"
+                      android:id="@+id/internal_tag_count">
+            </TextView>
+        </TableRow>
+    </TableLayout>
+    <Button android:id="@+id/syncButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/synchronize"
+            android:layout_weight="0">
+    </Button>
 </LinearLayout>

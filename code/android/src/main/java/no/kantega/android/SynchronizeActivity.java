@@ -3,6 +3,7 @@ package no.kantega.android;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,12 +12,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
+import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.GsonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,8 +28,12 @@ public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG = 0;
+    public static final String PREFS_NAME = "SynchronizePreferences";
     private Transactions db;
     private ProgressDialog progressDialog;
+    private TextView lastSynchronized;
+    private TextView transactionCount;
+    private TextView tagCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
@@ -45,6 +53,26 @@ public class SynchronizeActivity extends Activity {
             }
         });
         db = new Transactions(getApplicationContext());
+        lastSynchronized = (TextView) findViewById(R.id.last_synchronized);
+        transactionCount = (TextView) findViewById(R.id.internal_t_count);
+        tagCount = (TextView) findViewById(R.id.internal_tag_count);
+        updateStats();
+    }
+
+    private void updateStats() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        lastSynchronized.setText(settings.getString("syncDate",
+                getResources().getString(R.string.not_synchronized)));
+        transactionCount.setText(String.valueOf(db.getCount()));
+        tagCount.setText(String.valueOf(db.getTagCount()));
+    }
+
+    private void saveStats() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("syncDate", FmtUtil.dateToString("yyyy-MM-dd HH:mm:ss",
+                new Date()));
+        editor.commit();
     }
 
     /**
@@ -151,6 +179,8 @@ public class SynchronizeActivity extends Activity {
         @Override
         protected void onPostExecute(List<Transaction> transactions) {
             progressDialog.dismiss();
+            saveStats();
+            updateStats();
         }
     }
 }
