@@ -3,13 +3,16 @@ package no.kantega.android;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.FmtUtil;
@@ -85,6 +88,19 @@ public class TransactionsActivity extends ListActivity {
             listAdapter.notifyDataSetChanged();
         }
     };
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        String selection = l.getItemAtPosition(position).toString();
+        Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
+        Object o = l.getItemAtPosition(position);
+        if (o instanceof Transaction) {
+            Transaction t = (Transaction) o;
+            intent.putExtra("transaction", t);
+            startActivity(intent);
+        }
+    }
 
     private class OrderAdapter extends ArrayAdapter<Transaction> {
 
