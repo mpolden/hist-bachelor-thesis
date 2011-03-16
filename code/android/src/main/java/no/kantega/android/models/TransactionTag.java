@@ -3,8 +3,10 @@ package no.kantega.android.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable(tableName = "transactiontags")
-public class TransactionTag {
+public class TransactionTag implements Serializable {
 
     @DatabaseField(generatedId = true)
     private Integer id;
