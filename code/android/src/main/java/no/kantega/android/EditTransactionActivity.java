@@ -17,45 +17,42 @@ import java.util.Date;
 import java.util.List;
 
 public class EditTransactionActivity extends Activity {
+
     private Transactions db;
     private List<String> categories;
-    
     private Bundle extras;
     private Transaction t;
     private String selectedTransactionTag;
-
     private int pickYear;
     private int pickMonth;
     private int pickDay;
     private static final int DATE_DIALOG_ID = 0;
-
     private EditText text;
     private Button date;
     private EditText amount;
     private Spinner category;
-
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             boolean editTransactionOk = true;
-
             TransactionTag ttag = new TransactionTag();
             ttag.setName(selectedTransactionTag);
             Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth, pickDay));
-
             if (amount.getText().toString().trim() != "" && FmtUtil.isNumber(amount.getText().toString())) {
                 t.setAmountOut(Double.parseDouble(amount.getText().toString()));
             } else {
-                Toast.makeText(getApplicationContext(), "Invalid amount", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.invalid_amount,
+                        Toast.LENGTH_LONG).show();
                 editTransactionOk = false;
             }
             if (editTransactionOk) {
                 t.setText(text.getText().toString());
                 t.setTag(ttag);
                 t.setAccountingDate(d);
-                t.setFixedDate(d);                
+                t.setFixedDate(d);
                 db.update(t);
-                Toast.makeText(getApplicationContext(), "Transaction updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                        Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -65,29 +62,23 @@ public class EditTransactionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edittransaction);
-
         extras = getIntent().getExtras();
-        t = (Transaction)extras.getSerializable("transaction");
-
+        t = (Transaction) extras.getSerializable("transaction");
         this.db = new Transactions(getApplicationContext());
-
-        Button editButton = (Button)findViewById(R.id.edittransaction_button_edittransaction);
+        Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
-
     }
 
     private void setupViews() {
-        text = (EditText)findViewById(R.id.edittransaction_edittext_text);
-        date = (Button)findViewById(R.id.edittransaction_button_pickDate);
-        amount = (EditText)findViewById(R.id.edittransaction_edittext_amount);
-        category = (Spinner)findViewById(R.id.edittransaction_spinner_category);
-
+        text = (EditText) findViewById(R.id.edittransaction_edittext_text);
+        date = (Button) findViewById(R.id.edittransaction_button_pickDate);
+        amount = (EditText) findViewById(R.id.edittransaction_edittext_amount);
+        category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
         selectedTransactionTag = t.getTag().getName();
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
         amount.setText(t.getAmountOut().toString());
-
         date.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
@@ -98,16 +89,13 @@ public class EditTransactionActivity extends Activity {
         pickMonth = c.get(Calendar.MONTH);
         pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
-
         fillCategoryList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
-
         int spinnerPosition = adapter.getPosition(selectedTransactionTag);
         category.setSelection(spinnerPosition);
-        
     }
 
     // updates the date we display in the TextView
