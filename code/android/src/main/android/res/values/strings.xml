@@ -20,4 +20,8 @@
     <string name="per_week">Per week</string>
     <string name="last_transactions">Last transactions</string>
     <string name="category">Category</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="retrieving_date">Retrieving data ...</string>
+    <string name="invalid_amount">Invalid amount</string>
+    <string name="transaction_updated">Transaction updated</string>
 </resources>

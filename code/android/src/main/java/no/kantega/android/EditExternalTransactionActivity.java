@@ -13,27 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditExternalTransactionActivity extends Activity {
+
     private Transaction t;
     private Bundle extras;
     private Transactions db;
     private List<String> categories;
     private String selectedTransactionTag;
-
     private TextView text;
     private TextView date;
     private TextView amount;
     private Spinner category;
-
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             boolean editTransactionOk = true;
-
             TransactionTag ttag = new TransactionTag();
             ttag.setName(selectedTransactionTag);
             t.setTag(ttag);
             db.update(t);
-            Toast.makeText(getApplicationContext(), "Transaction updated", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
             finish();
         }
     };
@@ -41,35 +39,28 @@ public class EditExternalTransactionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editexternaltransaction);
-
         extras = getIntent().getExtras();
-        t = (Transaction)extras.getSerializable("transaction");
-
+        t = (Transaction) extras.getSerializable("transaction");
         this.db = new Transactions(getApplicationContext());
-
-        Button editButton = (Button)findViewById(R.id.editexternaltransaction_button_edittransaction);
+        Button editButton = (Button) findViewById(R.id.editexternaltransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
-
     }
 
     private void setupViews() {
-        text = (TextView)findViewById(R.id.editexternaltransaction_textview_text);
-        date = (TextView)findViewById(R.id.editexternaltransaction_textview_date);
-        amount = (TextView)findViewById(R.id.editexternaltransaction_textview_amount);
-        category = (Spinner)findViewById(R.id.editexternaltransaction_spinner_category);
-
+        text = (TextView) findViewById(R.id.editexternaltransaction_textview_text);
+        date = (TextView) findViewById(R.id.editexternaltransaction_textview_date);
+        amount = (TextView) findViewById(R.id.editexternaltransaction_textview_amount);
+        category = (Spinner) findViewById(R.id.editexternaltransaction_spinner_category);
         selectedTransactionTag = t.getTag().getName();
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
         amount.setText(t.getAmountOut().toString());
-
         fillCategoryList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
-
         int spinnerPosition = adapter.getPosition(selectedTransactionTag);
         category.setSelection(spinnerPosition);
     }

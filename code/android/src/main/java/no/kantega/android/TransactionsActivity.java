@@ -47,9 +47,11 @@ public class TransactionsActivity extends ListActivity {
                 getTransactions();
             }
         };
-        Thread thread = new Thread(null, viewOrders, "MagentoBackground");
+        Thread thread = new Thread(null, viewOrders);
         thread.start();
-        progressDialog = ProgressDialog.show(TransactionsActivity.this, "Please wait...", "Retrieving data ...",
+        progressDialog = ProgressDialog.show(TransactionsActivity.this,
+                getResources().getString(R.string.please_wait),
+                getResources().getString(R.string.retrieving_date),
                 true);
     }
 
