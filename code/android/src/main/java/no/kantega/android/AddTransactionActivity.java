@@ -87,6 +87,7 @@ public class AddTransactionActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        selectedTransactionTag = adapter.getItem(0);
     }
 
     private void fillCategoryList() {
@@ -130,8 +131,6 @@ public class AddTransactionActivity extends Activity {
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
             selectedTransactionTag = parent.getItemAtPosition(pos).toString();
-            Toast.makeText(parent.getContext(), "The category is " +
-                    selectedTransactionTag, Toast.LENGTH_LONG).show();
         }
 
         public void onNothingSelected(AdapterView parent) {

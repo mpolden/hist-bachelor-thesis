@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical" android:background="@drawable/background3">
+
+    <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
+                 android:layout_height="wrap_content" android:stretchColumns="1">
+
+        <TableRow>
+            <TextView android:layout_weight="1" android:layout_width="0dip" android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content" android:text="Text: "></TextView>
+            <TextView android:id="@+id/editexternaltransaction_textview_text" android:layout_weight="1" android:layout_width="0dip"
+                      android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_weight="1" android:layout_width="0dip" android:id="@+id/dateDisplay"
+                      android:padding="3dip" android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content" android:text="Date: "/>
+            <TextView android:id="@+id/editexternaltransaction_textview_date" android:layout_weight="1" android:layout_width="0dip"
+                    android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_weight="1" android:layout_width="0dip" android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content" android:text="Amount: "></TextView>
+            <TextView android:id="@+id/editexternaltransaction_textview_amount" android:layout_weight="1" android:layout_width="0dip"
+                      android:layout_height="wrap_content"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_weight="1" android:layout_width="0dip" android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/category_prompt"/>
+            <Spinner android:id="@+id/editexternaltransaction_spinner_category" android:layout_weight="1" android:layout_width="0dip"
+                     android:layout_height="wrap_content" android:prompt="@string/category_prompt"/>
+        </TableRow>
+    </TableLayout>
+    <Button android:text="Edit transaction" android:id="@+id/editexternaltransaction_button_edittransaction" android:layout_weight="0"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
+</LinearLayout>
