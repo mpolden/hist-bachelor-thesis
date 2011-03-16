@@ -34,6 +34,8 @@ public class SynchronizeActivity extends Activity {
     private TextView lastSynchronized;
     private TextView transactionCount;
     private TextView tagCount;
+    private int dbTransactionCount;
+    private int dbTagCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
@@ -56,16 +58,31 @@ public class SynchronizeActivity extends Activity {
         lastSynchronized = (TextView) findViewById(R.id.last_synchronized);
         transactionCount = (TextView) findViewById(R.id.internal_t_count);
         tagCount = (TextView) findViewById(R.id.internal_tag_count);
-        updateStats();
     }
 
-    private void updateStats() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        lastSynchronized.setText(settings.getString("syncDate",
-                getResources().getString(R.string.not_synchronized)));
-        transactionCount.setText(String.valueOf(db.getCount()));
-        tagCount.setText(String.valueOf(db.getTagCount()));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dbTransactionCount = db.getCount();
+                dbTagCount = db.getTagCount();
+                runOnUiThread(populate);
+            }
+        }).start();
     }
+
+    private Runnable populate = new Runnable() {
+        @Override
+        public void run() {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            lastSynchronized.setText(settings.getString("syncDate",
+                    getResources().getString(R.string.not_synchronized)));
+            transactionCount.setText(String.valueOf(dbTransactionCount));
+            tagCount.setText(String.valueOf(dbTagCount));
+        }
+    };
 
     private void saveStats() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -180,7 +197,7 @@ public class SynchronizeActivity extends Activity {
         protected void onPostExecute(List<Transaction> transactions) {
             progressDialog.dismiss();
             saveStats();
-            updateStats();
+            onResume();
         }
     }
 }
