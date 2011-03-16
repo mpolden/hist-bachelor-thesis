@@ -3,7 +3,6 @@ package no.kantega.android;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -55,9 +54,9 @@ public class TransactionsActivity extends ListActivity {
     protected void onResume() {
         super.onResume();
         long transactionCount = db.getCount();
-        if (transactions.size() < transactionCount) {
-            refreshList();
-        }
+        //if (transactions.size() < transactionCount) {
+        refreshList();
+        //}
     }
 
     private void getTransactions() {
@@ -94,7 +93,7 @@ public class TransactionsActivity extends ListActivity {
         Object o = l.getItemAtPosition(position);
         if (o instanceof Transaction) {
             Transaction t = (Transaction) o;
-            if(t.getInternal()) {
+            if (t.getInternal()) {
                 intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
             } else {
                 intent = new Intent(getApplicationContext(), EditExternalTransactionActivity.class);
@@ -135,7 +134,7 @@ public class TransactionsActivity extends ListActivity {
                     text.setText(FmtUtil.trimTransactionText(t.getText()));
                 }
                 if (category != null) {
-                    category.setText(t.getTag().getName());
+                    category.setText(t.getTag() == null ? "" : t.getTag().getName());
                     image.setImageDrawable(getImageIdByTag(t.getTag()));
                 }
                 if (amount != null) {
