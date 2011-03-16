@@ -18,19 +18,19 @@
         <TableRow>
             <TextView android:id="@+id/top3_category_1"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:text="Amount 1" android:id="@+id/top3_amount_1"
+            <TextView android:id="@+id/top3_amount_1"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
         </TableRow>
         <TableRow>
             <TextView android:id="@+id/top3_category_2"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:text="Amount 2" android:id="@+id/top3_amount_2"
+            <TextView android:id="@+id/top3_amount_2"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
         </TableRow>
         <TableRow>
             <TextView android:id="@+id/top3_category_3"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:text="Amount 3" android:id="@+id/top3_amount_3"
+            <TextView android:id="@+id/top3_amount_3"
                       android:padding="3dip" style="@style/DefaultTextFont"/>
         </TableRow>
         <View android:layout_height="2dip" android:background="#FF909090"/>

@@ -61,7 +61,7 @@ public class TransactionsActivity extends ListActivity {
 
     private void getTransactions() {
         try {
-            transactions = new ArrayList<Transaction>(db.get(1000));
+            transactions = new ArrayList<Transaction>(db.get(5));
             //Thread.sleep(2000);
             Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
