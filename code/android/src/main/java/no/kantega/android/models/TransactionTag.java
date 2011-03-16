@@ -10,6 +10,8 @@ public class TransactionTag {
     private Integer id;
     @DatabaseField(unique = true)
     private String name;
+    @DatabaseField
+    private Integer imageId;
 
     public TransactionTag() {
     }
@@ -47,5 +49,13 @@ public class TransactionTag {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
     }
 }
