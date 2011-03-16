@@ -20,6 +20,7 @@ public class Transactions {
     private static final String TAG = Transactions.class.getSimpleName();
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final int INSERT_SUCCESS = 1;
+    private static final int UPDATE_SUCCESS = 1;
     private Dao<Transaction, Integer> transactionDao;
     private Dao<TransactionTag, Integer> transactionTagDao;
     private Dao<TransactionType, Integer> transactionTypeDao;
@@ -98,6 +99,21 @@ public class Transactions {
             return transactionDao.create(t) == INSERT_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
+        }
+        return false;
+    }
+
+    /**
+     * Update a transaction
+     *
+     * @param t
+     * @return True if the update was successful
+     */
+    public boolean update(Transaction t) {
+        try {
+            return transactionDao.update(t) == UPDATE_SUCCESS;
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to update transaction", e);
         }
         return false;
     }
