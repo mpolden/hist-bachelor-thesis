@@ -9,7 +9,6 @@ import android.widget.*;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
-import no.kantega.android.models.TransactionType;
 import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class EditTransactionActivity extends Activity {
                 t.setAccountingDate(d);
                 t.setFixedDate(d);                
                 db.update(t);
-                Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Transaction updated", Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -72,7 +71,7 @@ public class EditTransactionActivity extends Activity {
 
         this.db = new Transactions(getApplicationContext());
 
-        Button editButton = (Button)findViewById(R.id.eidittransaction_button_edittransaction);
+        Button editButton = (Button)findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
 

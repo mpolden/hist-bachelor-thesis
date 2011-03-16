@@ -10,7 +10,7 @@
             <TextView android:layout_weight="1" android:layout_width="0dip" android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content" android:text="Text: "></TextView>
-            <EditText android:id="@+id/edittransaction_edittext_text" android:layout_weight="1" android:layout_width="0dip"
+            <TextView android:id="@+id/editexternaltransaction_textview_text" android:layout_weight="1" android:layout_width="0dip"
                       android:layout_height="wrap_content"/>
         </TableRow>
 
@@ -18,7 +18,7 @@
             <TextView android:layout_weight="1" android:layout_width="0dip" android:id="@+id/dateDisplay"
                       android:padding="3dip" android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content" android:text="Date: "/>
-            <Button android:id="@+id/edittransaction_button_pickDate" android:layout_weight="1" android:layout_width="0dip"
+            <TextView android:id="@+id/editexternaltransaction_textview_date" android:layout_weight="1" android:layout_width="0dip"
                     android:layout_height="wrap_content"/>
         </TableRow>
 
@@ -26,9 +26,8 @@
             <TextView android:layout_weight="1" android:layout_width="0dip" android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content" android:text="Amount: "></TextView>
-            <EditText android:id="@+id/edittransaction_edittext_amount" android:layout_weight="1" android:layout_width="0dip"
-                      android:layout_height="wrap_content"
-                      android:inputType="numberDecimal"/>
+            <TextView android:id="@+id/editexternaltransaction_textview_amount" android:layout_weight="1" android:layout_width="0dip"
+                      android:layout_height="wrap_content"/>
         </TableRow>
 
         <TableRow>
@@ -36,10 +35,10 @@
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
                       android:text="@string/category_prompt"/>
-            <Spinner android:id="@+id/edittransaction_spinner_category" android:layout_weight="1" android:layout_width="0dip"
+            <Spinner android:id="@+id/editexternaltransaction_spinner_category" android:layout_weight="1" android:layout_width="0dip"
                      android:layout_height="wrap_content" android:prompt="@string/category_prompt"/>
         </TableRow>
     </TableLayout>
-    <Button android:text="Edit transaction" android:id="@+id/edittransaction_button_edittransaction" android:layout_weight="0"
+    <Button android:text="Edit transaction" android:id="@+id/editexternaltransaction_button_edittransaction" android:layout_weight="0"
             android:layout_width="fill_parent" android:layout_height="wrap_content"></Button>
 </LinearLayout>

@@ -87,6 +87,7 @@ public class AddTransactionActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        selectedTransactionTag = adapter.getItem(0);
     }
 
     private void fillCategoryList() {
