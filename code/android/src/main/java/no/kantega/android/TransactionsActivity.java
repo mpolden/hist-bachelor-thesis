@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
@@ -88,7 +91,6 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String selection = l.getItemAtPosition(position).toString();
-        Toast.makeText(this, selection, Toast.LENGTH_LONG).show();
         Intent intent = null;
         Object o = l.getItemAtPosition(position);
         if (o instanceof Transaction) {
