@@ -111,6 +111,8 @@ public class Transactions {
      */
     public boolean update(Transaction t) {
         try {
+            t.setTag(addOrGetExistingTag(t.getTag()));
+            t.setType(addOrGetExistingType(t.getType()));
             return transactionDao.update(t) == UPDATE_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to update transaction", e);
