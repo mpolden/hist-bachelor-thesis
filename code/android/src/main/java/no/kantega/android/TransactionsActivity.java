@@ -33,6 +33,7 @@ public class TransactionsActivity extends ListActivity {
         transactions = new ArrayList<Transaction>();
         listAdapter = new OrderAdapter(this, R.layout.transactionrow, transactions);
         setListAdapter(listAdapter);
+        
 
     }
 
@@ -54,15 +55,15 @@ public class TransactionsActivity extends ListActivity {
         super.onResume();
         long transactionCount = db.getCount();
         if (transactions.size() < transactionCount) {
-            listAdapter.notifyDataSetInvalidated(); // clear?
             refreshList();
+
         }
     }
 
     private void getTransactions() {
         try {
             transactions = new ArrayList<Transaction>(db.get(1000));
-            Thread.sleep(2000);
+            //Thread.sleep(2000);
             Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
             Log.e("BACKGROUND_PROC", e.getMessage());
@@ -74,6 +75,7 @@ public class TransactionsActivity extends ListActivity {
         @Override
         public void run() {
             if (transactions != null && transactions.size() > 0) {
+                listAdapter.clear();
                 listAdapter.notifyDataSetChanged();
                 for (int i = 0; i < transactions.size(); i++) {
                     listAdapter.add(transactions.get(i));

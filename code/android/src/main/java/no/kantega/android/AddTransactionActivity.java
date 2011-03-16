@@ -69,7 +69,6 @@ public class AddTransactionActivity extends Activity {
         setContentView(R.layout.addtransaction);
         Button addTransaction = (Button) findViewById(R.id.button_add_transaction);
         addTransaction.setOnClickListener(addTransactionButtonListener);
-        //mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
         pickDate = (Button) findViewById(R.id.pickDate);
         pickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -82,8 +81,6 @@ public class AddTransactionActivity extends Activity {
         pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
         Spinner spinner = (Spinner) findViewById(R.id.spinner_category);
-        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        //        this, R.array.category_array, android.R.layout.simple_spinner_item);
         this.db = new Transactions(getApplicationContext());
         fillCategoryList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
