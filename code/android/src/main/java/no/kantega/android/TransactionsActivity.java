@@ -55,14 +55,15 @@ public class TransactionsActivity extends ListActivity {
     protected void onResume() {
         super.onResume();
         long transactionCount = db.getCount();
-        if (transactions.size() < transactionCount) {
+        refreshList();
+        /*if (transactions.size() < transactionCount) {
             refreshList();
-        }
+        } */
     }
 
     private void getTransactions() {
         try {
-            transactions = new ArrayList<Transaction>(db.get(1000));
+            transactions = new ArrayList<Transaction>(db.get(5));
             //Thread.sleep(2000);
             Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
