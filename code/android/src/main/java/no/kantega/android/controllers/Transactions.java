@@ -153,6 +153,21 @@ public class Transactions {
     }
 
     /**
+     * Retrieve total transaction tag count
+     *
+     * @return Transaction tag count
+     */
+    public int getTagCount() {
+        try {
+            GenericRawResults<String[]> rawResults = transactionDao.queryRaw("SELECT COUNT(*) FROM transactiontags");
+            return Integer.parseInt(rawResults.getResults().get(0)[0]);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve transaction tag count", e);
+        }
+        return 0;
+    }
+
+    /**
      * Retrieve a list of aggregated tags sorted by sum of all transactions in that tag
      *
      * @param limit
