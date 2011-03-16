@@ -112,7 +112,8 @@ public class Transactions {
         List<Transaction> transactions = Collections.emptyList();
         try {
             QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
-            queryBuilder.orderBy("accountingDate", false).limit(limit);
+            queryBuilder.orderBy("accountingDate", false).
+                    orderBy("timestamp", false).limit(limit);
             transactions = transactionDao.query(queryBuilder.prepare());
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve transactions", e);
@@ -209,7 +210,6 @@ public class Transactions {
                 rawResults.close();
                 return avg;
             }
-
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve average consumption");
         }
