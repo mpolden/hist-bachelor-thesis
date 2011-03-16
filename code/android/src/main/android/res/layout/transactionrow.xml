@@ -14,7 +14,8 @@
                      android:stretchColumns="1">
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
-                          android:text="Date" android:padding="3dip"
+                          android:text="@string/transaction_date"
+                          android:padding="3dip"
                           android:textStyle="bold"
                           style="@style/DefaultTextFont"></TextView>
                 <TextView android:id="@+id/trow_tv_date"
@@ -24,7 +25,8 @@
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
-                          android:text="Text" android:padding="3dip"
+                          android:text="@string/transaction_text"
+                          android:padding="3dip"
                           android:textStyle="bold"
                           style="@style/DefaultTextFont"></TextView>
                 <TextView android:id="@+id/trow_tv_text"
@@ -34,7 +36,7 @@
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
-                          android:text="Category" android:padding="3dip"
+                          android:text="@string/category" android:padding="3dip"
                           android:textStyle="bold"
                           style="@style/DefaultTextFont"></TextView>
                 <TextView android:id="@+id/trow_tv_category"
@@ -44,7 +46,8 @@
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
-                          android:text="Amount" android:padding="3dip"
+                          android:text="@string/transaction_amount"
+                          android:padding="3dip"
                           android:textStyle="bold"
                           style="@style/DefaultTextFont"></TextView>
                 <TextView android:id="@+id/trow_tv_amount"

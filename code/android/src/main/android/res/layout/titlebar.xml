@@ -6,8 +6,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content" android:id="@+id/titleTvLeft"
               android:textColor="#FFFFFF"
-              android:textStyle="bold"
-              android:text="left"></TextView>
+              android:textStyle="bold"></TextView>
     <ImageButton android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:id="@+id/addButton"

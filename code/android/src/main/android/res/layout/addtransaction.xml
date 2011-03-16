@@ -14,7 +14,7 @@
                       android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="Text: "></TextView>
+                      android:text="@string/transaction_text"></TextView>
             <EditText android:id="@+id/edittext_text" android:layout_weight="1"
                       android:layout_width="0dip"
                       android:layout_height="wrap_content"/>
@@ -26,11 +26,11 @@
                       android:padding="3dip" android:textStyle="bold"
                       style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="Date: "/>
+                      android:text="@string/transaction_date"/>
             <Button android:id="@+id/pickDate" android:layout_weight="1"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:text="Change the date"/>
+                    android:text="@string/transaction_change_date"/>
         </TableRow>
 
         <TableRow>
@@ -38,7 +38,7 @@
                       android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="Amount: "></TextView>
+                      android:text="@string/transaction_amount"></TextView>
             <EditText android:id="@+id/edittext_amount"
                       android:layout_weight="1" android:layout_width="0dip"
                       android:layout_height="wrap_content"
