@@ -7,13 +7,10 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.*;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
@@ -21,7 +18,17 @@ import no.kantega.android.utils.FmtUtil;
 
 import java.util.ArrayList;
 
-public class TransactionsActivity extends ListActivity {
+public class TransactionsActivity extends ListActivity implements GestureDetector.OnGestureListener {
+
+    private final int SWIPE_MIN_DISTANCE = 120;
+    private final int SWIPE_MAX_OFF_PATH = 250;
+    private final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private GestureDetector gestureScanner;
+    private Animation slideLeftIn;
+    private Animation slideLeftOut;
+    private Animation slideRightIn;
+    private Animation slideRightOut;
+    private ViewFlipper viewFlipper;
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private Transactions db;
@@ -34,12 +41,28 @@ public class TransactionsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
+
+        viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+        slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+        slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+        slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+
+        gestureScanner = new GestureDetector(this);
+
         this.db = new Transactions(getApplicationContext());
         transactions = new ArrayList<Transaction>();
         listAdapter = new OrderAdapter(this, R.layout.transactionrow, transactions);
         setListAdapter(listAdapter);
         //refreshList();
     }
+
+    @Override
+	public boolean onTouchEvent(MotionEvent me)
+	{
+		//return false;
+		return gestureScanner.onTouchEvent(me);
+	}
 
     private void refreshList() {
         viewOrders = new Runnable() {
@@ -66,8 +89,6 @@ public class TransactionsActivity extends ListActivity {
         //listAdapter.notifyDataSetChanged();
         //}
     }
-
-
 
 
     private void getTransactions() {
@@ -158,6 +179,62 @@ public class TransactionsActivity extends ListActivity {
         }
     }
 
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.i("d", e1.toString());
+        Log.i("e2", e2.toString());
+        try {
+            if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                Toast.makeText(TransactionsActivity.this, "Left Swipe", Toast.LENGTH_SHORT).show();
+                viewFlipper.setInAnimation(slideLeftIn);
+                viewFlipper.setOutAnimation(slideLeftOut);
+                viewFlipper.showNext();
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                Toast.makeText(TransactionsActivity.this, "Right Swipe", Toast.LENGTH_SHORT).show();
+                viewFlipper.setInAnimation(slideRightIn);
+                viewFlipper.setInAnimation(slideRightOut);
+                viewFlipper.showPrevious();
+            }
+        } catch (Exception e) {
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent me) {
+        // TODO Auto-generated method stub
+        //Log.d("soydan", String.valueOf(deb++));
+        gestureScanner.onTouchEvent(me);
+        return super.dispatchTouchEvent(me);
+    }
+    
     private Drawable getImageIdByTag(TransactionTag tag) {
         if ("Ferie".equals(tag.getName())) {
             return getResources().getDrawable(R.drawable.suitcase);
