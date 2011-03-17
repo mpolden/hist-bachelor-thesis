@@ -23,7 +23,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
     private final int SWIPE_MIN_DISTANCE = 120;
     private final int SWIPE_MAX_OFF_PATH = 250;
     private final int SWIPE_THRESHOLD_VELOCITY = 200;
-    private GestureDetector gestureScanner;
+    private GestureDetector detector;
     private Animation slideLeftIn;
     private Animation slideLeftOut;
     private Animation slideRightIn;
@@ -48,7 +48,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
         slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
 
-        gestureScanner = new GestureDetector(this);
+        detector = new GestureDetector(this, this);
 
         this.db = new Transactions(getApplicationContext());
         transactions = new ArrayList<Transaction>();
@@ -58,11 +58,13 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
     }
 
     @Override
-	public boolean onTouchEvent(MotionEvent me)
-	{
-		//return false;
-		return gestureScanner.onTouchEvent(me);
-	}
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        if (this.detector.onTouchEvent(motionEvent)) {
+            return true;
+        }
+        //no gesture detected, let Activity handle touch event
+        return super.onTouchEvent(motionEvent);
+    }
 
     private void refreshList() {
         viewOrders = new Runnable() {
@@ -181,8 +183,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Log.i("d", e1.toString());
-        Log.i("e2", e2.toString());
+        Log.d("---onFling---", e1.toString() + e2.toString());
         try {
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
             if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -199,42 +200,46 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         } catch (Exception e) {
 
         }
+        return false;
+    }
+
+    
+    @Override
+    public boolean onDown(MotionEvent e) {
         return true;
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        Log.d("---onSingleTapUp---", e.toString());
+        return false;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        Log.d("---onScroll---", e1.toString() + e2.toString());
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Log.d("---onShowPress---", e.toString());
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Log.d("---onLongPress---", e.toString());
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent me) {
         // TODO Auto-generated method stub
         //Log.d("soydan", String.valueOf(deb++));
-        gestureScanner.onTouchEvent(me);
+        detector.onTouchEvent(me);
         return super.dispatchTouchEvent(me);
     }
-    
+
     private Drawable getImageIdByTag(TransactionTag tag) {
         if ("Ferie".equals(tag.getName())) {
             return getResources().getDrawable(R.drawable.suitcase);
