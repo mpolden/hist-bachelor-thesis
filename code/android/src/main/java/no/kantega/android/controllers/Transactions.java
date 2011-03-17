@@ -150,6 +150,23 @@ public class Transactions {
     }
 
     /**
+     * Get the latest external transaction
+     *
+     * @return Transaction
+     */
+    public Transaction getLatestExternal() {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        try {
+            queryBuilder.setWhere(queryBuilder.where().eq("internal", false));
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to set where condition", e);
+        }
+        List<Transaction> transactions = get(queryBuilder);
+        return transactions.isEmpty() ? null : transactions.get(0);
+    }
+
+    /**
      * Retrieve a list of transactions using the given query builder
      *
      * @param queryBuilder
@@ -294,6 +311,7 @@ public class Transactions {
     /**
      * Empty all tables
      */
+    @Deprecated
     public void emptyTables() {
         try {
             transactionDao.queryRaw("DELETE FROM transactions");

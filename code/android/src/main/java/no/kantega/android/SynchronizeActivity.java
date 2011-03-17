@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.gson.GsonBuilder;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.FmtUtil;
@@ -127,22 +128,23 @@ public class SynchronizeActivity extends Activity {
         switch (id) {
             case PROGRESS_DIALOG: {
                 progressDialog.setProgress(0);
-                populateDatabase();
+                synchronizeDatabase();
             }
         }
     }
 
     /**
-     * Read URL from properties file and start a task that populates the
+     * Read URL from properties file and start a task that synchronizes the
      * database
      */
-    private void populateDatabase() {
+    private void synchronizeDatabase() {
         try {
             InputStream inputStream = getAssets().open("url.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
             new TransactionsTask().execute(
-                    properties.get("allTransactions").toString());
+                    properties.get("freshTransactions").toString(),
+                    properties.get("saveTransactions").toString());
         } catch (IOException e) {
             Log.e(TAG, "Could not read properties file", e);
         }
@@ -172,18 +174,41 @@ public class SynchronizeActivity extends Activity {
 
         @Override
         protected List<Transaction> doInBackground(String... urls) {
+            getTransactions(urls[0]);
+            putTransactions(urls[1]);
+            return null;
+        }
+
+        private void putTransactions(String url) {
+            List<Transaction> transactions = db.getDirty();
+            if (!transactions.isEmpty()) {
+                GsonBuilder gson = new GsonBuilder().
+                        setDateFormat("yyyy-MM-dd HH:mm:ss");
+                String json = gson.create().toJson(transactions);
+                GsonUtil.postJSON(url, json);
+                for (Transaction t : transactions) {
+                    t.setDirty(false);
+                    db.update(t);
+                }
+            }
+        }
+
+        private void getTransactions(String url) {
+            Transaction latestTransaction = db.getLatestExternal();
+            long timestamp = 0;
+            if (latestTransaction != null) {
+                timestamp = latestTransaction.getAccountingDate().getTime();
+            }
             List<Transaction> transactions = GsonUtil.parseTransactions(
-                    GsonUtil.getBody(urls[0]));
+                    GsonUtil.getBody(String.format(url, timestamp)));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
-                db.emptyTables();
                 int i = 0;
                 for (Transaction t : transactions) {
                     db.add(t);
                     publishProgress(++i);
                 }
             }
-            return null;
         }
 
         @Override
