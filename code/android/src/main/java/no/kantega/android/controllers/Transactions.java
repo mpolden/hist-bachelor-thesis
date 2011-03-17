@@ -339,6 +339,7 @@ public class Transactions {
      */
     public void close() {
         if (helper != null) {
+            Log.d(TAG, "Closed database connection");
             helper.close();
         }
     }
