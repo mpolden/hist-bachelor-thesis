@@ -104,35 +104,36 @@ public class Transactions extends Controller {
         }.getType();
         final List<Transaction> transactions = builder.create().fromJson(json,
                 listType);
-        List<Transaction> added = new ArrayList<Transaction>();
+        List<Transaction> updated = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
-                Transaction serverTransaction = Transaction.findById(t.id);
-                if (serverTransaction != null) {
-                    serverTransaction.accountingDate = t.accountingDate;
-                    serverTransaction.fixedDate = t.fixedDate;
-                    serverTransaction.amountIn = t.amountIn;
-                    serverTransaction.amountOut = t.amountOut;
-                    serverTransaction.text = t.text;
-                    serverTransaction.archiveRef = t.archiveRef;
-                    serverTransaction.internal = t.internal;
-                    serverTransaction.timestamp = t.timestamp;
-                    serverTransaction.dirty = false;
-                    serverTransaction.tag = addOrSaveTag(t.tag.name);
-                    serverTransaction.type = addOrSaveType(t.type.name);
-                    serverTransaction.save();
+                Transaction existing = Transaction.findById(t.id);
+                if (existing != null) {
+                    existing.accountingDate = t.accountingDate;
+                    existing.fixedDate = t.fixedDate;
+                    existing.amountIn = t.amountIn;
+                    existing.amountOut = t.amountOut;
+                    existing.text = t.text;
+                    existing.archiveRef = t.archiveRef;
+                    existing.internal = t.internal;
+                    existing.timestamp = t.timestamp;
+                    existing.dirty = false;
+                    existing.tag = addOrSaveTag(t.tag.name);
+                    existing.type = addOrSaveType(t.type.name);
+                    existing.save();
+                    updated.add(existing);
                 } else {
                     t.id = null;
                     t.tag = addOrSaveTag(t.tag.name);
                     t.type = addOrSaveType(t.type.name);
                     t.dirty = false;
                     t.save();
-                    added.add(t);
+                    updated.add(t);
                 }
             }
         }
         renderJSON(GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
-                added));
+                updated));
     }
 
     private static TransactionTag addOrSaveTag(String name) {
