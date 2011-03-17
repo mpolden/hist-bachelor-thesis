@@ -33,6 +33,8 @@ public class Transaction implements Serializable {
     private Long timestamp;
     @DatabaseField
     private Boolean dirty;
+    @DatabaseField(persisted = false)
+    private Boolean changed;
 
     public Transaction() {
     }
@@ -123,6 +125,22 @@ public class Transaction implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean getDirty() {
+        return dirty;
+    }
+
+    public void setDirty(Boolean dirty) {
+        this.dirty = dirty;
+    }
+
+    public Boolean getChanged() {
+        return changed;
+    }
+
+    public void setChanged(Boolean changed) {
+        this.changed = changed;
     }
 
     @Override
