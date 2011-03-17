@@ -60,8 +60,8 @@ public class GsonUtil {
             add(new BasicNameValuePair("json", json));
         }};
         try {
-            method.setEntity(new UrlEncodedFormEntity(values));
-            HttpResponse response = httpClient.execute(method);
+            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
+            httpClient.execute(method);
         } catch (IOException e) {
             Log.d(TAG, "IOException", e);
         }
