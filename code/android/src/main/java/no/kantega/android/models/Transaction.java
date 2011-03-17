@@ -9,8 +9,10 @@ import java.util.Date;
 @DatabaseTable(tableName = "transactions")
 public class Transaction implements Serializable {
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField
     private int id;
+    @DatabaseField(generatedId = true)
+    private int clientId;
     @DatabaseField
     private Date accountingDate;
     @DatabaseField
@@ -48,7 +50,11 @@ public class Transaction implements Serializable {
     }
 
     public int getClientId() {
-        return id;
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public Date getAccountingDate() {
