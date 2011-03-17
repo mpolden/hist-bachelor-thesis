@@ -83,7 +83,7 @@ public class Transactions extends Controller {
         renderJSON(json);
     }
 
-    public static void save(String json) {
+    public static void save(JsonArray body) {
         final GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
             @Override
@@ -102,8 +102,7 @@ public class Transactions extends Controller {
         });
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
-        final List<Transaction> transactions = builder.create().fromJson(json,
-                listType);
+        final List<Transaction> transactions = builder.create().fromJson(body, listType);
         List<Transaction> updated = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
