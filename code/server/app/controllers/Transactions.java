@@ -61,11 +61,9 @@ public class Transactions extends Controller {
     }
 
     public static void transactions() {
-        List<Transaction> transactions = Transaction.
+        final List<Transaction> transactions = Transaction.
                 find("order by accountingDate desc, timestamp desc").fetch();
-        String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
-                transactions);
-        renderJSON(json);
+        renderJSON(GsonUtil.makeJSON(transactions));
     }
 
     @SuppressWarnings("unchecked")
@@ -76,15 +74,13 @@ public class Transactions extends Controller {
                 "order by accountingDate desc, timestamp desc");
         query.setParameter("timestamp", timestamp);
         query.setParameter("internal", false);
-        List<Transaction> transactions = query.getResultList();
-        String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
-                transactions);
-        renderJSON(json);
+        final List<Transaction> transactions = query.getResultList();
+        renderJSON(GsonUtil.makeJSON(transactions));
     }
 
     public static void save(JsonArray body) {
-        List<Transaction> transactions = GsonUtil.parseTransactions(body);
-        List<Transaction> updated = new ArrayList<Transaction>();
+        final List<Transaction> transactions = GsonUtil.parseTransactions(body);
+        final List<Transaction> updated = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
                 Transaction existing = Transaction.findById(t.id);
@@ -113,7 +109,6 @@ public class Transactions extends Controller {
                 }
             }
         }
-        renderJSON(GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
-                updated));
+        renderJSON(GsonUtil.makeJSON(updated));
     }
 }
