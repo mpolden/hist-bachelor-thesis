@@ -106,8 +106,10 @@ public class Transactions extends Controller {
                 listType);
         for (Transaction t : transactions) {
             if (t.dirty) {
+                t.id = null;
                 t.tag = addOrSaveTag(t.tag.name);
                 t.type = addOrSaveType(t.type.name);
+                t.dirty = false;
                 t.save();
             }
         }
