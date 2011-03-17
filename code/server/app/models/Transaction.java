@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 public class Transaction extends Model {
 
+    public int clientId;
     public Date accountingDate;
     public Date fixedDate;
     public double amountIn;
