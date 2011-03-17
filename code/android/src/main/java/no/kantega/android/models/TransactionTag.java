@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class TransactionTag implements Serializable {
 
     @DatabaseField(generatedId = true)
-    private Integer id;
+    private int id;
     @DatabaseField(unique = true)
     private String name;
     @DatabaseField
-    private Integer imageId;
+    private int imageId;
 
     public TransactionTag() {
     }
@@ -22,19 +22,12 @@ public class TransactionTag implements Serializable {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TransactionTag)) return false;
-        TransactionTag that = (TransactionTag) o;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
-        return true;
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return getName() != null ? getName().hashCode() : 0;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,19 +38,31 @@ public class TransactionTag implements Serializable {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getImageId() {
+    public int getImageId() {
         return imageId;
     }
 
-    public void setImageId(Integer imageId) {
+    public void setImageId(int imageId) {
         this.imageId = imageId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransactionTag)) return false;
+        TransactionTag that = (TransactionTag) o;
+        if (id != that.id) return false;
+        if (imageId != that.imageId) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + imageId;
+        return result;
     }
 }

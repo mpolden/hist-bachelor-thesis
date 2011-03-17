@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class TransactionType implements Serializable {
 
     @DatabaseField(generatedId = true)
-    private Integer id;
+    private int id;
     @DatabaseField(unique = true)
     private String name;
 
@@ -20,19 +20,12 @@ public class TransactionType implements Serializable {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TransactionType)) return false;
-        TransactionType that = (TransactionType) o;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
-        return true;
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return getName() != null ? getName().hashCode() : 0;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,11 +36,21 @@ public class TransactionType implements Serializable {
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransactionType)) return false;
+        TransactionType that = (TransactionType) o;
+        if (id != that.id) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
+        return true;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 }

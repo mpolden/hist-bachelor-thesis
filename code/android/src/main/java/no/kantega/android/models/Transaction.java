@@ -10,15 +10,15 @@ import java.util.Date;
 public class Transaction implements Serializable {
 
     @DatabaseField(generatedId = true)
-    private Integer id;
+    private int id;
     @DatabaseField
     private Date accountingDate;
     @DatabaseField
     private Date fixedDate;
     @DatabaseField
-    private Double amountIn;
+    private double amountIn;
     @DatabaseField
-    private Double amountOut;
+    private double amountOut;
     @DatabaseField
     private String text;
     @DatabaseField
@@ -28,15 +28,23 @@ public class Transaction implements Serializable {
     @DatabaseField(foreign = true, columnName = "tag_id", foreignAutoRefresh = true)
     private TransactionTag tag;
     @DatabaseField
-    private Boolean internal;
+    private boolean internal;
     @DatabaseField
-    private Long timestamp;
+    private long timestamp;
     @DatabaseField
-    private Boolean dirty;
+    private boolean dirty;
     @DatabaseField
-    private Boolean changed;
+    private boolean changed;
 
     public Transaction() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getAccountingDate() {
@@ -55,19 +63,19 @@ public class Transaction implements Serializable {
         this.fixedDate = fixedDate;
     }
 
-    public Double getAmountIn() {
+    public double getAmountIn() {
         return amountIn;
     }
 
-    public void setAmountIn(Double amountIn) {
+    public void setAmountIn(double amountIn) {
         this.amountIn = amountIn;
     }
 
-    public Double getAmountOut() {
+    public double getAmountOut() {
         return amountOut;
     }
 
-    public void setAmountOut(Double amountOut) {
+    public void setAmountOut(double amountOut) {
         this.amountOut = amountOut;
     }
 
@@ -103,43 +111,35 @@ public class Transaction implements Serializable {
         this.tag = tag;
     }
 
-    public Boolean getInternal() {
+    public boolean isInternal() {
         return internal;
     }
 
-    public void setInternal(Boolean internal) {
+    public void setInternal(boolean internal) {
         this.internal = internal;
     }
 
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Boolean getDirty() {
+    public boolean isDirty() {
         return dirty;
     }
 
-    public void setDirty(Boolean dirty) {
+    public void setDirty(boolean dirty) {
         this.dirty = dirty;
     }
 
-    public Boolean getChanged() {
+    public boolean isChanged() {
         return changed;
     }
 
-    public void setChanged(Boolean changed) {
+    public void setChanged(boolean changed) {
         this.changed = changed;
     }
 
@@ -148,23 +148,22 @@ public class Transaction implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Transaction)) return false;
         Transaction that = (Transaction) o;
+        if (Double.compare(that.amountIn, amountIn) != 0) return false;
+        if (Double.compare(that.amountOut, amountOut) != 0) return false;
+        if (changed != that.changed) return false;
+        if (dirty != that.dirty) return false;
+        if (id != that.id) return false;
+        if (internal != that.internal) return false;
+        if (timestamp != that.timestamp) return false;
         if (accountingDate != null ? !accountingDate.equals(that.accountingDate) : that.accountingDate != null)
-            return false;
-        if (amountIn != null ? !amountIn.equals(that.amountIn) : that.amountIn != null)
-            return false;
-        if (amountOut != null ? !amountOut.equals(that.amountOut) : that.amountOut != null)
             return false;
         if (archiveRef != null ? !archiveRef.equals(that.archiveRef) : that.archiveRef != null)
             return false;
         if (fixedDate != null ? !fixedDate.equals(that.fixedDate) : that.fixedDate != null)
             return false;
-        if (internal != null ? !internal.equals(that.internal) : that.internal != null)
-            return false;
         if (tag != null ? !tag.equals(that.tag) : that.tag != null)
             return false;
         if (text != null ? !text.equals(that.text) : that.text != null)
-            return false;
-        if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null)
             return false;
         if (type != null ? !type.equals(that.type) : that.type != null)
             return false;
@@ -173,16 +172,23 @@ public class Transaction implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = accountingDate != null ? accountingDate.hashCode() : 0;
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (accountingDate != null ? accountingDate.hashCode() : 0);
         result = 31 * result + (fixedDate != null ? fixedDate.hashCode() : 0);
-        result = 31 * result + (amountIn != null ? amountIn.hashCode() : 0);
-        result = 31 * result + (amountOut != null ? amountOut.hashCode() : 0);
+        temp = amountIn != +0.0d ? Double.doubleToLongBits(amountIn) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = amountOut != +0.0d ? Double.doubleToLongBits(amountOut) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (text != null ? text.hashCode() : 0);
         result = 31 * result + (archiveRef != null ? archiveRef.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
-        result = 31 * result + (internal != null ? internal.hashCode() : 0);
-        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        result = 31 * result + (internal ? 1 : 0);
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        result = 31 * result + (dirty ? 1 : 0);
+        result = 31 * result + (changed ? 1 : 0);
         return result;
     }
 }
