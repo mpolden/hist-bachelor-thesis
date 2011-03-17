@@ -30,6 +30,8 @@ public class EditExternalTransactionActivity extends Activity {
             TransactionTag ttag = new TransactionTag();
             ttag.setName(selectedTransactionTag);
             t.setTag(ttag);
+            t.setDirty(true);
+            t.setChanged(true);
             db.update(t);
             Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
             finish();
@@ -55,7 +57,7 @@ public class EditExternalTransactionActivity extends Activity {
         selectedTransactionTag = t.getTag().getName();
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
-        amount.setText(t.getAmountOut().toString());
+        amount.setText(String.valueOf(t.getAmountOut()));
         fillCategoryList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
