@@ -338,6 +338,8 @@ public class Transactions {
      * Close open database connections
      */
     public void close() {
-        helper.close();
+        if (helper != null) {
+            helper.close();
+        }
     }
 }
