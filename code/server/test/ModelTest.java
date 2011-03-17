@@ -19,6 +19,7 @@ public class ModelTest extends UnitTest {
         assertNotNull(t.tag);
         assertNotNull(t.internal);
         assertNotNull(t.timestamp);
+        assertNotNull(t.dirty);
     }
 
     @Test
