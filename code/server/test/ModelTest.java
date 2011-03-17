@@ -4,34 +4,49 @@ import models.TransactionType;
 import org.junit.Test;
 import play.test.UnitTest;
 
+import java.util.List;
+
 public class ModelTest extends UnitTest {
 
     @Test
     public void testTransactionFields() {
-        Transaction t = Transaction.findById(1L);
-        assertNotNull(t.accountingDate);
-        assertNotNull(t.fixedDate);
-        assertNotNull(t.amountIn);
-        assertNotNull(t.amountOut);
-        assertNotNull(t.text);
-        assertNotNull(t.archiveRef);
-        assertNotNull(t.type);
-        assertNotNull(t.tag);
-        assertNotNull(t.internal);
-        assertNotNull(t.timestamp);
-        assertNotNull(t.dirty);
-        assertNotNull(t.clientId);
+        List<Transaction> transactions = Transaction.findAll();
+        assertNotNull(transactions);
+        for (Transaction t : transactions) {
+            assertNotNull(t);
+            assertNotNull(t.accountingDate);
+            assertNotNull(t.fixedDate);
+            assertNotNull(t.amountIn);
+            assertNotNull(t.amountOut);
+            assertNotNull(t.text);
+            assertNotNull(t.archiveRef);
+            assertNotNull(t.type);
+            assertNotNull(t.tag);
+            assertNotNull(t.internal);
+            assertNotNull(t.timestamp);
+            assertNotNull(t.dirty);
+            assertNotNull(t.clientId);
+        }
     }
 
     @Test
     public void testTransactionTagFields() {
-        TransactionTag t = TransactionTag.findById(1L);
-        assertNotNull(t.name);
+        List<TransactionTag> transactionTags = TransactionTag.findAll();
+        assertNotNull(transactionTags);
+        for (TransactionTag t : transactionTags) {
+            assertNotNull(t);
+            assertNotNull(t.name);
+        }
+
     }
 
     @Test
     public void testTransactionTypeFields() {
-        TransactionType t = TransactionType.findById(1L);
-        assertNotNull(t.name);
+        List<TransactionType> transactionTypes = TransactionType.findAll();
+        assertNotNull(transactionTypes);
+        for (TransactionType t : transactionTypes) {
+            assertNotNull(t);
+            assertNotNull(t.name);
+        }
     }
 }

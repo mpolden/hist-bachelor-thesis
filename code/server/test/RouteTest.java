@@ -1,9 +1,17 @@
 import models.Transaction;
+import org.junit.Before;
 import org.junit.Test;
 import play.mvc.Http.Response;
+import play.test.Fixtures;
 import play.test.FunctionalTest;
 
 public class RouteTest extends FunctionalTest {
+
+    @Before
+    public void setUp() {
+        Fixtures.deleteAll();
+        new Import().doJob();
+    }
 
     @Test
     public void testRouteAvg() {
@@ -66,7 +74,7 @@ public class RouteTest extends FunctionalTest {
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        assertTrue(Transaction.count("internal", true) == 1);
+        assertTrue(Transaction.count("internal", true) == 0);
     }
 
     @Test
@@ -81,7 +89,8 @@ public class RouteTest extends FunctionalTest {
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        Transaction t = Transaction.findById(7L);
+        Transaction t = Transaction.find("order by accountingDate desc").first();
+        assertNotNull(t);
         assertNotNull(t.tag);
         assertEquals("Bil", t.tag.name);
     }
@@ -98,8 +107,9 @@ public class RouteTest extends FunctionalTest {
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        Transaction t = Transaction.findById(7L);
+        Transaction t = Transaction.find("order by accountingDate desc").first();
+        assertNotNull(t);
         assertNotNull(t.tag);
-        assertEquals("Bil", t.tag.name);
+        assertEquals("Datautstyr", t.tag.name);
     }
 }
