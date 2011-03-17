@@ -52,7 +52,21 @@ public class RouteTest extends FunctionalTest {
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        assertNotNull(Transaction.find("internal", true).first());
+        assertTrue(Transaction.count("internal", true) == 1);
+    }
+
+    @Test
+    public void testRouteSaveNewNotDirty() {
+        final String json = "[{\"clientId\":1,\"accountingDate\":\"2011-02-17 00:00:00\"," +
+                "\"fixedDate\":\"2011-02-17 00:00:00\",\"amountIn\":0.0,\"amountOut\":1321.0,\"text\":\"test\"," +
+                "\"internal\":true,\"timestamp\":1300379994253,\"dirty\":false,\"type\":{\"name\":\"Kontant\",\"id\":6}," +
+                "\"tag\":{\"name\":\"Bil\",\"id\":5},\"id\":0}]";
+        Response response = POST("/t/save", "application/json", json);
+        assertIsOk(response);
+        assertContentType("application/json", response);
+        assertCharset("utf-8", response);
+        assertTrue(getContent(response).length() > 0);
+        assertTrue(Transaction.count("internal", true) == 1);
     }
 
     @Test
