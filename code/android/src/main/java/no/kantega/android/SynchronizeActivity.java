@@ -149,7 +149,9 @@ public class SynchronizeActivity extends Activity {
             properties.load(inputStream);
             new TransactionsTask().execute(
                     properties.get("freshTransactions").toString(),
-                    properties.get("saveTransactions").toString());
+                    properties.get("allTransactions").toString(),
+                    properties.get("saveTransactions").toString()
+            );
         } catch (IOException e) {
             Log.e(TAG, "Could not read properties file", e);
         }
@@ -179,8 +181,8 @@ public class SynchronizeActivity extends Activity {
 
         @Override
         protected List<Transaction> doInBackground(String... urls) {
-            getTransactions(urls[0]);
-            putTransactions(urls[1]);
+            getTransactions(urls[0], urls[1]);
+            putTransactions(urls[2]);
             return null;
         }
 
@@ -203,11 +205,13 @@ public class SynchronizeActivity extends Activity {
             }
         }
 
-        private void getTransactions(String url) {
+        private void getTransactions(String url, String urlAll) {
             Transaction latestTransaction = db.getLatestExternal();
             long timestamp = 0;
             if (latestTransaction != null) {
                 timestamp = latestTransaction.getAccountingDate().getTime();
+            } else {
+                url = urlAll;
             }
             List<Transaction> transactions = GsonUtil.parseTransactions(
                     GsonUtil.getBody(String.format(url, timestamp)));
