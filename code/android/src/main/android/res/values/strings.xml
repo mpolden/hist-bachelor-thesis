@@ -24,4 +24,5 @@
     <string name="retrieving_date">Retrieving data ...</string>
     <string name="invalid_amount">Invalid amount</string>
     <string name="transaction_updated">Transaction updated</string>
+    <string name="unsynced_count">Not synchronized</string>
 </resources>

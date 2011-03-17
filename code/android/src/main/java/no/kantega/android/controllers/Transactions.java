@@ -190,13 +190,7 @@ public class Transactions {
      * @return Transaction count
      */
     public int getCount() {
-        try {
-            GenericRawResults<String[]> rawResults = transactionDao.queryRaw("SELECT COUNT(*) FROM transactions");
-            return Integer.parseInt(rawResults.getResults().get(0)[0]);
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve transaction count", e);
-        }
-        return 0;
+        return getCount("transactions");
     }
 
     /**
@@ -205,11 +199,27 @@ public class Transactions {
      * @return Transaction tag count
      */
     public int getTagCount() {
+        return getCount("transactiontags");
+    }
+
+    public int getDirtyCount() {
         try {
-            GenericRawResults<String[]> rawResults = transactionDao.queryRaw("SELECT COUNT(*) FROM transactiontags");
+            GenericRawResults<String[]> rawResults = transactionDao.
+                    queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1");
             return Integer.parseInt(rawResults.getResults().get(0)[0]);
         } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve transaction tag count", e);
+            Log.e(TAG, "Failed to retrieve transaction count", e);
+        }
+        return 0;
+    }
+
+    private int getCount(String table) {
+        try {
+            GenericRawResults<String[]> rawResults = transactionDao.
+                    queryRaw(String.format("SELECT COUNT(*) FROM %s", table));
+            return Integer.parseInt(rawResults.getResults().get(0)[0]);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve transaction count", e);
         }
         return 0;
     }

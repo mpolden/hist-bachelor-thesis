@@ -35,8 +35,10 @@ public class SynchronizeActivity extends Activity {
     private TextView lastSynchronized;
     private TextView transactionCount;
     private TextView tagCount;
+    private TextView dirtyCount;
     private int dbTransactionCount;
     private int dbTagCount;
+    private int dbDirtyCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
@@ -59,6 +61,7 @@ public class SynchronizeActivity extends Activity {
         lastSynchronized = (TextView) findViewById(R.id.last_synchronized);
         transactionCount = (TextView) findViewById(R.id.internal_t_count);
         tagCount = (TextView) findViewById(R.id.internal_tag_count);
+        dirtyCount = (TextView) findViewById(R.id.unsynced_count);
     }
 
     @Override
@@ -69,6 +72,7 @@ public class SynchronizeActivity extends Activity {
             public void run() {
                 dbTransactionCount = db.getCount();
                 dbTagCount = db.getTagCount();
+                dbDirtyCount = db.getDirtyCount();
                 runOnUiThread(populate);
             }
         }).start();
@@ -82,6 +86,7 @@ public class SynchronizeActivity extends Activity {
                     getResources().getString(R.string.not_synchronized)));
             transactionCount.setText(String.valueOf(dbTransactionCount));
             tagCount.setText(String.valueOf(dbTagCount));
+            dirtyCount.setText(String.valueOf(dbDirtyCount));
         }
     };
 
@@ -187,8 +192,13 @@ public class SynchronizeActivity extends Activity {
                 String json = gson.create().toJson(transactions);
                 List<Transaction> updated = GsonUtil.parseTransactions(
                         GsonUtil.postJSON(url, json));
-                for (Transaction t : updated) {
-                    db.update(t);
+                if (updated != null && !updated.isEmpty()) {
+                    progressDialog.setMax(updated.size());
+                    int i = 0;
+                    for (Transaction t : updated) {
+                        db.update(t);
+                        publishProgress(++i);
+                    }
                 }
             }
         }
@@ -220,6 +230,8 @@ public class SynchronizeActivity extends Activity {
 
         @Override
         protected void onPostExecute(List<Transaction> transactions) {
+            progressDialog.setProgress(0);
+            progressDialog.setMax(100);
             progressDialog.dismiss();
             saveStats();
             onResume();
