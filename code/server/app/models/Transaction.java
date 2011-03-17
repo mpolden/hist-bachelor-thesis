@@ -11,13 +11,13 @@ public class Transaction extends Model {
 
     public Date accountingDate;
     public Date fixedDate;
-    public Double amountIn;
-    public Double amountOut;
+    public double amountIn;
+    public double amountOut;
     public String text;
     public String archiveRef;
-    public Boolean internal;
-    public Long timestamp;
-    public Boolean dirty;
+    public boolean internal;
+    public long timestamp;
+    public boolean dirty;
     @ManyToOne
     public TransactionType type;
     @ManyToOne
