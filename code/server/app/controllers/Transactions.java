@@ -61,9 +61,9 @@ public class Transactions extends Controller {
         renderJSON(ac);
     }
 
-    public static void transactions(int count) {
+    public static void transactions() {
         List<Transaction> transactions = Transaction.
-                find("order by accountingDate desc, timestamp desc").fetch(count);
+                find("order by accountingDate desc, timestamp desc").fetch();
         String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
                 transactions);
         renderJSON(json);

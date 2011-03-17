@@ -8,5 +8,5 @@ GET     /public/                                staticDir:public
 GET     /t/tags/{count}                         Transactions.topTags
 GET     /t/avg                                  Transactions.avg
 GET     /t/fresh/{timestamp}                    Transactions.freshTransactions
-GET     /t/transactions/{count}                 Transactions.transactions
+GET     /t/transactions                         Transactions.transactions
 POST    /t/save                                 Transactions.save
