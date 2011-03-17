@@ -7,14 +7,19 @@ import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +45,26 @@ public class GsonUtil {
             Log.d(TAG, "IOException", e);
         }
         return body;
+    }
+
+    /**
+     * Post JSON to URL
+     *
+     * @param url
+     * @param json
+     */
+    public static void postJSON(final String url, final String json) {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpPost method = new HttpPost(url);
+        List<NameValuePair> values = new ArrayList<NameValuePair>() {{
+            add(new BasicNameValuePair("json", json));
+        }};
+        try {
+            method.setEntity(new UrlEncodedFormEntity(values));
+            HttpResponse response = httpClient.execute(method);
+        } catch (IOException e) {
+            Log.d(TAG, "IOException", e);
+        }
     }
 
     /**
