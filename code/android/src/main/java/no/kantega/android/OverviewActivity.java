@@ -125,4 +125,10 @@ public class OverviewActivity extends Activity {
             amount3.setText(FmtUtil.currency(tags.get(2).getAmount()));
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

@@ -139,4 +139,10 @@ public class AddTransactionActivity extends Activity {
             // Do nothing.
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

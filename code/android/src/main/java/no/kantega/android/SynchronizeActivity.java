@@ -260,4 +260,10 @@ public class SynchronizeActivity extends Activity {
             onResume();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

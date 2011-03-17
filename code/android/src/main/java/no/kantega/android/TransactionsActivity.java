@@ -203,7 +203,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         return false;
     }
 
-    
+
     @Override
     public boolean onDown(MotionEvent e) {
         return true;
@@ -260,5 +260,11 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         } else {
             return getResources().getDrawable(R.drawable.user);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }
