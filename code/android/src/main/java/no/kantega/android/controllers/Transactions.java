@@ -149,6 +149,11 @@ public class Transactions {
         return get(queryBuilder);
     }
 
+    /**
+     * Get the latest external transaction
+     *
+     * @return Transaction
+     */
     public Transaction getLatestExternal() {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
@@ -158,7 +163,7 @@ public class Transactions {
             Log.e(TAG, "Failed to set where condition", e);
         }
         List<Transaction> transactions = get(queryBuilder);
-        return transactions.size() > 0 ? transactions.get(0) : null;
+        return transactions.isEmpty() ? null : transactions.get(0);
     }
 
     /**
