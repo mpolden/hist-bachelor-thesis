@@ -69,6 +69,20 @@ public class Transactions extends Controller {
         renderJSON(json);
     }
 
+    @SuppressWarnings("unchecked")
+    public static void freshTransactions(Long timestamp) {
+        Query query = JPA.em().createQuery("select t from Transaction t " +
+                "where accountingDate > :date " +
+                "and internal = :internal " +
+                "order by accountingDate desc");
+        query.setParameter("date", new Date(timestamp));
+        query.setParameter("internal", false);
+        List<Transaction> transactions = query.getResultList();
+        String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
+                transactions);
+        renderJSON(json);
+    }
+
     public static void save(String json) {
         final GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
