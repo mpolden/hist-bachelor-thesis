@@ -33,7 +33,7 @@ public class Transaction implements Serializable {
     private Long timestamp;
     @DatabaseField
     private Boolean dirty;
-    @DatabaseField(persisted = false)
+    @DatabaseField
     private Boolean changed;
 
     public Transaction() {
