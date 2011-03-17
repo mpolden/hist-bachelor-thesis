@@ -11,8 +11,6 @@ public class Transaction implements Serializable {
 
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(persisted = false)
-    private int clientId;
     @DatabaseField
     private Date accountingDate;
     @DatabaseField
@@ -50,11 +48,7 @@ public class Transaction implements Serializable {
     }
 
     public int getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+        return id;
     }
 
     public Date getAccountingDate() {
