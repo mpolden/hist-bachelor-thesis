@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.vfs.VirtualFile;
+import utils.ModelHelper;
 
 import java.io.*;
 import java.text.ParseException;
@@ -46,11 +47,11 @@ public class Import extends Job {
             Date accountingDate = dateFormat.parse(s[0]);
             Date fixedDate = dateFormat.parse(s[1]);
             String archiveRef = s[2];
-            TransactionType type = addType(s[3]);
+            TransactionType type = ModelHelper.getOrAddType(s[3]);
             String text = s[4];
             Double out = Double.parseDouble(s[5]);
             Double in = Double.parseDouble(s[6]);
-            TransactionTag transactionTag = addCategory(s[8]);
+            TransactionTag transactionTag = ModelHelper.getOrSaveTag(s[8]);
             Transaction t = new Transaction();
             t.accountingDate = accountingDate;
             t.fixedDate = fixedDate;
@@ -69,27 +70,5 @@ public class Import extends Job {
         }
     }
 
-    private TransactionTag addCategory(String name) {
-        TransactionTag tag = TransactionTag.find("name", name).first();
-        if (tag != null) {
-            return tag;
-        } else {
-            tag = new TransactionTag();
-            tag.name = name;
-            tag.save();
-            return tag;
-        }
-    }
 
-    private TransactionType addType(String name) {
-        TransactionType type = TransactionType.find("name", name).first();
-        if (type != null) {
-            return type;
-        } else {
-            type = new TransactionType();
-            type.name = name;
-            type.save();
-            return type;
-        }
-    }
 }

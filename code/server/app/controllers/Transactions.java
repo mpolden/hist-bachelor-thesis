@@ -1,16 +1,15 @@
 package controllers;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import models.*;
+import com.google.gson.JsonArray;
+import models.AggregatedTag;
+import models.AverageConsumption;
+import models.Transaction;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
 import utils.GsonUtil;
+import utils.ModelHelper;
 
 import javax.persistence.Query;
-import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,25 +83,7 @@ public class Transactions extends Controller {
     }
 
     public static void save(JsonArray body) {
-        final GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            @Override
-            public Date deserialize(JsonElement json, Type typeOfT,
-                                    JsonDeserializationContext context)
-                    throws JsonParseException {
-                SimpleDateFormat format = new SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss");
-                try {
-                    return format.parse(json.getAsJsonPrimitive().
-                            getAsString());
-                } catch (ParseException e) {
-                    return null;
-                }
-            }
-        });
-        final Type listType = new TypeToken<List<Transaction>>() {
-        }.getType();
-        final List<Transaction> transactions = builder.create().fromJson(body, listType);
+        List<Transaction> transactions = GsonUtil.parseTransactions(body);
         List<Transaction> updated = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
@@ -117,14 +98,14 @@ public class Transactions extends Controller {
                     existing.internal = t.internal;
                     existing.timestamp = t.timestamp;
                     existing.dirty = false;
-                    existing.tag = addOrSaveTag(t.tag.name);
-                    existing.type = addOrSaveType(t.type.name);
+                    existing.tag = ModelHelper.getOrSaveTag(t.tag.name);
+                    existing.type = ModelHelper.getOrAddType(t.type.name);
                     existing.save();
                     updated.add(existing);
                 } else {
                     t.id = null;
-                    t.tag = addOrSaveTag(t.tag.name);
-                    t.type = addOrSaveType(t.type.name);
+                    t.tag = ModelHelper.getOrSaveTag(t.tag.name);
+                    t.type = ModelHelper.getOrAddType(t.type.name);
                     t.dirty = false;
                     t.save();
                     updated.add(t);
@@ -133,29 +114,5 @@ public class Transactions extends Controller {
         }
         renderJSON(GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
                 updated));
-    }
-
-    private static TransactionTag addOrSaveTag(String name) {
-        TransactionTag tag = TransactionTag.find("name", name).first();
-        if (tag != null) {
-            return tag;
-        } else {
-            tag = new TransactionTag();
-            tag.name = name;
-            tag.save();
-            return tag;
-        }
-    }
-
-    private static TransactionType addOrSaveType(String name) {
-        TransactionType type = TransactionType.find("name", name).first();
-        if (type != null) {
-            return type;
-        } else {
-            type = new TransactionType();
-            type.name = name;
-            type.save();
-            return type;
-        }
     }
 }

@@ -1,4 +1,4 @@
-package controllers;
+package utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
