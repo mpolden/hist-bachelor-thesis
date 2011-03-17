@@ -7,19 +7,16 @@ import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class GsonUtil {
      * @param url
      * @return URL body
      */
-    public static String getBody(String url) {
+    public static String getBody(final String url) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet method = new HttpGet(url);
         String body = null;
@@ -56,12 +53,10 @@ public class GsonUtil {
     public static String postJSON(final String url, final String json) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
-        List<NameValuePair> values = new ArrayList<NameValuePair>() {{
-            add(new BasicNameValuePair("json", json));
-        }};
         String body = null;
         try {
-            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
+            method.setEntity(new StringEntity(json, "UTF-8"));
+            method.setHeader("Content-Type", "application/json");
             HttpResponse response = httpClient.execute(method);
             body = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
@@ -76,7 +71,7 @@ public class GsonUtil {
      * @param json
      * @return List of aggregated tags
      */
-    public static List<AggregatedTag> parseTags(String json) {
+    public static List<AggregatedTag> parseTags(final String json) {
         Type listType = new TypeToken<List<AggregatedTag>>() {
         }.getType();
         return gson.fromJson(json, listType);
@@ -88,7 +83,7 @@ public class GsonUtil {
      * @param json
      * @return Average consumption
      */
-    public static AverageConsumption parseAvg(String json) {
+    public static AverageConsumption parseAvg(final String json) {
         return gson.fromJson(json, AverageConsumption.class);
     }
 
@@ -98,7 +93,7 @@ public class GsonUtil {
      * @param json
      * @return List of transactions
      */
-    public static List<Transaction> parseTransactions(String json) {
+    public static List<Transaction> parseTransactions(final String json) {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
             @Override
