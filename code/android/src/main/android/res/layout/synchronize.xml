@@ -77,6 +77,12 @@
             </TextView>
         </TableRow>
     </TableLayout>
+    <Button android:id="@+id/clearDbButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_db"
+            android:layout_weight="0">
+    </Button>
     <Button android:id="@+id/syncButton"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

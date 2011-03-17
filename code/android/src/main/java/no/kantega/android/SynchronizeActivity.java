@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.gson.GsonBuilder;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
@@ -55,6 +56,16 @@ public class SynchronizeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 showDialog(PROGRESS_DIALOG);
+            }
+        });
+        Button clearDbButton = (Button) findViewById(R.id.clearDbButton);
+        clearDbButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.emptyTables();
+                onResume();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.db_cleared),
+                        Toast.LENGTH_SHORT).show();
             }
         });
         db = new Transactions(getApplicationContext());
