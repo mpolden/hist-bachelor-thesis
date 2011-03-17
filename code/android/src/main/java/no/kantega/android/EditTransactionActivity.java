@@ -50,6 +50,8 @@ public class EditTransactionActivity extends Activity {
                 t.setTag(ttag);
                 t.setAccountingDate(d);
                 t.setFixedDate(d);
+                t.setDirty(true);
+                t.setChanged(true);
                 db.update(t);
                 Toast.makeText(getApplicationContext(), R.string.transaction_updated,
                         Toast.LENGTH_LONG).show();
@@ -78,7 +80,7 @@ public class EditTransactionActivity extends Activity {
         selectedTransactionTag = t.getTag().getName();
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
-        amount.setText(t.getAmountOut().toString());
+        amount.setText(String.valueOf(t.getAmountOut()));
         date.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
