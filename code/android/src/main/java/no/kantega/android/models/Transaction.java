@@ -31,6 +31,8 @@ public class Transaction implements Serializable {
     private Boolean internal;
     @DatabaseField
     private Long timestamp;
+    @DatabaseField
+    private Boolean dirty;
 
     public Transaction() {
     }

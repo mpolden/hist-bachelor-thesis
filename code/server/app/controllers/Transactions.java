@@ -91,9 +91,11 @@ public class Transactions extends Controller {
         final List<Transaction> transactions = builder.create().fromJson(json,
                 listType);
         for (Transaction t : transactions) {
-            t.tag = addOrSaveTag(t.tag.name);
-            t.type = addOrSaveType(t.type.name);
-            t.save();
+            if (t.dirty) {
+                t.tag = addOrSaveTag(t.tag.name);
+                t.type = addOrSaveType(t.type.name);
+                t.save();
+            }
         }
     }
 

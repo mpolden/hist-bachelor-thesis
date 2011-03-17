@@ -17,6 +17,7 @@ public class Transaction extends Model {
     public String archiveRef;
     public Boolean internal;
     public Long timestamp;
+    public Boolean dirty;
     @ManyToOne
     public TransactionType type;
     @ManyToOne
