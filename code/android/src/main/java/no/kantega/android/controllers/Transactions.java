@@ -21,21 +21,23 @@ public class Transactions {
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final int INSERT_SUCCESS = 1;
     private static final int UPDATE_SUCCESS = 1;
+    private DatabaseHelper helper;
     private Dao<Transaction, Integer> transactionDao;
     private Dao<TransactionTag, Integer> transactionTagDao;
     private Dao<TransactionType, Integer> transactionTypeDao;
 
     public Transactions(Context context) {
-        DatabaseHelper helper = new DatabaseHelper(context);
-        transactionDao = helper.getTransactionDao();
-        transactionTagDao = helper.getTransactionTagDao();
-        transactionTypeDao = helper.getTransactionTypeDao();
+        this.helper = new DatabaseHelper(context);
+        this.transactionDao = helper.getTransactionDao();
+        this.transactionTagDao = helper.getTransactionTagDao();
+        this.transactionTypeDao = helper.getTransactionTypeDao();
     }
 
     public Transactions(Context context, DatabaseHelper helper) {
-        transactionDao = helper.getTransactionDao();
-        transactionTagDao = helper.getTransactionTagDao();
-        transactionTypeDao = helper.getTransactionTypeDao();
+        this.helper = helper;
+        this.transactionDao = helper.getTransactionDao();
+        this.transactionTagDao = helper.getTransactionTagDao();
+        this.transactionTypeDao = helper.getTransactionTypeDao();
     }
 
     /**
@@ -330,5 +332,12 @@ public class Transactions {
         } catch (SQLException e) {
             Log.e(TAG, "Could not empty tables", e);
         }
+    }
+
+    /**
+     * Close open database connections
+     */
+    public void close() {
+        helper.close();
     }
 }
