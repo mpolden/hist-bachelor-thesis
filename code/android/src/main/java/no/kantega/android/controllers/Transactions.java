@@ -127,11 +127,39 @@ public class Transactions {
      * @return List of transactions
      */
     public List<Transaction> get(final int limit) {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        queryBuilder.limit(limit);
+        return get(queryBuilder);
+    }
+
+    /**
+     * Retrieve a list of dirty transactions (which should be synchronized)
+     *
+     * @return List of transactions
+     */
+    public List<Transaction> getDirty() {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        try {
+            queryBuilder.setWhere(queryBuilder.where().eq("dirty", true));
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to set where condition", e);
+        }
+        return get(queryBuilder);
+    }
+
+    /**
+     * Retrieve a list of transactions using the given query builder
+     *
+     * @param queryBuilder
+     * @return List of transactions
+     */
+    private List<Transaction> get(QueryBuilder<Transaction, Integer> queryBuilder) {
         List<Transaction> transactions = Collections.emptyList();
         try {
-            QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
             queryBuilder.orderBy("accountingDate", false).
-                    orderBy("timestamp", false).limit(limit);
+                    orderBy("timestamp", false);
             transactions = transactionDao.query(queryBuilder.prepare());
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve transactions", e);
