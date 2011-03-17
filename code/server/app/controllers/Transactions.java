@@ -104,10 +104,10 @@ public class Transactions extends Controller {
         }.getType();
         final List<Transaction> transactions = builder.create().fromJson(json,
                 listType);
+        List<Transaction> added = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
-                Transaction serverTransaction = Transaction.find("clientId",
-                        t.clientId).first();
+                Transaction serverTransaction = Transaction.findById(t.id);
                 if (serverTransaction != null) {
                     serverTransaction.accountingDate = t.accountingDate;
                     serverTransaction.fixedDate = t.fixedDate;
@@ -127,9 +127,12 @@ public class Transactions extends Controller {
                     t.type = addOrSaveType(t.type.name);
                     t.dirty = false;
                     t.save();
+                    added.add(t);
                 }
             }
         }
+        renderJSON(GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
+                added));
     }
 
     private static TransactionTag addOrSaveTag(String name) {
