@@ -35,12 +35,15 @@ public class GsonUtilTest {
             t.setArchiveRef("50001685147");
             final TransactionType type = new TransactionType();
             type.setName("Visa");
+            t.setId(1);
             t.setType(type);
             final TransactionTag tag = new TransactionTag();
+            tag.setId(4);
             tag.setName("Datautstyr");
             t.setTag(tag);
             t.setTimestamp(1239746400000L);
             t.setInternal(false);
+            t.setId(7);
         } catch (ParseException e) {
             assertTrue(false);
         }
