@@ -142,7 +142,7 @@ public class SynchronizeActivity extends Activity {
             Properties properties = new Properties();
             properties.load(inputStream);
             new TransactionsTask().execute(
-                    properties.get("allTransactions").toString());
+                    properties.get("freshTransactions").toString());
         } catch (IOException e) {
             Log.e(TAG, "Could not read properties file", e);
         }
@@ -172,11 +172,16 @@ public class SynchronizeActivity extends Activity {
 
         @Override
         protected List<Transaction> doInBackground(String... urls) {
+            Transaction latestTransaction = db.getLatestExternal();
+            long timestamp = 0;
+            if (latestTransaction != null) {
+                timestamp = latestTransaction.getAccountingDate().getTime();
+            }
+            String url = String.format(urls[0], timestamp);
             List<Transaction> transactions = GsonUtil.parseTransactions(
-                    GsonUtil.getBody(urls[0]));
+                    GsonUtil.getBody(url));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
-                db.emptyTables();
                 int i = 0;
                 for (Transaction t : transactions) {
                     db.add(t);
