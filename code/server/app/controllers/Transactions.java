@@ -71,10 +71,10 @@ public class Transactions extends Controller {
     @SuppressWarnings("unchecked")
     public static void freshTransactions(Long timestamp) {
         Query query = JPA.em().createQuery("select t from Transaction t " +
-                "where accountingDate > :date " +
+                "where timestamp > :timestamp " +
                 "and internal = :internal " +
-                "order by accountingDate desc");
-        query.setParameter("date", new Date(timestamp));
+                "order by accountingDate desc, timestamp desc");
+        query.setParameter("timestamp", timestamp);
         query.setParameter("internal", false);
         List<Transaction> transactions = query.getResultList();
         String json = GsonUtil.renderJSONWithDateFmt("yyyy-MM-dd HH:mm:ss",
@@ -89,6 +89,7 @@ public class Transactions extends Controller {
             if (t.dirty) {
                 Transaction existing = Transaction.findById(t.id);
                 if (existing != null) {
+                    existing.clientId = t.clientId;
                     existing.accountingDate = t.accountingDate;
                     existing.fixedDate = t.fixedDate;
                     existing.amountIn = t.amountIn;
