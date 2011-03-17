@@ -54,11 +54,10 @@ public class AddTransactionActivity extends Activity {
                 t.setType(ttype);
                 t.setAccountingDate(d);
                 t.setFixedDate(d);
-                t.setInternal(true);
                 t.setTimestamp(new Date().getTime());
                 t.setInternal(true);
                 t.setDirty(true);
-                t.setChanged(true);
+                t.setChanged(false);
                 db.add(t);
                 Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
                 finish();

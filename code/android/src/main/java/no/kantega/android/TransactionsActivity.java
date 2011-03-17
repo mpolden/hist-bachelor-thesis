@@ -38,7 +38,7 @@ public class TransactionsActivity extends ListActivity {
         transactions = new ArrayList<Transaction>();
         listAdapter = new OrderAdapter(this, R.layout.transactionrow, transactions);
         setListAdapter(listAdapter);
-        refreshList();
+        //refreshList();
     }
 
     private void refreshList() {
@@ -61,26 +61,14 @@ public class TransactionsActivity extends ListActivity {
         super.onResume();
         long transactionCount = db.getCount();
         //if (transactions.size() < transactionCount) {
-        updateList();
+        refreshList();
         //transactions = new ArrayList<Transaction>(db.get(7));
         //listAdapter.notifyDataSetChanged();
         //}
     }
 
-    private void updateList() {
-        ArrayList<Transaction> alt = new ArrayList<Transaction>(db.get(5));
-        for(int i=0; i<alt.size(); i++) {
-            Log.i("changed?", String.valueOf(alt.get(i).isChanged()));
-            if(alt.get(i).isChanged()) {
-                //transactions.set(i, alt.get(i));
-                transactions.get(i).setTag(alt.get(i).getTag());
-                transactions.get(i).setAmountOut(alt.get(i).getAmountOut());
-                transactions.get(i).setText(alt.get(i).getText());
-                transactions.get(i).setAccountingDate(alt.get(i).getAccountingDate());
-            }
-        }
-        listAdapter.notifyDataSetChanged();
-    }
+
+
 
     private void getTransactions() {
         try {
@@ -97,7 +85,7 @@ public class TransactionsActivity extends ListActivity {
         @Override
         public void run() {
             if (transactions != null && transactions.size() > 0) {
-                //listAdapter.clear();
+                listAdapter.clear();
                 listAdapter.notifyDataSetChanged();
                 for (int i = 0; i < transactions.size(); i++) {
                     listAdapter.add(transactions.get(i));
