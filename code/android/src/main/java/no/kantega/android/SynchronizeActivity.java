@@ -185,9 +185,9 @@ public class SynchronizeActivity extends Activity {
                 GsonBuilder gson = new GsonBuilder().
                         setDateFormat("yyyy-MM-dd HH:mm:ss");
                 String json = gson.create().toJson(transactions);
-                GsonUtil.postJSON(url, json);
-                for (Transaction t : transactions) {
-                    t.setDirty(false);
+                List<Transaction> updated = GsonUtil.parseTransactions(
+                        GsonUtil.postJSON(url, json));
+                for (Transaction t : updated) {
                     db.update(t);
                 }
             }

@@ -53,18 +53,21 @@ public class GsonUtil {
      * @param url
      * @param json
      */
-    public static void postJSON(final String url, final String json) {
+    public static String postJSON(final String url, final String json) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
         List<NameValuePair> values = new ArrayList<NameValuePair>() {{
             add(new BasicNameValuePair("json", json));
         }};
+        String body = null;
         try {
             method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
-            httpClient.execute(method);
+            HttpResponse response = httpClient.execute(method);
+            body = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             Log.d(TAG, "IOException", e);
         }
+        return body;
     }
 
     /**
