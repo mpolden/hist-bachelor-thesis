@@ -14,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.gson.GsonBuilder;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.FmtUtil;
@@ -197,18 +196,22 @@ public class SynchronizeActivity extends Activity {
             return null;
         }
 
-        private void putTransactions(String url) {
-            List<Transaction> transactions = db.getDirty();
-            if (!transactions.isEmpty()) {
-                GsonBuilder gson = new GsonBuilder().
-                        setDateFormat("yyyy-MM-dd HH:mm:ss");
-                String json = gson.create().toJson(transactions);
-                List<Transaction> updated = GsonUtil.parseTransactions(
+        /**
+         * Post "dirty" transactions to an URL
+         *
+         * @param url
+         */
+        private void putTransactions(final String url) {
+            List<Transaction> dirtyTransactions = db.getDirty();
+            if (!dirtyTransactions.isEmpty()) {
+                final String json = GsonUtil.makeJSON(dirtyTransactions);
+                final List<Transaction> updatedTransactions = GsonUtil.parseTransactions(
                         GsonUtil.postJSON(url, json));
-                if (updated != null && !updated.isEmpty()) {
-                    progressDialog.setMax(updated.size());
+                if (updatedTransactions != null && !updatedTransactions.isEmpty()) {
+                    progressDialog.setMax(updatedTransactions.size());
                     int i = 0;
-                    for (Transaction t : updated) {
+                    for (Transaction t : updatedTransactions) {
+                        t.setDirty(false);
                         db.update(t);
                         publishProgress(++i);
                     }
@@ -216,16 +219,21 @@ public class SynchronizeActivity extends Activity {
             }
         }
 
-        private void getTransactions(String url, String urlAll) {
-            Transaction latestTransaction = db.getLatestExternal();
-            long timestamp = 0;
-            if (latestTransaction != null) {
-                timestamp = latestTransaction.getAccountingDate().getTime();
+        /**
+         * Retrieve transacionts from server. Only retrieve newly added transactions.
+         *
+         * @param urlNew
+         * @param urlAll
+         */
+        private void getTransactions(final String urlNew, final String urlAll) {
+            final Transaction latest = db.getLatestExternal();
+            final String url;
+            if (latest != null) {
+                url = String.format(urlNew, latest.getTimestamp());
             } else {
                 url = urlAll;
             }
-            List<Transaction> transactions = GsonUtil.parseTransactions(
-                    GsonUtil.getBody(String.format(url, timestamp)));
+            final List<Transaction> transactions = GsonUtil.parseTransactions(GsonUtil.getBody(url));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
                 int i = 0;
