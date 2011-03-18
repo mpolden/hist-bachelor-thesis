@@ -66,6 +66,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         return super.onTouchEvent(motionEvent);
     }
 
+
     private void refreshList() {
         viewOrders = new Runnable() {
             @Override
@@ -198,7 +199,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         } catch (Exception e) {
 
         }
-        return false;
+        return true;
     }
 
 
