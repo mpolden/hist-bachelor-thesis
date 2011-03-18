@@ -137,6 +137,21 @@ public class Transactions {
     }
 
     /**
+     * Retrieve a list of changed transactions
+     *
+     * @return List of transactions
+     */
+    public List<Transaction> getChanged() {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
+        try {
+            queryBuilder.setWhere(queryBuilder.where().eq("changed", true));
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to set where condition", e);
+        }
+        return get(queryBuilder);
+    }
+
+    /**
      * Retrieve a list of dirty transactions (which should be synchronized)
      *
      * @return List of transactions
