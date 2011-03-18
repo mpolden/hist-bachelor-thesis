@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Transaction extends Model {
 
-    public int clientId;
+    public int _id; // ID generated on device
     public Date accountingDate;
     public Date fixedDate;
     public double amountIn;

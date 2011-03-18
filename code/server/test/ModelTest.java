@@ -25,7 +25,7 @@ public class ModelTest extends UnitTest {
             assertNotNull(t.internal);
             assertNotNull(t.timestamp);
             assertNotNull(t.dirty);
-            assertNotNull(t.clientId);
+            assertNotNull(t._id);
         }
     }
 
@@ -37,7 +37,6 @@ public class ModelTest extends UnitTest {
             assertNotNull(t);
             assertNotNull(t.name);
         }
-
     }
 
     @Test
