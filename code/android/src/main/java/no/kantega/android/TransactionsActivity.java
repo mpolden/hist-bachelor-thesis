@@ -8,10 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.*;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
@@ -26,7 +24,10 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
     private final int SWIPE_MAX_OFF_PATH = 250;
     private final int SWIPE_THRESHOLD_VELOCITY = 200;
     private GestureDetector detector;
-
+    private Animation slideLeftIn;
+    private Animation slideLeftOut;
+    private Animation slideRightIn;
+    private Animation slideRightOut;
     private ViewFlipper viewFlipper;
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
@@ -41,7 +42,11 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
 
-        viewFlipper = (ViewFlipper) findViewById(R.id.flipper);       ;
+        viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+        slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+        slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+        slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
 
         detector = new GestureDetector(this, this);
 
@@ -60,6 +65,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         //no gesture detected, let Activity handle touch event
         return super.onTouchEvent(motionEvent);
     }
+
 
     private void refreshList() {
         viewOrders = new Runnable() {
@@ -90,7 +96,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
 
     private void getTransactions() {
         try {
-            transactions = new ArrayList<Transaction>(db.get(100));
+            transactions = new ArrayList<Transaction>(db.get(20));
             //Thread.sleep(2000);
             Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
@@ -105,12 +111,9 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
             if (transactions != null && transactions.size() > 0) {
                 listAdapter.clear();
                 listAdapter.notifyDataSetChanged();
-                /*for (int i = 0; i < transactions.size(); i++) {
+                for (int i = 0; i < transactions.size(); i++) {
                     listAdapter.add(transactions.get(i));
 
-                }*/
-                for (int i = 0; i < 5; i++) {
-                    listAdapter.add(transactions.get(i));
                 }
             }
             progressDialog.dismiss();
@@ -185,18 +188,18 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
         try {
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
             if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                viewFlipper.setInAnimation(inFromRightAnimation());
-                viewFlipper.setOutAnimation(outToLeftAnimation());
+                viewFlipper.setInAnimation(slideLeftIn);
+                viewFlipper.setOutAnimation(slideLeftOut);
                 viewFlipper.showNext();
             } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                viewFlipper.setInAnimation(inFromLeftAnimation());
-                viewFlipper.setInAnimation(outToRightAnimation());
+                viewFlipper.setInAnimation(slideRightIn);
+                viewFlipper.setOutAnimation(slideRightOut);
                 viewFlipper.showPrevious();
             }
         } catch (Exception e) {
 
         }
-        return false;
+        return true;
     }
 
 
@@ -262,47 +265,5 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
     protected void onDestroy() {
         super.onDestroy();
         db.close();
-    }
-
-
-    private Animation inFromRightAnimation() {
-
-        Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-        );
-        inFromRight.setDuration(500);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
-    }
-
-    private Animation outToLeftAnimation() {
-        Animation outtoLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-        );
-        outtoLeft.setDuration(500);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
-    }
-
-    private Animation inFromLeftAnimation() {
-        Animation inFromLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-        );
-        inFromLeft.setDuration(500);
-        inFromLeft.setInterpolator(new AccelerateInterpolator());
-        return inFromLeft;
-    }
-
-    private Animation outToRightAnimation() {
-        Animation outtoRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-        );
-        outtoRight.setDuration(500);
-        outtoRight.setInterpolator(new AccelerateInterpolator());
-        return outtoRight;
     }
 }
