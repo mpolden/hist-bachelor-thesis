@@ -137,6 +137,26 @@ public class Transactions {
     }
 
     /**
+     * Get transaction by id
+     *
+     * @param id
+     * @return The transaction or null if not found
+     */
+    public Transaction getById(final int id) {
+        List<Transaction> transactions = Collections.emptyList();
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        queryBuilder.limit(1);
+        try {
+            queryBuilder.setWhere(queryBuilder.where().eq("_id", id));
+            transactions = transactionDao.query(queryBuilder.prepare());
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to find transaction", e);
+        }
+        return transactions.isEmpty() ? null : transactions.get(0);
+    }
+
+    /**
      * Retrieve a list of changed transactions
      *
      * @return List of transactions
