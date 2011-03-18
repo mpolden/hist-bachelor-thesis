@@ -85,7 +85,7 @@ public class Transactions extends Controller {
             if (t.dirty) {
                 Transaction existing = Transaction.findById(t.id);
                 if (existing != null) {
-                    existing.clientId = t.clientId;
+                    existing._id = t._id;
                     existing.accountingDate = t.accountingDate;
                     existing.fixedDate = t.fixedDate;
                     existing.amountIn = t.amountIn;
