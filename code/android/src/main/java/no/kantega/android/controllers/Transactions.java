@@ -1,6 +1,7 @@
 package no.kantega.android.controllers;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -199,6 +200,24 @@ public class Transactions {
             Log.e(TAG, "Failed to retrieve transactions", e);
         }
         return transactions;
+    }
+
+    /**
+     * Get a cursor for transactions
+     *
+     * @return Cursor
+     */
+    public Cursor getCursor() {
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "\"transaction\" " +
+                        "INNER JOIN \"transactiontype\" " +
+                        "ON transactiontype.id = \"transaction\".type_id " +
+                        "INNER JOIN transactiontag " +
+                        "ON transactiontag.id = \"transaction\".tag_id"
+                , new String[]{"*", "transactiontype.name as type",
+                        "transactiontag.name as tag"}, null, null,
+                null, null, "accountingdate DESC", null);
+        return cursor;
     }
 
     /**

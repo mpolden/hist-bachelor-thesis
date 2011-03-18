@@ -38,7 +38,8 @@ public class AddTransactionActivity extends Activity {
             TransactionType ttype = new TransactionType();
             ttag.setName(selectedTransactionTag);
             ttype.setName("Kontant");
-            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth, pickDay));
+            Date d = FmtUtil.stringToDate("yyyy-MM-dd",
+                    String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
             EditText etamount = (EditText) findViewById(R.id.edittext_amount);
             EditText ettext = (EditText) findViewById(R.id.edittext_text);
             if (etamount.getText().toString().trim() != "" && FmtUtil.isNumber(etamount.getText().toString())) {
