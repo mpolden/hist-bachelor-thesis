@@ -194,13 +194,13 @@ public class Transactions {
      */
     public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
-                "\"transaction\" " +
-                        "INNER JOIN \"transactiontype\" " +
-                        "ON transactiontype.id = \"transaction\".type_id " +
-                        "INNER JOIN transactiontag " +
-                        "ON transactiontag.id = \"transaction\".tag_id"
-                , new String[]{"*", "transactiontype.name as type",
-                        "transactiontag.name as tag"}, null, null,
+                "\"transactions\" " +
+                        "INNER JOIN \"transactiontypes\" " +
+                        "ON transactiontypes.id = \"transactions\".type_id " +
+                        "INNER JOIN transactiontags " +
+                        "ON transactiontags.id = \"transactions\".tag_id"
+                , new String[]{"transactions.*", "transactiontypes.name AS type",
+                        "transactiontags.name AS tag"}, null, null,
                 null, null, "accountingdate DESC", null);
         return cursor;
     }
