@@ -12,7 +12,7 @@ public class Transaction implements Serializable, Comparable<Transaction> {
     @DatabaseField
     private int id;
     @DatabaseField(generatedId = true)
-    private int clientId;
+    private int _id;
     @DatabaseField
     private Date accountingDate;
     @DatabaseField
@@ -49,12 +49,12 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         this.id = id;
     }
 
-    public int getClientId() {
-        return clientId;
+    public int get_id() {
+        return _id;
     }
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public Date getAccountingDate() {
