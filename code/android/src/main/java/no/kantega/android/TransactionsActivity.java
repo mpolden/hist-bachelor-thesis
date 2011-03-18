@@ -4,8 +4,10 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import no.kantega.android.controllers.Transactions;
@@ -43,16 +45,18 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
-    /*@Override
+    @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String selection = l.getItemAtPosition(position).toString();
-        Intent intent = null;
+        Log.i("SELECTION??", selection);
         Object o = l.getItemAtPosition(position);
-        if (o instanceof Transaction) {
-            Transaction t = (Transaction) o;
+        if (o instanceof Cursor) {
+            Cursor cursor = (Cursor) o;
+            int transaction_id = cursor.getInt(cursor.getColumnIndex("_id"));
+            Transaction t = db.getById(transaction_id);
+            Intent intent;
             if (t.isInternal()) {
                 intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
             } else {
@@ -60,10 +64,9 @@ public class TransactionsActivity extends ListActivity {
             }
             intent.putExtra("transaction", t);
             startActivity(intent);
-            //transactions.get(0).setAmountOut(20000.00);
-            //listAdapter.notifyDataSetChanged();
+
         }
-    }*/
+    }
 
     private class TransactionsAdapter extends SimpleCursorAdapter {
         private Cursor cursor;
@@ -76,6 +79,43 @@ public class TransactionsActivity extends ListActivity {
             this.layout = layout;
         }
 
+
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+            Cursor c = getCursor();
+
+            final LayoutInflater inflater = LayoutInflater.from(context);
+            View v = inflater.inflate(layout, parent, false);
+
+            String date = c.getString(c.getColumnIndex("accountingDate"));
+            String text = c.getString(c.getColumnIndex("text"));
+            String tag = c.getString(c.getColumnIndex("tag"));
+            String amount = c.getString(c.getColumnIndex("amountOut"));
+
+            ImageView image = (ImageView) v.findViewById(R.id.tag_icon);
+            TextView tv_date = (TextView) v.findViewById(R.id.trow_tv_date);
+            TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
+            TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
+            TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
+
+            if (tv_date != null) {
+                Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
+                tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
+            }
+            if (text != null) {
+                tv_text.setText(FmtUtil.trimTransactionText(text));
+            }
+            if (tag != null) {
+                tv_tag.setText(tag);
+                image.setImageDrawable(getImageIdByTag(tag));
+            }
+            if (amount != null) {
+                tv_amount.setText(amount);
+            }
+
+            return v;
+
+        }
 
         @Override
         public void bindView(View v, Context context, Cursor c) {

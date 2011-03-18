@@ -3,7 +3,8 @@
               android:orientation="vertical" android:layout_width="fill_parent"
               android:layout_height="fill_parent">
     <ListView android:id="@id/android:list" android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"/>
+              android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
+              android:divider="#FFFFFF" android:dividerHeight="2px"/>
     <TextView android:id="@id/android:empty"
               android:layout_width="fill_parent" android:layout_height="fill_parent"
               android:text="@string/transactions_no_items"/>
