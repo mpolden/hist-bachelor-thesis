@@ -43,7 +43,7 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        
+
     }
 
     /*@Override
@@ -76,43 +76,6 @@ public class TransactionsActivity extends ListActivity {
             this.layout = layout;
         }
 
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
-            Cursor c = getCursor();
-
-            final LayoutInflater inflater = LayoutInflater.from(context);
-            View v = inflater.inflate(layout, parent, false);
-
-            String date = c.getString(c.getColumnIndex("accountingDate"));
-            String text = c.getString(c.getColumnIndex("text"));
-            String tag = c.getString(c.getColumnIndex("tag"));
-            String amount = c.getString(c.getColumnIndex("amountOut"));
-
-            ImageView image = (ImageView) v.findViewById(R.id.tag_icon);
-            TextView tv_date = (TextView) v.findViewById(R.id.trow_tv_date);
-            TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
-            TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
-            TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
-
-            if (tv_date != null) {
-                Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
-                tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
-            }
-            if (text != null) {
-                tv_text.setText(FmtUtil.trimTransactionText(text));
-            }
-            if (tag != null) {
-                tv_tag.setText(tag);
-                image.setImageDrawable(getImageIdByTag(tag));
-            }
-            if (amount != null) {
-                tv_amount.setText(amount);
-            }
-
-            return v;
-
-        }
 
         @Override
         public void bindView(View v, Context context, Cursor c) {
