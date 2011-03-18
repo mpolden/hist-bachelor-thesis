@@ -214,7 +214,7 @@ public class Transactions {
                         "ON transactiontypes.id = \"transactions\".type_id " +
                         "INNER JOIN transactiontags " +
                         "ON transactiontags.id = \"transactions\".tag_id"
-                , new String[]{"transactions.*", "transactiontypes.name AS type",
+                , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag"}, null, null,
                 null, null, "accountingdate DESC", null);
         return cursor;
