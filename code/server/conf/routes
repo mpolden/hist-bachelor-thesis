@@ -10,3 +10,4 @@ GET     /t/avg                                  Transactions.avg
 GET     /t/fresh/{timestamp}                    Transactions.freshTransactions
 GET     /t/transactions                         Transactions.transactions
 POST    /t/save                                 Transactions.save
+GET     /tags/suggest/{body}                    TransactionTags.suggest
