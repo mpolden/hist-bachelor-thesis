@@ -96,7 +96,7 @@ public class TransactionsActivity extends ListActivity implements GestureDetecto
 
     private void getTransactions() {
         try {
-            transactions = new ArrayList<Transaction>(db.get(10));
+            transactions = new ArrayList<Transaction>(db.get(20));
             //Thread.sleep(2000);
             Log.i("ARRAY", "" + transactions.size());
         } catch (Exception e) {
