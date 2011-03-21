@@ -22,6 +22,7 @@ public class TransactionsActivity extends ListActivity {
     private static final String TAG = OverviewActivity.class.getSimpleName();
 
     private Transactions db;
+    private TransactionsAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,18 +34,16 @@ public class TransactionsActivity extends ListActivity {
         startManagingCursor(transactionsCursor);
         String[] from = {"accountingDate", "text", "tag", "amountOut"};
         int[] to = {R.id.trow_tv_date, R.id.trow_tv_text, R.id.trow_tv_category, R.id.trow_tv_amount};
-        this.setListAdapter(new TransactionsAdapter(this, R.layout.transactionrow, transactionsCursor, from, to));
-        /*if (transactionsCursor.moveToFirst()) {
-            do {
-                String text = transactionsCursor.getString(transactionsCursor.getColumnIndex("text"));
-            } while (transactionsCursor.moveToNext());
-        }*/
+        adapter = new TransactionsAdapter(this, R.layout.transactionrow, transactionsCursor, from, to);
+        this.setListAdapter(adapter);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override
