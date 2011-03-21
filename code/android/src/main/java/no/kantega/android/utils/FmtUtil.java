@@ -75,7 +75,7 @@ public class FmtUtil {
      * Check if given string is a number with optional decimals
      *
      * @param s
-     * @return True if string contains only numbers
+     * @return True if string contains one or more numbers
      */
     public static boolean isNumber(String s) {
         return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
