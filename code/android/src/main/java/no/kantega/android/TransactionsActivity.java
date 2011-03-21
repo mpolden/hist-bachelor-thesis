@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
@@ -24,25 +24,38 @@ public class TransactionsActivity extends ListActivity {
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private Transactions db;
     private TransactionsAdapter adapter;
+    private Cursor cursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
-        db = new Transactions(getApplicationContext());
-        Cursor transactionsCursor = db.getCursor();
-        startManagingCursor(transactionsCursor);
-        String[] from = {"accountingDate", "text", "tag", "amountOut"};
-        int[] to = {R.id.trow_tv_date, R.id.trow_tv_text, R.id.trow_tv_category, R.id.trow_tv_amount};
-        adapter = new TransactionsAdapter(this, R.layout.transactionrow, transactionsCursor, from, to);
-        this.setListAdapter(adapter);
+        this.db = new Transactions(getApplicationContext());
+        this.cursor = db.getCursor();
+        this.adapter = new TransactionsAdapter(this, cursor);
+        setListAdapter(adapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetInvalidated();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
+                cursor = db.getCursor();
+                runOnUiThread(handler);
+            }
+        }).start();
     }
+
+    private Runnable handler = new Runnable() {
+        @Override
+        public void run() {
+            // Change to a fresh cursor, the old one will be automatically closed
+            adapter.changeCursor(cursor);
+        }
+    };
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -58,39 +71,36 @@ public class TransactionsActivity extends ListActivity {
         }
     }
 
-    private class TransactionsAdapter extends SimpleCursorAdapter {
+    private class TransactionsAdapter extends CursorAdapter {
 
-        private int layout;
-
-        public TransactionsAdapter(Context context, int layout, Cursor cursor,
-                                   String[] from, int[] to) {
-            super(context, layout, cursor, from, to);
-            this.layout = layout;
+        public TransactionsAdapter(Context context, Cursor c) {
+            super(context, c);
         }
+
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             final LayoutInflater inflater = LayoutInflater.from(context);
-            final View v = inflater.inflate(layout, parent, false);
-            populateView(v, getCursor());
-            return v;
+            final View view = inflater.inflate(R.layout.transactionrow, parent, false);
+            populateView(view, getCursor());
+            return view;
         }
 
         @Override
-        public void bindView(View v, Context context, Cursor cursor) {
-            populateView(v, cursor);
+        public void bindView(View view, Context context, Cursor cursor) {
+            populateView(view, getCursor());
         }
 
-        private void populateView(View v, Cursor c) {
-            String date = c.getString(c.getColumnIndex("accountingDate"));
-            String text = c.getString(c.getColumnIndex("text"));
-            String tag = c.getString(c.getColumnIndex("tag"));
-            String amount = c.getString(c.getColumnIndex("amountOut"));
-            ImageView image = (ImageView) v.findViewById(R.id.tag_icon);
-            TextView tv_date = (TextView) v.findViewById(R.id.trow_tv_date);
-            TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
-            TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
-            TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
+        private void populateView(View view, Cursor cursor) {
+            String date = cursor.getString(cursor.getColumnIndex("accountingDate"));
+            String text = cursor.getString(cursor.getColumnIndex("text"));
+            String tag = cursor.getString(cursor.getColumnIndex("tag"));
+            String amount = cursor.getString(cursor.getColumnIndex("amountOut"));
+            ImageView image = (ImageView) view.findViewById(R.id.tag_icon);
+            TextView tv_date = (TextView) view.findViewById(R.id.trow_tv_date);
+            TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);
+            TextView tv_tag = (TextView) view.findViewById(R.id.trow_tv_category);
+            TextView tv_amount = (TextView) view.findViewById(R.id.trow_tv_amount);
             if (tv_date != null) {
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
                 tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
