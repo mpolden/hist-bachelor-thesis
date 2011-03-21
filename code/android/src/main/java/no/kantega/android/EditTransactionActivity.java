@@ -77,6 +77,7 @@ public class EditTransactionActivity extends Activity {
         date = (Button) findViewById(R.id.edittransaction_button_pickDate);
         amount = (EditText) findViewById(R.id.edittransaction_edittext_amount);
         category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
+        text.setEnabled(false);
         selectedTransactionTag = t.getTag().getName();
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
