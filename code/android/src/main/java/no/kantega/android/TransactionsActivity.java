@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,16 +44,13 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String selection = l.getItemAtPosition(position).toString();
-        Log.i("SELECTION??", selection);
         Object o = l.getItemAtPosition(position);
         if (o instanceof Cursor) {
             Cursor cursor = (Cursor) o;
             int transaction_id = cursor.getInt(cursor.getColumnIndex("_id"));
             Transaction t = db.getById(transaction_id);
             Intent intent;
-
             intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
-
             intent.putExtra("transaction", t);
             startActivity(intent);
         }
@@ -72,9 +68,10 @@ public class TransactionsActivity extends ListActivity {
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            final Cursor c = getCursor();
             final LayoutInflater inflater = LayoutInflater.from(context);
             final View v = inflater.inflate(layout, parent, false);
-            populateView(v, cursor);
+            populateView(v, c);
             return v;
         }
 
