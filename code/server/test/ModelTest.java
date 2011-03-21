@@ -15,11 +15,9 @@ public class ModelTest extends UnitTest {
         for (Transaction t : transactions) {
             assertNotNull(t);
             assertNotNull(t.accountingDate);
-            assertNotNull(t.fixedDate);
             assertNotNull(t.amountIn);
             assertNotNull(t.amountOut);
             assertNotNull(t.text);
-            assertNotNull(t.archiveRef);
             assertNotNull(t.type);
             assertNotNull(t.tag);
             assertNotNull(t.internal);

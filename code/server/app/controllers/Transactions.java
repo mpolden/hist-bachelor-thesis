@@ -87,11 +87,9 @@ public class Transactions extends Controller {
                 if (existing != null) {
                     existing._id = t._id;
                     existing.accountingDate = t.accountingDate;
-                    existing.fixedDate = t.fixedDate;
                     existing.amountIn = t.amountIn;
                     existing.amountOut = t.amountOut;
                     existing.text = t.text;
-                    existing.archiveRef = t.archiveRef;
                     existing.internal = t.internal;
                     existing.timestamp = t.timestamp;
                     existing.dirty = false;

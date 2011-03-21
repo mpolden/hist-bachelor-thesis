@@ -50,8 +50,6 @@ public class Import extends Job {
             Double in = Double.parseDouble(s[6]);
             Transaction t = new Transaction();
             t.accountingDate = accountingDate;
-            t.fixedDate = fixedDate;
-            t.archiveRef = archiveRef;
             t.type = ModelHelper.getOrAddType(s[3]);
             t.text = text;
             t.amountOut = out;
@@ -65,6 +63,4 @@ public class Import extends Job {
             logger.log(Level.ERROR, e);
         }
     }
-
-
 }

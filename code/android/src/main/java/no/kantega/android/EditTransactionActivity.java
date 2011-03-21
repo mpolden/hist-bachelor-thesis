@@ -49,7 +49,6 @@ public class EditTransactionActivity extends Activity {
                 t.setText(text.getText().toString());
                 t.setTag(ttag);
                 t.setAccountingDate(d);
-                t.setFixedDate(d);
                 t.setDirty(true);
                 t.setChanged(true);
                 db.update(t);
