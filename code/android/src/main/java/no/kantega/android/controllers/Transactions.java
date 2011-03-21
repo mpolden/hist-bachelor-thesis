@@ -107,6 +107,16 @@ public class Transactions {
     }
 
     /**
+     * Add a new tag
+     *
+     * @param t
+     * @return True on success
+     */
+    public boolean add(TransactionTag t) {
+        return addOrGetExistingTag(t) != null;
+    }
+
+    /**
      * Update a transaction
      *
      * @param t
