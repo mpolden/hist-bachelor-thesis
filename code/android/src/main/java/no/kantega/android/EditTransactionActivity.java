@@ -39,7 +39,7 @@ public class EditTransactionActivity extends Activity {
                 TransactionTag ttag = new TransactionTag();
                 ttag.setName(selectedTransactionTag);
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
-                if (amount.getText().toString().trim() != "" && FmtUtil.isNumber(amount.getText().toString())) {
+                if (FmtUtil.isNumber(amount.getText().toString())) {
                     t.setAmountOut(Double.parseDouble(amount.getText().toString()));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.invalid_amount,
