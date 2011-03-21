@@ -44,8 +44,23 @@ Starting a shell on the emulator
 --------------------------------
 To start a shell on the emulator, use the following command:
     $ANDROID_HOME/adb -s emulator-5554 shell
-To remove the existing database:
+To remove the existing database (shouldn't be needed in most cases):
     rm /data/data/no.kantega.android/databases/app.db
+
+Ubuntu, adb and running on a real device
+----------------------------------------
+To run/deploy the application on an actual Android phone, the adb server needs
+to be run as root, use the following commands for a quick fix:
+    $ANDROID_HOME/platform-tools/adb kill-server
+    sudo $ANDROID_HOME/platform-tools/adb start-server
+The best solution is however to use a udev rule, like this:
+    echo 'SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666"' | \
+        sudo tee -a /etc/udev/rules.d/51-android.rules.
+The '0bb4' is the vendor ID for HTC, if you're using a different brand use the
+lsusb command to find it.
+To verify that it worked, run the following:
+    $ANDROID_HOME/platform-tools/adb devices
+Your device ID should be listed in the output.
 
 IntelliJ IDEA, maven-android-plugin and Javadoc
 -----------------------------------------------------------
