@@ -36,20 +36,16 @@ public class TransactionsActivity extends ListActivity {
         int[] to = {R.id.trow_tv_date, R.id.trow_tv_text, R.id.trow_tv_category, R.id.trow_tv_amount};
         adapter = new TransactionsAdapter(this, R.layout.transactionrow, transactionsCursor, from, to);
         this.setListAdapter(adapter);
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
-
+        adapter.notifyDataSetInvalidated();
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        String selection = l.getItemAtPosition(position).toString();
         Object o = l.getItemAtPosition(position);
         if (o instanceof Cursor) {
             Cursor cursor = (Cursor) o;
@@ -74,16 +70,15 @@ public class TransactionsActivity extends ListActivity {
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            final Cursor c = getCursor();
             final LayoutInflater inflater = LayoutInflater.from(context);
             final View v = inflater.inflate(layout, parent, false);
-            populateView(v, c);
+            populateView(v, getCursor());
             return v;
         }
 
         @Override
-        public void bindView(View v, Context context, Cursor c) {
-            populateView(v, c);
+        public void bindView(View v, Context context, Cursor cursor) {
+            populateView(v, cursor);
         }
 
         private void populateView(View v, Cursor c) {
