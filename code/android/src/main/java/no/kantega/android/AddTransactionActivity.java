@@ -54,7 +54,6 @@ public class AddTransactionActivity extends Activity {
                 t.setTag(ttag);
                 t.setType(ttype);
                 t.setAccountingDate(d);
-                t.setFixedDate(d);
                 t.setTimestamp(new Date().getTime());
                 t.setInternal(true);
                 t.setDirty(true);
