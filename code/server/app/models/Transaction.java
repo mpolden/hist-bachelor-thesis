@@ -11,11 +11,9 @@ public class Transaction extends Model {
 
     public int _id; // ID generated on device
     public Date accountingDate;
-    public Date fixedDate;
     public double amountIn;
     public double amountOut;
     public String text;
-    public String archiveRef;
     public boolean internal;
     public long timestamp;
     public boolean dirty;
