@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import com.google.android.c2dm.C2DMessaging;
 import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
@@ -27,6 +28,11 @@ public class OverviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.db = new Transactions(getApplicationContext());
         setContentView(R.layout.overview);
+        registerApp();
+    }
+
+    private void registerApp() {
+        C2DMessaging.register(getApplicationContext(), "test-account@gmail.com");
     }
 
     @Override
