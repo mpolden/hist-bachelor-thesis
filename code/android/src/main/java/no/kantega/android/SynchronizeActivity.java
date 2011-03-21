@@ -18,6 +18,7 @@ import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.GsonUtil;
+import no.kantega.android.utils.HttpUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG = 0;
-    public static final String PREFS_NAME = "SynchronizePreferences";
+    private static final String PREFS_NAME = "SynchronizePreferences";
     private Transactions db;
     private ProgressDialog progressDialog;
     private TextView lastSynchronized;
@@ -233,7 +234,9 @@ public class SynchronizeActivity extends Activity {
             } else {
                 url = urlAll;
             }
-            final List<Transaction> transactions = GsonUtil.parseTransactions(GsonUtil.getBody(url));
+            final List<Transaction> transactions =
+                    GsonUtil.parseTransactionsFromStream(
+                            HttpUtil.getBodyAsStream(url));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
                 int i = 0;
