@@ -143,6 +143,9 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         db.close();
     }
 }
