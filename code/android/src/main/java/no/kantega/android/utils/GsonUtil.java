@@ -7,11 +7,6 @@ import com.google.gson.stream.JsonReader;
 import no.kantega.android.models.AggregatedTag;
 import no.kantega.android.models.AverageConsumption;
 import no.kantega.android.models.Transaction;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,27 +77,6 @@ public class GsonUtil {
             }
         }
         return transactions;
-    }
-
-    /**
-     * Post JSON to URL
-     *
-     * @param url
-     * @param json
-     */
-    public static String postJSON(final String url, final String json) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpPost method = new HttpPost(url);
-        String body = null;
-        try {
-            method.setEntity(new StringEntity(json, "UTF-8"));
-            method.setHeader("Content-Type", "application/json");
-            HttpResponse response = httpClient.execute(method);
-            body = EntityUtils.toString(response.getEntity());
-        } catch (IOException e) {
-            Log.d(TAG, "IOException", e);
-        }
-        return body;
     }
 
     /**

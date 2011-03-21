@@ -207,7 +207,7 @@ public class SynchronizeActivity extends Activity {
             if (!dirtyTransactions.isEmpty()) {
                 final String json = GsonUtil.makeJSON(dirtyTransactions);
                 final List<Transaction> updatedTransactions = GsonUtil.parseTransactions(
-                        GsonUtil.postJSON(url, json));
+                        HttpUtil.postJSON(url, json));
                 if (updatedTransactions != null && !updatedTransactions.isEmpty()) {
                     progressDialog.setMax(updatedTransactions.size());
                     int i = 0;
