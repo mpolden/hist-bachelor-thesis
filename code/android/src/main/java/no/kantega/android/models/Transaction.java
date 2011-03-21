@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "transactions")
-public class Transaction implements Serializable, Comparable<Transaction> {
+public class Transaction implements Serializable {
 
     @DatabaseField
     private int id;
@@ -176,25 +176,5 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         result = 31 * result + (dirty ? 1 : 0);
         result = 31 * result + (changed ? 1 : 0);
         return result;
-    }
-
-    @Override
-    public int compareTo(Transaction that) {
-        final int BEFORE = -1;
-        final int EQUAL = 0;
-        final int AFTER = 1;
-        final int compareDate = this.accountingDate.compareTo(
-                that.accountingDate);
-        if (compareDate == EQUAL) {
-            if (this.timestamp > that.timestamp) {
-                return BEFORE;
-            } else if (this.timestamp < that.timestamp) {
-                return AFTER;
-            } else {
-                return EQUAL;
-            }
-        } else {
-            return compareDate;
-        }
     }
 }

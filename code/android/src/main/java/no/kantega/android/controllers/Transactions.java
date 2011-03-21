@@ -246,7 +246,7 @@ public class Transactions {
                         "ON transactiontags.id = \"transactions\".tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag"}, null, null,
-                null, null, "accountingdate DESC", null);
+                null, null, "accountingdate DESC, timestamp DESC", null);
         return cursor;
     }
 
