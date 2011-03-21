@@ -166,10 +166,10 @@ public class SynchronizeActivity extends Activity {
 
             final Object urlNew = properties.get("newTransactions");
             final Object urlAll = properties.get("allTransactions");
-            final Object urlSave = properties.get("allTransactions");
+            final Object urlSave = properties.get("saveTransactions");
 
             if (urlNew != null && urlAll != null && urlSave != null) {
-                new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlNew.toString());
+                new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlSave.toString());
             } else {
                 Log.e(TAG, "Missing one or more entries in url.properties");
             }
