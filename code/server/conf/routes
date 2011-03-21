@@ -5,9 +5,7 @@
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
-GET     /t/tags/{count}                         Transactions.topTags
-GET     /t/avg                                  Transactions.avg
-GET     /t/fresh/{timestamp}                    Transactions.freshTransactions
-GET     /t/transactions                         Transactions.transactions
-POST    /t/save                                 Transactions.save
+GET     /transactions/{timestamp}               Transactions.after
+GET     /transactions                           Transactions.all
+POST    /transactions                           Transactions.save
 GET     /tags/suggest/{body}                    TransactionTags.suggest
