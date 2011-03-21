@@ -34,28 +34,40 @@ public class EditTransactionActivity extends Activity {
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            boolean editTransactionOk = true;
-            TransactionTag ttag = new TransactionTag();
-            ttag.setName(selectedTransactionTag);
-            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth, pickDay));
-            if (amount.getText().toString().trim() != "" && FmtUtil.isNumber(amount.getText().toString())) {
-                t.setAmountOut(Double.parseDouble(amount.getText().toString()));
+            if (t.isInternal()) {
+                boolean editTransactionOk = true;
+                TransactionTag ttag = new TransactionTag();
+                ttag.setName(selectedTransactionTag);
+                Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
+                if (amount.getText().toString().trim() != "" && FmtUtil.isNumber(amount.getText().toString())) {
+                    t.setAmountOut(Double.parseDouble(amount.getText().toString()));
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_amount,
+                            Toast.LENGTH_LONG).show();
+                    editTransactionOk = false;
+                }
+                if (editTransactionOk) {
+                    t.setText(text.getText().toString());
+                    t.setTag(ttag);
+                    t.setAccountingDate(d);
+                    t.setDirty(true);
+                    t.setChanged(true);
+                    db.update(t);
+                    Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
             } else {
-                Toast.makeText(getApplicationContext(), R.string.invalid_amount,
-                        Toast.LENGTH_LONG).show();
-                editTransactionOk = false;
-            }
-            if (editTransactionOk) {
-                t.setText(text.getText().toString());
+                TransactionTag ttag = new TransactionTag();
+                ttag.setName(selectedTransactionTag);
                 t.setTag(ttag);
-                t.setAccountingDate(d);
                 t.setDirty(true);
                 t.setChanged(true);
                 db.update(t);
-                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
                 finish();
             }
+
         }
     };
 
@@ -69,6 +81,7 @@ public class EditTransactionActivity extends Activity {
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
+        isInternal();
     }
 
     private void setupViews() {
@@ -97,6 +110,14 @@ public class EditTransactionActivity extends Activity {
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
         int spinnerPosition = adapter.getPosition(selectedTransactionTag);
         category.setSelection(spinnerPosition);
+    }
+
+    private void isInternal() {
+        if (!t.isInternal()) {
+            text.setEnabled(false);
+            date.setEnabled(false);
+            amount.setEnabled(false);
+        }
     }
 
     // updates the date we display in the TextView

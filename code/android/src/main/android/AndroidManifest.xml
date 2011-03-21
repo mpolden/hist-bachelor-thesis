@@ -20,7 +20,7 @@
         <activity android:name=".SynchronizeActivity"></activity>
         <activity android:name=".AddTransactionActivity"></activity>
         <activity android:name=".EditTransactionActivity"></activity>
-        <activity android:name=".EditExternalTransactionActivity"></activity>
+        <activity android:name=".CategoryActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

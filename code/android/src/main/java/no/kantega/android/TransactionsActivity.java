@@ -52,11 +52,9 @@ public class TransactionsActivity extends ListActivity {
             int transaction_id = cursor.getInt(cursor.getColumnIndex("_id"));
             Transaction t = db.getById(transaction_id);
             Intent intent;
-            if (t.isInternal()) {
-                intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
-            } else {
-                intent = new Intent(getApplicationContext(), EditExternalTransactionActivity.class);
-            }
+
+            intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
+
             intent.putExtra("transaction", t);
             startActivity(intent);
         }

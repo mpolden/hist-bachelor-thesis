@@ -56,7 +56,7 @@
                      android:prompt="@string/category_prompt"/>
         </TableRow>
     </TableLayout>
-    <Button android:text="Edit transaction"
+    <Button android:text="Save"
             android:id="@+id/edittransaction_button_edittransaction"
             android:layout_weight="0"
             android:layout_width="fill_parent"
