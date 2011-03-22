@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.TabActivity;
 import android.content.Intent;

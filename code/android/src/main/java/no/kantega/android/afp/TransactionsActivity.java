@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -13,9 +13,9 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.Date;
 

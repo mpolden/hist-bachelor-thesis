@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.models.TransactionTag;
-import no.kantega.android.models.TransactionType;
-import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
+import no.kantega.android.afp.models.TransactionType;
+import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;

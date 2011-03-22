@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -7,11 +7,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import com.google.android.c2dm.C2DMessaging;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.AggregatedTag;
-import no.kantega.android.models.AverageConsumption;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.AggregatedTag;
+import no.kantega.android.afp.models.AverageConsumption;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.List;
 

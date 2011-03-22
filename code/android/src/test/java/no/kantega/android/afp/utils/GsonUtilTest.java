@@ -1,8 +1,8 @@
-package no.kantega.android.utils;
+package no.kantega.android.afp.utils;
 
-import no.kantega.android.models.Transaction;
-import no.kantega.android.models.TransactionTag;
-import no.kantega.android.models.TransactionType;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
+import no.kantega.android.afp.models.TransactionType;
 import org.junit.Test;
 
 import java.text.ParseException;

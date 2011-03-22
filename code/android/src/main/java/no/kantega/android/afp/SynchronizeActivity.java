@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,11 +14,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FmtUtil;
-import no.kantega.android.utils.GsonUtil;
-import no.kantega.android.utils.HttpUtil;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.GsonUtil;
+import no.kantega.android.afp.utils.HttpUtil;
 
 import java.io.IOException;
 import java.util.Date;

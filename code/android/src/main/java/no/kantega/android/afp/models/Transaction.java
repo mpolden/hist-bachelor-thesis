@@ -1,4 +1,4 @@
-package no.kantega.android.models;
+package no.kantega.android.afp.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

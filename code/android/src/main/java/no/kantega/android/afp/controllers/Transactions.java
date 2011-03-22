@@ -1,4 +1,4 @@
-package no.kantega.android.controllers;
+package no.kantega.android.afp.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,9 +6,9 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
-import no.kantega.android.models.*;
-import no.kantega.android.utils.DatabaseHelper;
-import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.afp.models.*;
+import no.kantega.android.afp.utils.DatabaseHelper;
+import no.kantega.android.afp.utils.FmtUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
