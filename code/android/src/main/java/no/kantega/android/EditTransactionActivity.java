@@ -13,13 +13,14 @@ import no.kantega.android.models.TransactionTag;
 import no.kantega.android.utils.FmtUtil;
 import no.kantega.android.utils.HttpUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class EditTransactionActivity extends Activity {
 
+    private static final String TAG = EditTransactionActivity.class.
+            getSimpleName();
+    private static final String PROPERTIES_FILE = "url.properties";
     private Transactions db;
     private List<String> categories;
     private Bundle extras;
@@ -33,6 +34,7 @@ public class EditTransactionActivity extends Activity {
     private Button date;
     private EditText amount;
     private Spinner category;
+    private String suggestUrl;
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -69,7 +71,6 @@ public class EditTransactionActivity extends Activity {
                 Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
                 finish();
             }
-
         }
     };
 
@@ -83,15 +84,25 @@ public class EditTransactionActivity extends Activity {
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
-        isInternal();
+        setInternal();
+        readProperties();
+    }
+
+    private void readProperties() {
+        try {
+            final Properties properties = new Properties();
+            properties.load(getAssets().open(PROPERTIES_FILE));
+            suggestUrl = properties.get("suggestTag").toString();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        final String url = String.format("http://172.16.0.2:9000/tags/suggest/%s",
-                FmtUtil.urlEncode(FmtUtil.trimTransactionText(t.getText())));
-        new SuggestionsTask().execute(url);
+        new SuggestionsTask().execute(suggestUrl,
+                FmtUtil.trimTransactionText(t.getText()));
     }
 
     private void setupViews() {
@@ -122,7 +133,7 @@ public class EditTransactionActivity extends Activity {
         category.setSelection(spinnerPosition);
     }
 
-    private void isInternal() {
+    private void setInternal() {
         if (!t.isInternal()) {
             text.setEnabled(false);
             date.setEnabled(false);
@@ -185,9 +196,10 @@ public class EditTransactionActivity extends Activity {
     }
 
     private class SuggestionsTask extends AsyncTask<String, Integer, String> {
+
         @Override
-        protected String doInBackground(String... urls) {
-            return HttpUtil.getBody(urls[0]);
+        protected String doInBackground(String... params) {
+            return HttpUtil.post(params[0], params[1]);
         }
 
         @Override
