@@ -246,9 +246,9 @@ public class Transactions {
     public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
                 "\"transactions\" " +
-                        "INNER JOIN \"transactiontypes\" " +
+                        "LEFT JOIN \"transactiontypes\" " +
                         "ON transactiontypes.id = \"transactions\".type_id " +
-                        "INNER JOIN transactiontags " +
+                        "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = \"transactions\".tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag"}, null, null,
