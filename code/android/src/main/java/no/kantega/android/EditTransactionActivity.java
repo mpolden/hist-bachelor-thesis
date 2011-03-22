@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import no.kantega.android.controllers.Transactions;
@@ -22,6 +23,7 @@ public class EditTransactionActivity extends Activity {
 
     private Transactions db;
     private List<String> categories;
+    private ArrayAdapter<String> adapter;
     private Bundle extras;
     private Transaction t;
     private String selectedTransactionTag;
@@ -33,6 +35,7 @@ public class EditTransactionActivity extends Activity {
     private Button date;
     private EditText amount;
     private Spinner category;
+    private TextView suggestedTag;
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -89,9 +92,23 @@ public class EditTransactionActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        final String url = String.format("http://172.16.0.2:9000/tags/suggest/%s",
+        final String url = String.format("http://172.16.0.96:9000/tags/suggest/%s",
                 FmtUtil.urlEncode(FmtUtil.trimTransactionText(t.getText())));
         new SuggestionsTask().execute(url);
+    }
+
+    private void updateSpinnerPosition() {
+        int spinnerPosition;
+        if(selectedTransactionTag == null) {
+            spinnerPosition = adapter.getPosition(suggestedTag.getText().toString());
+            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
+            //Log.i("spinnerPosition", String.valueOf(spinnerPosition));
+        } else {
+            spinnerPosition = adapter.getPosition(selectedTransactionTag);
+            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
+            //Log.i("spinnerPosition2", String.valueOf(spinnerPosition));
+        }
+        category.setSelection(spinnerPosition);
     }
 
     private void setupViews() {
@@ -99,7 +116,8 @@ public class EditTransactionActivity extends Activity {
         date = (Button) findViewById(R.id.edittransaction_button_pickDate);
         amount = (EditText) findViewById(R.id.edittransaction_edittext_amount);
         category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
-        selectedTransactionTag = t.getTag().getName();
+        suggestedTag = (TextView) findViewById(R.id.suggested_tag);
+
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
         amount.setText(String.valueOf(t.getAmountOut()));
@@ -114,12 +132,13 @@ public class EditTransactionActivity extends Activity {
         pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
         fillCategoryList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
-        int spinnerPosition = adapter.getPosition(selectedTransactionTag);
-        category.setSelection(spinnerPosition);
+
+        selectedTransactionTag = t.getTag().getName();
+
     }
 
     private void isInternal() {
@@ -192,7 +211,8 @@ public class EditTransactionActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-            ((TextView) findViewById(R.id.suggested_tag)).setText(s);
+            suggestedTag.setText(s);
+            updateSpinnerPosition();
         }
     }
 }
