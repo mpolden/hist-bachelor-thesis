@@ -31,7 +31,10 @@ public class TransactionTags extends Controller {
             query.setParameter("text", String.format("%%%s%%",
                     transactionText));
             final List<Object[]> result = query.getResultList();
-            renderJSON(result);
+            if (!result.isEmpty()) {
+                renderText(result.get(0)[0]);
+            }
+            //renderJSON(result);
         }
     }
 }
