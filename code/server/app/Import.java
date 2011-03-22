@@ -23,7 +23,7 @@ public class Import extends Job {
     public void doJob() {
         if (Transaction.count() == 0) {
             File f = VirtualFile.fromRelativePath(
-                    "/conf/fixture-transactions.csv").getRealFile();
+                    "/conf/fixture-transactions-full.csv").getRealFile();
             BufferedReader reader = null;
             try {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
@@ -40,11 +40,9 @@ public class Import extends Job {
     }
 
     private void addTransaction(String line) {
-        String[] s = line.split("\\|");
+        String[] s = line.split("_");
         try {
             Date accountingDate = dateFormat.parse(s[0]);
-            Date fixedDate = dateFormat.parse(s[1]);
-            String archiveRef = s[2];
             String text = s[4];
             Double out = Double.parseDouble(s[5]);
             Double in = Double.parseDouble(s[6]);
@@ -54,7 +52,9 @@ public class Import extends Job {
             t.text = text;
             t.amountOut = out;
             t.amountIn = in;
-            t.tag = ModelHelper.getOrSaveTag(s[8]);
+            if (s.length > 7) {
+                t.tag = ModelHelper.getOrSaveTag(s[7]);
+            }
             t.internal = false;
             t.dirty = false;
             t.timestamp = t.accountingDate.getTime();
