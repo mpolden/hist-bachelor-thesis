@@ -8,4 +8,4 @@ GET     /public/                                staticDir:public
 GET     /transactions/{timestamp}               Transactions.after
 GET     /transactions                           Transactions.all
 POST    /transactions                           Transactions.save
-GET     /tags/suggest/{body}                    TransactionTags.suggest
+POST    /tags/suggest                           TransactionTags.suggest
