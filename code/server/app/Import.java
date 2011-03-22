@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.vfs.VirtualFile;
+import utils.FmtUtil;
 import utils.ModelHelper;
 
 import java.io.*;
@@ -50,6 +51,7 @@ public class Import extends Job {
             t.accountingDate = accountingDate;
             t.type = ModelHelper.getOrAddType(s[3]);
             t.text = text;
+            t.trimmedText = FmtUtil.trimTransactionText(text).trim();
             t.amountOut = out;
             t.amountIn = in;
             if (s.length > 7) {
