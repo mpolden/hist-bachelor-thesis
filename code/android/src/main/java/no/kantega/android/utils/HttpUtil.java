@@ -68,12 +68,28 @@ public class HttpUtil {
      * @param json
      */
     public static String postJSON(final String url, final String json) {
+        return post(url, json, "application/json");
+    }
+
+    /**
+     * Post plain text to URL
+     *
+     * @param url
+     * @param s
+     * @return Body
+     */
+    public static String post(final String url, final String s) {
+        return post(url, s, "text/plain");
+    }
+
+    private static String post(final String url, final String s,
+                               final String contentType) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
         String body = null;
         try {
-            method.setEntity(new StringEntity(json, "UTF-8"));
-            method.setHeader("Content-Type", "application/json");
+            method.setEntity(new StringEntity(s, "UTF-8"));
+            method.setHeader("Content-Type", contentType);
             HttpResponse response = httpClient.execute(method);
             body = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
