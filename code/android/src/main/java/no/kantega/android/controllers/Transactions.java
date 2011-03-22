@@ -245,11 +245,11 @@ public class Transactions {
      */
     public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
-                "\"transactions\" " +
-                        "LEFT JOIN \"transactiontypes\" " +
-                        "ON transactiontypes.id = \"transactions\".type_id " +
+                "transactions " +
+                        "LEFT JOIN transactiontypes " +
+                        "ON transactiontypes.id = transactions.type_id " +
                         "LEFT JOIN transactiontags " +
-                        "ON transactiontags.id = \"transactions\".tag_id"
+                        "ON transactiontags.id = transactions.tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag"}, null, null,
                 null, null, "accountingdate DESC, timestamp DESC", null);
@@ -274,10 +274,32 @@ public class Transactions {
         return getCount("transactiontags");
     }
 
+    /**
+     * Retrieve number of dirty (unsynced) transactions
+     *
+     * @return
+     */
     public int getDirtyCount() {
         try {
             GenericRawResults<String[]> rawResults = transactionDao.
-                    queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1");
+                    queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1 LIMIT 1");
+            return Integer.parseInt(rawResults.getResults().get(0)[0]);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve transaction count", e);
+        }
+        return 0;
+    }
+
+    /**
+     * Retrieve number of untagged transactions
+     *
+     * @return Untagged count
+     */
+    public int getUntaggedCount() {
+        try {
+            GenericRawResults<String[]> rawResults = transactionDao.
+                    queryRaw("SELECT COUNT(*) FROM transactions " +
+                            "WHERE tag_id IS NULL LIMIT 1");
             return Integer.parseInt(rawResults.getResults().get(0)[0]);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve transaction count", e);
