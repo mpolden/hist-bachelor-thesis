@@ -37,9 +37,11 @@ public class SynchronizeActivity extends Activity {
     private TextView transactionCount;
     private TextView tagCount;
     private TextView dirtyCount;
+    private TextView untaggedCount;
     private int dbTransactionCount;
     private int dbTagCount;
     private int dbDirtyCount;
+    private int dbUntaggedCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
@@ -73,6 +75,7 @@ public class SynchronizeActivity extends Activity {
         transactionCount = (TextView) findViewById(R.id.internal_t_count);
         tagCount = (TextView) findViewById(R.id.internal_tag_count);
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
+        untaggedCount = (TextView) findViewById(R.id.untagged_count);
     }
 
     /**
@@ -87,6 +90,7 @@ public class SynchronizeActivity extends Activity {
                 dbTransactionCount = db.getCount();
                 dbTagCount = db.getTagCount();
                 dbDirtyCount = db.getDirtyCount();
+                dbUntaggedCount = db.getUntaggedCount();
                 runOnUiThread(populate);
             }
         }).start();
@@ -101,6 +105,7 @@ public class SynchronizeActivity extends Activity {
             transactionCount.setText(String.valueOf(dbTransactionCount));
             tagCount.setText(String.valueOf(dbTagCount));
             dirtyCount.setText(String.valueOf(dbDirtyCount));
+            untaggedCount.setText(String.valueOf(dbUntaggedCount));
         }
     };
 

@@ -31,4 +31,5 @@
     <string name="unsynced_count">Changes not synchronized</string>
     <string name="clear_db">Clear internal database</string>
     <string name="db_cleared">Internal database has been emptied</string>
+    <string name="untagged_count">Not tagged</string>
 </resources>
