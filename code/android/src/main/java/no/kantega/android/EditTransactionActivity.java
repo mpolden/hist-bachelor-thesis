@@ -3,6 +3,7 @@ package no.kantega.android;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -10,6 +11,7 @@ import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
 import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.utils.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,6 +84,14 @@ public class EditTransactionActivity extends Activity {
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
         isInternal();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final String url = String.format("http://172.16.0.2:9000/tags/suggest/%s",
+                FmtUtil.urlEncode(FmtUtil.trimTransactionText(t.getText())));
+        new SuggestionsTask().execute(url);
     }
 
     private void setupViews() {
@@ -172,5 +182,17 @@ public class EditTransactionActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         db.close();
+    }
+
+    private class SuggestionsTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            return HttpUtil.getBody(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            ((TextView) findViewById(R.id.suggested_tag)).setText(s);
+        }
     }
 }
