@@ -47,7 +47,10 @@ public class Transactions {
      * @param tag
      * @return The newly added tag or the existing one
      */
-    private TransactionTag addOrGetExistingTag(TransactionTag tag) {
+    private TransactionTag insertIgnore(TransactionTag tag) {
+        if (tag == null) {
+            return null;
+        }
         try {
             QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
             queryBuilder.where().eq("name", tag.getName());
@@ -71,7 +74,10 @@ public class Transactions {
      * @param type
      * @return The newly added tag or the existing one
      */
-    private TransactionType addOrGetExistingType(TransactionType type) {
+    private TransactionType insertIgnore(TransactionType type) {
+        if (type == null) {
+            return null;
+        }
         try {
             QueryBuilder<TransactionType, Integer> queryBuilder = transactionTypeDao.queryBuilder();
             queryBuilder.where().eq("name", type.getName());
@@ -97,8 +103,8 @@ public class Transactions {
      */
     public boolean add(Transaction t) {
         try {
-            t.setTag(addOrGetExistingTag(t.getTag()));
-            t.setType(addOrGetExistingType(t.getType()));
+            t.setTag(insertIgnore(t.getTag()));
+            t.setType(insertIgnore(t.getType()));
             return transactionDao.create(t) == INSERT_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
@@ -113,7 +119,7 @@ public class Transactions {
      * @return True on success
      */
     public boolean add(TransactionTag t) {
-        return addOrGetExistingTag(t) != null;
+        return insertIgnore(t) != null;
     }
 
     /**
@@ -124,8 +130,8 @@ public class Transactions {
      */
     public boolean update(Transaction t) {
         try {
-            t.setTag(addOrGetExistingTag(t.getTag()));
-            t.setType(addOrGetExistingType(t.getType()));
+            t.setTag(insertIgnore(t.getTag()));
+            t.setType(insertIgnore(t.getType()));
             return transactionDao.update(t) == UPDATE_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to update transaction", e);
