@@ -51,7 +51,7 @@ public class Import extends Job {
             t.accountingDate = accountingDate;
             t.type = ModelHelper.getOrAddType(s[3]);
             t.text = text;
-            t.trimmedText = FmtUtil.trimTransactionText(text);
+            t.trimmedText = FmtUtil.trimTransactionText(text).trim();
             t.amountOut = out;
             t.amountIn = in;
             if (s.length > 7) {

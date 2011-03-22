@@ -51,7 +51,7 @@ public class TransactionTags extends Controller {
                                 " where lower(t.trimmedText) like :text" +
                                 " group by tag.name order by count(*)"
                 );
-                query.setParameter("text", String.format("%s%%",
+                query.setParameter("text", String.format("%%%s%%",
                         firstWord.toLowerCase()));
                 if (!renderTag(query.getResultList())) {
                     logger.log(Level.WARN, "Could not find tag for text: " +
