@@ -6,6 +6,9 @@ import models.TransactionType;
 public class ModelHelper {
 
     public static TransactionTag getOrSaveTag(String name) {
+        if (name == null || name.trim().length() == 0) {
+            return null;
+        }
         TransactionTag tag = TransactionTag.find("name", name).first();
         if (tag != null) {
             return tag;
@@ -18,6 +21,9 @@ public class ModelHelper {
     }
 
     public static TransactionType getOrAddType(String name) {
+        if (name == null || name.trim().length() == 0) {
+            return null;
+        }
         TransactionType type = TransactionType.find("name", name).first();
         if (type != null) {
             return type;

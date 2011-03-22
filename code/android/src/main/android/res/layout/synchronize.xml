@@ -76,6 +76,23 @@
                       android:id="@+id/unsynced_count">
             </TextView>
         </TableRow>
+        <TableRow>
+            <TextView android:layout_weight="0.5"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/untagged_count">
+            </TextView>
+            <TextView android:layout_weight="1"
+                      android:layout_width="wrap_content"
+                      android:padding="3dip"
+                      style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:gravity="right"
+                      android:id="@+id/untagged_count">
+            </TextView>
+        </TableRow>
     </TableLayout>
     <Button android:id="@+id/clearDbButton"
             android:layout_width="fill_parent"

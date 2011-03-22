@@ -47,7 +47,10 @@ public class Transactions {
      * @param tag
      * @return The newly added tag or the existing one
      */
-    private TransactionTag addOrGetExistingTag(TransactionTag tag) {
+    private TransactionTag insertIgnore(TransactionTag tag) {
+        if (tag == null) {
+            return null;
+        }
         try {
             QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
             queryBuilder.where().eq("name", tag.getName());
@@ -71,7 +74,10 @@ public class Transactions {
      * @param type
      * @return The newly added tag or the existing one
      */
-    private TransactionType addOrGetExistingType(TransactionType type) {
+    private TransactionType insertIgnore(TransactionType type) {
+        if (type == null) {
+            return null;
+        }
         try {
             QueryBuilder<TransactionType, Integer> queryBuilder = transactionTypeDao.queryBuilder();
             queryBuilder.where().eq("name", type.getName());
@@ -97,13 +103,23 @@ public class Transactions {
      */
     public boolean add(Transaction t) {
         try {
-            t.setTag(addOrGetExistingTag(t.getTag()));
-            t.setType(addOrGetExistingType(t.getType()));
+            t.setTag(insertIgnore(t.getTag()));
+            t.setType(insertIgnore(t.getType()));
             return transactionDao.create(t) == INSERT_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
         }
         return false;
+    }
+
+    /**
+     * Add a new tag
+     *
+     * @param t
+     * @return True on success
+     */
+    public boolean add(TransactionTag t) {
+        return insertIgnore(t) != null;
     }
 
     /**
@@ -114,8 +130,8 @@ public class Transactions {
      */
     public boolean update(Transaction t) {
         try {
-            t.setTag(addOrGetExistingTag(t.getTag()));
-            t.setType(addOrGetExistingType(t.getType()));
+            t.setTag(insertIgnore(t.getTag()));
+            t.setType(insertIgnore(t.getType()));
             return transactionDao.update(t) == UPDATE_SUCCESS;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to update transaction", e);
@@ -229,14 +245,14 @@ public class Transactions {
      */
     public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
-                "\"transactions\" " +
-                        "INNER JOIN \"transactiontypes\" " +
-                        "ON transactiontypes.id = \"transactions\".type_id " +
-                        "INNER JOIN transactiontags " +
-                        "ON transactiontags.id = \"transactions\".tag_id"
+                "transactions " +
+                        "LEFT JOIN transactiontypes " +
+                        "ON transactiontypes.id = transactions.type_id " +
+                        "LEFT JOIN transactiontags " +
+                        "ON transactiontags.id = transactions.tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag"}, null, null,
-                null, null, "accountingdate DESC", null);
+                null, null, "accountingdate DESC, timestamp DESC", null);
         return cursor;
     }
 
@@ -258,10 +274,32 @@ public class Transactions {
         return getCount("transactiontags");
     }
 
+    /**
+     * Retrieve number of dirty (unsynced) transactions
+     *
+     * @return
+     */
     public int getDirtyCount() {
         try {
             GenericRawResults<String[]> rawResults = transactionDao.
-                    queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1");
+                    queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1 LIMIT 1");
+            return Integer.parseInt(rawResults.getResults().get(0)[0]);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve transaction count", e);
+        }
+        return 0;
+    }
+
+    /**
+     * Retrieve number of untagged transactions
+     *
+     * @return Untagged count
+     */
+    public int getUntaggedCount() {
+        try {
+            GenericRawResults<String[]> rawResults = transactionDao.
+                    queryRaw("SELECT COUNT(*) FROM transactions " +
+                            "WHERE tag_id IS NULL LIMIT 1");
             return Integer.parseInt(rawResults.getResults().get(0)[0]);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve transaction count", e);

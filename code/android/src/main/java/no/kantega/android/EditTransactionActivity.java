@@ -3,6 +3,7 @@ package no.kantega.android;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -10,16 +11,19 @@ import no.kantega.android.controllers.Transactions;
 import no.kantega.android.models.Transaction;
 import no.kantega.android.models.TransactionTag;
 import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.utils.HttpUtil;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class EditTransactionActivity extends Activity {
 
+    private static final String TAG = EditTransactionActivity.class.
+            getSimpleName();
+    private static final String PROPERTIES_FILE = "url.properties";
     private Transactions db;
     private List<String> categories;
+    private ArrayAdapter<String> adapter;
     private Bundle extras;
     private Transaction t;
     private String selectedTransactionTag;
@@ -31,30 +35,42 @@ public class EditTransactionActivity extends Activity {
     private Button date;
     private EditText amount;
     private Spinner category;
+    private TextView suggestedTag;
+    private String suggestUrl;
     private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            boolean editTransactionOk = true;
-            TransactionTag ttag = new TransactionTag();
-            ttag.setName(selectedTransactionTag);
-            Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth, pickDay));
-            if (amount.getText().toString().trim() != "" && FmtUtil.isNumber(amount.getText().toString())) {
-                t.setAmountOut(Double.parseDouble(amount.getText().toString()));
+            if (t.isInternal()) {
+                boolean editTransactionOk = true;
+                TransactionTag ttag = new TransactionTag();
+                ttag.setName(selectedTransactionTag);
+                Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
+                if (FmtUtil.isNumber(amount.getText().toString())) {
+                    t.setAmountOut(Double.parseDouble(amount.getText().toString()));
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.invalid_amount,
+                            Toast.LENGTH_LONG).show();
+                    editTransactionOk = false;
+                }
+                if (editTransactionOk) {
+                    t.setText(text.getText().toString());
+                    t.setTag(ttag);
+                    t.setAccountingDate(d);
+                    t.setDirty(true);
+                    t.setChanged(true);
+                    db.update(t);
+                    Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
             } else {
-                Toast.makeText(getApplicationContext(), R.string.invalid_amount,
-                        Toast.LENGTH_LONG).show();
-                editTransactionOk = false;
-            }
-            if (editTransactionOk) {
-                t.setText(text.getText().toString());
+                TransactionTag ttag = new TransactionTag();
+                ttag.setName(selectedTransactionTag);
                 t.setTag(ttag);
-                t.setAccountingDate(d);
-                t.setFixedDate(d);
                 t.setDirty(true);
                 t.setChanged(true);
                 db.update(t);
-                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -70,6 +86,39 @@ public class EditTransactionActivity extends Activity {
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
+        setInternal();
+        readProperties();
+    }
+
+    private void readProperties() {
+        try {
+            final Properties properties = new Properties();
+            properties.load(getAssets().open(PROPERTIES_FILE));
+            suggestUrl = properties.get("suggestTag").toString();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new SuggestionsTask().execute(suggestUrl,
+                FmtUtil.trimTransactionText(t.getText()));
+    }
+
+    private void updateSpinnerPosition(String tag) {
+        int spinnerPosition;
+        if (selectedTransactionTag == null) {
+            spinnerPosition = adapter.getPosition(tag);
+            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
+            //Log.i("spinnerPosition", String.valueOf(spinnerPosition));
+        } else {
+            spinnerPosition = adapter.getPosition(selectedTransactionTag);
+            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
+            //Log.i("spinnerPosition2", String.valueOf(spinnerPosition));
+        }
+        category.setSelection(spinnerPosition);
     }
 
     private void setupViews() {
@@ -77,7 +126,7 @@ public class EditTransactionActivity extends Activity {
         date = (Button) findViewById(R.id.edittransaction_button_pickDate);
         amount = (EditText) findViewById(R.id.edittransaction_edittext_amount);
         category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
-        selectedTransactionTag = t.getTag().getName();
+        suggestedTag = (TextView) findViewById(R.id.suggested_tag);
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
         amount.setText(String.valueOf(t.getAmountOut()));
@@ -92,12 +141,19 @@ public class EditTransactionActivity extends Activity {
         pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
         fillCategoryList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
-        int spinnerPosition = adapter.getPosition(selectedTransactionTag);
-        category.setSelection(spinnerPosition);
+        selectedTransactionTag = t.getTag().getName();
+    }
+
+    private void setInternal() {
+        if (!t.isInternal()) {
+            text.setEnabled(false);
+            date.setEnabled(false);
+            amount.setEnabled(false);
+        }
     }
 
     // updates the date we display in the TextView
@@ -152,5 +208,19 @@ public class EditTransactionActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         db.close();
+    }
+
+    private class SuggestionsTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return HttpUtil.post(params[0], params[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            suggestedTag.setText(s);
+            updateSpinnerPosition(s);
+        }
     }
 }

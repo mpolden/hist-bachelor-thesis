@@ -3,6 +3,8 @@ package no.kantega.android.utils;
 import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -57,5 +59,42 @@ public class HttpUtil {
             Log.d(TAG, "IOException", e);
         }
         return null;
+    }
+
+    /**
+     * Post JSON to URL
+     *
+     * @param url
+     * @param json
+     */
+    public static String postJSON(final String url, final String json) {
+        return post(url, json, "application/json");
+    }
+
+    /**
+     * Post plain text to URL
+     *
+     * @param url
+     * @param s
+     * @return Body
+     */
+    public static String post(final String url, final String s) {
+        return post(url, s, "text/plain");
+    }
+
+    private static String post(final String url, final String s,
+                               final String contentType) {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpPost method = new HttpPost(url);
+        String body = null;
+        try {
+            method.setEntity(new StringEntity(s, "UTF-8"));
+            method.setHeader("Content-Type", contentType);
+            HttpResponse response = httpClient.execute(method);
+            body = EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            Log.d(TAG, "IOException", e);
+        }
+        return body;
     }
 }

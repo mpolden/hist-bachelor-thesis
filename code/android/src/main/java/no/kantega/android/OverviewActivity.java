@@ -129,6 +129,13 @@ public class OverviewActivity extends Activity {
             amount2.setText(FmtUtil.currency(tags.get(1).getAmount()));
             category3.setText(tags.get(2).getName());
             amount3.setText(FmtUtil.currency(tags.get(2).getAmount()));
+        } else {
+            category1.setText(null);
+            amount1.setText(null);
+            category2.setText(null);
+            amount2.setText(null);
+            category3.setText(null);
+            amount3.setText(null);
         }
     }
 

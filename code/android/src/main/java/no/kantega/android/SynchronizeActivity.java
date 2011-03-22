@@ -21,7 +21,6 @@ import no.kantega.android.utils.GsonUtil;
 import no.kantega.android.utils.HttpUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -29,17 +28,20 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final int PROGRESS_DIALOG = 0;
     private static final String PREFS_NAME = "SynchronizePreferences";
+    private static final String PROPERTIES_FILE = "url.properties";
+    private static final int PROGRESS_DIALOG = 0;
     private Transactions db;
     private ProgressDialog progressDialog;
     private TextView lastSynchronized;
     private TextView transactionCount;
     private TextView tagCount;
     private TextView dirtyCount;
+    private TextView untaggedCount;
     private int dbTransactionCount;
     private int dbTagCount;
     private int dbDirtyCount;
+    private int dbUntaggedCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
@@ -73,8 +75,12 @@ public class SynchronizeActivity extends Activity {
         transactionCount = (TextView) findViewById(R.id.internal_t_count);
         tagCount = (TextView) findViewById(R.id.internal_tag_count);
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
+        untaggedCount = (TextView) findViewById(R.id.untagged_count);
     }
 
+    /**
+     * Update statistics on resume
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -84,6 +90,7 @@ public class SynchronizeActivity extends Activity {
                 dbTransactionCount = db.getCount();
                 dbTagCount = db.getTagCount();
                 dbDirtyCount = db.getDirtyCount();
+                dbUntaggedCount = db.getUntaggedCount();
                 runOnUiThread(populate);
             }
         }).start();
@@ -98,9 +105,13 @@ public class SynchronizeActivity extends Activity {
             transactionCount.setText(String.valueOf(dbTransactionCount));
             tagCount.setText(String.valueOf(dbTagCount));
             dirtyCount.setText(String.valueOf(dbDirtyCount));
+            untaggedCount.setText(String.valueOf(dbUntaggedCount));
         }
     };
 
+    /**
+     * Save stats to internal preferences
+     */
     private void saveStats() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -150,19 +161,23 @@ public class SynchronizeActivity extends Activity {
     }
 
     /**
-     * Read URL from properties file and start a task that synchronizes the
+     * Read URLs from properties file and start a task that synchronizes the
      * database
      */
     private void synchronizeDatabase() {
         try {
-            InputStream inputStream = getAssets().open("url.properties");
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            new TransactionsTask().execute(
-                    properties.get("freshTransactions").toString(),
-                    properties.get("allTransactions").toString(),
-                    properties.get("saveTransactions").toString()
-            );
+            final Properties properties = new Properties();
+            properties.load(getAssets().open(PROPERTIES_FILE));
+
+            final Object urlNew = properties.get("newTransactions");
+            final Object urlAll = properties.get("allTransactions");
+            final Object urlSave = properties.get("saveTransactions");
+
+            if (urlNew != null && urlAll != null && urlSave != null) {
+                new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlSave.toString());
+            } else {
+                Log.e(TAG, "Missing one or more entries in url.properties");
+            }
         } catch (IOException e) {
             Log.e(TAG, "Could not read properties file", e);
         }
@@ -207,7 +222,7 @@ public class SynchronizeActivity extends Activity {
             if (!dirtyTransactions.isEmpty()) {
                 final String json = GsonUtil.makeJSON(dirtyTransactions);
                 final List<Transaction> updatedTransactions = GsonUtil.parseTransactions(
-                        GsonUtil.postJSON(url, json));
+                        HttpUtil.postJSON(url, json));
                 if (updatedTransactions != null && !updatedTransactions.isEmpty()) {
                     progressDialog.setMax(updatedTransactions.size());
                     int i = 0;
@@ -221,7 +236,7 @@ public class SynchronizeActivity extends Activity {
         }
 
         /**
-         * Retrieve transacionts from server. Only retrieve newly added transactions.
+         * Retrieve transactions from server
          *
          * @param urlNew
          * @param urlAll

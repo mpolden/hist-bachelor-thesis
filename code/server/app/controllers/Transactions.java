@@ -17,6 +17,7 @@ import java.util.List;
 public class Transactions extends Controller {
 
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static void topTags(int count) {
         Query query = JPA.em().createQuery(
                 "select tag.name, sum(t.amountOut) from Transaction t" +
@@ -38,6 +39,7 @@ public class Transactions extends Controller {
         renderJSON(tags);
     }
 
+    @Deprecated
     private static Double avgDay() {
         Transaction t;
         t = Transaction.find("order by accountingDate asc").first();
@@ -52,6 +54,7 @@ public class Transactions extends Controller {
         return Double.parseDouble(o.toString()) / days;
     }
 
+    @Deprecated
     public static void avg() {
         AverageConsumption ac = new AverageConsumption();
         ac.setDay(avgDay());
@@ -60,14 +63,14 @@ public class Transactions extends Controller {
         renderJSON(ac);
     }
 
-    public static void transactions() {
+    public static void all() {
         final List<Transaction> transactions = Transaction.
                 find("order by accountingDate desc, timestamp desc").fetch();
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
     @SuppressWarnings("unchecked")
-    public static void freshTransactions(Long timestamp) {
+    public static void after(Long timestamp) {
         Query query = JPA.em().createQuery("select t from Transaction t " +
                 "where timestamp > :timestamp " +
                 "and internal = :internal " +
@@ -87,11 +90,9 @@ public class Transactions extends Controller {
                 if (existing != null) {
                     existing._id = t._id;
                     existing.accountingDate = t.accountingDate;
-                    existing.fixedDate = t.fixedDate;
                     existing.amountIn = t.amountIn;
                     existing.amountOut = t.amountOut;
                     existing.text = t.text;
-                    existing.archiveRef = t.archiveRef;
                     existing.internal = t.internal;
                     existing.timestamp = t.timestamp;
                     existing.dirty = false;

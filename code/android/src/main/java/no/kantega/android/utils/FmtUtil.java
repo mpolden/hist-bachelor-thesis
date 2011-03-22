@@ -1,5 +1,7 @@
 package no.kantega.android.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,20 @@ public class FmtUtil {
     }
 
     /**
+     * URL encode the given string using UTF-8
+     *
+     * @param s
+     * @return The URL encoded string
+     */
+    public static String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
+    /**
      * Convert the given string to date using the given format
      *
      * @param format
@@ -75,7 +91,7 @@ public class FmtUtil {
      * Check if given string is a number with optional decimals
      *
      * @param s
-     * @return True if string contains only numbers
+     * @return True if string contains one or more numbers
      */
     public static boolean isNumber(String s) {
         return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
