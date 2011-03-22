@@ -100,6 +100,11 @@ public class TransactionsActivity extends ListActivity {
             TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);
             TextView tv_tag = (TextView) view.findViewById(R.id.trow_tv_category);
             TextView tv_amount = (TextView) view.findViewById(R.id.trow_tv_amount);
+            tv_date.setText(null);
+            tv_text.setText(null);
+            tv_tag.setText(null);
+            image.setImageDrawable(null);
+            tv_amount.setText(null);
             if (tv_date != null) {
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
                 tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
@@ -110,8 +115,6 @@ public class TransactionsActivity extends ListActivity {
             if (tag != null) {
                 tv_tag.setText(tag);
                 image.setImageDrawable(getImageIdByTag(tag));
-            } else {
-                tv_tag.setText(null);
             }
             if (amount != null) {
                 tv_amount.setText(amount);
