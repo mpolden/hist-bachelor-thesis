@@ -14,6 +14,7 @@ public class Transaction extends Model {
     public double amountIn;
     public double amountOut;
     public String text;
+    public String trimmedText;
     public boolean internal;
     public long timestamp;
     public boolean dirty;
