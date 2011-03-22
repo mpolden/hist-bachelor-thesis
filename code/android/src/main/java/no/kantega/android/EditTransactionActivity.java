@@ -107,10 +107,10 @@ public class EditTransactionActivity extends Activity {
                 FmtUtil.trimTransactionText(t.getText()));
     }
 
-    private void updateSpinnerPosition() {
+    private void updateSpinnerPosition(String tag) {
         int spinnerPosition;
         if (selectedTransactionTag == null) {
-            spinnerPosition = adapter.getPosition(suggestedTag.getText().toString());
+            spinnerPosition = adapter.getPosition(tag);
             Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
             //Log.i("spinnerPosition", String.valueOf(spinnerPosition));
         } else {
@@ -220,7 +220,7 @@ public class EditTransactionActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             suggestedTag.setText(s);
-            updateSpinnerPosition();
+            updateSpinnerPosition(s);
         }
     }
 }
