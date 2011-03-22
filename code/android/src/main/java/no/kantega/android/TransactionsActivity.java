@@ -77,7 +77,6 @@ public class TransactionsActivity extends ListActivity {
             super(context, c);
         }
 
-
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             final LayoutInflater inflater = LayoutInflater.from(context);
@@ -111,6 +110,8 @@ public class TransactionsActivity extends ListActivity {
             if (tag != null) {
                 tv_tag.setText(tag);
                 image.setImageDrawable(getImageIdByTag(tag));
+            } else {
+                tv_tag.setText(null);
             }
             if (amount != null) {
                 tv_amount.setText(amount);
