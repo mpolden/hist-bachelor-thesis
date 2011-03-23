@@ -33,4 +33,5 @@
     <string name="db_cleared">Internal database has been emptied</string>
     <string name="untagged_count">Not tagged</string>
     <string name="suggested_tag">Suggested tag</string>
+    <string name="notification_title">New transaction!</string>
 </resources>
