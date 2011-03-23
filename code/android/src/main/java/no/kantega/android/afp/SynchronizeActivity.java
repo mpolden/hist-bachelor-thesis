@@ -19,6 +19,7 @@ import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.GsonUtil;
 import no.kantega.android.afp.utils.HttpUtil;
+import no.kantega.android.afp.utils.Prefs;
 
 import java.io.IOException;
 import java.util.Date;
@@ -28,7 +29,6 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final String PREFS_NAME = "SynchronizePreferences";
     private static final String PROPERTIES_FILE = "url.properties";
     private static final int PROGRESS_DIALOG = 0;
     private Transactions db;
@@ -99,7 +99,7 @@ public class SynchronizeActivity extends Activity {
     private Runnable populate = new Runnable() {
         @Override
         public void run() {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences settings = Prefs.get(getApplicationContext());
             lastSynchronized.setText(settings.getString("syncDate",
                     getResources().getString(R.string.not_synchronized)));
             transactionCount.setText(String.valueOf(dbTransactionCount));
@@ -113,7 +113,7 @@ public class SynchronizeActivity extends Activity {
      * Save stats to internal preferences
      */
     private void saveStats() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = Prefs.get(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("syncDate", FmtUtil.dateToString("yyyy-MM-dd HH:mm:ss",
                 new Date()));
@@ -168,11 +168,9 @@ public class SynchronizeActivity extends Activity {
         try {
             final Properties properties = new Properties();
             properties.load(getAssets().open(PROPERTIES_FILE));
-
             final Object urlNew = properties.get("newTransactions");
             final Object urlAll = properties.get("allTransactions");
             final Object urlSave = properties.get("saveTransactions");
-
             if (urlNew != null && urlAll != null && urlSave != null) {
                 new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlSave.toString());
             } else {
