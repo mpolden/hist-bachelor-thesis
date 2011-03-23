@@ -27,10 +27,9 @@ public class C2DMReceiver extends C2DMBaseReceiver {
     public void onRegistered(Context context, String registrationId) throws IOException {
         Log.d(TAG, "Registered: " + registrationId);
         SharedPreferences prefs = Prefs.get(context);
-        if (prefs.getString(Register.REGISTRATION_ID_KEY, null) == null) {
-            prefs.edit().putString(Register.REGISTRATION_ID_KEY, registrationId);
-            prefs.edit().commit();
-        }
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Register.REGISTRATION_ID_KEY, registrationId);
+        editor.commit();
         //Register.registerWithServer(registrationId);
     }
 
@@ -41,8 +40,9 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         String deviceRegistrationID = prefs.getString(
                 Register.REGISTRATION_ID_KEY, null);
         if (deviceRegistrationID != null) {
-            prefs.edit().remove(Register.REGISTRATION_ID_KEY);
-            prefs.edit().commit();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove(Register.REGISTRATION_ID_KEY);
+            editor.commit();
             //Register.unregisterFromServer(deviceRegistrationID);
         }
     }
