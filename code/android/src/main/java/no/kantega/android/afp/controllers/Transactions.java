@@ -415,7 +415,6 @@ public class Transactions {
     /**
      * Empty all tables
      */
-    @Deprecated
     public void emptyTables() {
         try {
             transactionDao.queryRaw("DELETE FROM transactions");
