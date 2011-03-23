@@ -75,6 +75,9 @@ public class Transactions extends Controller {
                     t.save();
                     updated.add(t);
                 }
+            } else {
+                logger.log(Level.WARN,
+                        "Not saving non-dirty transaction with _id: " + t._id);
             }
         }
         return updated;
