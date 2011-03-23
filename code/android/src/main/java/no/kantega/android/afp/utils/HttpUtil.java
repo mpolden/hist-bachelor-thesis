@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class HttpUtil {
 
@@ -28,6 +29,7 @@ public class HttpUtil {
      * @param url
      * @return URL body
      */
+    @Deprecated
     public static String getBody(final String url) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpGet method = new HttpGet(url);
@@ -47,12 +49,15 @@ public class HttpUtil {
      * @param url
      * @return Body as InputStream
      */
-    public static InputStream getBodyAsStream(final String url) {
+    @Deprecated
+    public static InputStream getBodyAsStream(final String url, Map<String, String> params) {
         try {
             URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.
                     openConnection();
             connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             connection.setChunkedStreamingMode(0);
             InputStream out = new BufferedInputStream(connection.getInputStream());
             return out;
@@ -70,33 +75,28 @@ public class HttpUtil {
      * @param url
      * @param json
      */
+    @Deprecated
     public static String postJSON(final String url, final String json) {
         return post(url, json, "application/json");
     }
 
-    /**
-     * Post plain text to URL
-     *
-     * @param url
-     * @param s
-     * @return Body
-     */
     public static String post(final String url, final String s) {
         return post(url, s, "text/plain");
     }
 
-    private static String post(final String url, List<NameValuePair> values) {
+    public static InputStream post(final String url, List<NameValuePair> values) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
-        String body = null;
         try {
             method.setEntity(new UrlEncodedFormEntity(values));
             HttpResponse response = httpClient.execute(method);
-            body = EntityUtils.toString(response.getEntity());
+            return new BufferedInputStream(response.getEntity().getContent());
+            /*response.getEntity().getContent();
+            body = EntityUtils.toString(response.getEntity());*/
         } catch (IOException e) {
-            Log.d(TAG, "IOException", e);
+            Log.e(TAG, "IOException", e);
         }
-        return body;
+        return null;
     }
 
     private static String post(final String url, final String s,
