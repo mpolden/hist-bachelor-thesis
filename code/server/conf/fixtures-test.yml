@@ -7,7 +7,7 @@ TransactionType(type):
 TransactionTag(tag):
     name: Datautstyr
 
-Transaction(t):
+Transaction(t1):
     _id: 1
     accountingDate: 2009-04-15
     amountIn: 0.0
@@ -16,6 +16,34 @@ Transaction(t):
     trimmedText: CLAS OHLSON AB (49)
     internal: false
     timestamp: 0
+    dirty: false
+    tag: tag
+    type: type
+    user: u
+
+Transaction(t2):
+    _id: 2
+    accountingDate: 2009-04-15
+    amountIn: 0.0
+    amountOut: 300.0
+    text: Headset
+    trimmedText: Headset
+    internal: false
+    timestamp: 1
+    dirty: false
+    tag: tag
+    type: type
+    user: u
+
+Transaction(t3):
+    _id: 3
+    accountingDate: 2009-04-15
+    amountIn: 0.0
+    amountOut: 300.0
+    text: Harddisk
+    trimmedText: Harddisk
+    internal: true
+    timestamp: 1
     dirty: false
     tag: tag
     type: type
