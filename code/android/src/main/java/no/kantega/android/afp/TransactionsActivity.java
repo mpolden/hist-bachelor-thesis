@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +50,11 @@ public class TransactionsActivity extends ListActivity {
         }).start();
     }
 
-    private Runnable handler = new Runnable() {
+    private final Runnable handler = new Runnable() {
         @Override
         public void run() {
             // Change to a fresh cursor, the old one will be automatically closed
+            Log.d(TAG, "Changed to a new cursor");
             adapter.changeCursor(cursor);
         }
     };
@@ -105,7 +107,7 @@ public class TransactionsActivity extends ListActivity {
             tv_tag.setText(null);
             image.setImageDrawable(null);
             tv_amount.setText(null);
-            if (tv_date != null) {
+            if (date != null) {
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
                 tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
             }

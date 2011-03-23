@@ -49,7 +49,7 @@ public class SynchronizeActivity extends Activity {
      * Called when the activity is starting. Attaches click listeners and
      * creates a database handle.
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Saved instance
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class SynchronizeActivity extends Activity {
         }).start();
     }
 
-    private Runnable populate = new Runnable() {
+    private final Runnable populate = new Runnable() {
         @Override
         public void run() {
             lastSynchronized.setText(preferences.getString("syncDate",
@@ -124,7 +124,7 @@ public class SynchronizeActivity extends Activity {
     /**
      * Called when a dialog is created. Configures the progress dialog.
      *
-     * @param id
+     * @param id Dialog ID
      * @return The configured dialog
      */
     @Override
@@ -148,8 +148,8 @@ public class SynchronizeActivity extends Activity {
     /**
      * Called when preparing the dialog.
      *
-     * @param id
-     * @param dialog
+     * @param id     Dialog ID
+     * @param dialog The Dialog
      */
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
@@ -214,7 +214,7 @@ public class SynchronizeActivity extends Activity {
         /**
          * Post "dirty" transactions to an URL
          *
-         * @param url
+         * @param url Save URL
          */
         private void putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
@@ -239,8 +239,8 @@ public class SynchronizeActivity extends Activity {
         /**
          * Retrieve transactions from server
          *
-         * @param urlNew
-         * @param urlAll
+         * @param urlNew URL for new transactions
+         * @param urlAll URL for all transactions
          */
         private void getTransactions(final String urlNew, final String urlAll) {
             final Transaction latest = db.getLatestExternal();

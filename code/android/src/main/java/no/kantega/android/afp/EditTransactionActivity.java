@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
@@ -24,7 +25,6 @@ public class EditTransactionActivity extends Activity {
     private Transactions db;
     private List<String> categories;
     private ArrayAdapter<String> adapter;
-    private Bundle extras;
     private Transaction t;
     private String selectedTransactionTag;
     private int pickYear;
@@ -37,7 +37,7 @@ public class EditTransactionActivity extends Activity {
     private Spinner category;
     private TextView suggestedTag;
     private String suggestUrl;
-    private View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (t.isInternal()) {
@@ -81,7 +81,7 @@ public class EditTransactionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edittransaction);
-        extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
         t = (Transaction) extras.getSerializable("transaction");
         this.db = new Transactions(getApplicationContext());
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
@@ -97,7 +97,7 @@ public class EditTransactionActivity extends Activity {
             properties.load(getAssets().open(PROPERTIES_FILE));
             suggestUrl = properties.get("suggestTag").toString();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Log.e(TAG, "IOException", e);
         }
     }
 
@@ -110,7 +110,7 @@ public class EditTransactionActivity extends Activity {
 
     private void updateSpinnerPosition(String tag) {
         int spinnerPosition = 0;
-        if(selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+        if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             spinnerPosition = adapter.getPosition(selectedTransactionTag);
         } else if (tag != null) {
             spinnerPosition = adapter.getPosition(tag);
@@ -145,7 +145,7 @@ public class EditTransactionActivity extends Activity {
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
         selectedTransactionTag = t.getTag().getName();
-        if(selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+        if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             category.setSelection(adapter.getPosition(selectedTransactionTag));
         }
 
@@ -177,7 +177,7 @@ public class EditTransactionActivity extends Activity {
         return null;
     }
 
-    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             pickYear = year;

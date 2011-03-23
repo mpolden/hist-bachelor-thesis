@@ -12,7 +12,7 @@ public class Register {
     /**
      * Register the device if it doesn't already have registration ID
      *
-     * @param context
+     * @param context Application context
      */
     public static void handleRegistration(Context context) {
         SharedPreferences preferences = Prefs.get(context);
@@ -24,7 +24,7 @@ public class Register {
     /**
      * Register with server
      *
-     * @param registrationId
+     * @param registrationId Registration ID for this device
      */
     public static void registerWithServer(String registrationId) {
         throw new IllegalStateException("Not implemented");
@@ -33,7 +33,7 @@ public class Register {
     /**
      * Unregister from server
      *
-     * @param registrationId
+     * @param registrationId Registration ID for this device
      */
     public static void unregisterFromServer(String registrationId) {
         throw new IllegalStateException("Not implemented");

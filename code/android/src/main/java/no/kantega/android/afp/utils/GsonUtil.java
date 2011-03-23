@@ -4,8 +4,6 @@ import android.util.Log;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import no.kantega.android.afp.models.AggregatedTag;
-import no.kantega.android.afp.models.AverageConsumption;
 import no.kantega.android.afp.models.Transaction;
 
 import java.io.IOException;
@@ -48,7 +46,7 @@ public class GsonUtil {
     /**
      * Parse transactions from an InputStream
      *
-     * @param in
+     * @param in Stream to read from
      * @return List of transactions
      */
     public static List<Transaction> parseTransactionsFromStream(
@@ -82,7 +80,7 @@ public class GsonUtil {
     /**
      * Serialize to JSON using a portable date format
      *
-     * @param o
+     * @param o Object which should be serialized
      * @return JSON representation
      */
     public static String makeJSON(final Object o) {
@@ -91,31 +89,9 @@ public class GsonUtil {
     }
 
     /**
-     * Parse aggregated tags from the given JSON
-     *
-     * @param json
-     * @return List of aggregated tags
-     */
-    public static List<AggregatedTag> parseTags(final String json) {
-        Type listType = new TypeToken<List<AggregatedTag>>() {
-        }.getType();
-        return gson.fromJson(json, listType);
-    }
-
-    /**
-     * Parse average consumption from the given JSON
-     *
-     * @param json
-     * @return Average consumption
-     */
-    public static AverageConsumption parseAvg(final String json) {
-        return gson.fromJson(json, AverageConsumption.class);
-    }
-
-    /**
      * Parse transactions from the given JSON
      *
-     * @param json
+     * @param json JSON value
      * @return List of transactions
      */
     public static List<Transaction> parseTransactions(final String json) {

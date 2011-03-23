@@ -13,7 +13,7 @@
                       android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="@string/category_name"></TextView>
+                      android:text="@string/category_name"/>
             <EditText android:id="@+id/edittext_categoryname" android:layout_weight="1"
                       android:layout_width="0dip"
                       android:layout_height="wrap_content"/>
@@ -29,6 +29,6 @@
             android:id="@+id/button_newcategory_save"
             android:layout_weight="0"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></Button>
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

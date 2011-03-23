@@ -14,11 +14,10 @@ import no.kantega.android.afp.models.TransactionTag;
 public class CategoryActivity extends Activity {
 
     private Transactions db;
-    private Spinner icon_spinner;
     private EditText category_name;
-    private String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
+    private final String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
 
-    private View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             TransactionTag ttag = new TransactionTag();
@@ -46,15 +45,15 @@ public class CategoryActivity extends Activity {
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
-        icon_spinner = (Spinner) findViewById(R.id.spinner_icon);
-        icon_spinner.setAdapter(new CustomIconAdapter(getApplicationContext(), R.layout.iconspinnerrow, icon_list));
+        Spinner icon_spinner = (Spinner) findViewById(R.id.spinner_icon);
+        icon_spinner.setAdapter(new CustomIconAdapter(getApplicationContext(), icon_list));
     }
 
 
     private class CustomIconAdapter extends ArrayAdapter<String> {
 
-        public CustomIconAdapter(Context context, int textViewResourceId, String[] objects) {
-            super(context, textViewResourceId, objects);
+        public CustomIconAdapter(Context context, String[] objects) {
+            super(context, R.layout.iconspinnerrow, objects);
         }
 
         @Override

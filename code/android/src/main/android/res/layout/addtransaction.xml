@@ -14,7 +14,7 @@
                       android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="@string/transaction_text"></TextView>
+                      android:text="@string/transaction_text"/>
             <EditText android:id="@+id/edittext_text" android:layout_weight="1"
                       android:layout_width="0dip"
                       android:layout_height="wrap_content"/>
@@ -38,7 +38,7 @@
                       android:padding="3dip"
                       android:textStyle="bold" style="@style/DefaultTextFont"
                       android:layout_height="wrap_content"
-                      android:text="@string/transaction_amount"></TextView>
+                      android:text="@string/transaction_amount"/>
             <EditText android:id="@+id/edittext_amount"
                       android:layout_weight="1" android:layout_width="0dip"
                       android:layout_height="wrap_content"
@@ -60,5 +60,5 @@
     <Button android:text="Add transaction"
             android:id="@+id/button_add_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></Button>
+            android:layout_height="wrap_content"/>
 </LinearLayout>

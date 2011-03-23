@@ -29,7 +29,7 @@ public class AddTransactionActivity extends Activity {
     private int pickDay;
     private String selectedTransactionTag;
     private static final int DATE_DIALOG_ID = 0;
-    private OnClickListener addTransactionButtonListener = new OnClickListener() {
+    private final OnClickListener addTransactionButtonListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             boolean newTransactionOk = true;
@@ -118,7 +118,7 @@ public class AddTransactionActivity extends Activity {
                 .append(pickYear).append(" "));
     }
 
-    private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+    private final DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             pickYear = year;

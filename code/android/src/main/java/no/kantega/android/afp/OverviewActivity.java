@@ -48,7 +48,7 @@ public class OverviewActivity extends Activity {
         }).start();
     }
 
-    private Runnable populate = new Runnable() {
+    private final Runnable populate = new Runnable() {
         @Override
         public void run() {
             populateCategories(tags);
