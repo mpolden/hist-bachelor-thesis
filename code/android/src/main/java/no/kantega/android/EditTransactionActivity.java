@@ -43,6 +43,7 @@ public class EditTransactionActivity extends Activity {
             if (t.isInternal()) {
                 boolean editTransactionOk = true;
                 TransactionTag ttag = new TransactionTag();
+                selectedTransactionTag = category.getSelectedItem().toString();
                 ttag.setName(selectedTransactionTag);
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
                 if (FmtUtil.isNumber(amount.getText().toString())) {
@@ -86,7 +87,7 @@ public class EditTransactionActivity extends Activity {
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
-        setInternal();
+        checkInternal();
         readProperties();
     }
 
@@ -108,15 +109,12 @@ public class EditTransactionActivity extends Activity {
     }
 
     private void updateSpinnerPosition(String tag) {
-        int spinnerPosition;
-        if (selectedTransactionTag == null) {
-            spinnerPosition = adapter.getPosition(tag);
-            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
-            //Log.i("spinnerPosition", String.valueOf(spinnerPosition));
-        } else {
+        int spinnerPosition = 0;
+        if(selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             spinnerPosition = adapter.getPosition(selectedTransactionTag);
-            Toast.makeText(this, String.valueOf(spinnerPosition), Toast.LENGTH_SHORT);
-            //Log.i("spinnerPosition2", String.valueOf(spinnerPosition));
+        } else if (tag != null) {
+            spinnerPosition = adapter.getPosition(tag);
+            selectedTransactionTag = tag;
         }
         category.setSelection(spinnerPosition);
     }
@@ -127,6 +125,7 @@ public class EditTransactionActivity extends Activity {
         amount = (EditText) findViewById(R.id.edittransaction_edittext_amount);
         category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
         suggestedTag = (TextView) findViewById(R.id.suggested_tag);
+        //currentTag = (TextView) findViewById(R.id)
         text.setText(FmtUtil.trimTransactionText(t.getText()));
         date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
         amount.setText(String.valueOf(t.getAmountOut()));
@@ -146,9 +145,13 @@ public class EditTransactionActivity extends Activity {
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
         selectedTransactionTag = t.getTag().getName();
+        if(selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+            category.setSelection(adapter.getPosition(selectedTransactionTag));
+        }
+
     }
 
-    private void setInternal() {
+    private void checkInternal() {
         if (!t.isInternal()) {
             text.setEnabled(false);
             date.setEnabled(false);
@@ -187,6 +190,7 @@ public class EditTransactionActivity extends Activity {
     private void fillCategoryList() {
         ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getTags());
         categories = new ArrayList<String>();
+        categories.add("Not tagged");
         for (int i = 0; i < transactionTagList.size(); i++) {
             categories.add(transactionTagList.get(i).getName());
         }
@@ -196,7 +200,9 @@ public class EditTransactionActivity extends Activity {
 
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
-            selectedTransactionTag = parent.getItemAtPosition(pos).toString();
+            if (selectedTransactionTag != null && selectedTransactionTag != "Not tagged") {
+                selectedTransactionTag = parent.getItemAtPosition(pos).toString();
+            }
         }
 
         public void onNothingSelected(AdapterView parent) {
