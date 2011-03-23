@@ -32,7 +32,7 @@ public class OverviewActivity extends Activity {
     }
 
     private void registerApp() {
-        C2DMessaging.register(getApplicationContext(), "test-account@gmail.com");
+        C2DMessaging.register(getApplicationContext(), "androidafp@gmail.com");
     }
 
     @Override

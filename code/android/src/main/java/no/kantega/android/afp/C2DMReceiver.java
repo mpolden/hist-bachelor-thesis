@@ -12,7 +12,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
     private static final String TAG = C2DMReceiver.class.getSimpleName();
 
     public C2DMReceiver() {
-        super("this.is.not@real.biz");
+        super("androidafp@gmail.com");
     }
 
     @Override
