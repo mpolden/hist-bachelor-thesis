@@ -25,7 +25,6 @@ public class Transactions extends Controller {
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
-    @SuppressWarnings("unchecked")
     public static void after(Long timestamp, String registrationId) {
         final List<Transaction> transactions = Transaction.find(
                 "timestamp > ? " +
