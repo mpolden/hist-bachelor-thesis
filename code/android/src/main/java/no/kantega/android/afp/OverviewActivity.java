@@ -1,32 +1,37 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.AggregatedTag;
-import no.kantega.android.models.AverageConsumption;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.utils.FmtUtil;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.AggregatedTag;
+import no.kantega.android.afp.models.AverageConsumption;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.Register;
 
 import java.util.List;
 
 public class OverviewActivity extends Activity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
+    private static final String SENDER_ID = "androidafp@gmail.com";
     private Transactions db;
     private AverageConsumption avg;
     private List<AggregatedTag> tags;
     private List<Transaction> transactions;
+    private NotificationManager notificationManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.db = new Transactions(getApplicationContext());
         setContentView(R.layout.overview);
+        Register.handleRegistration(getApplicationContext());
     }
 
     @Override

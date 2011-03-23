@@ -1,4 +1,4 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import no.kantega.android.controllers.Transactions;
-import no.kantega.android.models.TransactionTag;
+import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.TransactionTag;
 
 
 public class CategoryActivity extends Activity {
@@ -23,7 +23,7 @@ public class CategoryActivity extends Activity {
         public void onClick(View v) {
             TransactionTag ttag = new TransactionTag();
             String name = category_name.getText().toString();
-            if(name != null) {
+            if (name != null) {
                 ttag.setName(name);
                 db.add(ttag);
                 finish();

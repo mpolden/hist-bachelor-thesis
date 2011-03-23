@@ -1,4 +1,4 @@
-package no.kantega.android.utils;
+package no.kantega.android.afp.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,9 +8,9 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import no.kantega.android.models.Transaction;
-import no.kantega.android.models.TransactionTag;
-import no.kantega.android.models.TransactionType;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
+import no.kantega.android.afp.models.TransactionType;
 
 import java.sql.SQLException;
 

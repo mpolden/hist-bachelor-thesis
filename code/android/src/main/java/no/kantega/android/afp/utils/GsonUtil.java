@@ -1,12 +1,12 @@
-package no.kantega.android.utils;
+package no.kantega.android.afp.utils;
 
 import android.util.Log;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import no.kantega.android.models.AggregatedTag;
-import no.kantega.android.models.AverageConsumption;
-import no.kantega.android.models.Transaction;
+import no.kantega.android.afp.models.AggregatedTag;
+import no.kantega.android.afp.models.AverageConsumption;
+import no.kantega.android.afp.models.Transaction;
 
 import java.io.IOException;
 import java.io.InputStream;

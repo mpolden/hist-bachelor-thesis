@@ -1,4 +1,4 @@
-package no.kantega.android.utils;
+package no.kantega.android.afp.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

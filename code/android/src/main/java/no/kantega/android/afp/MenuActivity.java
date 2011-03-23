@@ -1,13 +1,9 @@
-package no.kantega.android;
+package no.kantega.android.afp;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.util.AttributeSet;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;

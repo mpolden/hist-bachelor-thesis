@@ -1,4 +1,4 @@
-package no.kantega.android.utils;
+package no.kantega.android.afp.utils;
 
 import android.util.Log;
 import org.apache.http.HttpResponse;

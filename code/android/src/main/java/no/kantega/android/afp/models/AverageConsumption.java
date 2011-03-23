@@ -1,4 +1,4 @@
-package no.kantega.android.models;
+package no.kantega.android.afp.models;
 
 public class AverageConsumption {
 
