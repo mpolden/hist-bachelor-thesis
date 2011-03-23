@@ -6,6 +6,6 @@ import android.content.SharedPreferences;
 public class Prefs {
 
     public static SharedPreferences get(Context context) {
-        return context.getSharedPreferences("AFP_PREFS", 0);
+        return context.getSharedPreferences("AFP_PREFS", Context.MODE_APPEND);
     }
 }
