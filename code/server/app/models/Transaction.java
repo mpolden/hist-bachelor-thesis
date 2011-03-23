@@ -22,4 +22,6 @@ public class Transaction extends Model {
     public TransactionType type;
     @ManyToOne
     public TransactionTag tag;
+    @ManyToOne
+    public User user;
 }
