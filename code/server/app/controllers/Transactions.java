@@ -4,6 +4,9 @@ import com.google.gson.JsonArray;
 import models.AggregatedTag;
 import models.AverageConsumption;
 import models.Transaction;
+import models.User;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import play.db.jpa.JPA;
 import play.mvc.Controller;
 import utils.GsonUtil;
@@ -15,6 +18,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Transactions extends Controller {
+
+    private static Logger logger = Logger.getLogger(
+            Transactions.class.getName());
 
     @SuppressWarnings("unchecked")
     @Deprecated
@@ -63,26 +69,39 @@ public class Transactions extends Controller {
         renderJSON(ac);
     }
 
-    public static void all() {
+    public static void all(String registrationId) {
         final List<Transaction> transactions = Transaction.
-                find("order by accountingDate desc, timestamp desc").fetch();
+                find("user.deviceId = ? " +
+                        "order by accountingDate desc, timestamp desc",
+                        registrationId).fetch();
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
     @SuppressWarnings("unchecked")
-    public static void after(Long timestamp) {
-        Query query = JPA.em().createQuery("select t from Transaction t " +
-                "where timestamp > :timestamp " +
-                "and internal = :internal " +
-                "order by accountingDate desc, timestamp desc");
-        query.setParameter("timestamp", timestamp);
-        query.setParameter("internal", false);
-        final List<Transaction> transactions = query.getResultList();
+    public static void after(Long timestamp, String registrationId) {
+        final List<Transaction> transactions = Transaction.find(
+                "timestamp > ? " +
+                        "and internal = ? " +
+                        "and user.deviceId = ? " +
+                        "order by accountingDate desc, timestamp desc",
+                timestamp, false, registrationId).fetch();
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
-    public static void save(JsonArray body) {
-        final List<Transaction> transactions = GsonUtil.parseTransactions(body);
+    public static void save(String registrationId, JsonArray json) {
+        final List<Transaction> transactions = GsonUtil.parseTransactions(json);
+        final User user = User.find("deviceId", registrationId).first();
+        if (user != null) {
+            List<Transaction> updated = saveTransactions(transactions, user);
+            renderJSON(GsonUtil.makeJSON(updated));
+        } else {
+            logger.log(Level.WARN, "Could not find user with registrationId: " +
+                    registrationId);
+        }
+    }
+
+    private static List<Transaction> saveTransactions(
+            List<Transaction> transactions, User user) {
         final List<Transaction> updated = new ArrayList<Transaction>();
         for (Transaction t : transactions) {
             if (t.dirty) {
@@ -105,11 +124,12 @@ public class Transactions extends Controller {
                     t.tag = ModelHelper.getOrSaveTag(t.tag.name);
                     t.type = ModelHelper.getOrAddType(t.type.name);
                     t.dirty = false;
+                    t.user = user;
                     t.save();
                     updated.add(t);
                 }
             }
         }
-        renderJSON(GsonUtil.makeJSON(updated));
+        return updated;
     }
 }
