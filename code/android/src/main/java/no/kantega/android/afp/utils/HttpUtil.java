@@ -2,6 +2,8 @@ package no.kantega.android.afp.utils;
 
 import android.util.Log;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -14,6 +16,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class HttpUtil {
 
@@ -80,6 +83,20 @@ public class HttpUtil {
      */
     public static String post(final String url, final String s) {
         return post(url, s, "text/plain");
+    }
+
+    private static String post(final String url, List<NameValuePair> values) {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpPost method = new HttpPost(url);
+        String body = null;
+        try {
+            method.setEntity(new UrlEncodedFormEntity(values));
+            HttpResponse response = httpClient.execute(method);
+            body = EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            Log.d(TAG, "IOException", e);
+        }
+        return body;
     }
 
     private static String post(final String url, final String s,
