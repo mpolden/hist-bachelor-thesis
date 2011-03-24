@@ -40,6 +40,23 @@ installation is required to run the server.
     cd code/server
     play run
 
+Setting values for development
+------------------------------
+When running in development mode, a few custom values need to be set, such as
+the application server URLs and your Android C2DM device ID.
+* Edit code/android/src/main/android/assets/url.properties to contain the following:
+    suggestTags = http://<your_ip>:9000/tags/suggest
+    newTransactions = http://<your_ip>:9000/transactions/%s
+    allTransactions = http://<your_ip>:9000/transactions/all
+    saveTransactions = http://<your_ip>:9000/transactions/save
+* Find your device ID. The device ID can be found by launching the app and
+looking for "Registered: <the_id>" or "Existing device ID: <the_id>" in the
+emulator log.
+* Edit code/server/conf/fixtures-local.yml to contain the following:
+      User(user):
+        deviceId: <your_device_id>
+
+
 Starting a shell on the emulator
 --------------------------------
 To start a shell on the emulator, use the following command:
@@ -85,3 +102,14 @@ IntelliJ IDEA, Play Framework and Javadoc
 * Edit the play.jar dependency (not PlayFramework Dependencies)
 * Click Attach Sources...
 * Add the full path to $PLAY_HOME/framework/src
+
+IntelliJ IDEA not displaying Git branch
+---------------------------------------
+* Open $PROJECT_HOME/.idea/vcs.xml
+* Make sure the file contains the following
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project version="4">
+      <component name="VcsDirectoryMappings">
+        <mapping directory="$PROJECT_DIR$" vcs="Git" />
+      </component>
+    </project>
