@@ -16,17 +16,13 @@ import java.util.List;
 
 public class HttpUtil {
 
-    private static final String TAG = GsonUtil.class.getSimpleName();
+    private static final String TAG = HttpUtil.class.getSimpleName();
 
-    public static String post(final String url, final String s) {
-        return post(url, s, "text/plain");
-    }
-
-    public static InputStream post(final String url, List<NameValuePair> values) {
+    public static InputStream post(String url, List<NameValuePair> values) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
         try {
-            method.setEntity(new UrlEncodedFormEntity(values));
+            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
             HttpResponse response = httpClient.execute(method);
             return new BufferedInputStream(response.getEntity().getContent());
         } catch (IOException e) {
@@ -35,19 +31,17 @@ public class HttpUtil {
         return null;
     }
 
-    private static String post(final String url, final String s,
-                               final String contentType) {
+    public static String post(String url, String s, String contentType) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
-        String body = null;
         try {
             method.setEntity(new StringEntity(s, "UTF-8"));
             method.setHeader("Content-Type", contentType);
             HttpResponse response = httpClient.execute(method);
-            body = EntityUtils.toString(response.getEntity());
+            return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
-            Log.d(TAG, "IOException", e);
+            Log.e(TAG, "IOException", e);
         }
-        return body;
+        return null;
     }
 }

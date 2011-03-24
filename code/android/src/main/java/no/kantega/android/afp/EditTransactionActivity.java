@@ -242,7 +242,7 @@ public class EditTransactionActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params) {
-            return HttpUtil.post(params[0], params[1]);
+            return HttpUtil.post(params[0], params[1], "text/plain");
         }
 
         @Override
