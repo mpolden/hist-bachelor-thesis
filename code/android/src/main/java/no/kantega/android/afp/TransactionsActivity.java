@@ -126,23 +126,23 @@ public class TransactionsActivity extends ListActivity {
 
     private Drawable getImageIdByTag(String tag) {
         if ("Ferie".equals(tag)) {
-            return getResources().getDrawable(R.drawable.suitcase);
+            return getResources().getDrawable(R.drawable.tag_suitcase);
         } else if ("Klær".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tshirt);
+            return getResources().getDrawable(R.drawable.tag_tshirt);
         } else if ("Restaurant".equals(tag)) {
-            return getResources().getDrawable(R.drawable.forkknife);
+            return getResources().getDrawable(R.drawable.tag_forkknife);
         } else if ("Dagligvarer".equals(tag)) {
-            return getResources().getDrawable(R.drawable.chicken);
+            return getResources().getDrawable(R.drawable.tag_chicken);
         } else if ("Bil".equals(tag)) {
-            return getResources().getDrawable(R.drawable.fuel);
+            return getResources().getDrawable(R.drawable.tag_fuel);
         } else if ("Vin".equals(tag)) {
-            return getResources().getDrawable(R.drawable.winebottle);
+            return getResources().getDrawable(R.drawable.tag_winebottle);
         } else if ("Datautstyr".equals(tag)) {
-            return getResources().getDrawable(R.drawable.imac);
+            return getResources().getDrawable(R.drawable.tag_imac);
         } else if ("Overtidsmiddag".equals(tag)) {
-            return getResources().getDrawable(R.drawable.forkknife);
+            return getResources().getDrawable(R.drawable.tag_forkknife);
         } else {
-            return getResources().getDrawable(R.drawable.user);
+            return getResources().getDrawable(R.drawable.tag_user);
         }
     }
 
