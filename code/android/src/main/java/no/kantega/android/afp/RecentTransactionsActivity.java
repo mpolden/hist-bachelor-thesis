@@ -128,7 +128,7 @@ public class RecentTransactionsActivity extends ListActivity {
         } else if ("Klær".equals(tag)) {
             return getResources().getDrawable(R.drawable.tag_tshirt);
         } else if ("Restaurant".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_forkknife);
+            return getResources().getDrawable(R.drawable.tag_forkandknife);
         } else if ("Dagligvarer".equals(tag)) {
             return getResources().getDrawable(R.drawable.tag_chicken);
         } else if ("Bil".equals(tag)) {
@@ -138,7 +138,7 @@ public class RecentTransactionsActivity extends ListActivity {
         } else if ("Datautstyr".equals(tag)) {
             return getResources().getDrawable(R.drawable.tag_imac);
         } else if ("Overtidsmiddag".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_forkknife);
+            return getResources().getDrawable(R.drawable.tag_forkandknife);
         } else {
             return getResources().getDrawable(R.drawable.tag_user);
         }
