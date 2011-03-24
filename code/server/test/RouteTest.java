@@ -25,16 +25,6 @@ public class RouteTest extends FunctionalTest {
     }
 
     @Test
-    public void testEncode() {
-        Map<String, String> params = new HashMap<String, String>() {{
-            put("otherKey", "this is some other key");
-            put("theKey", "this is some key");
-        }};
-        assertEquals("theKey=this+is+some+key&otherKey=this+is+some+other+key",
-                FmtUtil.encode(params));
-    }
-
-    @Test
     public void testRouteTransactions() {
         Map<String, String> params = new HashMap<String, String>() {{
             put("registrationId", "some_random_id");
