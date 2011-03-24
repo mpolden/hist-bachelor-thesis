@@ -21,7 +21,7 @@ public class GsonUtilTest extends UnitTest {
     }
 
     @Test
-    public void parseTransactions() {
+    public void testParseTransactions() {
         final String json = "[{\"accountingDate\":\"2009-04-15 00:00:00\"," +
                 "\"amountIn\":0.0," +
                 "\"amountOut\":1272.56," +
