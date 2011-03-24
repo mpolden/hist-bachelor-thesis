@@ -44,20 +44,22 @@ public class ModelHelper {
 
     public static Transaction saveTransaction(Transaction t, User user) {
         if (t.dirty) {
-            Transaction existing = Transaction.findById(t.id);
-            if (existing != null) {
-                existing._id = t._id;
-                existing.accountingDate = t.accountingDate;
-                existing.amountIn = t.amountIn;
-                existing.amountOut = t.amountOut;
-                existing.text = t.text;
-                existing.internal = t.internal;
-                existing.timestamp = t.timestamp;
-                existing.dirty = false;
-                existing.tag = ModelHelper.getOrSaveTag(t.tag.name);
-                existing.type = ModelHelper.getOrAddType(t.type.name);
-                existing.save();
-                return existing;
+            if (t.id != null) {
+                Transaction existing = Transaction.findById(t.id);
+                if (existing != null) {
+                    existing._id = t._id;
+                    existing.accountingDate = t.accountingDate;
+                    existing.amountIn = t.amountIn;
+                    existing.amountOut = t.amountOut;
+                    existing.text = t.text;
+                    existing.internal = t.internal;
+                    existing.timestamp = t.timestamp;
+                    existing.dirty = false;
+                    existing.tag = ModelHelper.getOrSaveTag(t.tag.name);
+                    existing.type = ModelHelper.getOrAddType(t.type.name);
+                    existing.save();
+                    return existing;
+                }
             } else {
                 t.id = null;
                 t.tag = ModelHelper.getOrSaveTag(t.tag.name);
