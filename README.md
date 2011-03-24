@@ -23,6 +23,7 @@ Building the project
 --------------------
 We use Maven to build the entire project, including both the Android app and
 the server. To build it, do the following:
+
     cd code
     ANDROID_HOME=/path/to/android-sdk mvn package
 
@@ -30,6 +31,7 @@ Building only the Android app
 -----------------------------
 The source for the Android app is located in code/android.
 To build it, do the following:
+
     cd code/android
     ANDROID_HOME=/path/to/android-sdk mvn package
 
@@ -37,35 +39,65 @@ Building and running the server
 -------------------------------
 Our server implementation uses the Play Framework, so a working Play
 installation is required to run the server.
+
     cd code/server
     play run
+
+Setting values for development
+------------------------------
+When running in development mode, a few custom values need to be set, such as
+the application server URLs and your Android C2DM device ID. The device ID can
+be found by launching the app and looking for "Registered: <the_id>" or
+"Existing device ID: <the_id>" in the emulator log.
+
+* Edit code/android/src/main/android/assets/url.properties to contain the following:
+
+    suggestTags = http://<your_ip>:9000/tags/suggest
+    newTransactions = http://<your_ip>:9000/transactions/%s
+    allTransactions = http://<your_ip>:9000/transactions/all
+    saveTransactions = http://<your_ip>:9000/transactions/save
+
+* Edit code/server/conf/fixtures-local.yml to contain the following:
+
+      User(user):
+        deviceId: <your_device_id>
 
 Starting a shell on the emulator
 --------------------------------
 To start a shell on the emulator, use the following command:
+
     $ANDROID_HOME/adb -s emulator-5554 shell
+
 To remove the existing database (shouldn't be needed in most cases):
+
     rm /data/data/no.kantega.android/databases/app.db
 
 Ubuntu, adb and running on a real device
 ----------------------------------------
 To run/deploy the application on an actual Android phone, the adb server needs
 to be run as root, use the following commands for a quick fix:
+
     $ANDROID_HOME/platform-tools/adb kill-server
     sudo $ANDROID_HOME/platform-tools/adb start-server
+
 The best solution is however to use a udev rule, like this:
+
     echo 'SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666"' | \
         sudo tee -a /etc/udev/rules.d/51-android.rules.
+
 The '0bb4' is the vendor ID for HTC, if you're using a different brand use the
 lsusb command to find it.
 To verify that it worked, run the following:
+
     $ANDROID_HOME/platform-tools/adb devices
+
 Your device ID should be listed in the output.
 
 IntelliJ IDEA, maven-android-plugin and Javadoc
 -----------------------------------------------------------
 To make IntelliJ IDEA find the Android Javadoc when using maven-android-plugin,
 do the following:
+
 * Open Project Structure (Ctrl+Alt+Shift+S)
 * Navigate to Global Libraries
 * Select Android 2.3.3 Platform
@@ -78,6 +110,7 @@ do the following:
 
 IntelliJ IDEA, Play Framework and Javadoc
 -----------------------------------------
+
 * Open Project Structure (Ctrl+Alt+Shift+S)
 * Navigate to Modules
 * Select server module
@@ -85,3 +118,15 @@ IntelliJ IDEA, Play Framework and Javadoc
 * Edit the play.jar dependency (not PlayFramework Dependencies)
 * Click Attach Sources...
 * Add the full path to $PLAY_HOME/framework/src
+
+IntelliJ IDEA not displaying Git branch
+---------------------------------------
+* Open $PROJECT_HOME/.idea/vcs.xml
+* Make sure the file contains the following
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project version="4">
+      <component name="VcsDirectoryMappings">
+        <mapping directory="$PROJECT_DIR$" vcs="Git" />
+      </component>
+    </project>
