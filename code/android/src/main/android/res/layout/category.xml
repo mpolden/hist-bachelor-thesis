@@ -4,7 +4,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/background3">
+              android:background="@drawable/background3"
+              android:focusable="true" android:focusableInTouchMode="true">
     <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content"
                  android:stretchColumns="1">
@@ -26,11 +27,12 @@
                       android:text="@string/category_icon"></TextView>
             <ImageView android:id="@+id/imageview_newcategory_icon" android:layout_weight="1"
                        android:layout_width="0dip"
-                       android:padding="3dip" android:layout_height="28dip"
-                       android:background="#ffffff">
+                       android:padding="3dip" android:layout_height="32dip"
+                       android:background="#ffffff" android:paddingBottom="5dip">
 
             </ImageView>
         </TableRow>
+        <View android:background="#000000" android:layout_height="2px" android:layout_width="fill_parent"></View>
         <TableRow>
             <GridView android:layout_weight="1" android:layout_width="0dip"
                       android:id="@+id/gridview_icons"
