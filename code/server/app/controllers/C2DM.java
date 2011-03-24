@@ -39,7 +39,7 @@ public class C2DM extends Controller {
         final User user = User.find("deviceId", registrationId).first();
         if (user != null) {
             for (Transaction t : transactions) {
-                updated.add(ModelHelper.saveTransaction(t, user));
+                updated.add(ModelHelper.saveOrUpdate(t, user));
             }
         }
         if (updated.isEmpty()) {
