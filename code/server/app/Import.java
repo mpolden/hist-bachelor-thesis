@@ -72,9 +72,8 @@ public class Import extends Job {
             t.trimmedText = FmtUtil.trimTransactionText(text).trim();
             t.amountOut = out;
             t.amountIn = in;
-            if (s.length > 7) {
-                t.tag = ModelHelper.insertIgnoreTag(s[7]);
-            }
+            t.tag = ModelHelper.insertIgnoreTag(s[7]);
+            t.tag.imageId = Integer.parseInt(s[8], 16);
             t.internal = false;
             t.dirty = false;
             t.timestamp = t.accountingDate.getTime();
