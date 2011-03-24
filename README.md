@@ -94,7 +94,7 @@ To verify that it worked, run the following:
 Your device ID should be listed in the output.
 
 IntelliJ IDEA, maven-android-plugin and Javadoc
------------------------------------------------------------
+-----------------------------------------------
 To make IntelliJ IDEA find the Android Javadoc when using maven-android-plugin,
 do the following:
 
@@ -121,6 +121,7 @@ IntelliJ IDEA, Play Framework and Javadoc
 
 IntelliJ IDEA not displaying Git branch
 ---------------------------------------
+
 * Open $PROJECT_HOME/.idea/vcs.xml
 * Make sure the file contains the following
 
