@@ -1,8 +1,10 @@
 package no.kantega.android.afp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ public class SynchronizeActivity extends Activity {
     private TextView tagCount;
     private TextView dirtyCount;
     private TextView untaggedCount;
+    private AlertDialog alertDialog;
     private int dbTransactionCount;
     private int dbTagCount;
     private int dbDirtyCount;
@@ -68,7 +71,8 @@ public class SynchronizeActivity extends Activity {
             public void onClick(View v) {
                 db.emptyTables();
                 onResume();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.db_cleared),
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.db_cleared),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -79,6 +83,21 @@ public class SynchronizeActivity extends Activity {
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
         untaggedCount = (TextView) findViewById(R.id.untagged_count);
         preferences = Prefs.get(getApplicationContext());
+        alertDialog = createAlertDialog();
+    }
+
+    private AlertDialog createAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.server_unavailable)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        return builder.create();
     }
 
     /**
@@ -173,7 +192,8 @@ public class SynchronizeActivity extends Activity {
             final Object urlAll = properties.get("allTransactions");
             final Object urlSave = properties.get("saveTransactions");
             if (urlNew != null && urlAll != null && urlSave != null) {
-                new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlSave.toString());
+                new TransactionsTask().execute(urlNew.toString(),
+                        urlAll.toString(), urlSave.toString());
             } else {
                 Log.e(TAG, "Missing one or more entries in url.properties");
             }
@@ -192,12 +212,8 @@ public class SynchronizeActivity extends Activity {
         }
     };
 
-    /**
-     * Task that retrieves transactions, deserializes them from JSON and inserts
-     * them into the local database
-     */
     private class TransactionsTask
-            extends AsyncTask<String, Integer, List<Transaction>> {
+            extends AsyncTask<String, Integer, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -205,10 +221,9 @@ public class SynchronizeActivity extends Activity {
         }
 
         @Override
-        protected List<Transaction> doInBackground(String... urls) {
-            getTransactions(urls[0], urls[1]);
-            putTransactions(urls[2]);
-            return null;
+        protected Boolean doInBackground(String... urls) {
+            return getTransactions(urls[0], urls[1]) &&
+                    putTransactions(urls[2]);
         }
 
         /**
@@ -216,43 +231,52 @@ public class SynchronizeActivity extends Activity {
          *
          * @param url Save URL
          */
-        private void putTransactions(final String url) {
+        private boolean putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
             if (!dirtyTransactions.isEmpty()) {
                 final String json = GsonUtil.makeJSON(dirtyTransactions);
-                final List<Transaction> updatedTransactions = GsonUtil.parseTransactionsFromStream(
-                        post(url, new ArrayList<NameValuePair>() {{
+                final InputStream in = post(url,
+                        new ArrayList<NameValuePair>() {{
                             add(new BasicNameValuePair("json", json));
-                        }}));
-                if (updatedTransactions != null && !updatedTransactions.isEmpty()) {
-                    progressDialog.setMax(updatedTransactions.size());
+                        }});
+                if (in == null) {
+                    return false;
+                }
+                final List<Transaction> updated = GsonUtil.
+                        parseTransactions(in);
+                if (updated != null && !updated.isEmpty()) {
+                    progressDialog.setMax(updated.size());
                     int i = 0;
-                    for (Transaction t : updatedTransactions) {
+                    for (Transaction t : updated) {
                         t.setDirty(false);
                         db.update(t);
                         publishProgress(++i);
                     }
                 }
             }
+            return true;
         }
 
         /**
          * Retrieve transactions from server
          *
-         * @param urlNew URL for new transactions
+         * @param url    URL for new transactions
          * @param urlAll URL for all transactions
          */
-        private void getTransactions(final String urlNew, final String urlAll) {
+        private boolean getTransactions(final String url, final String urlAll) {
             final Transaction latest = db.getLatestExternal();
-            final String url;
+            final InputStream in;
             if (latest != null) {
-                url = String.format(urlNew, latest.getTimestamp());
+                in = post(String.format(url, latest.getTimestamp()),
+                        new ArrayList<NameValuePair>());
             } else {
-                url = urlAll;
+                in = post(urlAll, new ArrayList<NameValuePair>());
             }
-            final List<Transaction> transactions =
-                    GsonUtil.parseTransactionsFromStream(
-                            post(url, new ArrayList<NameValuePair>()));
+            if (in == null) {
+                return false;
+            }
+            final List<Transaction> transactions = GsonUtil.
+                    parseTransactions(in);
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
                 int i = 0;
@@ -261,6 +285,7 @@ public class SynchronizeActivity extends Activity {
                     publishProgress(++i);
                 }
             }
+            return true;
         }
 
         @Override
@@ -271,18 +296,21 @@ public class SynchronizeActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(List<Transaction> transactions) {
+        protected void onPostExecute(Boolean success) {
             progressDialog.setProgress(0);
             progressDialog.setMax(100);
             progressDialog.dismiss();
+            if (!success) {
+                alertDialog.show();
+            }
             saveStats();
             onResume();
         }
     }
 
-    private InputStream post(final String url, final List<NameValuePair> values) {
-        values.add(new BasicNameValuePair("registrationId", preferences.getString(
-                Register.REGISTRATION_ID_KEY, null)));
+    private InputStream post(String url, List<NameValuePair> values) {
+        values.add(new BasicNameValuePair("registrationId",
+                preferences.getString(Register.REGISTRATION_ID_KEY, null)));
         return HttpUtil.post(url, values);
     }
 
