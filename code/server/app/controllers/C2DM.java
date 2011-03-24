@@ -19,14 +19,14 @@ public class C2DM extends Controller {
     private static Logger logger = Logger.getLogger(
             C2DM.class.getName());
     private static final String C2DM_PUSH_TOKEN = Play.configuration.
-            getProperty("c2dm.push.auth");
+            getProperty("c2dm.push.token");
     private static final String C2DM_PUSH_URL = Play.configuration.
             getProperty("c2dm.push.url");
 
     public static void c2dm(String registrationId, JsonArray json) {
         if (C2DM_PUSH_TOKEN == null) {
             logger.log(Level.ERROR,
-                    "Missing c2dm.push.auth i application.conf");
+                    "Missing c2dm.push.token i application.conf");
             return;
         }
         if (C2DM_PUSH_URL == null) {
