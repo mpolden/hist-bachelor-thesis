@@ -12,6 +12,8 @@ import no.kantega.android.afp.models.TransactionTag;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 
 public class CategoryActivity extends Activity {
@@ -27,8 +29,8 @@ public class CategoryActivity extends Activity {
             R.drawable.gift, R.drawable.house,
             R.drawable.suitcase};
 
-    private final String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
-
+    private String[] icon_list;
+    private ArrayList<Integer> images;
 
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
@@ -55,12 +57,20 @@ public class CategoryActivity extends Activity {
         saveButton.setOnClickListener(saveCategoryButtonListener);
         setupViews();
 
-        try {
-            String[] icons = getAssets().list("tags");
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+    }
 
+    private void setupIconList() {
+        Field[] drawables = android.R.drawable.class.getFields();
+        icon_list = new String[drawables.length];
+
+        for(int i=0; i<=drawables.length; i++) {
+            try {
+                //resID = getResources().getIdentifier("")
+                icon_list[i] = drawables[i].getName();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setupViews() {
