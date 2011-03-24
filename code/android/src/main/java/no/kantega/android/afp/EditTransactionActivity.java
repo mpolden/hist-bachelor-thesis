@@ -110,9 +110,9 @@ public class EditTransactionActivity extends Activity {
 
     private void updateSpinnerPosition(String tag) {
         int spinnerPosition = 0;
-        if(selectedTransactionTag != null) {
-            if(selectedTransactionTag.equals("Not tagged")) {
-                if(tag != null) {
+        if (selectedTransactionTag != null) {
+            if (selectedTransactionTag.equals("Not tagged")) {
+                if (tag != null) {
                     spinnerPosition = adapter.getPosition(tag);
                     selectedTransactionTag = tag;
                 } else {
@@ -122,14 +122,13 @@ public class EditTransactionActivity extends Activity {
                 spinnerPosition = adapter.getPosition(selectedTransactionTag);
             }
         } else {
-            if(tag != null) {
+            if (tag != null) {
                 spinnerPosition = adapter.getPosition(tag);
                 selectedTransactionTag = tag;
             } else {
                 spinnerPosition = adapter.getPosition("Not tagged");
             }
         }
-
         if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             spinnerPosition = adapter.getPosition(selectedTransactionTag);
         } else if (selectedTransactionTag == null || selectedTransactionTag.equals("Not tagged") && tag != null) {
@@ -172,7 +171,6 @@ public class EditTransactionActivity extends Activity {
         } else {
             category.setSelection(adapter.getPosition("Not tagged"));
         }
-
     }
 
     private void checkInternal() {
@@ -183,7 +181,6 @@ public class EditTransactionActivity extends Activity {
         }
     }
 
-    // updates the date we display in the TextView
     private void updateDisplay() {
         date.setText(new StringBuilder()
                 // Month is 0 based so add 1
@@ -232,7 +229,6 @@ public class EditTransactionActivity extends Activity {
         }
 
         public void onNothingSelected(AdapterView parent) {
-            // Do nothing.
         }
     }
 
@@ -251,8 +247,10 @@ public class EditTransactionActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-            suggestedTag.setText(s);
-            updateSpinnerPosition(s);
+            if (s != null) {
+                suggestedTag.setText(s);
+                updateSpinnerPosition(s);
+            }
         }
     }
 }
