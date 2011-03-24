@@ -49,7 +49,7 @@ public class GsonUtil {
      * @param in Stream to read from
      * @return List of transactions
      */
-    public static List<Transaction> parseTransactionsFromStream(
+    public static List<Transaction> parseTransactions(
             final InputStream in) {
         List<Transaction> transactions = new ArrayList<Transaction>();
         try {
@@ -78,17 +78,6 @@ public class GsonUtil {
     }
 
     /**
-     * Serialize to JSON using a portable date format
-     *
-     * @param o Object which should be serialized
-     * @return JSON representation
-     */
-    public static String makeJSON(final Object o) {
-        return new GsonBuilder().setDateFormat(PORTABLE_DATE_FORMAT).create().
-                toJson(o);
-    }
-
-    /**
      * Parse transactions from the given JSON
      *
      * @param json JSON value
@@ -98,5 +87,16 @@ public class GsonUtil {
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
         return gson.fromJson(json, listType);
+    }
+
+    /**
+     * Serialize to JSON using a portable date format
+     *
+     * @param o Object which should be serialized
+     * @return JSON representation
+     */
+    public static String makeJSON(final Object o) {
+        return new GsonBuilder().setDateFormat(PORTABLE_DATE_FORMAT).create().
+                toJson(o);
     }
 }
