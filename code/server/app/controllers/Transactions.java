@@ -41,7 +41,7 @@ public class Transactions extends Controller {
         final User user = User.find("deviceId", registrationId).first();
         if (user != null) {
             for (Transaction t : transactions) {
-                updated.add(ModelHelper.saveTransaction(t, user));
+                updated.add(ModelHelper.saveOrUpdate(t, user));
             }
             renderJSON(GsonUtil.makeJSON(updated));
         } else {

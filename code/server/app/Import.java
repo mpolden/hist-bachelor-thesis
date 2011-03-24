@@ -67,13 +67,13 @@ public class Import extends Job {
             Double in = Double.parseDouble(s[6]);
             Transaction t = new Transaction();
             t.accountingDate = accountingDate;
-            t.type = ModelHelper.getOrAddType(s[3]);
+            t.type = ModelHelper.insertIgnoreType(s[3]);
             t.text = text;
             t.trimmedText = FmtUtil.trimTransactionText(text).trim();
             t.amountOut = out;
             t.amountIn = in;
             if (s.length > 7) {
-                t.tag = ModelHelper.getOrSaveTag(s[7]);
+                t.tag = ModelHelper.insertIgnoreTag(s[7]);
             }
             t.internal = false;
             t.dirty = false;
