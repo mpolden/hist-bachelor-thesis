@@ -19,10 +19,30 @@
                       android:layout_height="wrap_content"/>
         </TableRow>
         <TableRow>
-            <Spinner android:id="@+id/spinner_icon"
-                     android:layout_weight="1" android:layout_width="0dip"
-                     android:layout_height="wrap_content"
-                     android:prompt="@string/icon_prompt"/>
+            <TextView android:layout_weight="1" android:layout_width="0dip"
+                      android:padding="3dip"
+                      android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:layout_height="wrap_content"
+                      android:text="@string/category_icon"></TextView>
+            <ImageView android:id="@+id/imageview_newcategory_icon" android:layout_weight="1"
+                       android:layout_width="0dip"
+                       android:padding="3dip" android:layout_height="28dip"
+                       android:background="#ffffff">
+
+            </ImageView>
+        </TableRow>
+        <TableRow>
+            <GridView android:layout_weight="1" android:layout_width="0dip"
+                      android:id="@+id/gridview_icons"
+                      android:layout_height="fill_parent"
+                      android:numColumns="auto_fit"
+                      android:verticalSpacing="10dp"
+                      android:horizontalSpacing="10dp"
+                      android:columnWidth="90dp"
+                      android:stretchMode="columnWidth"
+                      android:gravity="center"
+                      android:background="#ffffff">
+            </GridView>
         </TableRow>
     </TableLayout>
     <Button android:text="Save"

@@ -2,27 +2,40 @@ package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.TransactionTag;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+
 
 public class CategoryActivity extends Activity {
 
     private Transactions db;
     private EditText category_name;
+    private ImageView category_icon;
+    private Integer[] iconIds = {
+            R.drawable.chicken, R.drawable.tshirt,
+            R.drawable.forkknife, R.drawable.fuel,
+            R.drawable.winebottle, R.drawable.imac,
+            R.drawable.shoebox, R.drawable.user,
+            R.drawable.gift, R.drawable.house,
+            R.drawable.suitcase};
+
     private final String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
+
 
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            TransactionTag ttag = new TransactionTag();
             String name = category_name.getText().toString();
-            if (name != null) {
+            if (name != null && !name.trim().equals("")) {
+                TransactionTag ttag = new TransactionTag();
                 ttag.setName(name);
                 db.add(ttag);
                 finish();
@@ -41,46 +54,66 @@ public class CategoryActivity extends Activity {
         Button saveButton = (Button) findViewById(R.id.button_newcategory_save);
         saveButton.setOnClickListener(saveCategoryButtonListener);
         setupViews();
+
+        try {
+            String[] icons = getAssets().list("tags");
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
-        Spinner icon_spinner = (Spinner) findViewById(R.id.spinner_icon);
-        icon_spinner.setAdapter(new CustomIconAdapter(getApplicationContext(), icon_list));
+
+        category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
+        category_icon.setImageResource(iconIds[0]);
+
+        GridView gridView = (GridView) findViewById(R.id.gridview_icons);
+        gridView.setAdapter(new IconAdapter(this));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                category_icon.setImageResource(iconIds[position]);
+
+            }
+        });
     }
 
+    private class IconAdapter extends BaseAdapter {
+        private Context context;
 
-    private class CustomIconAdapter extends ArrayAdapter<String> {
 
-        public CustomIconAdapter(Context context, String[] objects) {
-            super(context, R.layout.iconspinnerrow, objects);
+        public IconAdapter(Context c) {
+            this.context = c;
+
         }
 
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
+        public int getCount() {
+            return iconIds.length;
         }
 
-        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return 0;
+        }
+
+
         public View getView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, convertView, parent);
-        }
-
-        public View getCustomView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = getLayoutInflater();
-            View row = inflater.inflate(R.layout.iconspinnerrow, parent, false);
-            TextView label = (TextView) row.findViewById(R.id.tv_icon_text);
-            label.setText(icon_list[position]);
-
-            ImageView icon = (ImageView) row.findViewById(R.id.row_icon);
-            if (icon_list[position] != null) {
-                icon.setImageResource(getImageIdByTag(icon_list[position]));
+            ImageView imageView;
+            if (convertView == null) { // if it's not recycled, initialize attributes
+                imageView = new ImageView(context);
+                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                imageView.setPadding(8, 8, 8, 8);
+            } else {
+                imageView = (ImageView) convertView;
             }
 
-            return row;
+            imageView.setImageResource(iconIds[position]);
+            return imageView;
         }
-
     }
 
     private int getImageIdByTag(String tag) {
