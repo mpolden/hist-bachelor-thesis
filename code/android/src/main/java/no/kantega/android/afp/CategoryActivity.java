@@ -2,7 +2,6 @@ package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,27 +9,15 @@ import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.TransactionTag;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 
 public class CategoryActivity extends Activity {
 
     private Transactions db;
     private EditText category_name;
     private ImageView category_icon;
-    private Integer[] iconIds = {
-            R.drawable.chicken, R.drawable.tshirt,
-            R.drawable.forkknife, R.drawable.fuel,
-            R.drawable.winebottle, R.drawable.imac,
-            R.drawable.shoebox, R.drawable.user,
-            R.drawable.gift, R.drawable.house,
-            R.drawable.suitcase};
-
-    private String[] icon_list;
-    private ArrayList<Integer> images;
+    private ArrayList<Integer> iconIds;
 
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
@@ -52,21 +39,27 @@ public class CategoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category);
         this.db = new Transactions(getApplicationContext());
-
         Button saveButton = (Button) findViewById(R.id.button_newcategory_save);
         saveButton.setOnClickListener(saveCategoryButtonListener);
+        setupIconList();
         setupViews();
-
     }
 
     private void setupIconList() {
-        Field[] drawables = android.R.drawable.class.getFields();
-        icon_list = new String[drawables.length];
+        Field[] drawables = R.drawable.class.getFields();
+        Toast.makeText(this, drawables[0].getName(), Toast.LENGTH_LONG).show();
+        iconIds = new ArrayList<Integer>();
+        int resID = 0;
 
-        for(int i=0; i<=drawables.length; i++) {
+        for (int i = 0; i <= drawables.length; i++) {
             try {
-                //resID = getResources().getIdentifier("")
-                icon_list[i] = drawables[i].getName();
+                String name = drawables[i].getName();
+                if (name.startsWith("tag_")) {
+                    resID = getResources().getIdentifier(name, "drawable", getPackageName());
+                    if (resID != 0) {
+                        iconIds.add(resID);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -75,31 +68,27 @@ public class CategoryActivity extends Activity {
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
-
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
-        category_icon.setImageResource(iconIds[0]);
-
+        category_icon.setImageResource(iconIds.get(0));
         GridView gridView = (GridView) findViewById(R.id.gridview_icons);
         gridView.setAdapter(new IconAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                category_icon.setImageResource(iconIds[position]);
-
+                category_icon.setImageResource(iconIds.get(position));
             }
         });
     }
 
     private class IconAdapter extends BaseAdapter {
-        private Context context;
 
+        private Context context;
 
         public IconAdapter(Context c) {
             this.context = c;
-
         }
 
         public int getCount() {
-            return iconIds.length;
+            return iconIds.size();
         }
 
         public Object getItem(int position) {
@@ -110,7 +99,6 @@ public class CategoryActivity extends Activity {
             return 0;
         }
 
-
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
             if (convertView == null) { // if it's not recycled, initialize attributes
@@ -120,36 +108,11 @@ public class CategoryActivity extends Activity {
             } else {
                 imageView = (ImageView) convertView;
             }
-
-            imageView.setImageResource(iconIds[position]);
+            imageView.setImageResource(iconIds.get(position));
             return imageView;
         }
     }
-
-    private int getImageIdByTag(String tag) {
-        if ("Suitcase".equals(tag)) {
-            return R.drawable.suitcase;
-        } else if ("Shirt".equals(tag)) {
-            return R.drawable.tshirt;
-        } else if ("Fork/knife".equals(tag)) {
-            return R.drawable.forkknife;
-        } else if ("Chicken".equals(tag)) {
-            return R.drawable.chicken;
-        } else if ("Fuel".equals(tag)) {
-            return R.drawable.fuel;
-        } else if ("Winebottle".equals(tag)) {
-            return R.drawable.winebottle;
-        } else if ("iMac".equals(tag)) {
-            return R.drawable.imac;
-        } else if ("Shoebox".equals(tag)) {
-            return R.drawable.shoebox;
-        } else if ("User".equals(tag)) {
-            return R.drawable.user;
-        } else {
-            return -1;
-        }
-    }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -46,7 +46,6 @@ public class RouteTest extends FunctionalTest {
         final String body = getContent(response);
         assertTrue(body.length() > 0);
         List<Transaction> transactions = GsonUtil.parseTransactions(body);
-        System.out.println(body);
         assertTrue(!transactions.isEmpty());
     }
 

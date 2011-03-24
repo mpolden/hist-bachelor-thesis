@@ -35,7 +35,7 @@
             <GridView android:layout_weight="1" android:layout_width="0dip"
                       android:id="@+id/gridview_icons"
                       android:layout_height="fill_parent"
-                      android:numColumns="auto_fit"
+                      android:numColumns="4"
                       android:verticalSpacing="10dp"
                       android:horizontalSpacing="10dp"
                       android:columnWidth="90dp"
