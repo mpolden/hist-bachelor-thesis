@@ -60,28 +60,35 @@ public class Import extends Job {
 
     private Transaction parseTransaction(String line) {
         String[] s = line.split("_");
-        try {
-            Date accountingDate = dateFormat.parse(s[0]);
-            String text = s[4];
-            Double out = Double.parseDouble(s[5]);
-            Double in = Double.parseDouble(s[6]);
-            Transaction t = new Transaction();
-            t.accountingDate = accountingDate;
-            t.type = ModelHelper.insertIgnoreType(s[3]);
-            t.text = text;
-            t.trimmedText = FmtUtil.trimTransactionText(text).trim();
-            t.amountOut = out;
-            t.amountIn = in;
+        Date accountingDate = parseDate(s[0]);
+        String text = s[4];
+        Double out = Double.parseDouble(s[5]);
+        Double in = Double.parseDouble(s[6]);
+        Transaction t = new Transaction();
+        t.accountingDate = accountingDate;
+        t.type = ModelHelper.insertIgnoreType(s[3]);
+        t.text = text;
+        t.trimmedText = FmtUtil.trimTransactionText(text).trim();
+        t.amountOut = out;
+        t.amountIn = in;
+        if (!"null".equals(s[7])) {
             t.tag = ModelHelper.insertIgnoreTag(s[7]);
             t.tag.imageId = Integer.parseInt(s[8], 16);
             t.tag.save();
-            t.internal = false;
-            t.dirty = false;
-            t.timestamp = t.accountingDate.getTime();
-            return t;
-        } catch (ParseException e) {
-            logger.log(Level.ERROR, e);
+        } else {
+            t.tag = null;
         }
-        return null;
+        t.internal = false;
+        t.dirty = false;
+        t.timestamp = t.accountingDate.getTime();
+        return t;
+    }
+
+    private Date parseDate(String s) {
+        try {
+            return dateFormat.parse(s);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
