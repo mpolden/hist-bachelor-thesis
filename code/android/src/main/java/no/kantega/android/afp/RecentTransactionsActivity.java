@@ -3,6 +3,7 @@ package no.kantega.android.afp;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.Date;
@@ -54,6 +57,22 @@ public class RecentTransactionsActivity extends ListActivity {
             adapter.changeCursor(cursor);
         }
     };
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Object o = l.getItemAtPosition(position);
+        if (o instanceof Cursor) {
+            Cursor cursor = (Cursor) o;
+            int transaction_id = cursor.getInt(cursor.getColumnIndex("_id"));
+            Transaction t = db.getById(transaction_id);
+            Intent intent;
+            intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
+            intent.putExtra("transaction", t);
+            startActivity(intent);
+        }
+    }
+
+    
 
     private class RecentTransactionsAdapter extends CursorAdapter {
 

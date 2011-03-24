@@ -2,12 +2,16 @@ package no.kantega.android.afp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.TransactionTag;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
 
 
 public class CategoryActivity extends Activity {
@@ -50,8 +54,14 @@ public class CategoryActivity extends Activity {
         Button saveButton = (Button) findViewById(R.id.button_newcategory_save);
         saveButton.setOnClickListener(saveCategoryButtonListener);
         setupViews();
-    }
 
+        try {
+            String[] icons = getAssets().list("tags");
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
@@ -64,11 +74,10 @@ public class CategoryActivity extends Activity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 category_icon.setImageResource(iconIds[position]);
+
             }
         });
-
     }
-
 
     private class IconAdapter extends BaseAdapter {
         private Context context;
@@ -105,7 +114,6 @@ public class CategoryActivity extends Activity {
             imageView.setImageResource(iconIds[position]);
             return imageView;
         }
-
     }
 
     private int getImageIdByTag(String tag) {
