@@ -16,10 +16,6 @@ public class TransactionType implements Serializable {
     public TransactionType() {
     }
 
-    public TransactionType(String name) {
-        this.name = name;
-    }
-
     public int getId() {
         return id;
     }

@@ -22,9 +22,11 @@ public class CategoryActivity extends Activity {
             R.drawable.shoebox, R.drawable.user,
             R.drawable.gift, R.drawable.house,
             R.drawable.suitcase};
-    private String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
 
-    private View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
+    private final String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
+
+
+    private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String name = category_name.getText().toString();
@@ -53,6 +55,7 @@ public class CategoryActivity extends Activity {
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
+
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
         category_icon.setImageResource(iconIds[0]);
 
@@ -63,14 +66,17 @@ public class CategoryActivity extends Activity {
                 category_icon.setImageResource(iconIds[position]);
             }
         });
+
     }
 
 
     private class IconAdapter extends BaseAdapter {
         private Context context;
 
+
         public IconAdapter(Context c) {
             this.context = c;
+
         }
 
         public int getCount() {

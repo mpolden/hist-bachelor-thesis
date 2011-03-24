@@ -8,11 +8,6 @@ public class AggregatedTag {
     public AggregatedTag() {
     }
 
-    public AggregatedTag(Double amount, String name) {
-        this.amount = amount;
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }

@@ -1,7 +1,5 @@
 package no.kantega.android.afp.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,8 +11,8 @@ public class FmtUtil {
     /**
      * Convert the given date to string using the given format
      *
-     * @param format
-     * @param date
+     * @param format Date format to use when converting
+     * @param date   Date to convert
      * @return The date
      */
     public static String dateToString(String format, Date date) {
@@ -25,7 +23,7 @@ public class FmtUtil {
     /**
      * Format currency according to the default locale
      *
-     * @param number
+     * @param number Number to format
      * @return Formatted currency
      */
     public static String currency(double number) {
@@ -35,8 +33,8 @@ public class FmtUtil {
     /**
      * Format currency according to the given locale
      *
-     * @param number
-     * @param locale
+     * @param number Number to format
+     * @param locale Locale to use when formatting
      * @return Formatted currency
      */
     public static String currency(double number, Locale locale) {
@@ -49,7 +47,7 @@ public class FmtUtil {
     /**
      * Trim useless data from the given transaction text
      *
-     * @param text
+     * @param text Text to trim
      * @return Trimmed text
      */
     public static String trimTransactionText(String text) {
@@ -58,24 +56,10 @@ public class FmtUtil {
     }
 
     /**
-     * URL encode the given string using UTF-8
-     *
-     * @param s
-     * @return The URL encoded string
-     */
-    public static String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-    /**
      * Convert the given string to date using the given format
      *
-     * @param format
-     * @param date
+     * @param format Format to use when converting
+     * @param date   Date to convert
      * @return The date
      */
     public static Date stringToDate(String format, String date) {
@@ -90,7 +74,7 @@ public class FmtUtil {
     /**
      * Check if given string is a number with optional decimals
      *
-     * @param s
+     * @param s String to check
      * @return True if string contains one or more numbers
      */
     public static boolean isNumber(String s) {

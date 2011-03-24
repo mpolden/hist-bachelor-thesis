@@ -1,9 +1,11 @@
 import models.Transaction;
+import models.User;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.test.Fixtures;
 import play.vfs.VirtualFile;
 import utils.FmtUtil;
 import utils.ModelHelper;
@@ -22,15 +24,31 @@ public class Import extends Job {
             "dd.MM.yyyy");
 
     public void doJob() {
+        loadUsersFromFixture();
+        loadTransactionsFromCsv();
+    }
+
+    private void loadUsersFromFixture() {
+        if (User.count() == 0) {
+            Fixtures.load("fixtures-local.yml");
+        }
+    }
+
+    private void loadTransactionsFromCsv() {
         if (Transaction.count() == 0) {
             File f = VirtualFile.fromRelativePath(
                     "/conf/fixture-transactions-full.csv").getRealFile();
+            User user = User.all().first();
             BufferedReader reader = null;
             try {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    addTransaction(line);
+                    Transaction t = parseTransaction(line);
+                    if (t != null) {
+                        t.user = user;
+                        t.save();
+                    }
                 }
             } catch (IOException e) {
                 logger.log(Level.ERROR, e);
@@ -40,7 +58,7 @@ public class Import extends Job {
         }
     }
 
-    private void addTransaction(String line) {
+    private Transaction parseTransaction(String line) {
         String[] s = line.split("_");
         try {
             Date accountingDate = dateFormat.parse(s[0]);
@@ -60,9 +78,10 @@ public class Import extends Job {
             t.internal = false;
             t.dirty = false;
             t.timestamp = t.accountingDate.getTime();
-            t.save();
+            return t;
         } catch (ParseException e) {
             logger.log(Level.ERROR, e);
         }
+        return null;
     }
 }

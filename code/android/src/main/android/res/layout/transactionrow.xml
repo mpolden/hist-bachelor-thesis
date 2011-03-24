@@ -19,43 +19,43 @@
                           android:text="@string/transaction_date"
                           android:padding="3dip"
                           android:textStyle="bold"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
                 <TextView android:id="@+id/trow_tv_date"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:text="@string/transaction_text"
                           android:padding="3dip"
                           android:textStyle="bold"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
                 <TextView android:id="@+id/trow_tv_text"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:text="@string/category" android:padding="3dip"
                           android:textStyle="bold"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
                 <TextView android:id="@+id/trow_tv_category"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:text="@string/transaction_amount"
                           android:padding="3dip"
                           android:textStyle="bold"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
                 <TextView android:id="@+id/trow_tv_amount"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          style="@style/DefaultTextFont"></TextView>
+                          style="@style/DefaultTextFont"/>
             </TableRow>
         </TableLayout>
 

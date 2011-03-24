@@ -32,12 +32,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".OverviewActivity"></activity>
-        <activity android:name=".TransactionsActivity"></activity>
-        <activity android:name=".SynchronizeActivity"></activity>
-        <activity android:name=".AddTransactionActivity"></activity>
-        <activity android:name=".EditTransactionActivity"></activity>
-        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".OverviewActivity"/>
+        <activity android:name=".TransactionsActivity"/>
+        <activity android:name=".SynchronizeActivity"/>
+        <activity android:name=".AddTransactionActivity"/>
+        <activity android:name=".EditTransactionActivity"/>
+        <activity android:name=".CategoryActivity"/>
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its

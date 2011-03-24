@@ -4,92 +4,230 @@ import org.junit.Test;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
+import utils.FmtUtil;
+import utils.GsonUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RouteTest extends FunctionalTest {
+
+    private static Response POST(String url, Map<String, String> params) {
+        return POST(url, "application/x-www-form-urlencoded",
+                FmtUtil.encode(params));
+    }
 
     @Before
     public void setUp() {
         Fixtures.deleteAll();
-        new Import().doJob();
+        Fixtures.load("fixtures-test.yml");
+    }
+
+    @Test
+    public void testEncode() {
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("otherKey", "this is some other key");
+            put("theKey", "this is some key");
+        }};
+        assertEquals("theKey=this+is+some+key&otherKey=this+is+some+other+key",
+                FmtUtil.encode(params));
     }
 
     @Test
     public void testRouteTransactions() {
-        Response response = GET("/transactions");
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+        }};
+        Response response = POST("/transactions/all", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
-        assertTrue(getContent(response).length() > 0);
+        final String body = getContent(response);
+        assertTrue(body.length() > 0);
+        List<Transaction> transactions = GsonUtil.parseTransactions(body);
+        System.out.println(body);
+        assertTrue(!transactions.isEmpty());
     }
 
     @Test
     public void testRouteTransactionsAfter() {
-        Response response = GET("/transactions/0");
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+        }};
+        Response response = POST("/transactions/0", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
-        assertTrue(getContent(response).length() > 0);
+        final String body = getContent(response);
+        assertTrue(body.length() > 0);
+        List<Transaction> transactions = GsonUtil.parseTransactions(body);
+        assertTrue(!transactions.isEmpty());
     }
 
     @Test
     public void testRouteSaveNew() {
-        final String json = "[{\"_id\":1,\"accountingDate\":\"2011-02-17 00:00:00\"," +
-                "\"fixedDate\":\"2011-02-17 00:00:00\",\"amountIn\":0.0,\"amountOut\":1321.0,\"text\":\"test\"," +
-                "\"internal\":true,\"timestamp\":1300379994253,\"dirty\":true,\"type\":{\"name\":\"Kontant\",\"id\":6}," +
-                "\"tag\":{\"name\":\"Bil\",\"id\":5},\"id\":0}]";
-        Response response = POST("/transactions", "application/json", json);
+        final String json = "[\n" +
+                "    {\n" +
+                "        \"_id\": 4,\n" +
+                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amountIn\": 0.0,\n" +
+                "        \"amountOut\": 3000.0,\n" +
+                "        \"text\": \"Skjermkort\",\n" +
+                "        \"trimmedText\": \"Skjermkort\",\n" +
+                "        \"internal\": true,\n" +
+                "        \"timestamp\": 1,\n" +
+                "        \"dirty\": true,\n" +
+                "        \"type\": {\n" +
+                "            \"name\": \"Visa\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"tag\": {\n" +
+                "            \"name\": \"Datautstyr\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"user\": {\n" +
+                "            \"deviceId\": \"some_random_id\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"id\": 1000\n" +
+                "    }\n" +
+                "]";
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+            put("json", json);
+        }};
+        Response response = POST("/transactions/save", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        assertTrue(Transaction.count("internal", true) == 1);
+        assertTrue(Transaction.count("_id", 4) == 1);
     }
 
     @Test
     public void testRouteSaveNewNotDirty() {
-        final String json = "[{\"_id\":1,\"accountingDate\":\"2011-02-17 00:00:00\"," +
-                "\"fixedDate\":\"2011-02-17 00:00:00\",\"amountIn\":0.0,\"amountOut\":1321.0,\"text\":\"test\"," +
-                "\"internal\":true,\"timestamp\":1300379994253,\"dirty\":false,\"type\":{\"name\":\"Kontant\",\"id\":6}," +
-                "\"tag\":{\"name\":\"Bil\",\"id\":5},\"id\":0}]";
-        Response response = POST("/transactions", "application/json", json);
+        final String json = "[\n" +
+                "    {\n" +
+                "        \"_id\": 5,\n" +
+                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amountIn\": 0.0,\n" +
+                "        \"amountOut\": 3000.0,\n" +
+                "        \"text\": \"Skjermkort\",\n" +
+                "        \"trimmedText\": \"Skjermkort\",\n" +
+                "        \"internal\": false,\n" +
+                "        \"timestamp\": 1,\n" +
+                "        \"dirty\": false,\n" +
+                "        \"type\": {\n" +
+                "            \"name\": \"Visa\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"tag\": {\n" +
+                "            \"name\": \"Datautstyr\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"user\": {\n" +
+                "            \"deviceId\": \"some_random_id\",\n" +
+                "            \"id\": 18\n" +
+                "        },\n" +
+                "        \"id\": 1000\n" +
+                "    }\n" +
+                "]";
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+            put("json", json);
+        }};
+        Response response = POST("/transactions/save", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        assertTrue(Transaction.count("internal", true) == 0);
+        assertTrue(Transaction.count("_id", 5) == 0);
     }
 
     @Test
     public void testRouteSaveExisting() {
-        final String json = "[{\"_id\":0,\"accountingDate\":\"2009-04-15 00:00:00\"," +
-                "\"fixedDate\":\"2009-04-15 00:00:00\",\"amountIn\":0.0,\"amountOut\":1272.56," +
-                "\"text\":\"456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)\",\"archiveRef\":\"50001685147\"," +
-                "\"internal\":false,\"timestamp\":1239746400000,\"dirty\":true,\"type\":{\"name\":\"Visa\",\"id\":1}," +
-                "\"tag\":{\"name\":\"Bil\",\"id\":4},\"id\":7}]";
-        Response response = POST("/transactions", "application/json", json);
+        Transaction existing = Transaction.find("_id", 3).first();
+        final String json = "[\n" +
+                "    {\n" +
+                "        \"_id\": 3,\n" +
+                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amountIn\": 0.0,\n" +
+                "        \"amountOut\": 300.0,\n" +
+                "        \"text\": \"Harddisk\",\n" +
+                "        \"trimmedText\": \"Harddisk\",\n" +
+                "        \"internal\": true,\n" +
+                "        \"timestamp\": 1,\n" +
+                "        \"dirty\": true,\n" +
+                "        \"type\": {\n" +
+                "            \"name\": \"Visa\",\n" +
+                "            \"id\": 23\n" +
+                "        },\n" +
+                "        \"tag\": {\n" +
+                "            \"name\": \"Annet\",\n" +
+                "            \"id\": 26\n" +
+                "        },\n" +
+                "        \"user\": {\n" +
+                "            \"deviceId\": \"some_random_id\",\n" +
+                "            \"id\": 23\n" +
+                "        },\n" +
+                "        \"id\": " + existing.id + "\n" +
+                "    }\n" +
+                "]";
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+            put("json", json);
+        }};
+        Response response = POST("/transactions/save", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        Transaction t = Transaction.find("order by accountingDate desc").first();
+        Transaction t = Transaction.findById(existing.id);
         assertNotNull(t);
         assertNotNull(t.tag);
-        assertEquals("Bil", t.tag.name);
+        assertEquals("Annet", t.tag.name);
     }
 
     @Test
     public void testRouteSaveExistingNotDirty() {
-        final String json = "[{\"_id\":0,\"accountingDate\":\"2009-04-15 00:00:00\"," +
-                "\"fixedDate\":\"2009-04-15 00:00:00\",\"amountIn\":0.0,\"amountOut\":1272.56," +
-                "\"text\":\"456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)\",\"archiveRef\":\"50001685147\"," +
-                "\"internal\":false,\"timestamp\":1239746400000,\"dirty\":false,\"type\":{\"name\":\"Visa\",\"id\":1}," +
-                "\"tag\":{\"name\":\"Dagligvarer\",\"id\":4},\"id\":7}]";
-        Response response = POST("/transactions", "application/json", json);
+        Transaction existing = Transaction.find("_id", 3).first();
+        final String json = "[\n" +
+                "    {\n" +
+                "        \"_id\": 3,\n" +
+                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amountIn\": 0.0,\n" +
+                "        \"amountOut\": 300.0,\n" +
+                "        \"text\": \"Harddisk\",\n" +
+                "        \"trimmedText\": \"Harddisk\",\n" +
+                "        \"internal\": true,\n" +
+                "        \"timestamp\": 1,\n" +
+                "        \"dirty\": false,\n" +
+                "        \"type\": {\n" +
+                "            \"name\": \"Visa\",\n" +
+                "            \"id\": 23\n" +
+                "        },\n" +
+                "        \"tag\": {\n" +
+                "            \"name\": \"Annet\",\n" +
+                "            \"id\": 26\n" +
+                "        },\n" +
+                "        \"user\": {\n" +
+                "            \"deviceId\": \"some_random_id\",\n" +
+                "            \"id\": 23\n" +
+                "        },\n" +
+                "        \"id\": " + existing.id + "\n" +
+                "    }\n" +
+                "]";
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("registrationId", "some_random_id");
+            put("json", json);
+        }};
+        Response response = POST("/transactions/save", params);
         assertIsOk(response);
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        Transaction t = Transaction.find("order by accountingDate desc").first();
+        Transaction t = Transaction.findById(existing.id);
         assertNotNull(t);
         assertNotNull(t.tag);
         assertEquals("Datautstyr", t.tag.name);

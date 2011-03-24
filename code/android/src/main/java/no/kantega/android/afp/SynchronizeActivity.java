@@ -16,11 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
-import no.kantega.android.afp.utils.FmtUtil;
-import no.kantega.android.afp.utils.GsonUtil;
-import no.kantega.android.afp.utils.HttpUtil;
+import no.kantega.android.afp.utils.*;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -28,10 +30,10 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final String PREFS_NAME = "SynchronizePreferences";
     private static final String PROPERTIES_FILE = "url.properties";
     private static final int PROGRESS_DIALOG = 0;
     private Transactions db;
+    private SharedPreferences preferences;
     private ProgressDialog progressDialog;
     private TextView lastSynchronized;
     private TextView transactionCount;
@@ -47,7 +49,7 @@ public class SynchronizeActivity extends Activity {
      * Called when the activity is starting. Attaches click listeners and
      * creates a database handle.
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Saved instance
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class SynchronizeActivity extends Activity {
         tagCount = (TextView) findViewById(R.id.internal_tag_count);
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
         untaggedCount = (TextView) findViewById(R.id.untagged_count);
+        preferences = Prefs.get(getApplicationContext());
     }
 
     /**
@@ -96,11 +99,10 @@ public class SynchronizeActivity extends Activity {
         }).start();
     }
 
-    private Runnable populate = new Runnable() {
+    private final Runnable populate = new Runnable() {
         @Override
         public void run() {
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            lastSynchronized.setText(settings.getString("syncDate",
+            lastSynchronized.setText(preferences.getString("syncDate",
                     getResources().getString(R.string.not_synchronized)));
             transactionCount.setText(String.valueOf(dbTransactionCount));
             tagCount.setText(String.valueOf(dbTagCount));
@@ -113,8 +115,7 @@ public class SynchronizeActivity extends Activity {
      * Save stats to internal preferences
      */
     private void saveStats() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString("syncDate", FmtUtil.dateToString("yyyy-MM-dd HH:mm:ss",
                 new Date()));
         editor.commit();
@@ -123,7 +124,7 @@ public class SynchronizeActivity extends Activity {
     /**
      * Called when a dialog is created. Configures the progress dialog.
      *
-     * @param id
+     * @param id Dialog ID
      * @return The configured dialog
      */
     @Override
@@ -147,8 +148,8 @@ public class SynchronizeActivity extends Activity {
     /**
      * Called when preparing the dialog.
      *
-     * @param id
-     * @param dialog
+     * @param id     Dialog ID
+     * @param dialog The Dialog
      */
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
@@ -168,11 +169,9 @@ public class SynchronizeActivity extends Activity {
         try {
             final Properties properties = new Properties();
             properties.load(getAssets().open(PROPERTIES_FILE));
-
             final Object urlNew = properties.get("newTransactions");
             final Object urlAll = properties.get("allTransactions");
             final Object urlSave = properties.get("saveTransactions");
-
             if (urlNew != null && urlAll != null && urlSave != null) {
                 new TransactionsTask().execute(urlNew.toString(), urlAll.toString(), urlSave.toString());
             } else {
@@ -215,14 +214,16 @@ public class SynchronizeActivity extends Activity {
         /**
          * Post "dirty" transactions to an URL
          *
-         * @param url
+         * @param url Save URL
          */
         private void putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
             if (!dirtyTransactions.isEmpty()) {
                 final String json = GsonUtil.makeJSON(dirtyTransactions);
-                final List<Transaction> updatedTransactions = GsonUtil.parseTransactions(
-                        HttpUtil.postJSON(url, json));
+                final List<Transaction> updatedTransactions = GsonUtil.parseTransactionsFromStream(
+                        post(url, new ArrayList<NameValuePair>() {{
+                            add(new BasicNameValuePair("json", json));
+                        }}));
                 if (updatedTransactions != null && !updatedTransactions.isEmpty()) {
                     progressDialog.setMax(updatedTransactions.size());
                     int i = 0;
@@ -238,8 +239,8 @@ public class SynchronizeActivity extends Activity {
         /**
          * Retrieve transactions from server
          *
-         * @param urlNew
-         * @param urlAll
+         * @param urlNew URL for new transactions
+         * @param urlAll URL for all transactions
          */
         private void getTransactions(final String urlNew, final String urlAll) {
             final Transaction latest = db.getLatestExternal();
@@ -251,7 +252,7 @@ public class SynchronizeActivity extends Activity {
             }
             final List<Transaction> transactions =
                     GsonUtil.parseTransactionsFromStream(
-                            HttpUtil.getBodyAsStream(url));
+                            post(url, new ArrayList<NameValuePair>()));
             if (transactions != null && !transactions.isEmpty()) {
                 progressDialog.setMax(transactions.size());
                 int i = 0;
@@ -277,6 +278,12 @@ public class SynchronizeActivity extends Activity {
             saveStats();
             onResume();
         }
+    }
+
+    private InputStream post(final String url, final List<NameValuePair> values) {
+        values.add(new BasicNameValuePair("registrationId", preferences.getString(
+                Register.REGISTRATION_ID_KEY, null)));
+        return HttpUtil.post(url, values);
     }
 
     @Override

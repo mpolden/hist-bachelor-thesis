@@ -20,12 +20,10 @@ public class Transactions {
 
     private static final String TAG = Transactions.class.getSimpleName();
     private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final int INSERT_SUCCESS = 1;
-    private static final int UPDATE_SUCCESS = 1;
-    private DatabaseHelper helper;
-    private Dao<Transaction, Integer> transactionDao;
-    private Dao<TransactionTag, Integer> transactionTagDao;
-    private Dao<TransactionType, Integer> transactionTypeDao;
+    private final DatabaseHelper helper;
+    private final Dao<Transaction, Integer> transactionDao;
+    private final Dao<TransactionTag, Integer> transactionTagDao;
+    private final Dao<TransactionType, Integer> transactionTypeDao;
 
     public Transactions(Context context) {
         this.helper = new DatabaseHelper(context);
@@ -44,7 +42,7 @@ public class Transactions {
     /**
      * Add a new transaction tag
      *
-     * @param tag
+     * @param tag Transaction tag to save
      * @return The newly added tag or the existing one
      */
     private TransactionTag insertIgnore(TransactionTag tag) {
@@ -71,7 +69,7 @@ public class Transactions {
     /**
      * Add a new transaction type
      *
-     * @param type
+     * @param type Transaction type to save
      * @return The newly added tag or the existing one
      */
     private TransactionType insertIgnore(TransactionType type) {
@@ -98,51 +96,46 @@ public class Transactions {
     /**
      * Add a new transaction
      *
-     * @param t
-     * @return True on success
+     * @param t Transaction to save
      */
-    public boolean add(Transaction t) {
+    public void add(Transaction t) {
         try {
             t.setTag(insertIgnore(t.getTag()));
             t.setType(insertIgnore(t.getType()));
-            return transactionDao.create(t) == INSERT_SUCCESS;
+            transactionDao.create(t);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
         }
-        return false;
     }
 
     /**
      * Add a new tag
      *
-     * @param t
-     * @return True on success
+     * @param t Transaction tag to save
      */
-    public boolean add(TransactionTag t) {
-        return insertIgnore(t) != null;
+    public void add(TransactionTag t) {
+        insertIgnore(t);
     }
 
     /**
      * Update a transaction
      *
-     * @param t
-     * @return True if the update was successful
+     * @param t Transaction tag to save
      */
-    public boolean update(Transaction t) {
+    public void update(Transaction t) {
         try {
             t.setTag(insertIgnore(t.getTag()));
             t.setType(insertIgnore(t.getType()));
-            return transactionDao.update(t) == UPDATE_SUCCESS;
+            transactionDao.update(t);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to update transaction", e);
         }
-        return false;
     }
 
     /**
      * Retrieve a list of transactions ordered descending by date
      *
-     * @param limit
+     * @param limit Max number of transactions to retrieve
      * @return List of transactions
      */
     public List<Transaction> get(final int limit) {
@@ -155,7 +148,7 @@ public class Transactions {
     /**
      * Get transaction by id
      *
-     * @param id
+     * @param id ID of transaction
      * @return The transaction or null if not found
      */
     public Transaction getById(final int id) {
@@ -223,7 +216,7 @@ public class Transactions {
     /**
      * Retrieve a list of transactions using the given query builder
      *
-     * @param queryBuilder
+     * @param queryBuilder Query builder
      * @return List of transactions
      */
     private List<Transaction> get(QueryBuilder<Transaction, Integer> queryBuilder) {
@@ -277,7 +270,7 @@ public class Transactions {
     /**
      * Retrieve number of dirty (unsynced) transactions
      *
-     * @return
+     * @return Number of unsynced transactions
      */
     public int getDirtyCount() {
         try {
@@ -321,7 +314,7 @@ public class Transactions {
     /**
      * Retrieve a list of aggregated tags sorted by sum of all transactions in that tag
      *
-     * @param limit
+     * @param limit Max number of aggregated tags to retrieve
      * @return List of aggregated tags
      */
     public List<AggregatedTag> getAggregatedTags(final int limit) {
@@ -415,7 +408,6 @@ public class Transactions {
     /**
      * Empty all tables
      */
-    @Deprecated
     public void emptyTables() {
         try {
             transactionDao.queryRaw("DELETE FROM transactions");
