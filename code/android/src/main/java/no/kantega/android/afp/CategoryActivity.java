@@ -19,6 +19,8 @@ public class CategoryActivity extends Activity {
     private ImageView category_icon;
     private ArrayList<Integer> iconIds;
 
+    private int currentIconId;
+
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -26,6 +28,7 @@ public class CategoryActivity extends Activity {
             if (name != null && !name.trim().equals("")) {
                 TransactionTag ttag = new TransactionTag();
                 ttag.setName(name);
+                ttag.setImageId(currentIconId);
                 db.add(ttag);
                 finish();
             } else {
@@ -47,7 +50,6 @@ public class CategoryActivity extends Activity {
 
     private void setupIconList() {
         Field[] drawables = R.drawable.class.getFields();
-        Toast.makeText(this, drawables[0].getName(), Toast.LENGTH_LONG).show();
         iconIds = new ArrayList<Integer>();
         int resID = 0;
 
@@ -70,11 +72,13 @@ public class CategoryActivity extends Activity {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
         category_icon.setImageResource(iconIds.get(0));
+        currentIconId = iconIds.get(0);
         GridView gridView = (GridView) findViewById(R.id.gridview_icons);
         gridView.setAdapter(new IconAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 category_icon.setImageResource(iconIds.get(position));
+                currentIconId = iconIds.get(position);
             }
         });
     }

@@ -42,7 +42,7 @@ public class EditTransactionActivity extends Activity {
         public void onClick(View v) {
             if (t.isInternal()) {
                 boolean editTransactionOk = true;
-                TransactionTag ttag = new TransactionTag();
+                TransactionTag ttag = t.getTag();
                 selectedTransactionTag = category.getSelectedItem().toString();
                 ttag.setName(selectedTransactionTag);
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
@@ -110,11 +110,33 @@ public class EditTransactionActivity extends Activity {
 
     private void updateSpinnerPosition(String tag) {
         int spinnerPosition = 0;
+        if(selectedTransactionTag != null) {
+            if(selectedTransactionTag.equals("Not tagged")) {
+                if(tag != null) {
+                    spinnerPosition = adapter.getPosition(tag);
+                    selectedTransactionTag = tag;
+                } else {
+                    spinnerPosition = adapter.getPosition("Not tagged");
+                }
+            } else {
+                spinnerPosition = adapter.getPosition(selectedTransactionTag);
+            }
+        } else {
+            if(tag != null) {
+                spinnerPosition = adapter.getPosition(tag);
+                selectedTransactionTag = tag;
+            } else {
+                spinnerPosition = adapter.getPosition("Not tagged");
+            }
+        }
+
         if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             spinnerPosition = adapter.getPosition(selectedTransactionTag);
-        } else if (tag != null) {
+        } else if (selectedTransactionTag == null || selectedTransactionTag.equals("Not tagged") && tag != null) {
             spinnerPosition = adapter.getPosition(tag);
             selectedTransactionTag = tag;
+        } else {
+            spinnerPosition = adapter.getPosition("Not tagged");
         }
         category.setSelection(spinnerPosition);
     }
@@ -147,6 +169,8 @@ public class EditTransactionActivity extends Activity {
         selectedTransactionTag = t.getTag().getName();
         if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             category.setSelection(adapter.getPosition(selectedTransactionTag));
+        } else {
+            category.setSelection(adapter.getPosition("Not tagged"));
         }
 
     }
@@ -200,8 +224,10 @@ public class EditTransactionActivity extends Activity {
 
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
-            if (selectedTransactionTag != null && selectedTransactionTag != "Not tagged") {
+            if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
                 selectedTransactionTag = parent.getItemAtPosition(pos).toString();
+            } else {
+                selectedTransactionTag = null;
             }
         }
 
