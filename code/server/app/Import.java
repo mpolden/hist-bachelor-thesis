@@ -74,6 +74,7 @@ public class Import extends Job {
             t.amountIn = in;
             t.tag = ModelHelper.insertIgnoreTag(s[7]);
             t.tag.imageId = Integer.parseInt(s[8], 16);
+            t.tag.save();
             t.internal = false;
             t.dirty = false;
             t.timestamp = t.accountingDate.getTime();
