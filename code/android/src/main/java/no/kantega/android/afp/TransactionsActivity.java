@@ -126,7 +126,10 @@ public class TransactionsActivity extends ListActivity {
 
     private Drawable getImageId(Cursor cursor) {
         final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
-        return getResources().getDrawable(imageId);
+        if (imageId > 0) {
+            return getResources().getDrawable(imageId);
+        }
+        return null;
     }
 
     @Override
