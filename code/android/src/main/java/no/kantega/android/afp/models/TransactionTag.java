@@ -12,6 +12,8 @@ public class TransactionTag implements Serializable {
     private int id;
     @DatabaseField(unique = true)
     private String name;
+    @DatabaseField
+    private int imageId;
 
     public TransactionTag() {
     }
@@ -36,15 +38,21 @@ public class TransactionTag implements Serializable {
         this.name = name;
     }
 
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TransactionTag)) return false;
-
         TransactionTag that = (TransactionTag) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
         return true;
     }
 
