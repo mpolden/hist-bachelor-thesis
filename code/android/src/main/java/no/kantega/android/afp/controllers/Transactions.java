@@ -244,7 +244,8 @@ public class Transactions {
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
-                        "transactiontags.name AS tag"}, null, null,
+                        "transactiontags.name AS tag",
+                        "transactiontags.imageId as imageId"}, null, null,
                 null, null, "accountingdate DESC, timestamp DESC", null);
         return cursor;
     }
