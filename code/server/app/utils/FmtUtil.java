@@ -9,7 +9,7 @@ public class FmtUtil {
     /**
      * Trim useless data from the given transaction text
      *
-     * @param text
+     * @param text Text to trim
      * @return Trimmed text
      */
     public static String trimTransactionText(String text) {
@@ -17,6 +17,12 @@ public class FmtUtil {
         return text == null ? "" : text.replaceAll(pattern, "");
     }
 
+    /**
+     * URL encode a map of params
+     *
+     * @param params Map of params which should be encoded
+     * @return Map with values URL-encoded
+     */
     public static String encode(Map<String, String> params) {
         final StringBuilder body = new StringBuilder();
         boolean first = true;
