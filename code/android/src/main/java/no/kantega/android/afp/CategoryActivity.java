@@ -9,21 +9,16 @@ import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.TransactionTag;
 
-import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class CategoryActivity extends Activity {
 
     private Transactions db;
     private EditText category_name;
     private ImageView category_icon;
-    private Integer[] iconIds = {
-            R.drawable.tag_chicken, R.drawable.tag_tshirt,
-            R.drawable.tag_forkknife, R.drawable.tag_fuel,
-            R.drawable.tag_winebottle, R.drawable.tag_imac,
-            R.drawable.shoebox, R.drawable.tag_user,
-            R.drawable.tag_gift, R.drawable.house,
-            R.drawable.tag_suitcase};
-    private final String[] icon_list = {"Chicken", "Shirt", "Fork/knife", "Fuel", "Winebottle", "iMac", "Shoebox", "User"};
+    private ArrayList<Integer> iconIds;
+
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -46,23 +41,40 @@ public class CategoryActivity extends Activity {
         this.db = new Transactions(getApplicationContext());
         Button saveButton = (Button) findViewById(R.id.button_newcategory_save);
         saveButton.setOnClickListener(saveCategoryButtonListener);
+        setupIconList();
         setupViews();
-        try {
-            String[] icons = getAssets().list("tags");
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    }
+
+    private void setupIconList() {
+        Field[] drawables = R.drawable.class.getFields();
+        Toast.makeText(this, drawables[0].getName(), Toast.LENGTH_LONG).show();
+        iconIds = new ArrayList<Integer>();
+        int resID = 0;
+
+        for (int i = 0; i <= drawables.length; i++) {
+            try {
+                String name = drawables[i].getName();
+                if (name.startsWith("tag_")) {
+                    resID = getResources().getIdentifier(name, "drawable", getPackageName());
+                    if (resID != 0) {
+                        iconIds.add(resID);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
-        category_icon.setImageResource(iconIds[0]);
+        category_icon.setImageResource(iconIds.get(0));
         GridView gridView = (GridView) findViewById(R.id.gridview_icons);
         gridView.setAdapter(new IconAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                category_icon.setImageResource(iconIds[position]);
+                category_icon.setImageResource(iconIds.get(position));
             }
         });
     }
@@ -76,7 +88,7 @@ public class CategoryActivity extends Activity {
         }
 
         public int getCount() {
-            return iconIds.length;
+            return iconIds.size();
         }
 
         public Object getItem(int position) {
@@ -96,35 +108,11 @@ public class CategoryActivity extends Activity {
             } else {
                 imageView = (ImageView) convertView;
             }
-            imageView.setImageResource(iconIds[position]);
+            imageView.setImageResource(iconIds.get(position));
             return imageView;
         }
     }
-
-    private int getImageIdByTag(String tag) {
-        if ("Suitcase".equals(tag)) {
-            return R.drawable.tag_suitcase;
-        } else if ("Shirt".equals(tag)) {
-            return R.drawable.tag_tshirt;
-        } else if ("Fork/knife".equals(tag)) {
-            return R.drawable.tag_forkknife;
-        } else if ("Chicken".equals(tag)) {
-            return R.drawable.tag_chicken;
-        } else if ("Fuel".equals(tag)) {
-            return R.drawable.tag_fuel;
-        } else if ("Winebottle".equals(tag)) {
-            return R.drawable.tag_winebottle;
-        } else if ("iMac".equals(tag)) {
-            return R.drawable.tag_imac;
-        } else if ("Shoebox".equals(tag)) {
-            return R.drawable.shoebox;
-        } else if ("User".equals(tag)) {
-            return R.drawable.tag_user;
-        } else {
-            return -1;
-        }
-    }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
