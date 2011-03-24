@@ -244,14 +244,15 @@ public class SynchronizeActivity extends Activity {
                 }
                 final List<Transaction> updated = GsonUtil.
                         parseTransactions(in);
-                if (updated != null && !updated.isEmpty()) {
-                    progressDialog.setMax(updated.size());
-                    int i = 0;
-                    for (Transaction t : updated) {
-                        t.setDirty(false);
-                        db.update(t);
-                        publishProgress(++i);
-                    }
+                if (updated == null) {
+                    return false;
+                }
+                progressDialog.setMax(updated.size());
+                int i = 0;
+                for (Transaction t : updated) {
+                    t.setDirty(false);
+                    db.update(t);
+                    publishProgress(++i);
                 }
             }
             return true;
@@ -277,13 +278,14 @@ public class SynchronizeActivity extends Activity {
             }
             final List<Transaction> transactions = GsonUtil.
                     parseTransactions(in);
-            if (transactions != null && !transactions.isEmpty()) {
-                progressDialog.setMax(transactions.size());
-                int i = 0;
-                for (Transaction t : transactions) {
-                    db.add(t);
-                    publishProgress(++i);
-                }
+            if (transactions == null) {
+                return false;
+            }
+            progressDialog.setMax(transactions.size());
+            int i = 0;
+            for (Transaction t : transactions) {
+                db.add(t);
+                publishProgress(++i);
             }
             return true;
         }

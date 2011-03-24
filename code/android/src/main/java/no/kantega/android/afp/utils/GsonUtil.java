@@ -63,10 +63,13 @@ public class GsonUtil {
             }
             reader.endArray();
             reader.close();
+            return transactions;
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "UnsupportedEncodingException", e);
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
+        } catch (JsonSyntaxException e) {
+            Log.e(TAG, "JsonSyntaxException", e);
         } finally {
             try {
                 in.close();
@@ -74,7 +77,7 @@ public class GsonUtil {
                 Log.e(TAG, "IOException", e);
             }
         }
-        return transactions;
+        return null;
     }
 
     /**
@@ -86,7 +89,14 @@ public class GsonUtil {
     public static List<Transaction> parseTransactions(final String json) {
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
-        return gson.fromJson(json, listType);
+        try {
+            return gson.fromJson(json, listType);
+        } catch (JsonSyntaxException e) {
+            Log.e(TAG, "JsonSyntaxException", e);
+        } catch (JsonParseException e) {
+            Log.e(TAG, "JsonParseException", e);
+        }
+        return null;
     }
 
     /**
