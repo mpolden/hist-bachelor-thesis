@@ -60,7 +60,6 @@ public class C2DM extends Controller {
             logger.log(Level.ERROR, "Failed to send C2DM message: " +
                     response.getString());
         }
-        renderJSON(GsonUtil.makeJSON(updated));
     }
 }
 
