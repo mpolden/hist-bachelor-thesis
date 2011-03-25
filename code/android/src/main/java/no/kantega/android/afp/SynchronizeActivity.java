@@ -22,7 +22,6 @@ import no.kantega.android.afp.utils.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +31,6 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final String PROPERTIES_FILE = "url.properties";
     private static final int PROGRESS_DIALOG = 0;
     private Transactions db;
     private SharedPreferences preferences;
@@ -185,20 +183,16 @@ public class SynchronizeActivity extends Activity {
      * database
      */
     private void synchronizeDatabase() {
-        try {
-            final Properties properties = new Properties();
-            properties.load(getAssets().open(PROPERTIES_FILE));
-            final Object urlNew = properties.get("newTransactions");
-            final Object urlAll = properties.get("allTransactions");
-            final Object urlSave = properties.get("saveTransactions");
-            if (urlNew != null && urlAll != null && urlSave != null) {
-                new TransactionsTask().execute(urlNew.toString(),
-                        urlAll.toString(), urlSave.toString());
-            } else {
-                Log.e(TAG, "Missing one or more entries in url.properties");
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Could not read properties file", e);
+        final Properties properties = Prefs.getProperties(
+                getApplicationContext());
+        final Object urlNew = properties.get("newTransactions");
+        final Object urlAll = properties.get("allTransactions");
+        final Object urlSave = properties.get("saveTransactions");
+        if (urlNew != null && urlAll != null && urlSave != null) {
+            new TransactionsTask().execute(urlNew.toString(),
+                    urlAll.toString(), urlSave.toString());
+        } else {
+            Log.e(TAG, "Missing one or more entries in properties file");
         }
     }
 
