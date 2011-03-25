@@ -27,13 +27,13 @@ public class Transaction implements Serializable {
     @DatabaseField(foreign = true, columnName = "tag_id",
             foreignAutoRefresh = true)
     private TransactionTag tag;
-    @DatabaseField
+    @DatabaseField(index = true)
     private boolean internal;
-    @DatabaseField
+    @DatabaseField(index = true)
     private long timestamp;
-    @DatabaseField
+    @DatabaseField(index = true)
     private boolean dirty;
-    @DatabaseField
+    @DatabaseField(index = true)
     private boolean changed;
 
     public Transaction() {
