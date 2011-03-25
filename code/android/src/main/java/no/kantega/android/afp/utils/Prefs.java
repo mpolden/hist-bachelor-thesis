@@ -20,6 +20,7 @@ public class Prefs {
         final Properties properties = new Properties();
         try {
             properties.load(context.getAssets().open(PROPERTIES_FILE));
+            return properties;
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
         }
