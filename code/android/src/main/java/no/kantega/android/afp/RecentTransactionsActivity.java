@@ -1,61 +1,64 @@
 package no.kantega.android.afp;
 
-import android.app.ListActivity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
-import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.GsonUtil;
+import no.kantega.android.afp.utils.HttpUtil;
+import no.kantega.android.afp.utils.Prefs;
+import no.kantega.android.afp.utils.Register;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.util.Date;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RecentTransactionsActivity extends ListActivity {
+public class RecentTransactionsActivity extends TransactionsActivity {
 
-    private static final String TAG = OverviewActivity.class.getSimpleName();
-    private Transactions db;
-    private RecentTransactionsAdapter adapter;
+    private static final String TAG = RecentTransactionsActivity.class.
+            getSimpleName();
+    private static final int PROGRESS_DIALOG = 0;
+    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
+    private SharedPreferences preferences;
     private Cursor cursor;
+    private Transactions db;
+    private TransactionsAdapter adapter;
+    private long latestTimestamp;
+    private String url;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursor();
-        this.adapter = new RecentTransactionsAdapter(this, cursor);
-        setListAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
-                cursor = db.getCursor();
-                runOnUiThread(handler);
-            }
-        }).start();
-    }
-
-    private Runnable handler = new Runnable() {
-        @Override
-        public void run() {
-            // Change to a fresh cursor, the old one will be automatically closed
-            adapter.changeCursor(cursor);
+        this.preferences = Prefs.get(getApplicationContext());
+        this.url = Prefs.getProperties(
+                getApplicationContext()).get("newTransactions").toString();
+        this.alertDialog = createAlertDialog();
+        if (this.url == null) {
+            Log.e(TAG, "Missing property in properties file");
         }
-    };
+        this.latestTimestamp = db.getLatestExternal().getTimestamp();
+        this.cursor = db.getCursorAfterTimestamp(latestTimestamp);
+        this.adapter = new TransactionsAdapter(this, cursor);
+        setListAdapter(adapter);
+        showDialog(PROGRESS_DIALOG);
+    }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -71,77 +74,138 @@ public class RecentTransactionsActivity extends ListActivity {
         }
     }
 
-    private class RecentTransactionsAdapter extends CursorAdapter {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
+                cursor = db.getCursorAfterTimestamp(latestTimestamp);
+                runOnUiThread(adapterHandler);
+            }
+        }).start();
+    }
 
-        public RecentTransactionsAdapter(Context context, Cursor c) {
-            super(context, c);
-        }
-
+    private final Runnable adapterHandler = new Runnable() {
         @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            final LayoutInflater inflater = LayoutInflater.from(context);
-            final View view = inflater.inflate(R.layout.transactionrow, parent, false);
-            populateView(view, getCursor());
-            return view;
+        public void run() {
+            // Change to a fresh cursor, the old one will be automatically closed
+            Log.d(TAG, "Changed to a new cursor");
+            adapter.changeCursor(cursor);
         }
+    };
 
-        @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            populateView(view, getCursor());
-        }
+    private AlertDialog createAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.server_unavailable)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.dismiss();
+                            }
+                        });
+        return builder.create();
+    }
 
-        private void populateView(View view, Cursor cursor) {
-            String date = cursor.getString(cursor.getColumnIndex("accountingDate"));
-            String text = cursor.getString(cursor.getColumnIndex("text"));
-            String tag = cursor.getString(cursor.getColumnIndex("tag"));
-            String amount = cursor.getString(cursor.getColumnIndex("amountOut"));
-            ImageView image = (ImageView) view.findViewById(R.id.tag_icon);
-            TextView tv_date = (TextView) view.findViewById(R.id.trow_tv_date);
-            TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);
-            TextView tv_tag = (TextView) view.findViewById(R.id.trow_tv_category);
-            TextView tv_amount = (TextView) view.findViewById(R.id.trow_tv_amount);
-            tv_date.setText(null);
-            tv_text.setText(null);
-            tv_tag.setText(null);
-            image.setImageDrawable(null);
-            tv_amount.setText(null);
-            if (tv_date != null) {
-                Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
-                tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case PROGRESS_DIALOG: {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage(getResources().getString(
+                        R.string.wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.
+                        STYLE_HORIZONTAL);
+                return progressDialog;
             }
-            if (text != null) {
-                tv_text.setText(FmtUtil.trimTransactionText(text));
-            }
-            if (tag != null) {
-                tv_tag.setText(tag);
-                image.setImageDrawable(getImageIdByTag(tag));
-            }
-            if (amount != null) {
-                tv_amount.setText(amount);
+            default: {
+                return null;
             }
         }
     }
 
-    private Drawable getImageIdByTag(String tag) {
-        if ("Ferie".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_suitcase);
-        } else if ("Klær".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_tshirt);
-        } else if ("Restaurant".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_forkandknife);
-        } else if ("Dagligvarer".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_chicken);
-        } else if ("Bil".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_fuel);
-        } else if ("Vin".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_winebottle);
-        } else if ("Datautstyr".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_imac);
-        } else if ("Overtidsmiddag".equals(tag)) {
-            return getResources().getDrawable(R.drawable.tag_forkandknife);
-        } else {
-            return getResources().getDrawable(R.drawable.tag_user);
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case PROGRESS_DIALOG: {
+                progressDialog.setProgress(0);
+                new TransactionsTask().execute(url);
+            }
         }
+    }
+
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.setProgress(msg.arg1);
+        }
+    };
+
+    private class TransactionsTask
+            extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... urls) {
+            return getTransactions(urls[0]);
+        }
+
+        /**
+         * Retrieve transactions from server
+         *
+         * @param url URL for new transactions
+         */
+        private boolean getTransactions(final String url) {
+            final InputStream in = post(String.format(url, latestTimestamp),
+                    new ArrayList<NameValuePair>());
+            if (in == null) {
+                return false;
+            }
+            final List<Transaction> transactions = GsonUtil.
+                    parseTransactions(in);
+            if (transactions == null) {
+                return false;
+            }
+            progressDialog.setMax(transactions.size());
+            int i = 0;
+            for (Transaction t : transactions) {
+                db.add(t);
+                publishProgress(++i);
+            }
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            final Message msg = handler.obtainMessage();
+            msg.arg1 = values[0];
+            handler.sendMessage(msg);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            progressDialog.setProgress(0);
+            progressDialog.setMax(100);
+            progressDialog.dismiss();
+            if (!success) {
+                alertDialog.show();
+            }
+            onResume();
+        }
+    }
+
+    private InputStream post(String url, List<NameValuePair> values) {
+        values.add(new BasicNameValuePair("registrationId",
+                preferences.getString(Register.REGISTRATION_ID_KEY, null)));
+        return HttpUtil.post(url, values);
     }
 
     @Override

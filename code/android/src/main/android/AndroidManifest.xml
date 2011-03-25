@@ -38,6 +38,7 @@
         <activity android:name=".AddTransactionActivity"/>
         <activity android:name=".EditTransactionActivity"/>
         <activity android:name=".CategoryActivity"/>
+        <activity android:name=".RecentTransactionsActivity"/>
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its
