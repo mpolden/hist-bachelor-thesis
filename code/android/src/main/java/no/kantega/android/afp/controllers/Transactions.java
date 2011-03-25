@@ -234,9 +234,16 @@ public class Transactions {
     /**
      * Get a cursor for transactions
      *
+     * @param onlyExternal Only fetch external transactions
      * @return Cursor
      */
-    public Cursor getCursor() {
+    public Cursor getCursor(boolean onlyExternal) {
+        String selection = null;
+        String[] selectionArgs = null;
+        if (onlyExternal) {
+            selection = "internal = ?";
+            selectionArgs = new String[]{"false"};
+        }
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontypes " +
@@ -245,8 +252,27 @@ public class Transactions {
                         "ON transactiontags.id = transactions.tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId"}, null, null,
-                null, null, "accountingdate DESC, timestamp DESC", null);
+                        "transactiontags.imageId as imageId"}, selection,
+                selectionArgs, null, null,
+                "accountingdate DESC, timestamp DESC", null);
+        return cursor;
+    }
+
+    public Cursor getCursorAfterTimestamp(long timestamp) {
+        String selection = "internal = ? AND timestamp > ?";
+        String[] selectionArgs = new String[]{"false",
+                String.valueOf(timestamp)};
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "transactions " +
+                        "LEFT JOIN transactiontypes " +
+                        "ON transactiontypes.id = transactions.type_id " +
+                        "LEFT JOIN transactiontags " +
+                        "ON transactiontags.id = transactions.tag_id"
+                , new String[]{"*", "transactiontypes.name AS type",
+                        "transactiontags.name AS tag",
+                        "transactiontags.imageId as imageId"}, selection,
+                selectionArgs, null, null,
+                "accountingdate DESC, timestamp DESC", null);
         return cursor;
     }
 
@@ -380,11 +406,14 @@ public class Transactions {
                 rawResults.close();
                 final int days =
                         (int) ((stop.getTime() - start.getTime()) / 1000) / 86400;
-                rawResults = transactionDao.
-                        queryRaw("SELECT SUM(amountOut) FROM transactions LIMIT 1");
-                final double avg = Double.parseDouble(rawResults.getResults().get(0)[0]) / days;
-                rawResults.close();
-                return avg;
+                if (days > 0) {
+                    rawResults = transactionDao.
+                            queryRaw("SELECT SUM(amountOut) FROM transactions LIMIT 1");
+                    final double avg = Double.parseDouble(
+                            rawResults.getResults().get(0)[0]) / days;
+                    rawResults.close();
+                }
+                return 0;
             }
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve average consumption");
