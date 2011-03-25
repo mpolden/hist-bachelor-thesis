@@ -137,7 +137,7 @@ Testing C2DM messages
 First you need your registrationId/deviceId. Then you need a date in regular
 format as well as unixtime. Use the following command:
 
-    date "+%F %T %s"
+    date "+%F %T %s000"
 
 Then use curl to POST a new transaction in JSON, with the following command:
 
@@ -151,7 +151,7 @@ Then use curl to POST a new transaction in JSON, with the following command:
             "trimmedText": "EUROPARK AS",
             "internal": false,
             "timestamp": <timestamp>,
-            "dirty": false,
+            "dirty": true,
             "type": {
                 "name": "Visa",
                 "id": 2
