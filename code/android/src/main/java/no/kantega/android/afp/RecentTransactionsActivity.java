@@ -46,15 +46,6 @@ public class RecentTransactionsActivity extends TransactionsActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.db = new Transactions(getApplicationContext());
-        this.preferences = Prefs.get(getApplicationContext());
-        this.url = Prefs.getProperties(
-                getApplicationContext()).get("newTransactions").toString();
-        this.alertDialog = createAlertDialog();
-        if (this.url == null) {
-            Log.e(TAG, "Missing property in properties file");
-        }
-        this.latestTimestamp = db.getLatestExternal().getTimestamp();
-        this.cursor = db.getCursorAfterTimestamp(latestTimestamp);
         this.adapter = new TransactionsAdapter(this, cursor);
         setListAdapter(adapter);
         showDialog(PROGRESS_DIALOG);
@@ -80,7 +71,9 @@ public class RecentTransactionsActivity extends TransactionsActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
+                if (latestTimestamp == 0) {
+                    latestTimestamp = getLatestExternalTimestamp();
+                }
                 cursor = db.getCursorAfterTimestamp(latestTimestamp);
                 runOnUiThread(adapterHandler);
             }
@@ -133,6 +126,10 @@ public class RecentTransactionsActivity extends TransactionsActivity {
         switch (id) {
             case PROGRESS_DIALOG: {
                 progressDialog.setProgress(0);
+                if (url == null) {
+                    url = Prefs.getProperties(getApplicationContext()).
+                            getProperty("newTransactions").toString();
+                }
                 new TransactionsTask().execute(url);
             }
         }
@@ -164,6 +161,9 @@ public class RecentTransactionsActivity extends TransactionsActivity {
          * @param url URL for new transactions
          */
         private boolean getTransactions(final String url) {
+            if (latestTimestamp == 0) {
+                latestTimestamp = getLatestExternalTimestamp();
+            }
             final InputStream in = post(String.format(url, latestTimestamp),
                     new ArrayList<NameValuePair>());
             if (in == null) {
@@ -196,6 +196,9 @@ public class RecentTransactionsActivity extends TransactionsActivity {
             progressDialog.setMax(100);
             progressDialog.dismiss();
             if (!success) {
+                if (alertDialog == null) {
+                    alertDialog = createAlertDialog();
+                }
                 alertDialog.show();
             }
             onResume();
@@ -203,9 +206,17 @@ public class RecentTransactionsActivity extends TransactionsActivity {
     }
 
     private InputStream post(String url, List<NameValuePair> values) {
+        if (preferences == null) {
+            preferences = Prefs.get(getApplicationContext());
+        }
         values.add(new BasicNameValuePair("registrationId",
                 preferences.getString(Register.REGISTRATION_ID_KEY, null)));
         return HttpUtil.post(url, values);
+    }
+
+    private long getLatestExternalTimestamp() {
+        final Transaction transaction = db.getLatestExternal();
+        return transaction != null ? transaction.getTimestamp() : 0;
     }
 
     @Override
