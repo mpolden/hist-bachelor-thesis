@@ -22,6 +22,11 @@ public class Transactions extends Controller {
                 find("user.deviceId = ? " +
                         "order by accountingDate desc, timestamp desc",
                         registrationId).fetch();
+        if (transactions.isEmpty()) {
+            logger.log(Level.WARN,
+                    "Could not find any transactions for user with registrationId: " +
+                            registrationId);
+        }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
@@ -32,6 +37,11 @@ public class Transactions extends Controller {
                         "and user.deviceId = ? " +
                         "order by accountingDate desc, timestamp desc",
                 timestamp, false, registrationId).fetch();
+        if (transactions.isEmpty()) {
+            logger.log(Level.WARN,
+                    "Could not find any transactions for user with registrationId: " +
+                            registrationId);
+        }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
