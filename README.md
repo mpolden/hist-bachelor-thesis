@@ -131,3 +131,34 @@ IntelliJ IDEA not displaying Git branch
         <mapping directory="$PROJECT_DIR$" vcs="Git" />
       </component>
     </project>
+
+Testing C2DM messages
+---------------------
+First you need your registrationId/deviceId. Then you need a date in regular
+format as well as unixtime. Use the following command:
+
+    date "+%F %T %s"
+
+Then use curl to POST a new transaction in JSON, with the following command:
+
+    curl -d 'registrationId=<your_device_id>' --data-urlencode 'json=
+    [
+        {
+            "accountingDate": "<the_date_including_time",
+            "amountIn": 0.0,
+            "amountOut": 300.0,
+            "text": "EUROPARK AS",
+            "trimmedText": "EUROPARK AS",
+            "internal": false,
+            "timestamp": <timestamp>,
+            "dirty": false,
+            "type": {
+                "name": "Visa",
+                "id": 2
+            },
+            "user": {
+                "deviceId": "<your_device_id>",
+                "id": 1
+            }
+        }
+    ]' http://127.0.0.1:9000/c2dm/put && echo
