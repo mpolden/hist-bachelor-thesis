@@ -18,6 +18,10 @@ public class FmtUtilTest extends UnitTest {
         actual = FmtUtil.trimTransactionText(
                 "456997107150**** 08.04 SEK 1180,00 JACK & JONES OSTERSUND");
         assertEquals(expected, actual);
+        expected = "JACK & JONES OSTERSUND";
+        actual = FmtUtil.trimTransactionText(
+                "4569971071500000 08.04 SEK 1180,00 JACK & JONES OSTERSUND");
+        assertEquals(expected, actual);
         expected = "NIDAR AS BLOMSTADVN 2 TRONDHEIM";
         actual = FmtUtil.trimTransactionText(
                 "27.03 NIDAR AS BLOMSTADVN 2 TRONDHEIM");
