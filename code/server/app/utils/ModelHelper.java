@@ -12,31 +12,31 @@ public class ModelHelper {
     private static Logger logger = Logger.getLogger(
             ModelHelper.class.getName());
 
-    public static TransactionTag insertIgnoreTag(String name) {
-        if (name == null || name.trim().length() == 0) {
+    public static TransactionTag insertIgnoreTag(TransactionTag t) {
+        if (t == null || t.name == null || t.name.trim().length() == 0) {
             return null;
         }
-        TransactionTag tag = TransactionTag.find("name", name).first();
+        TransactionTag tag = TransactionTag.find("name", t.name).first();
         if (tag != null) {
             return tag;
         } else {
             tag = new TransactionTag();
-            tag.name = name;
+            tag.name = t.name;
             tag.save();
             return tag;
         }
     }
 
-    public static TransactionType insertIgnoreType(String name) {
-        if (name == null || name.trim().length() == 0) {
+    public static TransactionType insertIgnoreType(TransactionType t) {
+        if (t == null || t.name == null || t.name.trim().length() == 0) {
             return null;
         }
-        TransactionType type = TransactionType.find("name", name).first();
+        TransactionType type = TransactionType.find("name", t.name).first();
         if (type != null) {
             return type;
         } else {
             type = new TransactionType();
-            type.name = name;
+            type.name = t.name;
             type.save();
             return type;
         }
@@ -59,16 +59,16 @@ public class ModelHelper {
                 existing.internal = t.internal;
                 existing.timestamp = t.timestamp;
                 existing.dirty = false;
-                existing.tag = ModelHelper.insertIgnoreTag(t.tag.name);
-                existing.type = ModelHelper.insertIgnoreType(t.type.name);
+                existing.tag = ModelHelper.insertIgnoreTag(t.tag);
+                existing.type = ModelHelper.insertIgnoreType(t.type);
                 existing.save();
                 return existing;
             }
         }
         t.id = null;
         // Need to update relationship for all foreign fields
-        t.tag = ModelHelper.insertIgnoreTag(t.tag.name);
-        t.type = ModelHelper.insertIgnoreType(t.type.name);
+        t.tag = ModelHelper.insertIgnoreTag(t.tag);
+        t.type = ModelHelper.insertIgnoreType(t.type);
         t.dirty = false;
         t.user = user;
         t.save();
