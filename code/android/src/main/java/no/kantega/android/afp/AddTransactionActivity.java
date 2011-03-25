@@ -87,17 +87,25 @@ public class AddTransactionActivity extends Activity {
         fillCategoryList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
-        selectedTransactionTag = adapter.getItem(0);
+        if (categories != null) {
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        }
+
+        if (!adapter.isEmpty()) {
+            selectedTransactionTag = adapter.getItem(0);
+        }
     }
 
     private void fillCategoryList() {
         ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getTags());
+
         categories = new ArrayList<String>();
+        categories.add("Not tagged");
         for (int i = 0; i < transactionTagList.size(); i++) {
             categories.add(transactionTagList.get(i).getName());
         }
+
     }
 
     @Override
