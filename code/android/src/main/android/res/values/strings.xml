@@ -39,4 +39,5 @@
         unavailable.
     </string>
     <string name="confirm">OK</string>
+    <string name="notification">You have %s new transactions</string>
 </resources>
