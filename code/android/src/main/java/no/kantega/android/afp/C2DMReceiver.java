@@ -64,6 +64,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         }
         Notification notification = new Notification(R.drawable.medical,
                 message, System.currentTimeMillis());
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
