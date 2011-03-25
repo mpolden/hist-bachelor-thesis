@@ -260,7 +260,7 @@ public class Transactions {
 
     public Cursor getCursorAfterTimestamp(long timestamp) {
         String selection = "internal = ? AND timestamp > ?";
-        String[] selectionArgs = new String[]{"false",
+        String[] selectionArgs = new String[]{"0",
                 String.valueOf(timestamp)};
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
