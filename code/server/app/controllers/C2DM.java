@@ -49,18 +49,11 @@ public class C2DM extends Controller {
                     "No transactions were saved");
             return;
         }
-        // Build a comma separated list of IDs that have been updated
-        final StringBuilder ids = new StringBuilder();
-        for (Transaction t : updated) {
-            ids.append(t.id);
-            ids.append(",");
-        }
-        ids.deleteCharAt(ids.length() - 1);
         WS.WSRequest request = WS.url(C2DM_PUSH_URL);
         request.headers.put("Authorization", String.format(
                 "GoogleLogin auth=%s", C2DM_PUSH_TOKEN));
         request.parameters.put("registration_id", registrationId);
-        request.parameters.put("data.message", ids.toString());
+        request.parameters.put("data.message", updated.size());
         request.parameters.put("collapse_key", ",");
         WS.HttpResponse response = request.post();
         if (response.getStatus() != 200) {
