@@ -37,10 +37,12 @@ public class C2DM extends Controller {
         final List<Transaction> transactions = GsonUtil.parseTransactions(json);
         final List<Transaction> updated = new ArrayList<Transaction>();
         final User user = User.find("deviceId", registrationId).first();
-        if (user != null) {
-            for (Transaction t : transactions) {
-                updated.add(ModelHelper.saveOrUpdate(t, user));
-            }
+        if (user == null) {
+            logger.log(Level.ERROR, "No user found with deviceId: " + registrationId);
+            return;
+        }
+        for (Transaction t : transactions) {
+            updated.add(ModelHelper.saveOrUpdate(t, user));
         }
         if (updated.isEmpty()) {
             logger.log(Level.ERROR,
