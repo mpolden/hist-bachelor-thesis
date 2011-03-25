@@ -54,7 +54,9 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
     @Override
     protected void onMessage(Context context, Intent intent) {
-        String message = intent.getStringExtra("message");
+        String message = String.format(
+                getResources().getString(R.string.notification),
+                intent.getStringExtra("message"));
         Log.w(TAG, "Message received: " + message);
         if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(
@@ -65,7 +67,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
-                new Intent(),
+                new Intent(getApplicationContext(),
+                        RecentTransactionsActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         notification.setLatestEventInfo(getApplicationContext(),
