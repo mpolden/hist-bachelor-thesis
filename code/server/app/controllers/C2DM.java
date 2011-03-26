@@ -41,6 +41,10 @@ public class C2DM extends Controller {
             logger.log(Level.ERROR, "No user found with deviceId: " + registrationId);
             return;
         }
+        if (transactions == null) {
+            logger.log(Level.ERROR, "No transactions found with deviceId: " + registrationId);
+            return;
+        }
         for (Transaction t : transactions) {
             updated.add(ModelHelper.saveOrUpdate(t, user));
         }
