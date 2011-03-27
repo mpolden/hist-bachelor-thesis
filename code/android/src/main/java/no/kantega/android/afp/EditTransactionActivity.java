@@ -147,7 +147,8 @@ public class EditTransactionActivity extends Activity {
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
         selectedTransactionTag = t.getTag().getName();
-        if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+        if (selectedTransactionTag != null && selectedTransactionTag.length() > 0 &&
+                !selectedTransactionTag.equals("Not tagged")) {
             category.setSelection(adapter.getPosition(selectedTransactionTag));
         } else {
             category.setSelection(adapter.getPosition("Not tagged"));
@@ -190,11 +191,10 @@ public class EditTransactionActivity extends Activity {
     };
 
     private void fillCategoryList() {
-        ArrayList<TransactionTag> transactionTagList = new ArrayList<TransactionTag>(db.getTags());
         categories = new ArrayList<String>();
         categories.add("Not tagged");
-        for (int i = 0; i < transactionTagList.size(); i++) {
-            categories.add(transactionTagList.get(i).getName());
+        for (TransactionTag tag : db.getTags()) {
+            categories.add(tag.getName());
         }
     }
 
@@ -230,7 +230,7 @@ public class EditTransactionActivity extends Activity {
         protected void onPostExecute(String s) {
             if (s != null) {
                 suggestedTag.setText(s);
-                updateSpinnerPosition(s);
+                updateSpinnerPosition(s.trim().length() == 0 ? null : s);
             }
         }
     }
