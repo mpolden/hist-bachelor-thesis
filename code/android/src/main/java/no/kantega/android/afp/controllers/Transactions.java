@@ -2,6 +2,7 @@ package no.kantega.android.afp.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -62,8 +63,8 @@ public class Transactions {
             }
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction tag", e);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -89,8 +90,8 @@ public class Transactions {
             }
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction type", e);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -99,9 +100,9 @@ public class Transactions {
      * @param t Transaction to save
      */
     public void add(Transaction t) {
+        t.setTag(insertIgnore(t.getTag()));
+        t.setType(insertIgnore(t.getType()));
         try {
-            t.setTag(insertIgnore(t.getTag()));
-            t.setType(insertIgnore(t.getType()));
             transactionDao.create(t);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction", e);
@@ -123,9 +124,9 @@ public class Transactions {
      * @param t Transaction tag to save
      */
     public void update(Transaction t) {
+        t.setTag(insertIgnore(t.getTag()));
+        t.setType(insertIgnore(t.getType()));
         try {
-            t.setTag(insertIgnore(t.getTag()));
-            t.setType(insertIgnore(t.getType()));
             transactionDao.update(t);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to update transaction", e);
@@ -170,6 +171,7 @@ public class Transactions {
      *
      * @return List of transactions
      */
+    @Deprecated
     public List<Transaction> getChanged() {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
         try {
@@ -202,14 +204,14 @@ public class Transactions {
      * @return Transaction
      */
     public Transaction getLatestExternal() {
-        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+        final QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("internal", false));
         } catch (SQLException e) {
             Log.e(TAG, "Failed to set where condition", e);
         }
-        List<Transaction> transactions = get(queryBuilder);
+        final List<Transaction> transactions = get(queryBuilder);
         return transactions.isEmpty() ? null : transactions.get(0);
     }
 
@@ -234,16 +236,9 @@ public class Transactions {
     /**
      * Get a cursor for transactions
      *
-     * @param onlyExternal Only fetch external transactions
      * @return Cursor
      */
-    public Cursor getCursor(boolean onlyExternal) {
-        String selection = null;
-        String[] selectionArgs = null;
-        if (onlyExternal) {
-            selection = "internal = ?";
-            selectionArgs = new String[]{"false"};
-        }
+    public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontypes " +
@@ -252,15 +247,21 @@ public class Transactions {
                         "ON transactiontags.id = transactions.tag_id"
                 , new String[]{"*", "transactiontypes.name AS type",
                         "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId"}, selection,
-                selectionArgs, null, null,
+                        "transactiontags.imageId as imageId"}, null,
+                null, null, null,
                 "accountingdate DESC, timestamp DESC", null);
         return cursor;
     }
 
+    /**
+     * Get a cursor that only returns non-internal transactions after the given timestamp
+     *
+     * @param timestamp Timestamp
+     * @return External transactions after timestamp
+     */
     public Cursor getCursorAfterTimestamp(long timestamp) {
-        String selection = "internal = ? AND timestamp > ?";
-        String[] selectionArgs = new String[]{"0",
+        final String selection = "internal = ? AND timestamp > ?";
+        final String[] selectionArgs = new String[]{"0",
                 String.valueOf(timestamp)};
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
@@ -281,8 +282,8 @@ public class Transactions {
      *
      * @return Transaction count
      */
-    public int getCount() {
-        return getCount("transactions");
+    public long getCount() {
+        return DatabaseUtils.queryNumEntries(helper.getReadableDatabase(), "transactions");
     }
 
     /**
@@ -290,8 +291,8 @@ public class Transactions {
      *
      * @return Transaction tag count
      */
-    public int getTagCount() {
-        return getCount("transactiontags");
+    public long getTagCount() {
+        return DatabaseUtils.queryNumEntries(helper.getReadableDatabase(), "transactiontags");
     }
 
     /**
@@ -301,7 +302,7 @@ public class Transactions {
      */
     public int getDirtyCount() {
         try {
-            GenericRawResults<String[]> rawResults = transactionDao.
+            final GenericRawResults<String[]> rawResults = transactionDao.
                     queryRaw("SELECT COUNT(*) FROM transactions WHERE dirty = 1 LIMIT 1");
             return Integer.parseInt(rawResults.getResults().get(0)[0]);
         } catch (SQLException e) {
@@ -317,20 +318,9 @@ public class Transactions {
      */
     public int getUntaggedCount() {
         try {
-            GenericRawResults<String[]> rawResults = transactionDao.
+            final GenericRawResults<String[]> rawResults = transactionDao.
                     queryRaw("SELECT COUNT(*) FROM transactions " +
                             "WHERE tag_id IS NULL LIMIT 1");
-            return Integer.parseInt(rawResults.getResults().get(0)[0]);
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve transaction count", e);
-        }
-        return 0;
-    }
-
-    private int getCount(String table) {
-        try {
-            GenericRawResults<String[]> rawResults = transactionDao.
-                    queryRaw(String.format("SELECT COUNT(*) FROM %s", table));
             return Integer.parseInt(rawResults.getResults().get(0)[0]);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve transaction count", e);
@@ -345,9 +335,9 @@ public class Transactions {
      * @return List of aggregated tags
      */
     public List<AggregatedTag> getAggregatedTags(final int limit) {
-        List<AggregatedTag> aggregatedTags = new ArrayList<AggregatedTag>();
+        final List<AggregatedTag> aggregatedTags = new ArrayList<AggregatedTag>();
         try {
-            GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
+            final GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
                     "SELECT transactiontags.name, SUM(amountOut) AS sum " +
                             "FROM transactions " +
                             "INNER JOIN transactiontags ON transactiontags.id = transactions.tag_id " +
@@ -372,9 +362,9 @@ public class Transactions {
      * @return List of transaction tags
      */
     public List<TransactionTag> getTags() {
-        List<TransactionTag> transactionTags = new ArrayList<TransactionTag>();
+        final List<TransactionTag> transactionTags = new ArrayList<TransactionTag>();
         try {
-            GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
+            final GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
                     "SELECT name, COUNT(*) AS count FROM transactiontags GROUP BY name ORDER BY count DESC");
             for (String[] row : rawResults) {
                 TransactionTag tag = new TransactionTag();
@@ -396,7 +386,7 @@ public class Transactions {
         try {
             GenericRawResults<String[]> rawResults = transactionDao.
                     queryRaw("SELECT accountingDate FROM transactions ORDER BY accountingDate ASC LIMIT 1");
-            List<String[]> results = rawResults.getResults();
+            final List<String[]> results = rawResults.getResults();
             if (results.size() > 0) {
                 final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, results.get(0)[0]);
                 rawResults.close();
@@ -413,12 +403,11 @@ public class Transactions {
                             rawResults.getResults().get(0)[0]) / days;
                     rawResults.close();
                 }
-                return 0;
             }
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve average consumption");
         }
-        return 0D;
+        return 0;
     }
 
     /**
@@ -453,8 +442,8 @@ public class Transactions {
      */
     public void close() {
         if (helper != null) {
-            Log.d(TAG, "Closed database connection");
             helper.close();
+            Log.d(TAG, "Closed database connection");
         }
     }
 }

@@ -41,10 +41,10 @@ public class SynchronizeActivity extends Activity {
     private TextView dirtyCount;
     private TextView untaggedCount;
     private AlertDialog alertDialog;
-    private int dbTransactionCount;
-    private int dbTagCount;
-    private int dbDirtyCount;
-    private int dbUntaggedCount;
+    private long dbTransactionCount;
+    private long dbTagCount;
+    private long dbDirtyCount;
+    private long dbUntaggedCount;
 
     /**
      * Called when the activity is starting. Attaches click listeners and
