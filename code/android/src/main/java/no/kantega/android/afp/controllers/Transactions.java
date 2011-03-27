@@ -47,7 +47,7 @@ public class Transactions {
      * @return The newly added tag or the existing one
      */
     private TransactionTag insertIgnore(TransactionTag tag) {
-        if (tag == null) {
+        if (tag == null || tag.getName().length() == 0) {
             return null;
         }
         try {
@@ -74,7 +74,7 @@ public class Transactions {
      * @return The newly added tag or the existing one
      */
     private TransactionType insertIgnore(TransactionType type) {
-        if (type == null) {
+        if (type == null || type.getName().length() == 0) {
             return null;
         }
         try {
