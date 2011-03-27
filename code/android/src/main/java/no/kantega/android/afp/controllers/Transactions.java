@@ -402,6 +402,7 @@ public class Transactions {
                     final double avg = Double.parseDouble(
                             rawResults.getResults().get(0)[0]) / days;
                     rawResults.close();
+                    return avg;
                 }
             }
         } catch (SQLException e) {
