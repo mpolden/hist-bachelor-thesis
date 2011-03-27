@@ -69,7 +69,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                 getApplicationContext(),
                 0,
                 new Intent(getApplicationContext(),
-                        RecentTransactionsActivity.class),
+                        NotificationsActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         notification.setLatestEventInfo(getApplicationContext(),

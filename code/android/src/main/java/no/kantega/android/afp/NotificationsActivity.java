@@ -2,6 +2,7 @@ package no.kantega.android.afp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,9 +29,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecentTransactionsActivity extends TransactionsActivity {
+public class NotificationsActivity extends ListActivity {
 
-    private static final String TAG = RecentTransactionsActivity.class.
+    private static final String TAG = NotificationsActivity.class.
             getSimpleName();
     private static final int PROGRESS_DIALOG = 0;
     private ProgressDialog progressDialog;
@@ -45,6 +46,7 @@ public class RecentTransactionsActivity extends TransactionsActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
         this.adapter = new TransactionsAdapter(this, cursor);
         setListAdapter(adapter);
@@ -84,8 +86,8 @@ public class RecentTransactionsActivity extends TransactionsActivity {
         @Override
         public void run() {
             // Change to a fresh cursor, the old one will be automatically closed
-            Log.d(TAG, "Changed to a new cursor");
             adapter.changeCursor(cursor);
+            Log.d(TAG, "Changed to a new cursor");
         }
     };
 
