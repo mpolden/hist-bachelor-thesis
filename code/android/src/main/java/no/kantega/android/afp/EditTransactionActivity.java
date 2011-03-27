@@ -109,26 +109,7 @@ public class EditTransactionActivity extends Activity {
     }
 
     private void updateSpinnerPosition(String tag) {
-        int spinnerPosition = 0;
-        if (selectedTransactionTag != null) {
-            if (selectedTransactionTag.equals("Not tagged")) {
-                if (tag != null) {
-                    spinnerPosition = adapter.getPosition(tag);
-                    selectedTransactionTag = tag;
-                } else {
-                    spinnerPosition = adapter.getPosition("Not tagged");
-                }
-            } else {
-                spinnerPosition = adapter.getPosition(selectedTransactionTag);
-            }
-        } else {
-            if (tag != null) {
-                spinnerPosition = adapter.getPosition(tag);
-                selectedTransactionTag = tag;
-            } else {
-                spinnerPosition = adapter.getPosition("Not tagged");
-            }
-        }
+        int spinnerPosition;
         if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
             spinnerPosition = adapter.getPosition(selectedTransactionTag);
         } else if (selectedTransactionTag == null || selectedTransactionTag.equals("Not tagged") && tag != null) {

@@ -161,6 +161,7 @@ public class NotificationsActivity extends ListActivity {
          * Retrieve transactions from server
          *
          * @param url URL for new transactions
+         * @return True if successful
          */
         private boolean getTransactions(final String url) {
             if (latestTimestamp == 0) {

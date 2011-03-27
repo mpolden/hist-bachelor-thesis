@@ -224,6 +224,7 @@ public class SynchronizeActivity extends Activity {
          * Post "dirty" transactions to an URL
          *
          * @param url Save URL
+         * @return True if successful
          */
         private boolean putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
@@ -257,6 +258,7 @@ public class SynchronizeActivity extends Activity {
          *
          * @param url    URL for new transactions
          * @param urlAll URL for all transactions
+         * @return True if successful
          */
         private boolean getTransactions(final String url, final String urlAll) {
             final Transaction latest = db.getLatestExternal();
