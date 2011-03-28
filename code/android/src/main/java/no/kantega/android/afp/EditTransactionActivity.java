@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
@@ -13,15 +12,17 @@ import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.HttpUtil;
+import no.kantega.android.afp.utils.Prefs;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class EditTransactionActivity extends Activity {
 
     private static final String TAG = EditTransactionActivity.class.
             getSimpleName();
-    private static final String PROPERTIES_FILE = "url.properties";
     private Transactions db;
     private List<String> categories;
     private ArrayAdapter<String> adapter;
@@ -88,17 +89,7 @@ public class EditTransactionActivity extends Activity {
         editButton.setOnClickListener(editTransactionButtonListener);
         setupViews();
         checkInternal();
-        readProperties();
-    }
-
-    private void readProperties() {
-        try {
-            final Properties properties = new Properties();
-            properties.load(getAssets().open(PROPERTIES_FILE));
-            suggestUrl = properties.get("suggestTag").toString();
-        } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
-        }
+        this.suggestUrl = Prefs.getProperties(getApplication()).get("suggestTag").toString();
     }
 
     @Override
