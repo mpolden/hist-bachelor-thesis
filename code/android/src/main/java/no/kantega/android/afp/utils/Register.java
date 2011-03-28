@@ -17,8 +17,8 @@ public class Register {
      * @param context Application context
      */
     public static void handleRegistration(Context context) {
-        SharedPreferences preferences = Prefs.get(context);
-        String deviceId = preferences.getString(REGISTRATION_ID_KEY, null);
+        final SharedPreferences preferences = Prefs.get(context);
+        final String deviceId = preferences.getString(REGISTRATION_ID_KEY, null);
         if (deviceId == null) {
             C2DMessaging.register(context, SENDER_ID);
         }

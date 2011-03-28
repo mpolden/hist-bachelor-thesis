@@ -106,7 +106,7 @@ do the following:
 * Navigate to Modules
 * Select your Android module
 * Click the Dependencies tab
-* Move Android 2.3.3 Platform above all the Maven dependencies
+* Move Android 2.3.3 Platform above all the Maven dependencies (except jUnit)
 
 IntelliJ IDEA, Play Framework and Javadoc
 -----------------------------------------

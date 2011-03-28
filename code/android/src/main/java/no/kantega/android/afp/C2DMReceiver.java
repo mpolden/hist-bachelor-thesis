@@ -25,7 +25,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
     @Override
     public void onRegistered(Context context, String registrationId) throws IOException {
-        Log.d(TAG, "Registered: " + registrationId);
+        Log.d(TAG, "New device ID: " + registrationId);
         SharedPreferences prefs = Prefs.get(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Register.REGISTRATION_ID_KEY, registrationId);
@@ -69,7 +69,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                 getApplicationContext(),
                 0,
                 new Intent(getApplicationContext(),
-                        RecentTransactionsActivity.class),
+                        NotificationsActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         notification.setLatestEventInfo(getApplicationContext(),

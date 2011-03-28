@@ -34,6 +34,10 @@ public class C2DM extends Controller {
                     "Missing c2dm.push.url i application.conf");
             return;
         }
+        if (json == null) {
+            logger.log(Level.ERROR, "Failed to bind JsonArray");
+            return;
+        }
         final List<Transaction> transactions = GsonUtil.parseTransactions(json);
         final List<Transaction> updated = new ArrayList<Transaction>();
         final User user = User.find("deviceId", registrationId).first();

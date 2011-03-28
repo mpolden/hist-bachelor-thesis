@@ -23,7 +23,7 @@ public class TransactionsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursor(false);
+        this.cursor = db.getCursor();
         this.adapter = new TransactionsAdapter(this, cursor);
         setListAdapter(adapter);
     }
@@ -35,7 +35,7 @@ public class TransactionsActivity extends ListActivity {
             @Override
             public void run() {
                 // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
-                cursor = db.getCursor(false);
+                cursor = db.getCursor();
                 runOnUiThread(handler);
             }
         }).start();

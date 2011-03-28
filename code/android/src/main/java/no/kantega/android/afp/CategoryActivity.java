@@ -11,13 +11,14 @@ import no.kantega.android.afp.models.TransactionTag;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryActivity extends Activity {
 
     private Transactions db;
     private EditText category_name;
     private ImageView category_icon;
-    private ArrayList<Integer> iconIds;
+    private List<Integer> iconIds;
 
     private int currentIconId;
 
@@ -51,19 +52,13 @@ public class CategoryActivity extends Activity {
     private void setupIconList() {
         Field[] drawables = R.drawable.class.getFields();
         iconIds = new ArrayList<Integer>();
-        int resID = 0;
-
-        for (int i = 0; i <= drawables.length; i++) {
-            try {
-                String name = drawables[i].getName();
-                if (name.startsWith("tag_")) {
-                    resID = getResources().getIdentifier(name, "drawable", getPackageName());
-                    if (resID != 0) {
-                        iconIds.add(resID);
-                    }
+        for (Field f : drawables) {
+            String name = f.getName();
+            if (name.startsWith("tag_")) {
+                int resID = getResources().getIdentifier(name, "drawable", getPackageName());
+                if (resID > 0) {
+                    iconIds.add(resID);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -85,7 +80,7 @@ public class CategoryActivity extends Activity {
 
     private class IconAdapter extends BaseAdapter {
 
-        private Context context;
+        private final Context context;
 
         public IconAdapter(Context c) {
             this.context = c;
@@ -116,7 +111,7 @@ public class CategoryActivity extends Activity {
             return imageView;
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
