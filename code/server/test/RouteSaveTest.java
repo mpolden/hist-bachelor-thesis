@@ -27,18 +27,13 @@ public class RouteSaveTest extends FunctionalTest {
         final String json = "[\n" +
                 "    {\n" +
                 "        \"_id\": 4,\n" +
-                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
-                "        \"amountIn\": 0.0,\n" +
-                "        \"amountOut\": 3000.0,\n" +
+                "        \"date\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amount\": 3000.0,\n" +
                 "        \"text\": \"Skjermkort\",\n" +
                 "        \"trimmedText\": \"Skjermkort\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": true,\n" +
-                "        \"type\": {\n" +
-                "            \"name\": \"Visa\",\n" +
-                "            \"id\": 18\n" +
-                "        },\n" +
                 "        \"tag\": {\n" +
                 "            \"name\": \"Datautstyr\",\n" +
                 "            \"id\": 18\n" +
@@ -67,18 +62,13 @@ public class RouteSaveTest extends FunctionalTest {
         final String json = "[\n" +
                 "    {\n" +
                 "        \"_id\": 5,\n" +
-                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
-                "        \"amountIn\": 0.0,\n" +
-                "        \"amountOut\": 3000.0,\n" +
+                "        \"date\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amount\": 3000.0,\n" +
                 "        \"text\": \"Skjermkort\",\n" +
                 "        \"trimmedText\": \"Skjermkort\",\n" +
                 "        \"internal\": false,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": false,\n" +
-                "        \"type\": {\n" +
-                "            \"name\": \"Visa\",\n" +
-                "            \"id\": 18\n" +
-                "        },\n" +
                 "        \"tag\": {\n" +
                 "            \"name\": \"Datautstyr\",\n" +
                 "            \"id\": 18\n" +
@@ -108,18 +98,13 @@ public class RouteSaveTest extends FunctionalTest {
         final String json = "[\n" +
                 "    {\n" +
                 "        \"_id\": 3,\n" +
-                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
-                "        \"amountIn\": 0.0,\n" +
-                "        \"amountOut\": 300.0,\n" +
+                "        \"date\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amount\": 300.0,\n" +
                 "        \"text\": \"Harddisk\",\n" +
                 "        \"trimmedText\": \"Harddisk\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": true,\n" +
-                "        \"type\": {\n" +
-                "            \"name\": \"Visa\",\n" +
-                "            \"id\": 23\n" +
-                "        },\n" +
                 "        \"tag\": {\n" +
                 "            \"name\": \"Annet\",\n" +
                 "            \"id\": 26\n" +
@@ -152,18 +137,13 @@ public class RouteSaveTest extends FunctionalTest {
         final String json = "[\n" +
                 "    {\n" +
                 "        \"_id\": 3,\n" +
-                "        \"accountingDate\": \"2009-04-15 02:00:00\",\n" +
-                "        \"amountIn\": 0.0,\n" +
-                "        \"amountOut\": 300.0,\n" +
+                "        \"date\": \"2009-04-15 02:00:00\",\n" +
+                "        \"amount\": 300.0,\n" +
                 "        \"text\": \"Harddisk\",\n" +
                 "        \"trimmedText\": \"Harddisk\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": false,\n" +
-                "        \"type\": {\n" +
-                "            \"name\": \"Visa\",\n" +
-                "            \"id\": 23\n" +
-                "        },\n" +
                 "        \"tag\": {\n" +
                 "            \"name\": \"Annet\",\n" +
                 "            \"id\": 26\n" +

@@ -1,6 +1,5 @@
 import models.Transaction;
 import models.TransactionTag;
-import models.TransactionType;
 import org.junit.Test;
 import play.test.UnitTest;
 import utils.GsonUtil;
@@ -22,24 +21,18 @@ public class GsonUtilTest extends UnitTest {
 
     @Test
     public void testParseTransactions() {
-        final String json = "[{\"accountingDate\":\"2009-04-15 00:00:00\"," +
-                "\"amountIn\":0.0," +
-                "\"amountOut\":1272.56," +
+        final String json = "[{\"date\":\"2009-04-15 00:00:00\"," +
+                "\"amount\":1272.56," +
                 "\"text\":\"456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)\"," +
                 "\"internal\":false," +
-                "\"timestamp\":1239746400000,\"type\":{\"name\":\"Visa\",\"id\":1}," +
+                "\"timestamp\":1239746400000," +
                 "\"tag\":{\"name\":\"Datautstyr\",\"id\":4},\"id\":7}]";
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final Transaction t = new Transaction();
         try {
-            t.accountingDate = sdf.parse("2009-04-15 00:00:00");
-            t.amountIn = 0.0;
-            t.amountOut = 1272.56;
+            t.date = sdf.parse("2009-04-15 00:00:00");
+            t.amount = 1272.56;
             t.text = "456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)";
-            final TransactionType type = new TransactionType();
-            type.name = "Visa";
-            type.id = 1L;
-            t.type = type;
             final TransactionTag tag = new TransactionTag();
             tag.id = 4L;
             tag.name = "Datautstyr";

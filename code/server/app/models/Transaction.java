@@ -10,16 +10,13 @@ import java.util.Date;
 public class Transaction extends Model {
 
     public int _id; // ID generated on device
-    public Date accountingDate;
-    public double amountIn;
-    public double amountOut;
+    public Date date;
+    public double amount;
     public String text;
     public String trimmedText;
     public boolean internal;
     public long timestamp;
     public boolean dirty;
-    @ManyToOne
-    public TransactionType type;
     @ManyToOne
     public TransactionTag tag;
     @ManyToOne

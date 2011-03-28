@@ -1,6 +1,5 @@
 import models.Transaction;
 import models.TransactionTag;
-import models.TransactionType;
 import models.User;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
@@ -67,14 +66,10 @@ public class Import extends Job {
         Double out = Double.parseDouble(s[5]);
         Double in = Double.parseDouble(s[6]);
         Transaction t = new Transaction();
-        t.accountingDate = accountingDate;
-        TransactionType type = new TransactionType();
-        type.name = s[3];
-        t.type = ModelHelper.insertIgnoreType(type);
+        t.date = accountingDate;
         t.text = text;
         t.trimmedText = FmtUtil.trimTransactionText(text).trim();
-        t.amountOut = out;
-        t.amountIn = in;
+        t.amount = out;
         if (!"null".equals(s[7])) {
             TransactionTag tag = new TransactionTag();
             tag.name = s[7];
@@ -86,7 +81,7 @@ public class Import extends Job {
         }
         t.internal = false;
         t.dirty = false;
-        t.timestamp = t.accountingDate.getTime();
+        t.timestamp = t.date.getTime();
         return t;
     }
 

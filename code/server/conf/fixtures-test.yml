@@ -1,50 +1,41 @@
 User(u):
     deviceId: some_random_id
 
-TransactionType(type):
-    name: Visa
-
 TransactionTag(tag):
     name: Datautstyr
 
 Transaction(t1):
     _id: 1
-    accountingDate: 2009-04-15
-    amountIn: 0.0
-    amountOut: 1272.56
+    date: 2009-04-15
+    amount: 1272.56
     text: 456997107150**** 09.04 SEK 1550,00 CLAS OHLSON AB (49)
     trimmedText: CLAS OHLSON AB (49)
     internal: false
     timestamp: 0
     dirty: false
     tag: tag
-    type: type
     user: u
 
 Transaction(t2):
     _id: 2
-    accountingDate: 2009-04-15
-    amountIn: 0.0
-    amountOut: 300.0
+    date: 2009-04-15
+    amount: 300.0
     text: Headset
     trimmedText: Headset
     internal: false
     timestamp: 1
     dirty: false
     tag: tag
-    type: type
     user: u
 
 Transaction(t3):
     _id: 3
-    accountingDate: 2009-04-15
-    amountIn: 0.0
-    amountOut: 300.0
+    date: 2009-04-15
+    amount: 300.0
     text: Harddisk
     trimmedText: Harddisk
     internal: true
     timestamp: 1
     dirty: false
     tag: tag
-    type: type
     user: u

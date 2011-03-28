@@ -20,7 +20,7 @@ public class Transactions extends Controller {
     public static void all(String registrationId) {
         final List<Transaction> transactions = Transaction.
                 find("user.deviceId = ? " +
-                        "order by accountingDate desc, timestamp desc",
+                        "order by date desc, timestamp desc",
                         registrationId).fetch();
         if (transactions.isEmpty()) {
             logger.log(Level.WARN,
@@ -35,7 +35,7 @@ public class Transactions extends Controller {
                 "timestamp > ? " +
                         "and internal = ? " +
                         "and user.deviceId = ? " +
-                        "order by accountingDate desc, timestamp desc",
+                        "order by date desc, timestamp desc",
                 timestamp, false, registrationId).fetch();
         if (transactions.isEmpty()) {
             logger.log(Level.WARN,

@@ -1,6 +1,5 @@
 import models.Transaction;
 import models.TransactionTag;
-import models.TransactionType;
 import models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,11 +22,6 @@ public class ImportTest extends UnitTest {
     @Test
     public void testImportTransactionTag() {
         assertTrue(TransactionTag.count() > 0);
-    }
-
-    @Test
-    public void testImportTransactionType() {
-        assertTrue(TransactionType.count() > 0);
     }
 
     @Test
