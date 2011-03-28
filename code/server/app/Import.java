@@ -19,10 +19,14 @@ import java.util.Date;
 @OnApplicationStart
 public class Import extends Job {
 
-    private static final Logger logger = Logger.getLogger(
-            Import.class.getName());
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "dd.MM.yyyy");
+    private static final Logger logger = Logger.getLogger(Import.class.getName());
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final String FIELD_SEPARATOR = "_";
+    private static final int FIELD_IDX_DATE = 0;
+    private static final int FIELD_IDX_TEXT = 4;
+    private static final int FIELD_IDX_AMOUNT = 5;
+    private static final int FIELD_IDX_TAG = 7;
+    private static final int FIELD_IDX_IMAGE_ID = 8;
 
     public void doJob() {
         loadUsersFromFixture();
@@ -45,7 +49,7 @@ public class Import extends Job {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    Transaction t = parseTransaction(line);
+                    Transaction t = saveTransaction(line);
                     if (t != null) {
                         t.user = user;
                         t.save();
@@ -59,22 +63,17 @@ public class Import extends Job {
         }
     }
 
-    private Transaction parseTransaction(String line) {
-        String[] s = line.split("_");
-        Date accountingDate = parseDate(s[0]);
-        String text = s[4];
-        Double out = Double.parseDouble(s[5]);
-        Double in = Double.parseDouble(s[6]);
-        Transaction t = new Transaction();
-        t.date = accountingDate;
-        t.text = text;
-        t.trimmedText = FmtUtil.trimTransactionText(text).trim();
-        t.amount = out;
-        if (!"null".equals(s[7])) {
+    private Transaction saveTransaction(String line) {
+        final String[] s = line.split(FIELD_SEPARATOR);
+        final Transaction t = new Transaction();
+        t.date = parseDate(s[FIELD_IDX_DATE]);
+        t.text = FmtUtil.trimTransactionText(s[FIELD_IDX_TEXT]).trim();
+        t.amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
+        if (!"null".equals(s[FIELD_IDX_TAG])) {
             TransactionTag tag = new TransactionTag();
-            tag.name = s[7];
-            t.tag = ModelHelper.insertIgnoreTag(tag);
-            t.tag.imageId = Integer.parseInt(s[8], 16);
+            tag.name = s[FIELD_IDX_TAG];
+            t.tag = ModelHelper.saveOrUpdate(tag);
+            t.tag.imageId = Integer.parseInt(s[FIELD_IDX_IMAGE_ID], 16);
             t.tag.save();
         } else {
             t.tag = null;
@@ -89,7 +88,8 @@ public class Import extends Job {
         try {
             return dateFormat.parse(s);
         } catch (ParseException e) {
-            return null;
+            logger.log(Level.WARN, String.format("Failed to parse date: %s", s), e);
         }
+        return null;
     }
 }
