@@ -49,6 +49,7 @@ public class NotificationsActivity extends ListActivity {
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
         this.adapter = new TransactionsAdapter(this, cursor);
+        this.latestTimestamp = getLatestExternalTimestamp();
         setListAdapter(adapter);
         showDialog(PROGRESS_DIALOG);
     }
@@ -73,9 +74,6 @@ public class NotificationsActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (latestTimestamp == 0) {
-                    latestTimestamp = getLatestExternalTimestamp();
-                }
                 cursor = db.getCursorAfterTimestamp(latestTimestamp);
                 runOnUiThread(adapterHandler);
             }
@@ -164,9 +162,6 @@ public class NotificationsActivity extends ListActivity {
          * @return True if successful
          */
         private boolean getTransactions(final String url) {
-            if (latestTimestamp == 0) {
-                latestTimestamp = getLatestExternalTimestamp();
-            }
             final InputStream in = post(String.format(url, latestTimestamp),
                     new ArrayList<NameValuePair>());
             if (in == null) {

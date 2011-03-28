@@ -20,10 +20,6 @@ public class FmtUtil {
         return simpleDateFormat.format(date);
     }
 
-    public static void main(String[] args) {
-        System.out.println(trimTransactionText("2347982347 Trondheim Parkering"));
-    }
-
     /**
      * Format currency according to the default locale
      *
