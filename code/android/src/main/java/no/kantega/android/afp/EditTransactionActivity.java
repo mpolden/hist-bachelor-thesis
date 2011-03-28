@@ -65,8 +65,11 @@ public class EditTransactionActivity extends Activity {
                     finish();
                 }
             } else {
-                TransactionTag ttag = new TransactionTag();
-                ttag.setName(selectedTransactionTag);
+                TransactionTag ttag = null;
+                if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+                    ttag = new TransactionTag();
+                    ttag.setName(selectedTransactionTag);
+                }
                 t.setTag(ttag);
                 t.setDirty(true);
                 t.setChanged(true);
@@ -230,8 +233,9 @@ public class EditTransactionActivity extends Activity {
         protected void onPostExecute(String s) {
             if (s != null) {
                 suggestedTag.setText(s);
-                updateSpinnerPosition(s.trim().length() == 0 ? null : s);
             }
+            updateSpinnerPosition(s != null &&
+                    s.trim().length() == 0 ? null : s);
         }
     }
 }
