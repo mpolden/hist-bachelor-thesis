@@ -40,11 +40,15 @@ public class EditTransactionActivity extends Activity {
     private final View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            TransactionTag ttag = null;
+            selectedTransactionTag = category.getSelectedItem() == null ?
+                    null : category.getSelectedItem().toString();
+            if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
+                ttag = new TransactionTag();
+                ttag.setName(selectedTransactionTag);
+            }
             if (t.isInternal()) {
                 boolean editTransactionOk = true;
-                TransactionTag ttag = t.getTag();
-                selectedTransactionTag = category.getSelectedItem().toString();
-                ttag.setName(selectedTransactionTag);
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
                 if (FmtUtil.isNumber(amount.getText().toString())) {
                     t.setAmountOut(Double.parseDouble(amount.getText().toString()));
@@ -65,11 +69,6 @@ public class EditTransactionActivity extends Activity {
                     finish();
                 }
             } else {
-                TransactionTag ttag = null;
-                if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
-                    ttag = new TransactionTag();
-                    ttag.setName(selectedTransactionTag);
-                }
                 t.setTag(ttag);
                 t.setDirty(true);
                 t.setChanged(true);
