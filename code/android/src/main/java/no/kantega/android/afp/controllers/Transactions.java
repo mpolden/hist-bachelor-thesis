@@ -7,7 +7,10 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
-import no.kantega.android.afp.models.*;
+import no.kantega.android.afp.models.AggregatedTag;
+import no.kantega.android.afp.models.AverageConsumption;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.DatabaseHelper;
 import no.kantega.android.afp.utils.FmtUtil;
 
@@ -24,20 +27,17 @@ public class Transactions {
     private final DatabaseHelper helper;
     private final Dao<Transaction, Integer> transactionDao;
     private final Dao<TransactionTag, Integer> transactionTagDao;
-    private final Dao<TransactionType, Integer> transactionTypeDao;
 
     public Transactions(Context context) {
         this.helper = new DatabaseHelper(context);
         this.transactionDao = helper.getTransactionDao();
         this.transactionTagDao = helper.getTransactionTagDao();
-        this.transactionTypeDao = helper.getTransactionTypeDao();
     }
 
     public Transactions(Context context, DatabaseHelper helper) {
         this.helper = helper;
         this.transactionDao = helper.getTransactionDao();
         this.transactionTagDao = helper.getTransactionTagDao();
-        this.transactionTypeDao = helper.getTransactionTypeDao();
     }
 
     /**
@@ -47,7 +47,7 @@ public class Transactions {
      * @return The newly added tag or the existing one
      */
     private TransactionTag insertIgnore(TransactionTag tag) {
-        if (tag == null || tag.getName().length() == 0) {
+        if (tag == null || tag.getName() == null || tag.getName().length() == 0) {
             return null;
         }
         try {
@@ -68,40 +68,12 @@ public class Transactions {
     }
 
     /**
-     * Add a new transaction type
-     *
-     * @param type Transaction type to save
-     * @return The newly added tag or the existing one
-     */
-    private TransactionType insertIgnore(TransactionType type) {
-        if (type == null || type.getName().length() == 0) {
-            return null;
-        }
-        try {
-            QueryBuilder<TransactionType, Integer> queryBuilder = transactionTypeDao.queryBuilder();
-            queryBuilder.where().eq("name", type.getName());
-            List<TransactionType> types = transactionTypeDao.query(queryBuilder.prepare());
-            if (types.size() > 0) {
-                return types.get(0);
-            } else {
-                transactionTypeDao.create(type);
-                types = transactionTypeDao.query(queryBuilder.prepare());
-                return types.get(0);
-            }
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to add transaction type", e);
-        }
-        return null;
-    }
-
-    /**
      * Add a new transaction
      *
      * @param t Transaction to save
      */
     public void add(Transaction t) {
         t.setTag(insertIgnore(t.getTag()));
-        t.setType(insertIgnore(t.getType()));
         try {
             transactionDao.create(t);
         } catch (SQLException e) {
@@ -125,7 +97,6 @@ public class Transactions {
      */
     public void update(Transaction t) {
         t.setTag(insertIgnore(t.getTag()));
-        t.setType(insertIgnore(t.getType()));
         try {
             transactionDao.update(t);
         } catch (SQLException e) {
@@ -224,7 +195,7 @@ public class Transactions {
     private List<Transaction> get(QueryBuilder<Transaction, Integer> queryBuilder) {
         List<Transaction> transactions = Collections.emptyList();
         try {
-            queryBuilder.orderBy("accountingDate", false).
+            queryBuilder.orderBy("date", false).
                     orderBy("timestamp", false);
             transactions = transactionDao.query(queryBuilder.prepare());
         } catch (SQLException e) {
@@ -241,15 +212,12 @@ public class Transactions {
     public Cursor getCursor() {
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
-                        "LEFT JOIN transactiontypes " +
-                        "ON transactiontypes.id = transactions.type_id " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id"
-                , new String[]{"*", "transactiontypes.name AS type",
-                        "transactiontags.name AS tag",
+                , new String[]{"*", "transactiontags.name AS tag",
                         "transactiontags.imageId as imageId"}, null,
                 null, null, null,
-                "accountingdate DESC, timestamp DESC", null);
+                "date DESC, timestamp DESC", null);
         return cursor;
     }
 
@@ -265,15 +233,12 @@ public class Transactions {
                 String.valueOf(timestamp)};
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
-                        "LEFT JOIN transactiontypes " +
-                        "ON transactiontypes.id = transactions.type_id " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id"
-                , new String[]{"*", "transactiontypes.name AS type",
-                        "transactiontags.name AS tag",
+                , new String[]{"*", "transactiontags.name AS tag",
                         "transactiontags.imageId as imageId"}, selection,
                 selectionArgs, null, null,
-                "accountingdate DESC, timestamp DESC", null);
+                "date DESC, timestamp DESC", null);
         return cursor;
     }
 
@@ -338,7 +303,7 @@ public class Transactions {
         final List<AggregatedTag> aggregatedTags = new ArrayList<AggregatedTag>();
         try {
             final GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
-                    "SELECT transactiontags.name, SUM(amountOut) AS sum " +
+                    "SELECT transactiontags.name, SUM(amount) AS sum " +
                             "FROM transactions " +
                             "INNER JOIN transactiontags ON transactiontags.id = transactions.tag_id " +
                             "GROUP BY transactiontags.name " +
@@ -385,20 +350,20 @@ public class Transactions {
     private double getAvgDay() {
         try {
             GenericRawResults<String[]> rawResults = transactionDao.
-                    queryRaw("SELECT accountingDate FROM transactions ORDER BY accountingDate ASC LIMIT 1");
+                    queryRaw("SELECT date FROM transactions ORDER BY date ASC LIMIT 1");
             final List<String[]> results = rawResults.getResults();
             if (results.size() > 0) {
                 final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, results.get(0)[0]);
                 rawResults.close();
                 rawResults = transactionDao.
-                        queryRaw("SELECT accountingDate FROM transactions ORDER BY accountingDate DESC LIMIT 1");
+                        queryRaw("SELECT date FROM transactions ORDER BY date DESC LIMIT 1");
                 final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, rawResults.getResults().get(0)[0]);
                 rawResults.close();
                 final int days =
                         (int) ((stop.getTime() - start.getTime()) / 1000) / 86400;
                 if (days > 0) {
                     rawResults = transactionDao.
-                            queryRaw("SELECT SUM(amountOut) FROM transactions LIMIT 1");
+                            queryRaw("SELECT SUM(amount) FROM transactions LIMIT 1");
                     final double avg = Double.parseDouble(
                             rawResults.getResults().get(0)[0]) / days;
                     rawResults.close();
@@ -432,7 +397,6 @@ public class Transactions {
         try {
             transactionDao.queryRaw("DELETE FROM transactions");
             transactionDao.queryRaw("DELETE FROM transactiontags");
-            transactionDao.queryRaw("DELETE FROM transactiontypes");
         } catch (SQLException e) {
             Log.e(TAG, "Could not empty tables", e);
         }

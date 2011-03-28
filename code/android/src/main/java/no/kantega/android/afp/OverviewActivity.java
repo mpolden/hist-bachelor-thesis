@@ -77,9 +77,9 @@ public class OverviewActivity extends Activity {
         clearTransactions();
         for (Transaction t : transactions) {
             addTransaction(FmtUtil.dateToString("yyyy-MM-dd",
-                    t.getAccountingDate()), t.getType().getName(),
+                    t.getDate()), t.getText(),
                     t.getTag().getName(),
-                    FmtUtil.currency(t.getAmountOut()));
+                    FmtUtil.currency(t.getAmount()));
         }
     }
 

@@ -14,18 +14,12 @@ public class Transaction implements Serializable {
     @DatabaseField(generatedId = true)
     private int _id;
     @DatabaseField
-    private Date accountingDate;
+    private Date date;
     @DatabaseField
-    private double amountIn;
-    @DatabaseField
-    private double amountOut;
+    private double amount;
     @DatabaseField
     private String text;
-    @DatabaseField(foreign = true, columnName = "type_id",
-            foreignAutoRefresh = true)
-    private TransactionType type;
-    @DatabaseField(foreign = true, columnName = "tag_id",
-            foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, columnName = "tag_id", foreignAutoRefresh = true, canBeNull = true)
     private TransactionTag tag;
     @DatabaseField(index = true)
     private boolean internal;
@@ -33,8 +27,6 @@ public class Transaction implements Serializable {
     private long timestamp;
     @DatabaseField(index = true)
     private boolean dirty;
-    @DatabaseField(index = true)
-    private boolean changed;
 
     public Transaction() {
     }
@@ -55,28 +47,20 @@ public class Transaction implements Serializable {
         this._id = _id;
     }
 
-    public Date getAccountingDate() {
-        return accountingDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setAccountingDate(Date accountingDate) {
-        this.accountingDate = accountingDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public double getAmountIn() {
-        return amountIn;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setAmountIn(double amountIn) {
-        this.amountIn = amountIn;
-    }
-
-    public double getAmountOut() {
-        return amountOut;
-    }
-
-    public void setAmountOut(double amountOut) {
-        this.amountOut = amountOut;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public String getText() {
@@ -85,14 +69,6 @@ public class Transaction implements Serializable {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
     }
 
     public TransactionTag getTag() {
@@ -127,34 +103,23 @@ public class Transaction implements Serializable {
         this.dirty = dirty;
     }
 
-    public boolean isChanged() {
-        return changed;
-    }
-
-    public void setChanged(boolean changed) {
-        this.changed = changed;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Transaction)) return false;
+
         Transaction that = (Transaction) o;
-        if (Double.compare(that.amountIn, amountIn) != 0) return false;
-        if (Double.compare(that.amountOut, amountOut) != 0) return false;
-        if (changed != that.changed) return false;
+
+        if (_id != that._id) return false;
+        if (Double.compare(that.amount, amount) != 0) return false;
         if (dirty != that.dirty) return false;
         if (id != that.id) return false;
         if (internal != that.internal) return false;
         if (timestamp != that.timestamp) return false;
-        if (accountingDate != null ? !accountingDate.equals(that.accountingDate) : that.accountingDate != null)
-            return false;
-        if (tag != null ? !tag.equals(that.tag) : that.tag != null)
-            return false;
-        if (text != null ? !text.equals(that.text) : that.text != null)
-            return false;
-        if (type != null ? !type.equals(that.type) : that.type != null)
-            return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (tag != null ? !tag.equals(that.tag) : that.tag != null) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+
         return true;
     }
 
@@ -163,18 +128,15 @@ public class Transaction implements Serializable {
         int result;
         long temp;
         result = id;
-        result = 31 * result + (accountingDate != null ? accountingDate.hashCode() : 0);
-        temp = amountIn != +0.0d ? Double.doubleToLongBits(amountIn) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = amountOut != +0.0d ? Double.doubleToLongBits(amountOut) : 0L;
+        result = 31 * result + _id;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        temp = amount != +0.0d ? Double.doubleToLongBits(amount) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (text != null ? text.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         result = 31 * result + (internal ? 1 : 0);
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         result = 31 * result + (dirty ? 1 : 0);
-        result = 31 * result + (changed ? 1 : 0);
         return result;
     }
 }

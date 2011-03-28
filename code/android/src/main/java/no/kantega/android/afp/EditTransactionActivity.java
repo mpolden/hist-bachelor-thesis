@@ -51,7 +51,7 @@ public class EditTransactionActivity extends Activity {
                 boolean editTransactionOk = true;
                 Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
                 if (FmtUtil.isNumber(amount.getText().toString())) {
-                    t.setAmountOut(Double.parseDouble(amount.getText().toString()));
+                    t.setAmount(Double.parseDouble(amount.getText().toString()));
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.invalid_amount,
                             Toast.LENGTH_LONG).show();
@@ -60,9 +60,8 @@ public class EditTransactionActivity extends Activity {
                 if (editTransactionOk) {
                     t.setText(text.getText().toString());
                     t.setTag(ttag);
-                    t.setAccountingDate(d);
+                    t.setDate(d);
                     t.setDirty(true);
-                    t.setChanged(true);
                     db.update(t);
                     Toast.makeText(getApplicationContext(), R.string.transaction_updated,
                             Toast.LENGTH_LONG).show();
@@ -71,7 +70,6 @@ public class EditTransactionActivity extends Activity {
             } else {
                 t.setTag(ttag);
                 t.setDirty(true);
-                t.setChanged(true);
                 db.update(t);
                 Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
                 finish();
@@ -131,8 +129,8 @@ public class EditTransactionActivity extends Activity {
         suggestedTag = (TextView) findViewById(R.id.suggested_tag);
         //currentTag = (TextView) findViewById(R.id)
         text.setText(FmtUtil.trimTransactionText(t.getText()));
-        date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getAccountingDate()));
-        amount.setText(String.valueOf(t.getAmountOut()));
+        date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getDate()));
+        amount.setText(String.valueOf(t.getAmount()));
         date.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);

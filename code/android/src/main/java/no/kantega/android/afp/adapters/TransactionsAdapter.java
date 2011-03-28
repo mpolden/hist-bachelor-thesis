@@ -34,10 +34,10 @@ public class TransactionsAdapter extends CursorAdapter {
     }
 
     private void populateView(Context context, View view, Cursor cursor) {
-        String date = cursor.getString(cursor.getColumnIndex("accountingDate"));
+        String date = cursor.getString(cursor.getColumnIndex("date"));
         String text = cursor.getString(cursor.getColumnIndex("text"));
         String tag = cursor.getString(cursor.getColumnIndex("tag"));
-        String amount = cursor.getString(cursor.getColumnIndex("amountOut"));
+        String amount = cursor.getString(cursor.getColumnIndex("amount"));
         ImageView image = (ImageView) view.findViewById(R.id.tag_icon);
         TextView tv_date = (TextView) view.findViewById(R.id.trow_tv_date);
         TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);

@@ -11,7 +11,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
-import no.kantega.android.afp.models.TransactionType;
 import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -35,29 +34,24 @@ public class AddTransactionActivity extends Activity {
             boolean newTransactionOk = true;
             Transaction t = new Transaction();
             TransactionTag ttag = new TransactionTag();
-            TransactionType ttype = new TransactionType();
             ttag.setName(selectedTransactionTag);
-            ttype.setName("Kontant");
             Date d = FmtUtil.stringToDate("yyyy-MM-dd",
                     String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
             EditText etamount = (EditText) findViewById(R.id.edittext_amount);
             EditText ettext = (EditText) findViewById(R.id.edittext_text);
             if (etamount.getText().toString().trim() != "" && FmtUtil.isNumber(etamount.getText().toString())) {
-                t.setAmountOut(Double.parseDouble(etamount.getText().toString()));
+                t.setAmount(Double.parseDouble(etamount.getText().toString()));
             } else {
                 Toast.makeText(getApplicationContext(), "Invalid amount", Toast.LENGTH_LONG).show();
                 newTransactionOk = false;
             }
             if (newTransactionOk) {
-                t.setAmountIn(0.0);
                 t.setText(ettext.getText().toString());
                 t.setTag(ttag);
-                t.setType(ttype);
-                t.setAccountingDate(d);
+                t.setDate(d);
                 t.setTimestamp(new Date().getTime());
                 t.setInternal(true);
                 t.setDirty(true);
-                t.setChanged(false);
                 db.add(t);
                 Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
                 finish();
