@@ -28,7 +28,7 @@ public class ModelHelper {
 
     public static Transaction saveOrUpdate(Transaction t, User user) {
         if (!t.dirty) {
-            logger.log(Level.WARN,
+            logger.log(Level.INFO,
                     "Not saving non-dirty transaction with _id: " + t._id);
             return t;
         }
