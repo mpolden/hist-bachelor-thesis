@@ -204,14 +204,14 @@ public class Transactions {
      * @return Transaction
      */
     public Transaction getLatestExternal() {
-        final QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("internal", false));
         } catch (SQLException e) {
             Log.e(TAG, "Failed to set where condition", e);
         }
-        final List<Transaction> transactions = get(queryBuilder);
+        List<Transaction> transactions = get(queryBuilder);
         return transactions.isEmpty() ? null : transactions.get(0);
     }
 
@@ -260,8 +260,8 @@ public class Transactions {
      * @return External transactions after timestamp
      */
     public Cursor getCursorAfterTimestamp(long timestamp) {
-        final String selection = "internal = ? AND timestamp > ?";
-        final String[] selectionArgs = new String[]{"0",
+        String selection = "internal = ? AND timestamp > ?";
+        String[] selectionArgs = new String[]{"0",
                 String.valueOf(timestamp)};
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
