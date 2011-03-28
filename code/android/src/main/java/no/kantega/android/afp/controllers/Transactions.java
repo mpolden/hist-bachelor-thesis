@@ -177,6 +177,7 @@ public class Transactions {
     public Transaction getLatestExternal() {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
+        queryBuilder.limit(1);
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("internal", false));
         } catch (SQLException e) {
