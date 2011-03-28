@@ -38,7 +38,7 @@ public class TransactionTags extends Controller {
             Query query = JPA.em().createQuery(
                     "select tag.name from Transaction t" +
                             " join t.tag as tag" +
-                            " where t.trimmedText = :text" +
+                            " where t.text = :text" +
                             " group by tag.name order by count(*)"
             );
             query.setParameter("text", body);
@@ -48,7 +48,7 @@ public class TransactionTags extends Controller {
                 query = JPA.em().createQuery(
                         "select tag.name from Transaction t" +
                                 " join t.tag as tag" +
-                                " where lower(t.trimmedText) like :text" +
+                                " where lower(t.text) like :text" +
                                 " group by tag.name order by count(*)"
                 );
                 query.setParameter("text", String.format("%%%s%%",

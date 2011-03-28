@@ -13,7 +13,6 @@ public class Transaction extends Model {
     public Date date;
     public double amount;
     public String text;
-    public String trimmedText;
     public boolean internal;
     public long timestamp;
     public boolean dirty;

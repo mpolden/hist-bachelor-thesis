@@ -30,7 +30,6 @@ public class RouteSaveTest extends FunctionalTest {
                 "        \"date\": \"2009-04-15 02:00:00\",\n" +
                 "        \"amount\": 3000.0,\n" +
                 "        \"text\": \"Skjermkort\",\n" +
-                "        \"trimmedText\": \"Skjermkort\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": true,\n" +
@@ -65,7 +64,6 @@ public class RouteSaveTest extends FunctionalTest {
                 "        \"date\": \"2009-04-15 02:00:00\",\n" +
                 "        \"amount\": 3000.0,\n" +
                 "        \"text\": \"Skjermkort\",\n" +
-                "        \"trimmedText\": \"Skjermkort\",\n" +
                 "        \"internal\": false,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": false,\n" +
@@ -101,7 +99,6 @@ public class RouteSaveTest extends FunctionalTest {
                 "        \"date\": \"2009-04-15 02:00:00\",\n" +
                 "        \"amount\": 300.0,\n" +
                 "        \"text\": \"Harddisk\",\n" +
-                "        \"trimmedText\": \"Harddisk\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": true,\n" +
@@ -140,7 +137,6 @@ public class RouteSaveTest extends FunctionalTest {
                 "        \"date\": \"2009-04-15 02:00:00\",\n" +
                 "        \"amount\": 300.0,\n" +
                 "        \"text\": \"Harddisk\",\n" +
-                "        \"trimmedText\": \"Harddisk\",\n" +
                 "        \"internal\": true,\n" +
                 "        \"timestamp\": 1,\n" +
                 "        \"dirty\": false,\n" +

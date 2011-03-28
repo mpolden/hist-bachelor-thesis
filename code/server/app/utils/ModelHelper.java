@@ -11,8 +11,8 @@ public class ModelHelper {
     private static Logger logger = Logger.getLogger(
             ModelHelper.class.getName());
 
-    public static TransactionTag insertIgnoreTag(TransactionTag t) {
-        if (t == null || t.name == null || t.name.trim().length() == 0) {
+    public static TransactionTag saveOrUpdate(TransactionTag t) {
+        if (t == null || t.name == null || t.name.length() == 0) {
             return null;
         }
         TransactionTag tag = TransactionTag.find("name", t.name).first();
@@ -42,14 +42,14 @@ public class ModelHelper {
                 existing.internal = t.internal;
                 existing.timestamp = t.timestamp;
                 existing.dirty = false;
-                existing.tag = ModelHelper.insertIgnoreTag(t.tag);
+                existing.tag = ModelHelper.saveOrUpdate(t.tag);
                 existing.save();
                 return existing;
             }
         }
         t.id = null;
         // Need to update relationship for all foreign fields
-        t.tag = ModelHelper.insertIgnoreTag(t.tag);
+        t.tag = ModelHelper.saveOrUpdate(t.tag);
         t.dirty = false;
         t.user = user;
         t.save();
