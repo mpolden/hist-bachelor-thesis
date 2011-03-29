@@ -26,13 +26,12 @@ public class OverviewActivity extends ListActivity {
     private CategoryAdapter adapter;
     private Cursor cursor;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursorTags();
+        this.cursor = db.getCursorTags("03", "2011");
         this.adapter = new CategoryAdapter(this, cursor);
         setListAdapter(adapter);
 
@@ -56,7 +55,7 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                cursor = db.getCursorTags();
+                cursor = db.getCursorTags("03", "2011");
                 runOnUiThread(handler);
             }
         }).start();
