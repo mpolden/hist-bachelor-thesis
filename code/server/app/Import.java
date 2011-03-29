@@ -21,6 +21,8 @@ public class Import extends Job {
 
     private static final Logger logger = Logger.getLogger(Import.class.getName());
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final String FIXTURES = "fixtures-local.yml";
+    private static final String FIXTURES_CSV = "/conf/fixture-transactions-full.csv";
     private static final String FIELD_SEPARATOR = "_";
     private static final int FIELD_IDX_DATE = 0;
     private static final int FIELD_IDX_TEXT = 4;
@@ -35,14 +37,13 @@ public class Import extends Job {
 
     private void loadUsersFromFixture() {
         if (User.count() == 0) {
-            Fixtures.load("fixtures-local.yml");
+            Fixtures.load(FIXTURES);
         }
     }
 
     private void loadTransactionsFromCsv() {
         if (Transaction.count() == 0) {
-            File f = VirtualFile.fromRelativePath(
-                    "/conf/fixture-transactions-full.csv").getRealFile();
+            File f = VirtualFile.fromRelativePath(FIXTURES_CSV).getRealFile();
             User user = User.all().first();
             BufferedReader reader = null;
             try {
@@ -66,7 +67,8 @@ public class Import extends Job {
     private Transaction saveTransaction(String line) {
         final String[] s = line.split(FIELD_SEPARATOR);
         final Transaction t = new Transaction();
-        t.date = parseDate(s[FIELD_IDX_DATE]);
+        final Date parsedDate = parseDate(s[FIELD_IDX_DATE]);
+        t.date = parsedDate != null ? parsedDate : new Date();
         t.text = FmtUtil.trimTransactionText(s[FIELD_IDX_TEXT]).trim();
         t.amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
         if (!"null".equals(s[FIELD_IDX_TAG])) {
@@ -80,7 +82,7 @@ public class Import extends Job {
         }
         t.internal = false;
         t.dirty = false;
-        t.timestamp = t.date.getTime();
+        t.timestamp = t.date != null ? t.date.getTime() : new Date().getTime();
         return t;
     }
 
