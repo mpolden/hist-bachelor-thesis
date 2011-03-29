@@ -253,7 +253,7 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"transactiontags.name AS tag",
+                new String[]{"_id", "transactiontags.name AS tag",
                         "transactiontags.imageId as imageId", "SUM(amount) AS sum"}, null, null,
                 "tag", null, "sum DESC, tag DESC", null);
         return cursor;
