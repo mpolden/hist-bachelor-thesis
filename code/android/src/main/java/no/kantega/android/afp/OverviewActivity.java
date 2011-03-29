@@ -10,10 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.AggregatedTag;
 import no.kantega.android.afp.models.Transaction;
@@ -38,6 +35,17 @@ public class OverviewActivity extends ListActivity {
         this.cursor = db.getCursorTags();
         this.adapter = new CategoryAdapter(this, cursor);
         setListAdapter(adapter);
+
+        Button newTransactionButton = (Button) findViewById(R.id.button_new_transaction);
+        newTransactionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent().setClass(getApplicationContext(), AddTransactionActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         Register.handleRegistration(getApplicationContext());
     }
