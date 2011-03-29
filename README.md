@@ -40,6 +40,13 @@ Building and running the server
 Our server implementation uses the Play Framework, so a working Play
 installation is required to run the server.
 
+You will need the following play modules:
+
+    play install maven
+    play install search-2.0
+
+To run the server:
+
     cd code/server
     play run
 
