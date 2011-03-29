@@ -72,13 +72,10 @@ public class Import extends Job {
         t.text = FmtUtil.trimTransactionText(s[FIELD_IDX_TEXT]).trim();
         t.amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
         if (!"null".equals(s[FIELD_IDX_TAG])) {
-            TransactionTag tag = new TransactionTag();
+            final TransactionTag tag = new TransactionTag();
             tag.name = s[FIELD_IDX_TAG];
+            tag.imageId = Integer.parseInt(s[FIELD_IDX_IMAGE_ID], 16);
             t.tag = ModelHelper.saveOrUpdate(tag);
-            t.tag.imageId = Integer.parseInt(s[FIELD_IDX_IMAGE_ID], 16);
-            t.tag.save();
-        } else {
-            t.tag = null;
         }
         t.internal = false;
         t.dirty = false;

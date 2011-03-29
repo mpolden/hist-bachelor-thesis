@@ -259,6 +259,19 @@ public class Transactions {
         return cursor;
     }
 
+    public Cursor getCursorTags(int month, int year) {
+        final String dateQuery = String.format("%d-%d-%%", year, month);
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "transactions " +
+                        "LEFT JOIN transactiontags " +
+                        "ON transactiontags.id = transactions.tag_id",
+                new String[]{"_id", "transactiontags.name AS tag",
+                        "transactiontags.imageId as imageId", "SUM(amount) AS sum"},
+                "date LIKE ?", new String[]{dateQuery},
+                "tag", null, "sum DESC, tag DESC", null);
+        return cursor;
+    }
+
     /**
      * Retrieve total transaction count
      *

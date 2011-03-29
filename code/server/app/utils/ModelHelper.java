@@ -12,7 +12,7 @@ public class ModelHelper {
             ModelHelper.class.getName());
 
     public static TransactionTag saveOrUpdate(TransactionTag t) {
-        if (t == null || t.name == null || t.name.length() == 0) {
+        if (t == null) {
             return null;
         }
         TransactionTag tag = TransactionTag.find("name", t.name).first();
@@ -21,6 +21,7 @@ public class ModelHelper {
         } else {
             tag = new TransactionTag();
             tag.name = t.name;
+            tag.imageId = t.imageId;
             tag.save();
             return tag;
         }

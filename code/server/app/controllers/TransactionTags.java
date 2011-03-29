@@ -1,63 +1,40 @@
 package controllers;
 
+import models.Transaction;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import play.db.jpa.JPA;
+import play.modules.search.Search;
 import play.mvc.Controller;
 
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionTags extends Controller {
 
     private static final Logger logger = Logger.getLogger(
             TransactionTags.class.getName());
 
-    private static String firstWord(String s) {
-        if (s != null) {
-            final String[] words = s.split(" ");
-            if (words.length > 0) {
-                return words[0];
-            }
-        }
-        return null;
-    }
-
-    private static boolean renderTag(List<Object> result) {
-        if (!result.isEmpty()) {
-            renderText(result.get(0));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static void suggest(String body) {
-        if (body != null) {
+        List<Map<String, String>> result = Collections.emptyList();
+        if (body != null && body.length() > 0) {
+            play.modules.search.Query q = Search.search(String.format("text:(%s)", body), Transaction.class);
+            List<Long> ids = q.fetchIds();
             Query query = JPA.em().createQuery(
-                    "select tag.name from Transaction t" +
-                            " join t.tag as tag" +
-                            " where t.text = :text" +
-                            " group by tag.name order by count(*)"
+                    "select new map (thetag.name as tag, count(*) as count) from Transaction t" +
+                            " join t.tag as thetag" +
+                            " where t.id in (:ids)" +
+                            " group by thetag.name order by count(*) desc"
             );
-            query.setParameter("text", body);
-            if (!renderTag(query.getResultList())) {
-                // No exact match found, go nuts
-                final String firstWord = firstWord(body);
-                query = JPA.em().createQuery(
-                        "select tag.name from Transaction t" +
-                                " join t.tag as tag" +
-                                " where lower(t.text) like :text" +
-                                " group by tag.name order by count(*)"
-                );
-                query.setParameter("text", String.format("%%%s%%",
-                        firstWord.toLowerCase()));
-                if (!renderTag(query.getResultList())) {
-                    logger.log(Level.WARN, "Could not find tag for text: " +
-                            body);
-                }
+            query.setParameter("ids", ids);
+            result = query.getResultList();
+            if (result.isEmpty()) {
+                logger.log(Level.WARN, String.format("Could not find any suggestions for: %s", body));
             }
         }
+        renderJSON(result);
     }
 }
