@@ -13,8 +13,18 @@ public class FmtUtil {
      * @return Trimmed text
      */
     public static String trimTransactionText(String text) {
-        final String pattern = "(\\d{2,}\\**\\s)?(\\d{2}\\.\\d{2}\\s)?([A-Z]{3}\\s\\d+,\\d+\\s)?(TIL\\:\\s)?";
-        return text == null ? "" : text.replaceAll(pattern, "");
+        final String pattern = "(^\\d{16}\\s)?" +
+                "(\\d{2}\\.\\d{2}\\s)?" +
+                "([A-Z]{3}\\s\\d+,\\d+\\s)?" +
+                "(TIL\\:\\s)?" +
+                "(BETNR:\\s*\\d*)?";
+        if (text != null) {
+            String out = text.trim();
+            out = out.replaceAll(pattern, "").trim();
+            return out;
+        } else {
+            return "";
+        }
     }
 
     /**
