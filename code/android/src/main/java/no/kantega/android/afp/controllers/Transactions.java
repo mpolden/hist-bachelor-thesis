@@ -244,6 +244,22 @@ public class Transactions {
     }
 
     /**
+     * Get a cursor that shows the total amount spent in each tag
+     *
+     * @return Cursor
+     */
+    public Cursor getCursorTags() {
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "transactions " +
+                        "LEFT JOIN transactiontags " +
+                        "ON transactiontags.id = transactions.tag_id",
+                new String[]{"transactiontags.name AS tag",
+                        "transactiontags.imageId as imageId", "SUM(amount) AS sum"}, null, null,
+                "tag", null, "sum DESC, tag DESC", null);
+        return cursor;
+    }
+
+    /**
      * Retrieve total transaction count
      *
      * @return Transaction count

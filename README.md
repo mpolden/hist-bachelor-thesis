@@ -134,31 +134,20 @@ IntelliJ IDEA not displaying Git branch
 
 Testing C2DM messages
 ---------------------
-First you need your registrationId/deviceId. Then you need a date in regular
-format as well as unixtime. Use the following command:
+Use the included bash script (code/c2dm-test.sh) to test C2DM messages. You
+will need the device ID and a message for the transaction.
 
-    date "+%F %T %s000"
+Tags
+----
+This is a list of the current tags and their associated image ID.
 
-Then use curl to POST a new transaction in JSON, with the following command:
-
-    curl -d 'registrationId=<your_device_id>' --data-urlencode 'json=
-    [
-        {
-            "accountingDate": "<the_date_including_time",
-            "amountIn": 0.0,
-            "amountOut": 300.0,
-            "text": "EUROPARK AS",
-            "trimmedText": "EUROPARK AS",
-            "internal": false,
-            "timestamp": <timestamp>,
-            "dirty": true,
-            "type": {
-                "name": "Visa",
-                "id": 2
-            },
-            "user": {
-                "deviceId": "<your_device_id>",
-                "id": 1
-            }
-        }
-    ]' http://127.0.0.1:9000/c2dm/put && echo
+Husholdning_7f02005e
+Mat_7f02004a
+Klær_7f0200bc
+Fornøyelser_7f020036
+Transport_7f02000b
+Ferie_7f0200af
+Barn_7f02000c
+Helse_7f020077
+Sparing_7f02006b
+Annet_7f020038
