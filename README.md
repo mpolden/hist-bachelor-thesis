@@ -143,9 +143,9 @@ This is a list of the current tags and their associated image ID.
 
 Husholdning_7f02005e
 Mat_7f02004a
-Klær_7f0200bc
+Klær_7f0200be
 Fornøyelser_7f020036
-Transport_7f02000b
+Transport_7f02000c
 Ferie_7f0200af
 Barn_7f02000c
 Helse_7f020077

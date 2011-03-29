@@ -4,7 +4,8 @@
               android:layout_height="wrap_content"
               android:padding="6dip"
               android:orientation="vertical">
-    <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="horizontal">
+    <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent"
+                  android:orientation="horizontal">
         <LinearLayout android:layout_height="fill_parent" android:layout_width="34dip">
             <ImageView android:id="@+id/overview_imageview_category" android:layout_width="wrap_content"
                        android:layout_height="fill_parent"
@@ -16,6 +17,7 @@
         <TextView android:id="@+id/overview_textview_consumption" android:layout_weight="1"
                   android:layout_width="0dip" android:padding="3dip"
                   style="@style/DefaultTextFont"></TextView>
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   android:src="@drawable/arrowright"></ImageView>
     </LinearLayout>
 </LinearLayout>
