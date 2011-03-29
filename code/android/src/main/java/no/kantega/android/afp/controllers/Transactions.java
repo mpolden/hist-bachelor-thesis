@@ -12,7 +12,6 @@ import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.DatabaseHelper;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -183,8 +182,8 @@ public class Transactions {
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
-                        "ON transactiontags.id = transactions.tag_id"
-                , new String[]{"*", "transactiontags.name AS tag",
+                        "ON transactiontags.id = transactions.tag_id",
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
                         "transactiontags.imageId as imageId"}, null,
                 null, null, null,
                 "date DESC, timestamp DESC", null);
@@ -204,8 +203,8 @@ public class Transactions {
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
-                        "ON transactiontags.id = transactions.tag_id"
-                , new String[]{"*", "transactiontags.name AS tag",
+                        "ON transactiontags.id = transactions.tag_id",
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
                         "transactiontags.imageId as imageId"}, selection,
                 selectionArgs, null, null,
                 "date DESC, timestamp DESC", null);
@@ -284,24 +283,19 @@ public class Transactions {
     }
 
     /**
-     * Get all transaction tags ordered descending by usage count
+     * Get all transaction tags ordered by name
      *
      * @return List of transaction tags
      */
     public List<TransactionTag> getTags() {
-        final List<TransactionTag> transactionTags = new ArrayList<TransactionTag>();
+        QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
+        queryBuilder.orderBy("name", true);
         try {
-            final GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
-                    "SELECT name, COUNT(*) AS count FROM transactiontags GROUP BY name ORDER BY count DESC");
-            for (String[] row : rawResults) {
-                TransactionTag tag = new TransactionTag();
-                tag.setName(row[0]);
-                transactionTags.add(tag);
-            }
+            return transactionTagDao.query(queryBuilder.prepare());
         } catch (SQLException e) {
             Log.e(TAG, "Failed to retrieve all tags", e);
         }
-        return transactionTags;
+        return Collections.emptyList();
     }
 
     /**
