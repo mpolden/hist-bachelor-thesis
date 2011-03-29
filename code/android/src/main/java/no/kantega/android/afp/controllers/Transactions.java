@@ -7,17 +7,13 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
-import no.kantega.android.afp.models.AggregatedTag;
-import no.kantega.android.afp.models.AverageConsumption;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.DatabaseHelper;
-import no.kantega.android.afp.utils.FmtUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class Transactions {
@@ -105,16 +101,25 @@ public class Transactions {
     }
 
     /**
-     * Retrieve a list of transactions ordered descending by date
+     * Retrieve an ordered list of transactions using the given query builder
      *
-     * @param limit Max number of transactions to retrieve
+     * @param queryBuilder Query builder
      * @return List of transactions
      */
-    public List<Transaction> get(final int limit) {
-        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
-                queryBuilder();
-        queryBuilder.limit(limit);
-        return get(queryBuilder);
+    private List<Transaction> getAll(QueryBuilder<Transaction, Integer> queryBuilder) throws SQLException {
+        queryBuilder.orderBy("date", false).orderBy("timestamp", false);
+        return transactionDao.query(queryBuilder.prepare());
+    }
+
+    /**
+     * Retrieve the latest transaction using the given query builder
+     *
+     * @param queryBuilder Query builder
+     * @return Latest transaction
+     */
+    private Transaction get(QueryBuilder<Transaction, Integer> queryBuilder) throws SQLException {
+        queryBuilder.orderBy("date", false).orderBy("timestamp", false).limit(1);
+        return transactionDao.queryForFirst(queryBuilder.prepare());
     }
 
     /**
@@ -124,37 +129,19 @@ public class Transactions {
      * @return The transaction or null if not found
      */
     public Transaction getById(final int id) {
-        List<Transaction> transactions = Collections.emptyList();
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
-        queryBuilder.limit(1);
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("_id", id));
-            transactions = transactionDao.query(queryBuilder.prepare());
+            return get(queryBuilder);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to find transaction", e);
         }
-        return transactions.isEmpty() ? null : transactions.get(0);
+        return null;
     }
 
     /**
-     * Retrieve a list of changed transactions
-     *
-     * @return List of transactions
-     */
-    @Deprecated
-    public List<Transaction> getChanged() {
-        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
-        try {
-            queryBuilder.setWhere(queryBuilder.where().eq("changed", true));
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to set where condition", e);
-        }
-        return get(queryBuilder);
-    }
-
-    /**
-     * Retrieve a list of dirty transactions (which should be synchronized)
+     * Retrieve a list of dirty transactions
      *
      * @return List of transactions
      */
@@ -163,10 +150,11 @@ public class Transactions {
                 queryBuilder();
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("dirty", true));
+            return getAll(queryBuilder);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to set where condition", e);
         }
-        return get(queryBuilder);
+        return Collections.emptyList();
     }
 
     /**
@@ -177,32 +165,13 @@ public class Transactions {
     public Transaction getLatestExternal() {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
-        queryBuilder.limit(1);
         try {
             queryBuilder.setWhere(queryBuilder.where().eq("internal", false));
+            return get(queryBuilder);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to set where condition", e);
         }
-        List<Transaction> transactions = get(queryBuilder);
-        return transactions.isEmpty() ? null : transactions.get(0);
-    }
-
-    /**
-     * Retrieve a list of transactions using the given query builder
-     *
-     * @param queryBuilder Query builder
-     * @return List of transactions
-     */
-    private List<Transaction> get(QueryBuilder<Transaction, Integer> queryBuilder) {
-        List<Transaction> transactions = Collections.emptyList();
-        try {
-            queryBuilder.orderBy("date", false).
-                    orderBy("timestamp", false);
-            transactions = transactionDao.query(queryBuilder.prepare());
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve transactions", e);
-        }
-        return transactions;
+        return null;
     }
 
     /**
@@ -244,21 +213,12 @@ public class Transactions {
     }
 
     /**
-     * Get a cursor that shows the total amount spent in each tag
+     * Get a cursor that only returns tags within the given month and year
      *
-     * @return Cursor
+     * @param month Month to filter on
+     * @param year  Year to filter on
+     * @return Tags within the given month and year
      */
-    public Cursor getCursorTags() {
-        final Cursor cursor = helper.getReadableDatabase().query(
-                "transactions " +
-                        "LEFT JOIN transactiontags " +
-                        "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId", "SUM(amount) AS sum"}, null, null,
-                "tag", null, "sum DESC, tag DESC", null);
-        return cursor;
-    }
-
     public Cursor getCursorTags(String month, String year) {
         final String dateQuery = String.format("%s-%s-%%", year, month);
         final Cursor cursor = helper.getReadableDatabase().query(
@@ -291,7 +251,7 @@ public class Transactions {
     }
 
     /**
-     * Retrieve number of dirty (unsynced) transactions
+     * Retrieve ntotal dirty transaction count
      *
      * @return Number of unsynced transactions
      */
@@ -324,34 +284,6 @@ public class Transactions {
     }
 
     /**
-     * Retrieve a list of aggregated tags sorted by sum of all transactions in that tag
-     *
-     * @param limit Max number of aggregated tags to retrieve
-     * @return List of aggregated tags
-     */
-    public List<AggregatedTag> getAggregatedTags(final int limit) {
-        final List<AggregatedTag> aggregatedTags = new ArrayList<AggregatedTag>();
-        try {
-            final GenericRawResults<String[]> rawResults = transactionDao.queryRaw(
-                    "SELECT transactiontags.name, SUM(amount) AS sum " +
-                            "FROM transactions " +
-                            "INNER JOIN transactiontags ON transactiontags.id = transactions.tag_id " +
-                            "GROUP BY transactiontags.name " +
-                            "ORDER BY sum DESC LIMIT ?", String.valueOf(limit));
-            for (String[] row : rawResults) {
-                AggregatedTag aggregatedTag = new AggregatedTag();
-                aggregatedTag.setName(row[0]);
-                aggregatedTag.setAmount(Double.parseDouble(row[1]));
-                aggregatedTags.add(aggregatedTag);
-            }
-            rawResults.close();
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve aggregated tags", e);
-        }
-        return aggregatedTags;
-    }
-
-    /**
      * Get all transaction tags ordered descending by usage count
      *
      * @return List of transaction tags
@@ -370,54 +302,6 @@ public class Transactions {
             Log.e(TAG, "Failed to retrieve all tags", e);
         }
         return transactionTags;
-    }
-
-    /**
-     * Calculate the average per day using the oldest and newest transaction date
-     *
-     * @return Average consumption per day
-     */
-    private double getAvgDay() {
-        try {
-            GenericRawResults<String[]> rawResults = transactionDao.
-                    queryRaw("SELECT date FROM transactions ORDER BY date ASC LIMIT 1");
-            final List<String[]> results = rawResults.getResults();
-            if (results.size() > 0) {
-                final Date start = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, results.get(0)[0]);
-                rawResults.close();
-                rawResults = transactionDao.
-                        queryRaw("SELECT date FROM transactions ORDER BY date DESC LIMIT 1");
-                final Date stop = FmtUtil.stringToDate(SQLITE_DATE_FORMAT, rawResults.getResults().get(0)[0]);
-                rawResults.close();
-                final int days =
-                        (int) ((stop.getTime() - start.getTime()) / 1000) / 86400;
-                if (days > 0) {
-                    rawResults = transactionDao.
-                            queryRaw("SELECT SUM(amount) FROM transactions LIMIT 1");
-                    final double avg = Double.parseDouble(
-                            rawResults.getResults().get(0)[0]) / days;
-                    rawResults.close();
-                    return avg;
-                }
-            }
-        } catch (SQLException e) {
-            Log.e(TAG, "Failed to retrieve average consumption");
-        }
-        return 0;
-    }
-
-    /**
-     * Calculate average consumption per day, week and month
-     *
-     * @return Average consumption
-     */
-    public AverageConsumption getAvg() {
-        final double avgPerDay = getAvgDay();
-        final AverageConsumption avg = new AverageConsumption();
-        avg.setDay(avgPerDay);
-        avg.setWeek(avgPerDay * 7);
-        avg.setMonth(avgPerDay * 30.4368499);
-        return avg;
     }
 
     /**
