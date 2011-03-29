@@ -1,36 +1,45 @@
 package no.kantega.android.afp;
 
-import android.app.Activity;
-import android.app.NotificationManager;
-import android.graphics.Color;
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.AggregatedTag;
-import no.kantega.android.afp.models.AverageConsumption;
 import no.kantega.android.afp.models.Transaction;
-import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.Register;
 
 import java.util.List;
 
-public class OverviewActivity extends Activity {
+public class OverviewActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private static final String SENDER_ID = "androidafp@gmail.com";
     private Transactions db;
-    private AverageConsumption avg;
+    private CategoryAdapter adapter;
+    private Cursor cursor;
     private List<AggregatedTag> tags;
-    private List<Transaction> transactions;
-    private NotificationManager notificationManager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.db = new Transactions(getApplicationContext());
         setContentView(R.layout.overview);
+        this.db = new Transactions(getApplicationContext());
+        this.cursor = db.getCursor();
+        this.adapter = new CategoryAdapter(this, cursor);
+        setListAdapter(adapter);
+
         Register.handleRegistration(getApplicationContext());
     }
 
@@ -40,102 +49,69 @@ public class OverviewActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                tags = db.getAggregatedTags(3);
-                transactions = db.get(1);
-                avg = db.getAvg();
-                runOnUiThread(populate);
+                tags = db.getAggregatedTags(10);
+                runOnUiThread(handler);
             }
         }).start();
     }
 
-    private final Runnable populate = new Runnable() {
+    private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            populateCategories(tags);
-            populateTransactions(transactions);
-            populateAverageConsumption(avg);
+            // Change to a fresh cursor, the old one will be automatically closed
+            Log.d(TAG, "Changed to a new cursor");
+            adapter.changeCursor(cursor);
         }
     };
 
-    private void populateAverageConsumption(AverageConsumption avg) {
-        TextView average_day = (TextView) findViewById(R.id.average_day);
-        TextView average_week = (TextView) findViewById(R.id.average_week);
-        average_day.setText(FmtUtil.currency(avg.getDay()));
-        average_week.setText(FmtUtil.currency(avg.getWeek()));
-    }
+    private class CategoryAdapter extends CursorAdapter {
 
-    private void clearTransactions() {
-        TableLayout transactions = (TableLayout) findViewById(R.id.
-                transactionTableLayout);
-        int transaction_count = transactions.getChildCount() - 4;
-        if (transactions.getChildAt(4) != null) {
-            transactions.removeViews(4, transaction_count);
+        public CategoryAdapter(Context context, Cursor cursor) {
+            super(context, cursor);
         }
-    }
 
-    private void populateTransactions(List<Transaction> transactions) {
-        clearTransactions();
-        for (Transaction t : transactions) {
-            addTransaction(FmtUtil.dateToString("yyyy-MM-dd",
-                    t.getDate()), t.getText(),
-                    t.getTag().getName(),
-                    FmtUtil.currency(t.getAmount()));
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            final LayoutInflater inflater = LayoutInflater.from(context);
+            final View view = inflater.inflate(R.layout.overviewcategoryrow, parent, false);
+            populateView(context, view, cursor);
+            return view;
         }
-    }
 
-    private void addTransaction(String date, String text, String category,
-                                String amount) {
-        TableLayout transactions = (TableLayout) findViewById(R.id.
-                transactionTableLayout);
-        TableRow tr = new TableRow(this);
-        TextView tv = new TextView(this);
-        TableRow.LayoutParams tvParams = new TableRow.LayoutParams(0, TableRow.
-                LayoutParams.WRAP_CONTENT,
-                1f);
-        tv.setText(date);
-        tv.setLayoutParams(tvParams);
-        tv.setTextColor(Color.WHITE);
-        tr.addView(tv);
-        tv = new TextView(this);
-        tv.setText(text);
-        tv.setLayoutParams(tvParams);
-        tv.setTextColor(Color.WHITE);
-        tr.addView(tv);
-        tv = new TextView(this);
-        tv.setText(category);
-        tv.setLayoutParams(tvParams);
-        tv.setTextColor(Color.WHITE);
-        tr.addView(tv);
-        tv = new TextView(this);
-        tv.setText(amount);
-        tv.setLayoutParams(tvParams);
-        tv.setTextColor(Color.WHITE);
-        tr.addView(tv);
-        transactions.addView(tr, 4);
-    }
-
-    private void populateCategories(List<AggregatedTag> tags) {
-        TextView category1 = (TextView) findViewById(R.id.top3_category_1);
-        TextView category2 = (TextView) findViewById(R.id.top3_category_2);
-        TextView category3 = (TextView) findViewById(R.id.top3_category_3);
-        TextView amount1 = (TextView) findViewById(R.id.top3_amount_1);
-        TextView amount2 = (TextView) findViewById(R.id.top3_amount_2);
-        TextView amount3 = (TextView) findViewById(R.id.top3_amount_3);
-        if (tags != null && tags.size() == 3) {
-            category1.setText(tags.get(0).getName());
-            amount1.setText(FmtUtil.currency(tags.get(0).getAmount()));
-            category2.setText(tags.get(1).getName());
-            amount2.setText(FmtUtil.currency(tags.get(1).getAmount()));
-            category3.setText(tags.get(2).getName());
-            amount3.setText(FmtUtil.currency(tags.get(2).getAmount()));
-        } else {
-            category1.setText(null);
-            amount1.setText(null);
-            category2.setText(null);
-            amount2.setText(null);
-            category3.setText(null);
-            amount3.setText(null);
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            populateView(context, view, cursor);
         }
+
+        private void populateView(Context context, View view, Cursor cursor) {
+            String tag = cursor.getString(cursor.getColumnIndex("tag"));
+            String consumption = cursor.getString(cursor.getColumnIndex("consumption"));
+
+            ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
+            TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
+            TextView tv_consumption = (TextView) view.findViewById(R.id.overview_textview_consumption);
+
+            image.setImageDrawable(null);
+            tv_tag.setText(null);
+            tv_consumption.setText(null);
+
+            if(tag != null) {
+                tv_tag.setText(tag);
+                image.setImageDrawable(getImageId(context, cursor));
+            }
+
+            if(consumption != null) {
+                tv_tag.setText(consumption);
+            }
+        }
+
+        private Drawable getImageId(Context context, Cursor cursor) {
+        final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
+        if (imageId > 0) {
+            return context.getResources().getDrawable(imageId);
+        }
+        return null;
+    }
     }
 
     @Override

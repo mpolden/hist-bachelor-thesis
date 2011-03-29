@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:padding="6dip"
+              android:orientation="vertical">
+    <LinearLayout android:layout_height="fill_parent" android:layout_width="34dip" android:orientation="horizontal">
+        <ImageView android:id="@+id/overview_imageview_category" android:layout_width="wrap_content"
+                   android:layout_height="fill_parent"
+                   android:layout_marginRight="6dip"/>
+        <TextView android:id="@+id/overview_textview_tag" android:layout_weight="1"
+                  android:layout_width="0dip" android:padding="3dip"
+                  style="@style/DefaultTextFont"></TextView>
+        <TextView android:id="@+id/overview_textview_consumption" android:layout_weight="1"
+                  android:layout_width="0dip" android:padding="3dip"
+                  style="@style/DefaultTextFont"></TextView>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
+    </LinearLayout>
 </LinearLayout>
