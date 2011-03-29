@@ -7,7 +7,9 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,6 +47,23 @@ public class GsonUtilTest {
             add(t);
         }};
         List<Transaction> actual = GsonUtil.parseTransactions(json);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testParseMap() {
+        final List<Map<String, String>> expected = new ArrayList<Map<String, String>>() {{
+            add(new HashMap<String, String>() {{
+                put("count", "6");
+                put("tag", "Transport");
+            }});
+            add(new HashMap<String, String>() {{
+                put("count", "1");
+                put("tag", "Helse");
+            }});
+        }};
+        final String json = "[{\"count\":6,\"tag\":\"Transport\"},{\"count\":1,\"tag\":\"Helse\"}]";
+        final List<Map<String, String>> actual = GsonUtil.parseMap(json);
         assertEquals(expected, actual);
     }
 }

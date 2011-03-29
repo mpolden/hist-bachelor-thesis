@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class GsonUtil {
 
@@ -88,6 +89,19 @@ public class GsonUtil {
      */
     public static List<Transaction> parseTransactions(final String json) {
         final Type listType = new TypeToken<List<Transaction>>() {
+        }.getType();
+        try {
+            return gson.fromJson(json, listType);
+        } catch (JsonSyntaxException e) {
+            Log.e(TAG, "JsonSyntaxException", e);
+        } catch (JsonParseException e) {
+            Log.e(TAG, "JsonParseException", e);
+        }
+        return null;
+    }
+
+    public static List<Map<String, String>> parseMap(final String json) {
+        final Type listType = new TypeToken<List<Map<String, String>>>() {
         }.getType();
         try {
             return gson.fromJson(json, listType);
