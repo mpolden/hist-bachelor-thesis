@@ -3,101 +3,13 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:weightSum="100" android:orientation="vertical">
-    <TableLayout android:layout_width="fill_parent"
-                 android:layout_height="fill_parent" android:layout_weight="50"
-                 android:stretchColumns="1">
-        <View android:layout_height="2dip" android:background="#FF909090"/>
-        <TableRow>
-            <TextView android:text="Top 3 Categories" android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"/>
-            <TextView android:text="@string/transaction_amount"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <View android:layout_height="2dip" android:background="#FF909090"/>
-        <TableRow>
-            <TextView android:id="@+id/top3_category_1"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:id="@+id/top3_amount_1"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:id="@+id/top3_category_2"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:id="@+id/top3_amount_2"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:id="@+id/top3_category_3"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-            <TextView android:id="@+id/top3_amount_3"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <View android:layout_height="2dip" android:background="#FF909090"/>
-        <TableRow>
-            <TextView android:text="@string/transaction_average"
-                      android:padding="3dip" android:textStyle="bold"
-                      style="@style/DefaultTextFont"/>
-        </TableRow>
-        <View android:layout_height="2dip" android:background="#FF909090"/>
-        <TableRow>
-            <TextView android:text="@string/per_day" android:padding="3dip"
-                      style="@style/DefaultTextFont"/>
-            <TextView android:id="@+id/average_day"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:text="@string/per_week" android:padding="3dip"
-                      style="@style/DefaultTextFont"/>
-            <TextView android:id="@+id/average_week"
-                      android:padding="3dip" style="@style/DefaultTextFont"/>
-        </TableRow>
-        <View android:layout_height="2dip" android:background="#FF909090"/>
+    <ListView android:id="@id/android:list" android:layout_width="fill_parent"
+              android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
+              android:divider="#FFFFFF" android:dividerHeight="2px"/>
 
-    </TableLayout>
-    <FrameLayout android:layout_width="fill_parent"
-                 android:layout_height="fill_parent" android:layout_weight="50">
-        <ScrollView android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:fillViewport="true">
-            <TableLayout android:layout_width="fill_parent"
-                         android:layout_height="fill_parent"
-                         android:stretchColumns="1"
-                         android:id="@+id/transactionTableLayout">
-                <TableRow>
-                    <TextView android:text="@string/last_transactions"
-                              android:padding="3dip" android:textStyle="bold"
-                              style="@style/DefaultTextFont"/>
-                </TableRow>
-                <View android:layout_height="2dip"
-                      android:background="#FF909090"/>
-                <TableRow>
-                    <TextView android:layout_weight="1"
-                              android:layout_width="0dip"
-                              android:text="@string/transaction_date"
-                              android:padding="3dip" android:textStyle="bold"
-                              style="@style/DefaultTextFont"/>
-                    <TextView android:layout_weight="1"
-                              android:layout_width="0dip"
-                              android:text="Text" android:padding="3dip"
-                              android:textStyle="bold"
-                              style="@style/DefaultTextFont"/>
-                    <TextView android:layout_weight="1"
-                              android:layout_width="0dip"
-                              android:text="@string/category"
-                              android:padding="3dip" android:textStyle="bold"
-                              style="@style/DefaultTextFont"/>
-                    <TextView android:layout_weight="1"
-                              android:layout_width="0dip"
-                              android:text="@string/transaction_amount"
-                              android:padding="3dip" android:textStyle="bold"
-                              style="@style/DefaultTextFont"/>
-                </TableRow>
-                <View android:layout_height="2dip"
-                      android:background="#FF909090"/>
-
-            </TableLayout>
-        </ScrollView>
-    </FrameLayout>
+    <Button android:text="New transaction"
+            android:id="@+id/button_new_transaction" android:layout_weight="0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
