@@ -1,41 +1,26 @@
 package controllers;
 
 import models.Transaction;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import play.db.jpa.JPA;
 import play.modules.search.Search;
 import play.mvc.Controller;
 
 import javax.persistence.Query;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionTags extends Controller {
 
     private static final Logger logger = Logger.getLogger(
             TransactionTags.class.getName());
 
-    private static String firstWord(String s) {
-        if (s != null) {
-            final String[] words = s.split(" ");
-            if (words.length > 0) {
-                return words[0];
-            }
-        }
-        return null;
-    }
-
-    private static boolean renderTag(List<Object> result) {
-        if (!result.isEmpty()) {
-            renderText(result.get(0) + " " + result.get(1));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static void suggest(String body) {
-        if (body != null) {
+        List<Map<String, String>> result = Collections.emptyList();
+        if (body != null && body.length() > 0) {
             play.modules.search.Query q = Search.search(String.format("text:(%s)", body), Transaction.class);
             List<Long> ids = q.fetchIds();
             Query query = JPA.em().createQuery(
@@ -45,7 +30,11 @@ public class TransactionTags extends Controller {
                             " group by thetag.name order by count(*) desc"
             );
             query.setParameter("ids", ids);
-            renderJSON(query.getResultList());
+            result = query.getResultList();
+            if (result.isEmpty()) {
+                logger.log(Level.WARN, String.format("Could not find any suggestions for: %s", body));
+            }
         }
+        renderJSON(result);
     }
 }
