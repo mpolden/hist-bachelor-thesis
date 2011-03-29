@@ -28,7 +28,6 @@ public class OverviewActivity extends ListActivity {
     private Transactions db;
     private CategoryAdapter adapter;
     private Cursor cursor;
-    private List<AggregatedTag> tags;
 
 
     @Override
@@ -36,7 +35,7 @@ public class OverviewActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursor();
+        this.cursor = db.getCursorTags();
         this.adapter = new CategoryAdapter(this, cursor);
         setListAdapter(adapter);
 
@@ -49,7 +48,7 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                tags = db.getAggregatedTags(10);
+                cursor = db.getCursorTags();
                 runOnUiThread(handler);
             }
         }).start();
@@ -85,7 +84,7 @@ public class OverviewActivity extends ListActivity {
 
         private void populateView(Context context, View view, Cursor cursor) {
             String tag = cursor.getString(cursor.getColumnIndex("tag"));
-            String consumption = cursor.getString(cursor.getColumnIndex("consumption"));
+            String consumption = cursor.getString(cursor.getColumnIndex("sum"));
 
             ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
             TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
@@ -101,7 +100,7 @@ public class OverviewActivity extends ListActivity {
             }
 
             if(consumption != null) {
-                tv_tag.setText(consumption);
+                tv_consumption.setText(consumption);
             }
         }
 
@@ -117,6 +116,9 @@ public class OverviewActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         db.close();
     }
 }
