@@ -15,66 +15,31 @@ import no.kantega.android.afp.utils.GsonUtil;
 import no.kantega.android.afp.utils.HttpUtil;
 import no.kantega.android.afp.utils.Prefs;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class EditTransactionActivity extends Activity {
 
     private static final String TAG = EditTransactionActivity.class.
             getSimpleName();
+    private static final int DATE_DIALOG_ID = 0;
     private Transactions db;
-    private List<String> categories;
-    private ArrayAdapter<String> adapter;
+    //private List<String> categories;
+    private ArrayAdapter<TransactionTag> adapter;
     private Transaction t;
-    private String selectedTransactionTag;
+    private TransactionTag selectedTag;
     private int pickYear;
     private int pickMonth;
     private int pickDay;
-    private static final int DATE_DIALOG_ID = 0;
     private EditText text;
     private Button date;
     private EditText amount;
     private Spinner category;
     private TextView suggestedTag;
     private String suggestUrl;
-    private final View.OnClickListener editTransactionButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            TransactionTag ttag = null;
-            selectedTransactionTag = category.getSelectedItem() == null ?
-                    null : category.getSelectedItem().toString();
-            if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
-                ttag = new TransactionTag();
-                ttag.setName(selectedTransactionTag);
-            }
-            if (t.isInternal()) {
-                boolean editTransactionOk = true;
-                Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
-                if (FmtUtil.isNumber(amount.getText().toString())) {
-                    t.setAmount(Double.parseDouble(amount.getText().toString()));
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.invalid_amount,
-                            Toast.LENGTH_LONG).show();
-                    editTransactionOk = false;
-                }
-                if (editTransactionOk) {
-                    t.setText(text.getText().toString());
-                    t.setTag(ttag);
-                    t.setDate(d);
-                    t.setDirty(true);
-                    db.update(t);
-                    Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                            Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            } else {
-                t.setTag(ttag);
-                t.setDirty(true);
-                db.update(t);
-                Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
-    };
+    private TransactionTag untagged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +49,46 @@ public class EditTransactionActivity extends Activity {
         t = (Transaction) extras.getSerializable("transaction");
         this.db = new Transactions(getApplicationContext());
         Button editButton = (Button) findViewById(R.id.edittransaction_button_edittransaction);
-        editButton.setOnClickListener(editTransactionButtonListener);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransactionTag tag = null;
+                if (!selectedTag.equals(untagged)) {
+                    tag = selectedTag;
+                }
+                if (t.isInternal()) {
+                    boolean editTransactionOk = true;
+                    Date d = FmtUtil.stringToDate("yyyy-MM-dd", String.format("%s-%s-%s", pickYear, pickMonth + 1, pickDay));
+                    if (FmtUtil.isNumber(amount.getText().toString())) {
+                        t.setAmount(Double.parseDouble(amount.getText().toString()));
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.invalid_amount,
+                                Toast.LENGTH_LONG).show();
+                        editTransactionOk = false;
+                    }
+                    if (editTransactionOk) {
+                        t.setText(text.getText().toString());
+                        t.setTag(tag);
+                        t.setDate(d);
+                        t.setDirty(true);
+                        db.update(t);
+                        Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                } else {
+                    t.setTag(tag);
+                    t.setDirty(true);
+                    db.update(t);
+                    Toast.makeText(getApplicationContext(), R.string.transaction_updated, Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        });
         setupViews();
         checkInternal();
         this.suggestUrl = Prefs.getProperties(getApplication()).get("suggestTag").toString();
+        this.untagged = new TransactionTag(getResources().getString(R.string.not_tagged));
     }
 
     @Override
@@ -97,17 +98,12 @@ public class EditTransactionActivity extends Activity {
                 FmtUtil.trimTransactionText(t.getText()));
     }
 
-    private void updateSpinnerPosition(String tag) {
-        int spinnerPosition;
-        if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
-            spinnerPosition = adapter.getPosition(selectedTransactionTag);
-        } else if (selectedTransactionTag == null || selectedTransactionTag.equals("Not tagged") && tag != null) {
-            spinnerPosition = adapter.getPosition(tag);
-            selectedTransactionTag = tag;
+    private void updateSpinnerPosition(TransactionTag t) {
+        if (t == null) {
+            category.setSelection(adapter.getPosition(untagged));
         } else {
-            spinnerPosition = adapter.getPosition("Not tagged");
+            category.setSelection(adapter.getPosition(t));
         }
-        category.setSelection(spinnerPosition);
     }
 
     private void setupViews() {
@@ -130,18 +126,13 @@ public class EditTransactionActivity extends Activity {
         pickMonth = c.get(Calendar.MONTH);
         pickDay = c.get(Calendar.DAY_OF_MONTH);
         updateDisplay();
-        fillCategoryList();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        adapter = new ArrayAdapter<TransactionTag>(this, android.R.layout.simple_spinner_item, db.getTags());
+        adapter.add(untagged);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new MyOnItemSelectedListener());
-        selectedTransactionTag = t.getTag().getName();
-        if (selectedTransactionTag != null && selectedTransactionTag.length() > 0 &&
-                !selectedTransactionTag.equals("Not tagged")) {
-            category.setSelection(adapter.getPosition(selectedTransactionTag));
-        } else {
-            category.setSelection(adapter.getPosition("Not tagged"));
-        }
+        selectedTag = t.getTag();
+        updateSpinnerPosition(selectedTag);
     }
 
     private void checkInternal() {
@@ -179,23 +170,16 @@ public class EditTransactionActivity extends Activity {
         }
     };
 
-    private void fillCategoryList() {
-        categories = new ArrayList<String>();
-        categories.add("Not tagged");
-        for (TransactionTag tag : db.getTags()) {
-            categories.add(tag.getName());
-        }
-    }
-
     private class MyOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {
-            if (selectedTransactionTag != null && !selectedTransactionTag.equals("Not tagged")) {
-                selectedTransactionTag = parent.getItemAtPosition(pos).toString();
+            /*if (selectedTag != null && !selectedTag.equals("Not tagged")) {
+                selectedTag = parent.getItemAtPosition(pos).toString();
             } else {
-                selectedTransactionTag = null;
-            }
+                selectedTag = null;
+            }*/
+            selectedTag = (TransactionTag) parent.getItemAtPosition(pos);
         }
 
         public void onNothingSelected(AdapterView parent) {
@@ -222,7 +206,7 @@ public class EditTransactionActivity extends Activity {
                 if (!result.isEmpty()) {
                     final String tag = result.get(0).get("tag");
                     suggestedTag.setText(tag);
-                    updateSpinnerPosition(tag);
+                    updateSpinnerPosition(new TransactionTag(tag));
                 }
                 updateSpinnerPosition(null);
             }

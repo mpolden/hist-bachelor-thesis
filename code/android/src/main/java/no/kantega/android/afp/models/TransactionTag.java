@@ -10,7 +10,7 @@ public class TransactionTag implements Serializable {
 
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(unique = true)
+    @DatabaseField(unique = true, canBeNull = false)
     private String name;
     @DatabaseField
     private int imageId;
@@ -51,13 +51,17 @@ public class TransactionTag implements Serializable {
         if (this == o) return true;
         if (!(o instanceof TransactionTag)) return false;
         TransactionTag that = (TransactionTag) o;
-        if (name != null ? !name.equals(that.name) : that.name != null)
-            return false;
+        if (!name.equals(that.name)) return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
