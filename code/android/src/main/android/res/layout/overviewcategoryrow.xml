@@ -13,11 +13,11 @@
         </LinearLayout>
         <TextView android:id="@+id/overview_textview_tag" android:layout_weight="1"
                   android:layout_width="0dip" android:padding="3dip"
-                  style="@style/DefaultTextFont" android:text="Category"></TextView>
+                  style="@style/DefaultTextFont" android:text="Category"/>
         <TextView android:id="@+id/overview_textview_consumption" android:layout_weight="1"
                   android:layout_width="0dip" android:padding="3dip"
-                  style="@style/DefaultTextFont"></TextView>
+                  style="@style/DefaultTextFont"/>
         <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                   android:src="@drawable/arrowright"></ImageView>
+                   android:src="@drawable/arrowright"/>
     </LinearLayout>
 </LinearLayout>
