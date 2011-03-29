@@ -10,13 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import no.kantega.android.afp.controllers.Transactions;
-import no.kantega.android.afp.models.AggregatedTag;
-import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.Register;
-
-import java.util.List;
 
 public class OverviewActivity extends ListActivity {
 
@@ -101,23 +100,23 @@ public class OverviewActivity extends ListActivity {
             tv_tag.setText(null);
             tv_consumption.setText(null);
 
-            if(tag != null) {
+            if (tag != null) {
                 tv_tag.setText(tag);
                 image.setImageDrawable(getImageId(context, cursor));
             }
 
-            if(consumption != null) {
+            if (consumption != null) {
                 tv_consumption.setText(consumption);
             }
         }
 
         private Drawable getImageId(Context context, Cursor cursor) {
-        final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
-        if (imageId > 0) {
-            return context.getResources().getDrawable(imageId);
+            final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
+            if (imageId > 0) {
+                return context.getResources().getDrawable(imageId);
+            }
+            return null;
         }
-        return null;
-    }
     }
 
     @Override
