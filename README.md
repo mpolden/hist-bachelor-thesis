@@ -77,7 +77,7 @@ To start a shell on the emulator, use the following command:
 
 To remove the existing database (shouldn't be needed in most cases):
 
-    rm /data/data/no.kantega.android/databases/app.db
+    rm /data/data/no.kantega.android.afp/databases/app.db
 
 Ubuntu, adb and running on a real device
 ----------------------------------------
