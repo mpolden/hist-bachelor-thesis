@@ -259,8 +259,8 @@ public class Transactions {
         return cursor;
     }
 
-    public Cursor getCursorTags(int month, int year) {
-        final String dateQuery = String.format("%d-%d-%%", year, month);
+    public Cursor getCursorTags(String month, String year) {
+        final String dateQuery = String.format("%s-%s-%%", year, month);
         final Cursor cursor = helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
