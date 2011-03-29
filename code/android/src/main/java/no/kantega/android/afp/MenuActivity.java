@@ -13,25 +13,13 @@ import android.widget.TextView;
 
 public class MenuActivity extends TabActivity {
 
-    private boolean customTitleSupported;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         setContentView(R.layout.main);
 
-        customTitleBar(getText(R.string.app_name).toString());
-        ImageButton addButton = (ImageButton) findViewById(R.id.addButton);
-        addButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent().setClass(getApplicationContext(), AddTransactionActivity.class);
-                startActivity(intent);
-
-            }
-        });
         setupTabs();
     }
 
@@ -84,16 +72,5 @@ public class MenuActivity extends TabActivity {
 
     }
 
-    private void customTitleBar(String left) {
-        // set up custom title
-        if (customTitleSupported) { // Check if custom title is supported
-            getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                    R.layout.titlebar);
-            TextView titleTvLeft = (TextView) findViewById(R.id.titleTvLeft);
-            titleTvLeft.setText(left);
 
-            ProgressBar titleProgressBar = (ProgressBar) findViewById(R.id.leadProgressBar);
-            titleProgressBar.setVisibility(View.GONE);
-        }
-    }
 }
