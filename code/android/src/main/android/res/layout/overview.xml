@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:weightSum="100" android:orientation="vertical">    "
-    <ListView android:id="@id/android:list" android:layout_width="fill_parent"
-              android:layout_height="wrap_content" android:cacheColorHint="@android:color/transparent"
-              android:divider="#FFFFFF" android:dividerHeight="0px"/>
-
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:focusable="true" android:focusableInTouchMode="true">
+    <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
+                 android:layout_height="wrap_content"
+                 android:stretchColumns="1">
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="0dip"
+                      android:orientation="horizontal">
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+                    android:text="&lt;-" android:layout_weight="1"/>
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+                    android:text="Mars 2011" android:layout_weight="2"/>
+            <Button android:layout_height="wrap_content" android:layout_width="wrap_content"
+                    android:text="-&gt;" android:layout_weight="1"/>
+        </LinearLayout>
+        <ListView android:id="@id/android:list" android:layout_weight="1" android:layout_width="0dip"
+                  android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
+                  android:divider="#FFFFFF" android:dividerHeight="0px"/>
+    </TableLayout>
     <Button android:text="New transaction"
             android:id="@+id/button_new_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
