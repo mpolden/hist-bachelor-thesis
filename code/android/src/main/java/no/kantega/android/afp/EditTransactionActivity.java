@@ -11,13 +11,11 @@ import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.GsonUtil;
 import no.kantega.android.afp.utils.HttpUtil;
 import no.kantega.android.afp.utils.Prefs;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class EditTransactionActivity extends Activity {
 
@@ -220,10 +218,14 @@ public class EditTransactionActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if (s != null) {
-                suggestedTag.setText(s);
+                List<Map<String, String>> result = GsonUtil.parseMap(s);
+                if (!result.isEmpty()) {
+                    final String tag = result.get(0).get("tag");
+                    suggestedTag.setText(tag);
+                    updateSpinnerPosition(tag);
+                }
+                updateSpinnerPosition(null);
             }
-            updateSpinnerPosition(s != null &&
-                    s.trim().length() == 0 ? null : s);
         }
     }
 }
