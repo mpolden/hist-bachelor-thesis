@@ -29,7 +29,12 @@ public class ResourceHelper extends Activity {
     }
 
     public static Drawable getImage(Context context, String tag) {
-        return context.getResources().getDrawable(imageIds.get(tag));
+        final Integer imageId = imageIds.get(tag);
+        if (imageId != null) {
+            return context.getResources().getDrawable(imageId);
+        } else {
+            return context.getResources().getDrawable(R.drawable.tag_warning);
+        }
     }
 
 }
