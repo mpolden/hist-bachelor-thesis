@@ -6,7 +6,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
-import no.kantega.android.afp.models.Transaction;
-import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.Register;
+import no.kantega.android.afp.utils.ResourceHelper;
 
 import java.util.Calendar;
 
@@ -224,23 +222,14 @@ public class OverviewActivity extends ListActivity {
 
             if (tag != null) {
                 tv_tag.setText(tag);
-                image.setImageDrawable(getImageId(context, cursor));
             } else {
                 tv_tag.setText(R.string.not_tagged);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.tag_warning));
             }
+            image.setImageDrawable(ResourceHelper.getImage(context, tag));
 
             if (consumption != null) {
                 tv_consumption.setText(FmtUtil.currency(consumption));
             }
-        }
-
-        private Drawable getImageId(Context context, Cursor cursor) {
-            final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
-            if (imageId > 0) {
-                return context.getResources().getDrawable(imageId);
-            }
-            return null;
         }
     }
 

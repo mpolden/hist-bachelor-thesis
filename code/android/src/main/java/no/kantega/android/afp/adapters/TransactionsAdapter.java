@@ -2,7 +2,6 @@ package no.kantega.android.afp.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import no.kantega.android.afp.R;
 import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.ResourceHelper;
 
 import java.util.Date;
 
@@ -57,18 +57,11 @@ public class TransactionsAdapter extends CursorAdapter {
         }
         if (tag != null) {
             tv_tag.setText(tag);
-            image.setImageDrawable(getImageId(context, cursor));
+            image.setImageDrawable(ResourceHelper.getImage(context, tag));
         }
         if (amount != null) {
             tv_amount.setText(FmtUtil.currency(amount));
         }
     }
 
-    private Drawable getImageId(Context context, Cursor cursor) {
-        final int imageId = cursor.getInt(cursor.getColumnIndex("imageId"));
-        if (imageId > 0) {
-            return context.getResources().getDrawable(imageId);
-        }
-        return null;
-    }
 }
