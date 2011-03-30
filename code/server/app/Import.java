@@ -18,7 +18,6 @@ import java.util.Date;
 @OnApplicationStart
 public class Import extends Job {
 
-
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final String FIXTURES = "fixtures-local.yml";
     private static final String FIXTURES_CSV = "/conf/fixture-transactions-full.csv";

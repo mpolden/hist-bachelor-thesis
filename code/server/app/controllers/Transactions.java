@@ -4,9 +4,8 @@ import com.google.gson.JsonArray;
 import models.Transaction;
 import models.TransactionTag;
 import models.User;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.apache.lucene.queryParser.QueryParser;
+import play.Logger;
 import play.db.jpa.JPA;
 import play.modules.search.Search;
 import play.mvc.Controller;
@@ -18,9 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transactions extends Controller {
-
-    private static Logger logger = Logger.getLogger(
-            Transactions.class.getName());
 
     @SuppressWarnings("unchecked")
     private static TransactionTag getSuggestedTag(String text) {
@@ -52,17 +48,14 @@ public class Transactions extends Controller {
                 if (t.tag == null) {
                     TransactionTag suggested = getSuggestedTag(t.text);
                     if (suggested != null) {
-                        logger.log(Level.INFO, String.format("Set suggested tag to %s for transaction text: %s",
-                                suggested.name, t.text));
+                        Logger.info("Set suggested tag to %s for transaction text: %s", suggested.name, t.text);
                         t.tag = suggested;
                         t.save();
                     }
                 }
             }
         } else {
-            logger.log(Level.WARN,
-                    "Could not find any transactions for user with registrationId: " +
-                            registrationId);
+            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
@@ -75,9 +68,7 @@ public class Transactions extends Controller {
                         "order by date desc, timestamp desc",
                 timestamp, false, registrationId).fetch();
         if (transactions.isEmpty()) {
-            logger.log(Level.WARN,
-                    "Could not find any transactions for user with registrationId: " +
-                            registrationId);
+            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
@@ -92,8 +83,7 @@ public class Transactions extends Controller {
             }
             renderJSON(GsonUtil.makeJSON(updated));
         } else {
-            logger.log(Level.WARN, "Could not find user with registrationId: " +
-                    registrationId);
+            Logger.warn("Could not find user with registrationId: %s", registrationId);
         }
     }
 }

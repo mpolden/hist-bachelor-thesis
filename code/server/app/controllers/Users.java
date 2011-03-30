@@ -1,13 +1,10 @@
 package controllers;
 
 import models.User;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 import play.mvc.Controller;
 
 public class Users extends Controller {
-
-    private static Logger logger = Logger.getLogger(Users.class.getName());
 
     public static void register(String registrationId) {
         if (registrationId != null) {
@@ -17,12 +14,11 @@ public class Users extends Controller {
                 user.deviceId = registrationId;
                 user.save();
             } else {
-                logger.log(Level.WARN,
-                        "User already registered, registrationId: " +
-                                registrationId);
+                Logger.warn("User already registered, registrationId: %s",
+                        registrationId);
             }
         } else {
-            logger.log(Level.INFO, "Called without registrationId");
+            Logger.info("Called without registrationId");
         }
     }
 
@@ -31,12 +27,12 @@ public class Users extends Controller {
             User user = User.find("registrationId", registrationId).first();
             if (user != null) {
                 user = user.delete();
-                logger.log(Level.INFO, "Deleted user: " + user.deviceId);
+                Logger.info("Deleted user: %s", user.deviceId);
             } else {
-                logger.log(Level.WARN, "User not found: " + registrationId);
+                Logger.warn("User not found: %s", registrationId);
             }
         } else {
-            logger.log(Level.INFO, "Called without registrationId");
+            Logger.info("Called without registrationId");
         }
     }
 }

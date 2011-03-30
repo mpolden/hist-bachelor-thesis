@@ -1,8 +1,7 @@
 package controllers;
 
 import models.Transaction;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 import play.db.jpa.JPA;
 import play.modules.search.Search;
 import play.mvc.Controller;
@@ -13,9 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TransactionTags extends Controller {
-
-    private static final Logger logger = Logger.getLogger(
-            TransactionTags.class.getName());
 
     @SuppressWarnings("unchecked")
     public static void suggest(String body) {
@@ -32,7 +28,7 @@ public class TransactionTags extends Controller {
             query.setParameter("ids", ids);
             result = query.getResultList();
             if (result.isEmpty()) {
-                logger.log(Level.WARN, String.format("Could not find any suggestions for: %s", body));
+                Logger.warn("Could not find any suggestions for: %s", body);
             }
         }
         renderJSON(result);

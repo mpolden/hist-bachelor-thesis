@@ -3,8 +3,7 @@ package controllers;
 import com.google.gson.JsonArray;
 import models.Transaction;
 import models.User;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 import play.Play;
 import play.libs.WS;
 import play.mvc.Controller;
@@ -16,8 +15,6 @@ import java.util.List;
 
 public class C2DM extends Controller {
 
-    private static Logger logger = Logger.getLogger(
-            C2DM.class.getName());
     private static final String C2DM_PUSH_TOKEN = Play.configuration.
             getProperty("c2dm.push.token");
     private static final String C2DM_PUSH_URL = Play.configuration.
@@ -25,32 +22,29 @@ public class C2DM extends Controller {
 
     public static void c2dm(String registrationId, JsonArray json) {
         if (C2DM_PUSH_TOKEN == null) {
-            logger.log(Level.ERROR,
-                    "Missing c2dm.push.token i application.conf");
+            Logger.error("Missing c2dm.push.token i application.conf");
             return;
         }
         if (C2DM_PUSH_URL == null) {
-            logger.log(Level.ERROR,
-                    "Missing c2dm.push.url i application.conf");
+            Logger.error("Missing c2dm.push.url i application.conf");
             return;
         }
         if (json == null) {
-            logger.log(Level.ERROR, "Failed to bind JsonArray");
+            Logger.error("Failed to bind JsonArray");
             return;
         }
         final List<Transaction> transactions = GsonUtil.parseTransactions(json);
         final List<Transaction> updated = new ArrayList<Transaction>();
         final User user = User.find("deviceId", registrationId).first();
         if (user == null) {
-            logger.log(Level.ERROR, "No user found with deviceId: " + registrationId);
+            Logger.error("No user found with deviceId: %s", registrationId);
             return;
         }
         for (Transaction t : transactions) {
             updated.add(ModelHelper.saveOrUpdate(t, user));
         }
         if (updated.isEmpty()) {
-            logger.log(Level.ERROR,
-                    "No transactions were saved");
+            Logger.info("No transactions were updated");
             return;
         }
         WS.WSRequest request = WS.url(C2DM_PUSH_URL);
@@ -61,8 +55,7 @@ public class C2DM extends Controller {
         request.parameters.put("collapse_key", ",");
         WS.HttpResponse response = request.post();
         if (response.getStatus() != 200) {
-            logger.log(Level.ERROR, "Failed to send C2DM message: " +
-                    response.getString());
+            Logger.error("Failed to send C2DM message: %s", response.getString());
         }
     }
 }
