@@ -3,13 +3,9 @@ package utils;
 import models.Transaction;
 import models.TransactionTag;
 import models.User;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 
 public class ModelHelper {
-
-    private static Logger logger = Logger.getLogger(
-            ModelHelper.class.getName());
 
     public static TransactionTag saveOrUpdate(TransactionTag t) {
         if (t == null) {
@@ -28,8 +24,7 @@ public class ModelHelper {
 
     public static Transaction saveOrUpdate(Transaction t, User user) {
         if (!t.dirty) {
-            logger.log(Level.INFO,
-                    "Not saving non-dirty transaction with _id: " + t._id);
+            Logger.info("Not saving non-dirty transaction with _id: %s", t._id);
             return t;
         }
         if (t.id != null) {
