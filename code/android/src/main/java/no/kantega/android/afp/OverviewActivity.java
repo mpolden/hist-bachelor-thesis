@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.Register;
 
 import java.util.Calendar;
@@ -184,7 +185,7 @@ public class OverviewActivity extends ListActivity {
 
         private void populateView(Context context, View view, Cursor cursor) {
             String tag = cursor.getString(cursor.getColumnIndex("tag"));
-            String consumption = cursor.getString(cursor.getColumnIndex("sum"));
+            Double consumption = cursor.getDouble(cursor.getColumnIndex("sum"));
 
             ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
             TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
@@ -203,7 +204,7 @@ public class OverviewActivity extends ListActivity {
             }
 
             if (consumption != null) {
-                tv_consumption.setText(consumption);
+                tv_consumption.setText(FmtUtil.currency(consumption));
             }
         }
 
