@@ -234,6 +234,35 @@ public class Transactions {
     }
 
     /**
+     * Get a cursor that returns transactions for a given tag within the given month and year
+     *
+     * @param tag   Tag to filter on
+     * @param month Month to filter on
+     * @param year  Year to filter on
+     * @return Transactions
+     */
+    public Cursor getCursorTransactions(String tag, String month, String year) {
+        final String dateQuery = String.format("%s-%s-%%", year, month);
+        final String selection;
+        final String[] selectionArgs;
+        if (tag == null) {
+            selection = "tag IS NULL AND date LIKE ?";
+            selectionArgs = new String[]{dateQuery};
+        } else {
+            selection = "tag = ? AND date LIKE ?";
+            selectionArgs = new String[]{tag, dateQuery};
+        }
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "transactions " +
+                        "LEFT JOIN transactiontags " +
+                        "ON transactiontags.id = transactions.tag_id",
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
+                        "transactiontags.imageId as imageId"},
+                selection, selectionArgs, null, null, "date DESC, timestamp DESC", null);
+        return cursor;
+    }
+
+    /**
      * Retrieve total transaction count
      *
      * @return Transaction count

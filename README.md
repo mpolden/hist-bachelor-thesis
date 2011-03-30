@@ -143,18 +143,3 @@ Testing C2DM messages
 ---------------------
 Use the included bash script (code/c2dm-test.sh) to test C2DM messages. You
 will need the device ID and a message for the transaction.
-
-Tags
-----
-This is a list of the current tags and their associated image ID.
-
-Husholdning_7f02005e
-Mat_7f02004a
-Klær_7f0200be
-Fornøyelser_7f020036
-Transport_7f02000c
-Ferie_7f0200af
-Barn_7f02000c
-Helse_7f020077
-Sparing_7f02006b
-Annet_7f020038
