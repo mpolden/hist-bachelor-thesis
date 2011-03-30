@@ -78,7 +78,7 @@ public class Import extends Job {
         }
         t.internal = false;
         t.dirty = false;
-        t.timestamp = t.date != null ? t.date.getTime() : new Date().getTime();
+        t.timestamp = t.date.getTime();
         return t;
     }
 
