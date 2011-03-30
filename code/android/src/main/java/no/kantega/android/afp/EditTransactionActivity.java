@@ -119,7 +119,7 @@ public class EditTransactionActivity extends Activity {
         category = (Spinner) findViewById(R.id.edittransaction_spinner_category);
         suggestedTag = (TextView) findViewById(R.id.suggested_tag);
         text.setText(FmtUtil.trimTransactionText(t.getText()));
-        date.setText(FmtUtil.dateToString("yyyy-MM-dd", t.getDate()));
+        date.setText(FmtUtil.dateToString(DATE_FORMAT, t.getDate()));
         amount.setText(String.valueOf(t.getAmount()));
         date.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
