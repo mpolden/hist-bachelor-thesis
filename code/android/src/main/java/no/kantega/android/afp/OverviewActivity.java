@@ -74,9 +74,9 @@ public class OverviewActivity extends ListActivity {
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pickMonth > 0) {
+                if (pickMonth > 0) {
                     pickMonth -= 1;
-                } else if(pickMonth == 0) {
+                } else if (pickMonth == 0) {
                     pickYear -= 1;
                     pickMonth = 11;
                 }
@@ -87,9 +87,9 @@ public class OverviewActivity extends ListActivity {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pickMonth < 11) {
+                if (pickMonth < 11) {
                     pickMonth += 1;
-                } else if(pickMonth == 11) {
+                } else if (pickMonth == 11) {
                     pickYear += 1;
                     pickMonth = 0;
                 }
@@ -197,6 +197,9 @@ public class OverviewActivity extends ListActivity {
             if (tag != null) {
                 tv_tag.setText(tag);
                 image.setImageDrawable(getImageId(context, cursor));
+            } else {
+                tv_tag.setText(R.string.not_tagged);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.tag_warning));
             }
 
             if (consumption != null) {
