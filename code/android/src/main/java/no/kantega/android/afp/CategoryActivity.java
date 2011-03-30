@@ -1,11 +1,15 @@
 package no.kantega.android.afp;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
 
 public class CategoryActivity extends ListActivity {
 
@@ -29,6 +33,20 @@ public class CategoryActivity extends ListActivity {
         this.cursor = db.getCursorTransactions(tag, month, year);
         this.adapter = new TransactionsAdapter(this, cursor);
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Object o = l.getItemAtPosition(position);
+        if (o instanceof Cursor) {
+            Cursor cursor = (Cursor) o;
+            int transaction_id = cursor.getInt(cursor.getColumnIndex("_id"));
+            Transaction t = db.getById(transaction_id);
+            Intent intent;
+            intent = new Intent(getApplicationContext(), EditTransactionActivity.class);
+            intent.putExtra("transaction", t);
+            startActivity(intent);
+        }
     }
 
     @Override
