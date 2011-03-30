@@ -70,6 +70,32 @@ public class OverviewActivity extends ListActivity {
                 showDialog(DATE_DIALOG_ID);
             }
         });
+        Button minusButton = (Button) findViewById(R.id.button_overview_minus);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pickMonth > 0) {
+                    pickMonth -= 1;
+                } else if(pickMonth == 0) {
+                    pickYear -= 1;
+                    pickMonth = 11;
+                }
+                updateDisplay();
+            }
+        });
+        Button plusButton = (Button) findViewById(R.id.button_overview_plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pickMonth < 11) {
+                    pickMonth += 1;
+                } else if(pickMonth == 11) {
+                    pickYear += 1;
+                    pickMonth = 0;
+                }
+                updateDisplay();
+            }
+        });
         Button newTransactionButton = (Button) findViewById(R.id.button_new_transaction);
         newTransactionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +114,7 @@ public class OverviewActivity extends ListActivity {
     private void updateDisplay() {
         //pickDate.setText("Test");
         pickDate.setText(monthName[pickMonth] + " " + pickYear);
+        onResume();
 
     }
 
