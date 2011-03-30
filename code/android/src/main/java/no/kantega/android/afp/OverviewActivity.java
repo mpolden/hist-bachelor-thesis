@@ -38,7 +38,7 @@ public class OverviewActivity extends ListActivity {
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
-
+                
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
                     pickYear = year;
@@ -46,6 +46,7 @@ public class OverviewActivity extends ListActivity {
                     pickDay = dayOfMonth;
                     updateDisplay();
                 }
+                
             };
 
     @Override
@@ -127,6 +128,15 @@ public class OverviewActivity extends ListActivity {
                         pickYear, pickMonth, pickDay);
         }
         return null;
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {            
+            case DATE_DIALOG_ID:
+                ((DatePickerDialog) dialog).updateDate(pickYear, pickMonth, pickDay);
+                break;
+        }
     }
 
     private String getMonth() {
