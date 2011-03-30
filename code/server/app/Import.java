@@ -2,8 +2,7 @@ import models.Transaction;
 import models.TransactionTag;
 import models.User;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
@@ -19,7 +18,7 @@ import java.util.Date;
 @OnApplicationStart
 public class Import extends Job {
 
-    private static final Logger logger = Logger.getLogger(Import.class.getName());
+
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final String FIXTURES = "fixtures-local.yml";
     private static final String FIXTURES_CSV = "/conf/fixture-transactions-full.csv";
@@ -57,7 +56,7 @@ public class Import extends Job {
                     }
                 }
             } catch (IOException e) {
-                logger.log(Level.ERROR, e);
+                Logger.error(e, "IOException");
             } finally {
                 IOUtils.closeQuietly(reader);
             }
@@ -66,11 +65,14 @@ public class Import extends Job {
 
     private Transaction saveTransaction(String line) {
         final String[] s = line.split(FIELD_SEPARATOR);
+        final double amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
+        if (amount == 0) { // Skip incoming transactions
+            return null;
+        }
         final Transaction t = new Transaction();
-        final Date parsedDate = parseDate(s[FIELD_IDX_DATE]);
-        t.date = parsedDate != null ? parsedDate : new Date();
+        t.date = parseDate(s[FIELD_IDX_DATE]);
         t.text = FmtUtil.trimTransactionText(s[FIELD_IDX_TEXT]).trim();
-        t.amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
+        t.amount = amount;
         if (!"null".equals(s[FIELD_IDX_TAG])) {
             final TransactionTag tag = new TransactionTag();
             tag.name = s[FIELD_IDX_TAG];
@@ -87,8 +89,8 @@ public class Import extends Job {
         try {
             return dateFormat.parse(s);
         } catch (ParseException e) {
-            logger.log(Level.WARN, String.format("Failed to parse date: %s", s), e);
+            Logger.warn(e, "Failed to parse date: %s", e);
         }
-        return null;
+        return new Date();
     }
 }
