@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.*;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 public class MenuActivity extends TabActivity {
 
@@ -37,7 +33,7 @@ public class MenuActivity extends TabActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_categories:
-                Intent i = new Intent(getApplicationContext(), CategoryActivity.class);
+                Intent i = new Intent(getApplicationContext(), AddCategoryActivity.class);
                 startActivity(i);
                 break;
         }

@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.Register;
 
@@ -39,7 +41,7 @@ public class OverviewActivity extends ListActivity {
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
-                
+
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
                     pickYear = year;
@@ -47,7 +49,7 @@ public class OverviewActivity extends ListActivity {
                     pickDay = dayOfMonth;
                     updateDisplay();
                 }
-                
+
             };
 
     @Override
@@ -133,7 +135,7 @@ public class OverviewActivity extends ListActivity {
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
-        switch (id) {            
+        switch (id) {
             case DATE_DIALOG_ID:
                 ((DatePickerDialog) dialog).updateDate(pickYear, pickMonth, pickDay);
                 break;
@@ -173,6 +175,21 @@ public class OverviewActivity extends ListActivity {
             adapter.changeCursor(cursor);
         }
     };
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Object o = l.getItemAtPosition(position);
+        if (o instanceof Cursor) {
+            Cursor cursor = (Cursor) o;
+            String tag = cursor.getString(cursor.getColumnIndex("tag"));
+            Intent intent;
+            intent = new Intent(getApplicationContext(), CategoryActivity.class);
+            intent.putExtra("tag", tag);
+            intent.putExtra("year", getYear());
+            intent.putExtra("month", getMonth());
+            startActivity(intent);
+        }
+    }
 
     private class CategoryAdapter extends CursorAdapter {
 
