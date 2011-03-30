@@ -1,5 +1,7 @@
 package no.kantega.android.afp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.utils.Register;
+
+import java.util.Calendar;
 
 public class OverviewActivity extends ListActivity {
 
@@ -25,15 +26,76 @@ public class OverviewActivity extends ListActivity {
     private CategoryAdapter adapter;
     private Cursor cursor;
 
+    private static final int DATE_DIALOG_ID = 0;
+    private int pickYear;
+    private int pickMonth;
+    private int pickDay;
+    private Button pickDate;
+
+    private static final String[] monthName = {"Januar", "Februar", "Mars", "April",
+            "Mai", "Juni", "Juli", "August", "September", "Oktober",
+            "November", "Desember"};
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    pickYear = year;
+                    pickMonth = monthOfYear;
+                    pickDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
+
+        final Calendar c = Calendar.getInstance();
+        pickYear = c.get(Calendar.YEAR);
+        pickMonth = c.get(Calendar.MONTH);
+        pickDay = c.get(Calendar.DAY_OF_MONTH);
+
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursorTags("03", "2011");
+        this.cursor = db.getCursorTags(getMonth(), getYear());
         this.adapter = new CategoryAdapter(this, cursor);
         setListAdapter(adapter);
 
+        pickDate = (Button) findViewById(R.id.button_overview_pickDate);
+        pickDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+        Button minusButton = (Button) findViewById(R.id.button_overview_minus);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pickMonth > 0) {
+                    pickMonth -= 1;
+                } else if(pickMonth == 0) {
+                    pickYear -= 1;
+                    pickMonth = 11;
+                }
+                updateDisplay();
+            }
+        });
+        Button plusButton = (Button) findViewById(R.id.button_overview_plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pickMonth < 11) {
+                    pickMonth += 1;
+                } else if(pickMonth == 11) {
+                    pickYear += 1;
+                    pickMonth = 0;
+                }
+                updateDisplay();
+            }
+        });
         Button newTransactionButton = (Button) findViewById(R.id.button_new_transaction);
         newTransactionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +107,39 @@ public class OverviewActivity extends ListActivity {
             }
         });
 
+        updateDisplay();
         Register.handleRegistration(getApplicationContext());
+    }
+
+    private void updateDisplay() {
+        //pickDate.setText("Test");
+        pickDate.setText(monthName[pickMonth] + " " + pickYear);
+        onResume();
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this,
+                        mDateSetListener,
+                        pickYear, pickMonth, pickDay);
+        }
+        return null;
+    }
+
+    private String getMonth() {
+        String month = String.valueOf(pickMonth + 1);
+        if (month.length() < 2) {
+            month = "0" + month;
+        }
+        return month;
+    }
+
+    private String getYear() {
+        String year = String.valueOf(pickYear);
+        return year;
     }
 
     @Override
@@ -54,7 +148,7 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                cursor = db.getCursorTags("03", "2011");
+                cursor = db.getCursorTags(getMonth(), getYear());
                 runOnUiThread(handler);
             }
         }).start();
