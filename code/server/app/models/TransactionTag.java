@@ -12,7 +12,11 @@ public class TransactionTag extends Model {
     public String name;
     public int imageId;
 
+    public TransactionTag() {
+    }
+
     public TransactionTag(String name) {
         this.name = name;
     }
+
 }

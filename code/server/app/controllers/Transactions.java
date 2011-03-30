@@ -30,10 +30,6 @@ public class Transactions extends Controller {
         play.modules.search.Query q = Search.search(String.format("text:(%s)", QueryParser.escape(text)),
                 Transaction.class);
         List<Long> ids = q.fetchIds();
-        /*TransactionTag suggestion = TransactionTag.find("select tag from Transaction t" +
-                " join t.tag as tag" +
-                " where t.id in (?)" +
-                " group by tag.name order by count(*) desc", ids).first();*/
         Query query = JPA.em().createQuery(
                 "select thetag.name from Transaction t" +
                         " join t.tag as thetag" +
@@ -43,10 +39,7 @@ public class Transactions extends Controller {
         query.setParameter("ids", ids);
         query.setMaxResults(1);
         List<String> result = query.getResultList();
-        /*List<Map<String, String>> result = query.getResultList();
-        return null;*/
         return !result.isEmpty() ? ModelHelper.saveOrUpdate(new TransactionTag(result.get(0))) : null;
-        //return suggestion;
     }
 
     public static void all(String registrationId) {
@@ -56,10 +49,10 @@ public class Transactions extends Controller {
                         registrationId).fetch();
         if (!transactions.isEmpty()) {
             for (Transaction t : transactions) {
-                if (t.tag != null) {
+                if (t.tag == null) {
                     TransactionTag suggested = getSuggestedTag(t.text);
                     if (suggested != null) {
-                        logger.log(Level.INFO, String.format("Set suggested tag to %s for transacion text: %s",
+                        logger.log(Level.INFO, String.format("Set suggested tag to %s for transaction text: %s",
                                 suggested.name, t.text));
                         t.tag = suggested;
                         t.save();
