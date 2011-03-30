@@ -27,7 +27,6 @@ public class Import extends Job {
     private static final int FIELD_IDX_TEXT = 4;
     private static final int FIELD_IDX_AMOUNT = 5;
     private static final int FIELD_IDX_TAG = 7;
-    private static final int FIELD_IDX_IMAGE_ID = 8;
 
     public void doJob() {
         loadUsersFromFixture();
@@ -76,7 +75,6 @@ public class Import extends Job {
         if (!"null".equals(s[FIELD_IDX_TAG])) {
             final TransactionTag tag = new TransactionTag();
             tag.name = s[FIELD_IDX_TAG];
-            tag.imageId = Integer.parseInt(s[FIELD_IDX_IMAGE_ID], 16);
             t.tag = ModelHelper.saveOrUpdate(tag);
         }
         t.internal = false;

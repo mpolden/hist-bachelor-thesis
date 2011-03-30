@@ -21,7 +21,6 @@ public class ModelHelper {
         } else {
             tag = new TransactionTag();
             tag.name = t.name;
-            tag.imageId = t.imageId;
             tag.save();
             return tag;
         }

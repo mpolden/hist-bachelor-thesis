@@ -10,7 +10,6 @@ public class TransactionTag extends Model {
 
     @Column(unique = true)
     public String name;
-    public int imageId;
 
     public TransactionTag() {
     }
