@@ -97,7 +97,7 @@ public class Transactions {
      *
      * @param queryBuilder Query builder
      * @return List of transactions
-     * @throws java.sql.SQLException
+     * @throws java.sql.SQLException When error occurs
      */
     private List<Transaction> getAll(QueryBuilder<Transaction, Integer> queryBuilder) throws SQLException {
         queryBuilder.orderBy("date", false).orderBy("timestamp", false);
@@ -109,7 +109,7 @@ public class Transactions {
      *
      * @param queryBuilder Query builder
      * @return Latest transaction
-     * @throws java.sql.SQLException
+     * @throws java.sql.SQLException When error occurs
      */
     private Transaction get(QueryBuilder<Transaction, Integer> queryBuilder) throws SQLException {
         queryBuilder.orderBy("date", false).orderBy("timestamp", false).limit(1);

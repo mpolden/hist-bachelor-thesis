@@ -22,7 +22,6 @@ import java.util.Calendar;
 public class OverviewActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
-    private static final String SENDER_ID = "androidafp@gmail.com";
     private Transactions db;
     private CategoryAdapter adapter;
     private Cursor cursor;
@@ -37,7 +36,7 @@ public class OverviewActivity extends ListActivity {
             "Mai", "Juni", "Juli", "August", "September", "Oktober",
             "November", "Desember"};
 
-    private DatePickerDialog.OnDateSetListener mDateSetListener =
+    private final DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
 
                 public void onDateSet(DatePicker view, int year,
@@ -168,9 +167,8 @@ public class OverviewActivity extends ListActivity {
     private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            // Change to a fresh cursor, the old one will be automatically closed
-            Log.d(TAG, "Changed to a new cursor");
             adapter.changeCursor(cursor);
+            Log.d(TAG, "Changed to a new cursor");
         }
     };
 
