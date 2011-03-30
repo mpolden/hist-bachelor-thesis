@@ -37,7 +37,7 @@ public class TransactionsAdapter extends CursorAdapter {
         String date = cursor.getString(cursor.getColumnIndex("date"));
         String text = cursor.getString(cursor.getColumnIndex("text"));
         String tag = cursor.getString(cursor.getColumnIndex("tag"));
-        String amount = cursor.getString(cursor.getColumnIndex("amount"));
+        Double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
         ImageView image = (ImageView) view.findViewById(R.id.tag_icon);
         TextView tv_date = (TextView) view.findViewById(R.id.trow_tv_date);
         TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);
@@ -53,14 +53,14 @@ public class TransactionsAdapter extends CursorAdapter {
             tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
         }
         if (text != null) {
-            tv_text.setText(FmtUtil.trimTransactionText(text));
+            tv_text.setText(text);
         }
         if (tag != null) {
             tv_tag.setText(tag);
             image.setImageDrawable(getImageId(context, cursor));
         }
         if (amount != null) {
-            tv_amount.setText(amount);
+            tv_amount.setText(FmtUtil.currency(amount));
         }
     }
 
