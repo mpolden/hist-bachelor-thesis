@@ -1,6 +1,5 @@
 package no.kantega.android.afp.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import no.kantega.android.afp.R;
@@ -8,7 +7,7 @@ import no.kantega.android.afp.R;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResourceHelper extends Activity {
+public class ResourceHelper {
 
     private static final Map<String, Integer> imageIds;
 
