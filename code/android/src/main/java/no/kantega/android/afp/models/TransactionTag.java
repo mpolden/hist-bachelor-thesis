@@ -12,8 +12,6 @@ public class TransactionTag implements Serializable {
     private int id;
     @DatabaseField(unique = true, canBeNull = false)
     private String name;
-    @DatabaseField
-    private int imageId;
 
     public TransactionTag() {
     }
@@ -36,14 +34,6 @@ public class TransactionTag implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
     }
 
     @Override

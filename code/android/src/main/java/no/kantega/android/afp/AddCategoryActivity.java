@@ -29,7 +29,6 @@ public class AddCategoryActivity extends Activity {
             if (name != null && !name.trim().equals("")) {
                 TransactionTag ttag = new TransactionTag();
                 ttag.setName(name);
-                ttag.setImageId(currentIconId);
                 db.add(ttag);
                 finish();
             } else {

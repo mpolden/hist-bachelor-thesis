@@ -18,19 +18,12 @@ import java.util.List;
 public class Transactions {
 
     private static final String TAG = Transactions.class.getSimpleName();
-    private static final String SQLITE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private final DatabaseHelper helper;
     private final Dao<Transaction, Integer> transactionDao;
     private final Dao<TransactionTag, Integer> transactionTagDao;
 
     public Transactions(Context context) {
         this.helper = new DatabaseHelper(context);
-        this.transactionDao = helper.getTransactionDao();
-        this.transactionTagDao = helper.getTransactionTagDao();
-    }
-
-    public Transactions(Context context, DatabaseHelper helper) {
-        this.helper = helper;
         this.transactionDao = helper.getTransactionDao();
         this.transactionTagDao = helper.getTransactionTagDao();
     }
@@ -185,8 +178,7 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId"}, null,
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"}, null,
                 null, null, null,
                 "date DESC, timestamp DESC", null);
         return cursor;
@@ -206,8 +198,7 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId"}, selection,
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"}, selection,
                 selectionArgs, null, null,
                 "date DESC, timestamp DESC", null);
         return cursor;
@@ -226,8 +217,7 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId", "SUM(amount) AS sum"},
+                new String[]{"_id", "transactiontags.name AS tag", "SUM(amount) AS sum"},
                 "date LIKE ?", new String[]{dateQuery},
                 "tag", null, "sum DESC, tag DESC", null);
         return cursor;
@@ -256,8 +246,7 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag",
-                        "transactiontags.imageId as imageId"},
+                new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"},
                 selection, selectionArgs, null, null, "date DESC, timestamp DESC", null);
         return cursor;
     }
