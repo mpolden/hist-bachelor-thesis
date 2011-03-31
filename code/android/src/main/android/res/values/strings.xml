@@ -59,4 +59,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+    <string name="invalid_tag_name">Invalid tag name</string>
+    <string name="transaction_added">Transaction added</string>
 </resources>
