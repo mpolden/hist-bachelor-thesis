@@ -1,12 +1,11 @@
 package no.kantega.android.afp;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
@@ -26,6 +25,8 @@ public class EditTransactionActivity extends Activity {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final int DATE_DIALOG_ID = 0;
+    private static final int PROGRESS_DIALOG_ID = 1;
+    private static final int ALERT_DIALOG_ID = 2;
     private Transactions db;
     private ArrayAdapter<TransactionTag> adapter;
     private Transaction t;
@@ -40,8 +41,8 @@ public class EditTransactionActivity extends Activity {
     private TextView suggestedTag;
     private String suggestUrl;
     private TransactionTag untagged;
-    private AlertDialog alertDialog;
-    List<Transaction> matchingTransactions;
+    private ProgressDialog progressDialog;
+    private List<Transaction> matchingTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +53,13 @@ public class EditTransactionActivity extends Activity {
         this.suggestUrl = Prefs.getProperties(getApplication()).get("suggestTag").toString();
         this.untagged = new TransactionTag(getResources().getString(R.string.not_tagged));
         this.selectedTag = t.getTag();
-        this.alertDialog = getAlertDialog();
         findViewById(R.id.edittransaction_button_edittransaction).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        matchingTransactions = db.getByText(t.getText(), t.get_id());
+                        matchingTransactions = db.getByText(t.getText(), t.get_id(), false);
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
-                            alertDialog.setMessage(String.format(getResources().getString(R.string.auto_tag),
-                                    matchingTransactions.size()));
-                            alertDialog.show();
+                            showDialog(ALERT_DIALOG_ID);
                         } else {
                             saveTransaction(false);
                         }
@@ -127,15 +125,45 @@ public class EditTransactionActivity extends Activity {
         });
     }
 
+    private class UpdateTask extends AsyncTask<TransactionTag, Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            showDialog(PROGRESS_DIALOG_ID);
+        }
+
+        @Override
+        protected Boolean doInBackground(TransactionTag... tags) {
+            int i = 0;
+            progressDialog.setMax(matchingTransactions.size());
+            for (Transaction matching : matchingTransactions) {
+                matching.setTag(tags[0]);
+                db.update(matching);
+                publishProgress(++i);
+            }
+            return false;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            final Message msg = progressHandler.obtainMessage();
+            msg.arg1 = values[0];
+            progressHandler.sendMessage(msg);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            dismissDialog(PROGRESS_DIALOG_ID);
+            finish();
+        }
+    }
+
     private void saveTransaction(final boolean autoTag) {
         TransactionTag tag = null;
         if (!selectedTag.equals(untagged)) {
             tag = selectedTag;
             if (autoTag) {
-                for (Transaction matching : matchingTransactions) {
-                    matching.setTag(tag);
-                    db.update(matching);
-                }
+                new UpdateTask().execute(tag);
             }
         }
         if (t.isInternal()) {
@@ -155,49 +183,73 @@ public class EditTransactionActivity extends Activity {
                 t.setDate(d);
                 t.setDirty(true);
                 db.update(t);
-                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                        Toast.LENGTH_LONG).show();
-                finish();
             }
         } else {
             t.setTag(tag);
             t.setDirty(true);
             db.update(t);
-            Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                    Toast.LENGTH_LONG).show();
+        }
+        if (!autoTag) {
             finish();
         }
-    }
-
-    private AlertDialog getAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false)
-                .setPositiveButton(R.string.yes,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                saveTransaction(true);
-                                dialog.dismiss();
-                            }
-                        })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int id) {
-                        saveTransaction(false);
-                        dialog.dismiss();
-                    }
-                });
-        return builder.create();
     }
 
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case DATE_DIALOG_ID:
+            case DATE_DIALOG_ID: {
                 return new DatePickerDialog(this, dateSetListener, pickYear, pickMonth,
                         pickDay);
+            }
+            case ALERT_DIALOG_ID: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("")
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        saveTransaction(true);
+                                        dialog.dismiss();
+                                    }
+                                })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                saveTransaction(false);
+                                dialog.dismiss();
+                            }
+                        });
+                return builder.create();
+            }
+            case PROGRESS_DIALOG_ID: {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage(getResources().getString(
+                        R.string.please_wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.
+                        STYLE_HORIZONTAL);
+                return progressDialog;
+            }
+            default: {
+                return null;
+            }
         }
-        return null;
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case PROGRESS_DIALOG_ID: {
+                progressDialog.setProgress(0);
+                break;
+            }
+            case ALERT_DIALOG_ID: {
+                ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag),
+                        matchingTransactions.size()));
+                break;
+            }
+        }
     }
 
     private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -220,6 +272,13 @@ public class EditTransactionActivity extends Activity {
         super.onDestroy();
         db.close();
     }
+
+    private final Handler progressHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.setProgress(msg.arg1);
+        }
+    };
 
     private class SuggestionsTask extends AsyncTask<String, Integer, String> {
 
