@@ -19,9 +19,7 @@ public class AddCategoryActivity extends Activity {
     private EditText category_name;
     private ImageView category_icon;
     private List<Integer> iconIds;
-
-    private int currentIconId;
-
+    private static final String DRAWABLE_PREFIX = "tag_";
     private final View.OnClickListener saveCategoryButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -32,7 +30,7 @@ public class AddCategoryActivity extends Activity {
                 db.add(ttag);
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "Invalid category name", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), R.string.invalid_tag_name, Toast.LENGTH_LONG);
             }
         }
     };
@@ -53,7 +51,7 @@ public class AddCategoryActivity extends Activity {
         iconIds = new ArrayList<Integer>();
         for (Field f : drawables) {
             String name = f.getName();
-            if (name.startsWith("tag_")) {
+            if (name.startsWith(DRAWABLE_PREFIX)) {
                 int resID = getResources().getIdentifier(name, "drawable", getPackageName());
                 if (resID > 0) {
                     iconIds.add(resID);
@@ -66,13 +64,11 @@ public class AddCategoryActivity extends Activity {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
         category_icon.setImageResource(iconIds.get(0));
-        currentIconId = iconIds.get(0);
         GridView gridView = (GridView) findViewById(R.id.gridview_icons);
         gridView.setAdapter(new IconAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 category_icon.setImageResource(iconIds.get(position));
-                currentIconId = iconIds.get(position);
             }
         });
     }

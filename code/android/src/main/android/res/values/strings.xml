@@ -41,4 +41,24 @@
     <string name="confirm">OK</string>
     <string name="notification">You have %s new transaction(s)</string>
     <string name="not_tagged">Ukategorisert</string>
+    <string name="auto_tag">There are %s other transaction(s) that matches this one. Do you want to tag them aswell?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="invalid_tag_name">Invalid tag name</string>
+    <string name="transaction_added">Transaction added</string>
 </resources>

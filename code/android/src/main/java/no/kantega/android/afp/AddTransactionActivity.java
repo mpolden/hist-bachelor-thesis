@@ -49,7 +49,7 @@ public class AddTransactionActivity extends Activity {
                 if (FmtUtil.isNumber(etamount.getText().toString())) {
                     t.setAmount(Double.parseDouble(etamount.getText().toString()));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Invalid amount", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.invalid_amount, Toast.LENGTH_LONG).show();
                     newTransactionOk = false;
                 }
                 if (newTransactionOk) {
@@ -60,7 +60,7 @@ public class AddTransactionActivity extends Activity {
                     t.setInternal(true);
                     t.setDirty(true);
                     db.add(t);
-                    Toast.makeText(getApplicationContext(), "Transaction added", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.transaction_added, Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
@@ -82,7 +82,6 @@ public class AddTransactionActivity extends Activity {
         adapter.add(untagged);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTag = (TransactionTag) adapterView.getItemAtPosition(i);
