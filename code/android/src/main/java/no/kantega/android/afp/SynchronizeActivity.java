@@ -31,7 +31,7 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final int PROGRESS_DIALOG = 0;
+    private static final int PROGRESS_DIALOG_ID = 0;
     private Transactions db;
     private SharedPreferences preferences;
     private ProgressDialog progressDialog;
@@ -60,7 +60,7 @@ public class SynchronizeActivity extends Activity {
         syncButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(PROGRESS_DIALOG);
+                showDialog(PROGRESS_DIALOG_ID);
             }
         });
         Button clearDbButton = (Button) findViewById(R.id.clearDbButton);
@@ -147,7 +147,7 @@ public class SynchronizeActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case PROGRESS_DIALOG: {
+            case PROGRESS_DIALOG_ID: {
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage(getResources().getString(
                         R.string.wait));
@@ -171,9 +171,10 @@ public class SynchronizeActivity extends Activity {
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-            case PROGRESS_DIALOG: {
+            case PROGRESS_DIALOG_ID: {
                 progressDialog.setProgress(0);
                 synchronizeDatabase();
+                break;
             }
         }
     }
