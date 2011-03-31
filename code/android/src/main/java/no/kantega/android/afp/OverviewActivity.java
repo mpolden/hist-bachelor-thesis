@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.utils.FmtUtil;
@@ -117,6 +115,28 @@ public class OverviewActivity extends ListActivity {
         pickDate.setText(monthName[pickMonth] + " " + pickYear);
         onResume();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overviewmenu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_pie_chart:
+                Intent i = new Intent(getApplicationContext(), PieChartActivity.class);
+                i.putExtra("Month", getMonth());
+                i.putExtra("Year", getYear());
+                startActivity(i);
+                break;
+        }
+        return true;
     }
 
     @Override
