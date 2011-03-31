@@ -41,6 +41,7 @@
         <activity android:name=".AddCategoryActivity"/>
         <activity android:name=".NotificationsActivity"/>
         <activity android:name=".CategoryActivity"/>
+        <activity android:name=".PieChartActivity"/>
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its

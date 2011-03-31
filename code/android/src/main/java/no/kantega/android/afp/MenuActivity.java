@@ -36,6 +36,10 @@ public class MenuActivity extends TabActivity {
                 Intent i = new Intent(getApplicationContext(), AddCategoryActivity.class);
                 startActivity(i);
                 break;
+            case R.id.menu_pie_chart:
+                Intent i2 = new Intent(getApplicationContext(), PieChartActivity.class);
+                startActivity(i2);
+                break;
         }
         return true;
     }
