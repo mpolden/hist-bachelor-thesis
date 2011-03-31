@@ -41,4 +41,8 @@
     <string name="confirm">OK</string>
     <string name="notification">You have %s new transaction(s)</string>
     <string name="not_tagged">Ukategorisert</string>
+    <string name="auto_tag">There are %s other transaction(s) that matches this one. Do you want to tag them aswell?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

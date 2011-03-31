@@ -1,8 +1,10 @@
 package no.kantega.android.afp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +40,8 @@ public class EditTransactionActivity extends Activity {
     private TextView suggestedTag;
     private String suggestUrl;
     private TransactionTag untagged;
+    private AlertDialog alertDialog;
+    List<Transaction> matchingTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,42 +52,18 @@ public class EditTransactionActivity extends Activity {
         this.suggestUrl = Prefs.getProperties(getApplication()).get("suggestTag").toString();
         this.untagged = new TransactionTag(getResources().getString(R.string.not_tagged));
         this.selectedTag = t.getTag();
+        this.alertDialog = getAlertDialog();
         findViewById(R.id.edittransaction_button_edittransaction).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        TransactionTag tag = null;
-                        if (!selectedTag.equals(untagged)) {
-                            tag = selectedTag;
-                        }
-                        if (t.isInternal()) {
-                            boolean editTransactionOk = true;
-                            Date d = FmtUtil.stringToDate(DATE_FORMAT, String.format("%s-%s-%s",
-                                    pickYear, pickMonth, pickDay));
-                            if (FmtUtil.isNumber(amount.getText().toString())) {
-                                t.setAmount(Double.parseDouble(amount.getText().toString()));
-                            } else {
-                                Toast.makeText(getApplicationContext(), R.string.invalid_amount,
-                                        Toast.LENGTH_LONG).show();
-                                editTransactionOk = false;
-                            }
-                            if (editTransactionOk) {
-                                t.setText(text.getText().toString());
-                                t.setTag(tag);
-                                t.setDate(d);
-                                t.setDirty(true);
-                                db.update(t);
-                                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                                        Toast.LENGTH_LONG).show();
-                                finish();
-                            }
+                        matchingTransactions = db.getByText(t.getText(), t.get_id());
+                        if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
+                            alertDialog.setMessage(String.format(getResources().getString(R.string.auto_tag),
+                                    matchingTransactions.size()));
+                            alertDialog.show();
                         } else {
-                            t.setTag(tag);
-                            t.setDirty(true);
-                            db.update(t);
-                            Toast.makeText(getApplicationContext(), R.string.transaction_updated,
-                                    Toast.LENGTH_LONG).show();
-                            finish();
+                            saveTransaction(false);
                         }
                     }
                 });
@@ -136,7 +116,6 @@ public class EditTransactionActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTag = (TransactionTag) adapterView.getItemAtPosition(i);
@@ -146,6 +125,69 @@ public class EditTransactionActivity extends Activity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+    }
+
+    private void saveTransaction(final boolean autoTag) {
+        TransactionTag tag = null;
+        if (!selectedTag.equals(untagged)) {
+            tag = selectedTag;
+            if (autoTag) {
+                for (Transaction matching : matchingTransactions) {
+                    matching.setTag(tag);
+                    db.update(matching);
+                }
+            }
+        }
+        if (t.isInternal()) {
+            boolean editTransactionOk = true;
+            Date d = FmtUtil.stringToDate(DATE_FORMAT, String.format("%s-%s-%s",
+                    pickYear, pickMonth, pickDay));
+            if (FmtUtil.isNumber(amount.getText().toString())) {
+                t.setAmount(Double.parseDouble(amount.getText().toString()));
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.invalid_amount,
+                        Toast.LENGTH_LONG).show();
+                editTransactionOk = false;
+            }
+            if (editTransactionOk) {
+                t.setText(text.getText().toString());
+                t.setTag(tag);
+                t.setDate(d);
+                t.setDirty(true);
+                db.update(t);
+                Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                        Toast.LENGTH_LONG).show();
+                finish();
+            }
+        } else {
+            t.setTag(tag);
+            t.setDirty(true);
+            db.update(t);
+            Toast.makeText(getApplicationContext(), R.string.transaction_updated,
+                    Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    private AlertDialog getAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false)
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                saveTransaction(true);
+                                dialog.dismiss();
+                            }
+                        })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int id) {
+                        saveTransaction(false);
+                        dialog.dismiss();
+                    }
+                });
+        return builder.create();
     }
 
     @Override
@@ -171,8 +213,6 @@ public class EditTransactionActivity extends Activity {
     private void updateDisplay() {
         date.setText(FmtUtil.dateToString(DATE_FORMAT, FmtUtil.stringToDate(DATE_FORMAT, String.format("%s-%s-%s",
                 pickYear, pickMonth, pickDay))));
-
-
     }
 
     @Override
