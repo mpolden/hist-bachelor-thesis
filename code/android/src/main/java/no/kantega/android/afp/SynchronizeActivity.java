@@ -32,6 +32,7 @@ public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG_ID = 0;
+    private static final int ALERT_DIALOG_ID = 1;
     private Transactions db;
     private SharedPreferences preferences;
     private ProgressDialog progressDialog;
@@ -40,7 +41,6 @@ public class SynchronizeActivity extends Activity {
     private TextView tagCount;
     private TextView dirtyCount;
     private TextView untaggedCount;
-    private AlertDialog alertDialog;
     private long dbTransactionCount;
     private long dbTagCount;
     private long dbDirtyCount;
@@ -81,21 +81,6 @@ public class SynchronizeActivity extends Activity {
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
         untaggedCount = (TextView) findViewById(R.id.untagged_count);
         preferences = Prefs.get(getApplicationContext());
-        alertDialog = createAlertDialog();
-    }
-
-    private AlertDialog createAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.server_unavailable)
-                .setCancelable(false)
-                .setPositiveButton(R.string.confirm,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                dialog.dismiss();
-                            }
-                        });
-        return builder.create();
     }
 
     /**
@@ -155,6 +140,19 @@ public class SynchronizeActivity extends Activity {
                 progressDialog.setProgressStyle(ProgressDialog.
                         STYLE_HORIZONTAL);
                 return progressDialog;
+            }
+            case ALERT_DIALOG_ID: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.server_unavailable)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.confirm,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                return builder.create();
             }
             default: {
                 return null;
@@ -300,7 +298,7 @@ public class SynchronizeActivity extends Activity {
             progressDialog.setMax(100);
             progressDialog.dismiss();
             if (!success) {
-                alertDialog.show();
+                showDialog(ALERT_DIALOG_ID);
             }
             saveStats();
             onResume();
