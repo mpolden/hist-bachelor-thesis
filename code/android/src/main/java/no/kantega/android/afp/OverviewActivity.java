@@ -30,9 +30,7 @@ public class OverviewActivity extends ListActivity {
     private int pickMonth;
     private int pickDay;
     private Button pickDate;
-    private static final String[] monthName = {"Januar", "Februar", "Mars", "April",
-            "Mai", "Juni", "Juli", "August", "September", "Oktober",
-            "November", "Desember"};
+    private String[] monthName;
     private final DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year,
@@ -49,15 +47,16 @@ public class OverviewActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overview);
         final Calendar c = Calendar.getInstance();
-        pickYear = c.get(Calendar.YEAR);
-        pickMonth = c.get(Calendar.MONTH);
-        pickDay = c.get(Calendar.DAY_OF_MONTH);
+        this.pickYear = c.get(Calendar.YEAR);
+        this.pickMonth = c.get(Calendar.MONTH);
+        this.pickDay = c.get(Calendar.DAY_OF_MONTH);
         this.db = new Transactions(getApplicationContext());
         this.cursor = db.getCursorTags(getMonth(), getYear());
         this.adapter = new CategoryAdapter(this, cursor);
+        this.monthName = getResources().getStringArray(R.array.months);
         setListAdapter(adapter);
-        pickDate = (Button) findViewById(R.id.button_overview_pickDate);
-        pickDate.setOnClickListener(new View.OnClickListener() {
+        this.pickDate = (Button) findViewById(R.id.button_overview_pickDate);
+        this.pickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
