@@ -7,6 +7,7 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.DatabaseHelper;
@@ -134,13 +135,15 @@ public class Transactions {
         return null;
     }
 
-    public List<Transaction> getByText(final String text, final int excludeId) {
+    public List<Transaction> getByText(final String text, final int excludeId, final boolean tagIsNull) {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
         try {
-            queryBuilder.setWhere(queryBuilder.where().eq("text", text).
-                    and().isNull("tag_id").
-                    and().ne("_id", excludeId));
+            Where<Transaction, Integer> where = queryBuilder.where().eq("text", text).and().ne("_id", excludeId);
+            if (tagIsNull) {
+                where = where.and().isNull("tag_id");
+            }
+            queryBuilder.setWhere(where);
             return getAll(queryBuilder);
         } catch (SQLException e) {
             Log.e(TAG, "Failed to find transactions by text", e);
