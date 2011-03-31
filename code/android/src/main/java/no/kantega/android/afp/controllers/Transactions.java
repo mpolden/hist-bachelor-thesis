@@ -134,6 +134,20 @@ public class Transactions {
         return null;
     }
 
+    public List<Transaction> getByText(final String text, final int excludeId) {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        try {
+            queryBuilder.setWhere(queryBuilder.where().eq("text", text).
+                    and().isNull("tag_id").
+                    and().ne("_id", excludeId));
+            return getAll(queryBuilder);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to find transactions by text", e);
+        }
+        return Collections.emptyList();
+    }
+
     /**
      * Retrieve a list of dirty transactions
      *
