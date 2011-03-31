@@ -146,9 +146,6 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (!cursor.isClosed()) {
-                    cursor.close();
-                }
                 cursor = db.getCursorTags(getMonth(), getYear());
                 runOnUiThread(handler);
             }
