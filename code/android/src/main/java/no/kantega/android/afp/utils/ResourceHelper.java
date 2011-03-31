@@ -15,15 +15,14 @@ public class ResourceHelper {
         imageIds = new HashMap<String, Integer>() {{
             put("Annet", R.drawable.tag_creditcard);
             put("Barn", R.drawable.tag_baby);
+            put("Bolig", R.drawable.tag_house);
             put("Ferie", R.drawable.tag_sun);
             put("Fornøyelser", R.drawable.tag_controller);
             put("Helse", R.drawable.tag_medicalbag);
-            put("Husholdning", R.drawable.tag_house);
             put("Klær", R.drawable.tag_tshirt);
             put("Mat", R.drawable.tag_forkandknife);
             put("Transport", R.drawable.tag_airplane);
             put("Sparing", R.drawable.tag_linechart);
-
         }};
     }
 
@@ -35,5 +34,4 @@ public class ResourceHelper {
             return context.getResources().getDrawable(R.drawable.tag_warning);
         }
     }
-
 }
