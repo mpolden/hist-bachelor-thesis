@@ -17,7 +17,6 @@ public class CategoryActivity extends ListActivity {
     private Transactions db;
     private TransactionsAdapter adapter;
     private Cursor cursor;
-
     private String year;
     private String month;
     private String tag;
@@ -67,8 +66,8 @@ public class CategoryActivity extends ListActivity {
         public void run() {
             // Try to change to a fresh cursor
             if (!cursor.isClosed()) {
-                Log.d(TAG, "Changed to a new cursor");
                 adapter.changeCursor(cursor);
+                Log.d(TAG, "Changed to a new cursor");
             } else {
                 onResume();
             }
