@@ -138,6 +138,7 @@ public class EditTransactionActivity extends Activity {
             progressDialog.setMax(matchingTransactions.size());
             for (Transaction matching : matchingTransactions) {
                 matching.setTag(tags[0]);
+                matching.setDirty(true);
                 db.update(matching);
                 publishProgress(++i);
             }
