@@ -44,7 +44,6 @@ public class PieChartActivity extends Activity {
         pieChart.setData(PieData, maxCount);
         pieChart.invalidate();
         pieChart.draw(new Canvas(backgroundImage));
-        pieChart = null;
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setBackgroundColor(bgColor);
@@ -148,7 +147,7 @@ public class PieChartActivity extends Activity {
             Rect bounds = new Rect();
             PieItem item;
             for (int i = 0; i < dataArray.size(); i++) {
-                item = (PieItem) dataArray.get(i);
+                item = dataArray.get(i);
                 bgPaints.setColor(item.getColor());
                 sweep = (float) 360 * ((float) item.getCount() / (float) maxConnection);
                 canvas.drawArc(ovals, start, sweep, true, bgPaints);
@@ -188,8 +187,6 @@ public class PieChartActivity extends Activity {
             float scaleHeight = (((float) height) / overlay_height) * 0.678899083f;
             Matrix matrix = new Matrix();
             matrix.postScale(scaleWidth, scaleHeight);
-            Bitmap resizedBitmap = Bitmap.createBitmap(OverlayBitmap, 0, 0, overlay_width, overlay_height, matrix, true);
-            //canvas.drawBitmap(resizedBitmap, 0.0f, 0.0f, null);
             state = IS_DRAW;
         }
 
@@ -220,11 +217,11 @@ public class PieChartActivity extends Activity {
         public int getColorValue(int index) {
             if (dataArray == null) return 0;
             if (index < 0) {
-                return ((PieItem) dataArray.get(0)).getColor();
+                return dataArray.get(0).getColor();
             } else if (index >= dataArray.size()) {
-                return ((PieItem) dataArray.get(dataArray.size() - 1)).getColor();
+                return dataArray.get(dataArray.size() - 1).getColor();
             } else {
-                return ((PieItem) dataArray.get(dataArray.size() - 1)).getColor();
+                return dataArray.get(dataArray.size() - 1).getColor();
             }
         }
     }
