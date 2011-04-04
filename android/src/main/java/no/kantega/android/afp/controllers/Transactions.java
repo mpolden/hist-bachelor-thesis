@@ -234,8 +234,9 @@ public class Transactions {
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
-                new String[]{"_id", "transactiontags.name AS tag", "SUM(amount) AS sum"},
-                "date LIKE ?", new String[]{dateQuery},
+                new String[]{"_id", "transactiontags.name AS tag", "SUM(amount) AS sum",
+                        "(SELECT SUM(amount) FROM transactions WHERE date LIKE ?) AS total"},
+                "date LIKE ?", new String[]{dateQuery, dateQuery},
                 "tag", null, "sum DESC, tag DESC", null);
         return cursor;
     }
