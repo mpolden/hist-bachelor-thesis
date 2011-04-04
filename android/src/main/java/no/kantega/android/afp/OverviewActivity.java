@@ -109,7 +109,6 @@ public class OverviewActivity extends ListActivity {
         //super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.overviewmenu, menu);
-
         return true;
     }
 
@@ -165,7 +164,7 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                cursor = db.getCursorTags(getMonth(), getYear());
+                cursor = db.getMergeCursorTags(getMonth(), getYear());
                 runOnUiThread(handler);
             }
         }).start();
@@ -189,9 +188,16 @@ public class OverviewActivity extends ListActivity {
         Object o = l.getItemAtPosition(position);
         if (o instanceof Cursor) {
             Cursor cursor = (Cursor) o;
-            String tag = cursor.getString(cursor.getColumnIndex("tag"));
             Intent intent;
-            intent = new Intent(getApplicationContext(), CategoryActivity.class);
+            String tag;
+            final int tagColumnIndex = cursor.getColumnIndex("tag");
+            if (tagColumnIndex == -1) {
+                tag = getResources().getString(R.string.total);
+                intent = new Intent(getApplicationContext(), PieChartActivity.class);
+            } else {
+                tag = cursor.getString(cursor.getColumnIndex("tag"));
+                intent = new Intent(getApplicationContext(), CategoryActivity.class);
+            }
             intent.putExtra("tag", tag);
             intent.putExtra("year", getYear());
             intent.putExtra("month", getMonth());
@@ -219,7 +225,13 @@ public class OverviewActivity extends ListActivity {
         }
 
         private void populateView(Context context, View view, Cursor cursor) {
-            String tag = cursor.getString(cursor.getColumnIndex("tag"));
+            final int tagColumnIndex = cursor.getColumnIndex("tag");
+            String tag;
+            if (tagColumnIndex > -1) {
+                tag = cursor.getString(tagColumnIndex);
+            } else {
+                tag = getResources().getString(R.string.total);
+            }
             Double consumption = cursor.getDouble(cursor.getColumnIndex("sum"));
             ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
             TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
