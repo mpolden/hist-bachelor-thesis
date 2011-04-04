@@ -28,8 +28,8 @@ public class PieChartActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pie);
-        String month = getIntent().getExtras().getString("Month");
-        String year = getIntent().getExtras().getString("Year");
+        String month = getIntent().getExtras().getString("month");
+        String year = getIntent().getExtras().getString("year");
         this.db = new Transactions(getApplicationContext());
         this.cursor = db.getCursorTags(month, year);
         createPieDataFromCursor();

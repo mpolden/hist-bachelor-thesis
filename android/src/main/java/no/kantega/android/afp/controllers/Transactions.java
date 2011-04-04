@@ -3,6 +3,7 @@ package no.kantega.android.afp.controllers;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.MergeCursor;
 import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -238,6 +239,20 @@ public class Transactions {
                 "date LIKE ?", new String[]{dateQuery},
                 "tag", null, "sum DESC, tag DESC", null);
         return cursor;
+    }
+
+    public Cursor getCursorTagsTotal(String month, String year) {
+        final String dateQuery = String.format("%s-%s-%%", year, month);
+        final Cursor cursor = helper.getReadableDatabase().query(
+                "transactions",
+                new String[]{"_id", "SUM(amount) AS sum"},
+                "date LIKE ?", new String[]{dateQuery},
+                null, null, null, "1");
+        return cursor;
+    }
+
+    public MergeCursor getMergeCursorTags(String month, String year) {
+        return new MergeCursor(new Cursor[]{getCursorTags(month, year), getCursorTagsTotal(month, year)});
     }
 
     /**
