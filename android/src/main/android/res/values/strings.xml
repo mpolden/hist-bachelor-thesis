@@ -61,4 +61,5 @@
     </string-array>
     <string name="invalid_tag_name">Invalid tag name</string>
     <string name="transaction_added">Transaction added</string>
+    <string name="total">Total</string>
 </resources>
