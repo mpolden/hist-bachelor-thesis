@@ -35,6 +35,7 @@
     <string name="untagged_count">Not tagged</string>
     <string name="suggested_tag">Suggested tag</string>
     <string name="notification_title">New transaction!</string>
+    <string name="new_transaction">New transaction</string>
     <string name="server_unavailable">Could not synchronize. Server is
         unavailable.
     </string>
@@ -61,4 +62,5 @@
     </string-array>
     <string name="invalid_tag_name">Invalid tag name</string>
     <string name="transaction_added">Transaction added</string>
+    <string name="pie_chart">Pie chart</string>
 </resources>
