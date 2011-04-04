@@ -23,7 +23,7 @@
                   android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
                   android:divider="#FFFFFF" android:dividerHeight="0px"/>
     </TableLayout>
-    <Button android:text="New transaction"
+    <Button android:text="@string/new_transaction"
             android:id="@+id/button_new_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>

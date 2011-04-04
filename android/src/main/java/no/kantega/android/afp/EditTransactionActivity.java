@@ -296,8 +296,6 @@ public class EditTransactionActivity extends Activity {
                     final String tag = result.get(0).get("tag");
                     suggestedTag.setText(tag);
                     updateSpinnerPosition(new TransactionTag(tag));
-                } else {
-                    updateSpinnerPosition(null);
                 }
             }
         }
