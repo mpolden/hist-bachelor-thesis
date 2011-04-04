@@ -47,7 +47,7 @@
             </GridView>
         </TableRow>
     </TableLayout>
-    <Button android:text="Save"
+    <Button android:text="@string/save"
             android:id="@+id/button_newcategory_save"
             android:layout_weight="0"
             android:layout_width="fill_parent"

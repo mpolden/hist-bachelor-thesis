@@ -36,6 +36,7 @@
     <string name="suggested_tag">Foreslått kategori</string>
     <string name="notification_title">Ny transaksjon!</string>
     <string name="new_transaction">Ny transaksjon</string>
+    <string name="add_transaction">Legg til transaksjon</string>
     <string name="server_unavailable">Kunne ikke synkronisere. Serveren er
         utilgjengelig.
     </string>
@@ -63,4 +64,5 @@
     <string name="invalid_tag_name">Ugyldig kategorinavn</string>
     <string name="transaction_added">Transaksjon lagt til</string>
     <string name="pie_chart">Kakediagram</string>
+    <string name="save">Lagre</string>
 </resources>
