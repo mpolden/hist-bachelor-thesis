@@ -43,7 +43,7 @@ public class Transactions extends Controller {
                 find("user.deviceId = ? " +
                         "order by date desc, timestamp desc",
                         registrationId).fetch();
-        if (!transactions.isEmpty()) {
+        /*if (!transactions.isEmpty()) {
             for (Transaction t : transactions) {
                 if (t.tag == null) {
                     TransactionTag suggested = getSuggestedTag(t.text);
@@ -55,6 +55,9 @@ public class Transactions extends Controller {
                 }
             }
         } else {
+            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
+        }*/
+        if (transactions.isEmpty()) {
             Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
