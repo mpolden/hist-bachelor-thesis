@@ -149,7 +149,7 @@ public class Transactions {
      *
      * @param text      The text
      * @param excludeId Id to exclude
-     * @param tagIsNull Wheter to include NULL tags
+     * @param tagIsNull Only select where tag IS NULL
      * @return List of transactions
      */
     public List<Transaction> getByText(final String text, final int excludeId, final boolean tagIsNull) {
