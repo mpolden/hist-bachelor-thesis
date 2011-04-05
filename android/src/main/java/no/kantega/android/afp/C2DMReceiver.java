@@ -13,12 +13,18 @@ import no.kantega.android.afp.utils.Register;
 
 import java.io.IOException;
 
+/**
+ * This class handles C2DM registration and messages
+ */
 public class C2DMReceiver extends C2DMBaseReceiver {
 
     private static final String TAG = C2DMReceiver.class.getSimpleName();
     private static final int MESSAGE_ID = 1;
     private NotificationManager notificationManager;
 
+    /**
+     * Construct a receiver with our SENDER_ID
+     */
     public C2DMReceiver() {
         super(Register.SENDER_ID);
     }

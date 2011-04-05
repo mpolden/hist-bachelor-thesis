@@ -15,6 +15,9 @@ import no.kantega.android.afp.utils.FmtUtil;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * This activity handles adding of a new transaction
+ */
 public class AddTransactionActivity extends Activity {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -26,6 +29,15 @@ public class AddTransactionActivity extends Activity {
     private int pickDay;
     private TransactionTag selectedTag;
     private TransactionTag untagged;
+    private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            pickYear = year;
+            pickMonth = monthOfYear + 1; // Month starts at 0
+            pickDay = dayOfMonth;
+            updateDisplay();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,20 +116,13 @@ public class AddTransactionActivity extends Activity {
         return null;
     }
 
+    /**
+     * Update picked date
+     */
     private void updateDisplay() {
         pickDate.setText(FmtUtil.dateToString(DATE_FORMAT, FmtUtil.stringToDate(DATE_FORMAT, String.format("%s-%s-%s",
                 pickYear, pickMonth, pickDay))));
     }
-
-    private final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            pickYear = year;
-            pickMonth = monthOfYear + 1; // Month starts at 0
-            pickDay = dayOfMonth;
-            updateDisplay();
-        }
-    };
 
     @Override
     protected void onDestroy() {

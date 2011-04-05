@@ -45,13 +45,13 @@ public class SynchronizeActivity extends Activity {
     private long dbTagCount;
     private long dbDirtyCount;
     private long dbUntaggedCount;
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.setProgress(msg.arg1);
+        }
+    };
 
-    /**
-     * Called when the activity is starting. Attaches click listeners and
-     * creates a database handle.
-     *
-     * @param savedInstanceState Saved instance
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,16 +194,6 @@ public class SynchronizeActivity extends Activity {
             Log.e(TAG, "Missing one or more entries in properties file");
         }
     }
-
-    /**
-     * Handler that updates the progress dialog
-     */
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            progressDialog.setProgress(msg.arg1);
-        }
-    };
 
     private class TransactionsTask
             extends AsyncTask<String, Integer, Boolean> {

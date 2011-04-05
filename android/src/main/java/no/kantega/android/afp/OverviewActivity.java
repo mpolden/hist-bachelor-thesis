@@ -17,6 +17,9 @@ import no.kantega.android.afp.utils.ResourceHelper;
 
 import java.util.Calendar;
 
+/**
+ * This activity displays a general overview of the current transactions
+ */
 public class OverviewActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
@@ -98,8 +101,10 @@ public class OverviewActivity extends ListActivity {
         Register.handleRegistration(getApplicationContext());
     }
 
+    /**
+     * Update the selected datef
+     */
     private void updateDisplay() {
-        //pickDate.setText("Test");
         pickDate.setText(monthName[pickMonth] + " " + pickYear);
         onResume();
     }
@@ -145,6 +150,11 @@ public class OverviewActivity extends ListActivity {
         }
     }
 
+    /**
+     * The currently selected month
+     *
+     * @return Month
+     */
     private String getMonth() {
         String month = String.valueOf(pickMonth + 1);
         if (month.length() < 2) {
@@ -153,9 +163,13 @@ public class OverviewActivity extends ListActivity {
         return month;
     }
 
+    /**
+     * The currently selected year
+     *
+     * @return Year
+     */
     private String getYear() {
-        String year = String.valueOf(pickYear);
-        return year;
+        return String.valueOf(pickYear);
     }
 
     @Override
@@ -205,8 +219,17 @@ public class OverviewActivity extends ListActivity {
         }
     }
 
+    /**
+     * This adapter handles binding of views from the given cursor
+     */
     private class CategoryAdapter extends CursorAdapter {
 
+        /**
+         * Construct a new adapter in the given application context
+         *
+         * @param context The application context
+         * @param cursor  The cursorf
+         */
         public CategoryAdapter(Context context, Cursor cursor) {
             super(context, cursor);
         }
@@ -224,6 +247,13 @@ public class OverviewActivity extends ListActivity {
             populateView(context, view, cursor);
         }
 
+        /**
+         * Populate the view
+         *
+         * @param context Application context
+         * @param view    The view
+         * @param cursor  The cursor
+         */
         private void populateView(Context context, View view, Cursor cursor) {
             final int tagColumnIndex = cursor.getColumnIndex("tag");
             String tag;

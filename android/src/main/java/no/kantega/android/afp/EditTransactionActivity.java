@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity handles editign of an existing transaction
+ */
 public class EditTransactionActivity extends Activity {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -77,11 +80,16 @@ public class EditTransactionActivity extends Activity {
                 FmtUtil.trimTransactionText(t.getText()));
     }
 
-    private void updateSpinnerPosition(TransactionTag t) {
-        if (t == null) {
+    /**
+     * Update spinner position according to the selected tag
+     *
+     * @param tag The selected tag
+     */
+    private void updateSpinnerPosition(TransactionTag tag) {
+        if (tag == null) {
             category.setSelection(adapter.getPosition(untagged));
         } else {
-            category.setSelection(adapter.getPosition(t));
+            category.setSelection(adapter.getPosition(tag));
         }
     }
 

@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This activity displays a fine pie chart for the given month and year
+ */
 public class PieChartActivity extends Activity {
 
     private List<PieItem> PieData = new ArrayList<PieItem>();
@@ -53,11 +56,14 @@ public class PieChartActivity extends Activity {
         targetPieView.addView(imageView);
     }
 
+    /**
+     * Create a pie char from the cursor
+     */
     private void createPieDataFromCursor() {
         PieItem item;
         Random numGen = new Random();
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             item = new PieItem();
             item.setCount((int) cursor.getDouble(cursor.getColumnIndex("sum")));
             String tag = cursor.getString(cursor.getColumnIndex("tag"));
