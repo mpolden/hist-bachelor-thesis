@@ -173,7 +173,7 @@ public class NotificationsActivity extends ListActivity {
             }
             final List<Transaction> transactions = GsonUtil.
                     parseTransactions(in);
-            if (transactions == null) {
+            if (transactions.isEmpty()) {
                 return false;
             }
             progressDialog.setMax(transactions.size());

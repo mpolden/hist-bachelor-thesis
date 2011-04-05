@@ -228,7 +228,7 @@ public class SynchronizeActivity extends Activity {
                 }
                 final List<Transaction> updated = GsonUtil.
                         parseTransactions(in);
-                if (updated == null) {
+                if (updated.isEmpty()) {
                     return false;
                 }
                 progressDialog.setMax(updated.size());
@@ -263,7 +263,7 @@ public class SynchronizeActivity extends Activity {
             }
             final List<Transaction> transactions = GsonUtil.
                     parseTransactions(in);
-            if (transactions == null) {
+            if (transactions.isEmpty()) {
                 return false;
             }
             progressDialog.setMax(transactions.size());

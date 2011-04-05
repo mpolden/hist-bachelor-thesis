@@ -13,10 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GsonUtil {
 
@@ -78,7 +75,7 @@ public class GsonUtil {
                 Log.e(TAG, "IOException", e);
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -97,7 +94,7 @@ public class GsonUtil {
         } catch (JsonParseException e) {
             Log.e(TAG, "JsonParseException", e);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public static List<Map<String, String>> parseMap(final String json) {
@@ -110,7 +107,7 @@ public class GsonUtil {
         } catch (JsonParseException e) {
             Log.e(TAG, "JsonParseException", e);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
