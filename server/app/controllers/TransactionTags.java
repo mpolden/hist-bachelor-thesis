@@ -12,8 +12,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This controller handles tag suggestions
+ */
 public class TransactionTags extends Controller {
 
+    /**
+     * Get first word in string split by space
+     *
+     * @param s String
+     * @return First word
+     */
     private static String firstWord(String s) {
         if (s != null) {
             final String[] words = s.split(" ");
@@ -24,6 +33,13 @@ public class TransactionTags extends Controller {
         return "";
     }
 
+    /**
+     * Build a query for the given field where the first word is prioritized
+     *
+     * @param field Field
+     * @param words Words
+     * @return Lucene query string
+     */
     private static String queryBuilder(String field, String words) {
         final String firstWord = firstWord(words);
         final String remaining = words.replace(firstWord, "");
@@ -31,6 +47,11 @@ public class TransactionTags extends Controller {
                 QueryParser.escape(remaining));
     }
 
+    /**
+     * Suggest a tag for the given text
+     *
+     * @param body Transaction text
+     */
     @SuppressWarnings("unchecked")
     public static void suggest(String body) {
         List<Map<String, String>> result = Collections.emptyList();

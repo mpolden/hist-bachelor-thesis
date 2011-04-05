@@ -5,8 +5,17 @@ import models.TransactionTag;
 import models.User;
 import play.Logger;
 
+/**
+ * This class provides helper methods for updating models
+ */
 public class ModelHelper {
 
+    /**
+     * Save or update the given transaction tag
+     *
+     * @param t Transaction tag
+     * @return The updated transaction tag
+     */
     public static TransactionTag saveOrUpdate(TransactionTag t) {
         if (t == null) {
             return null;
@@ -22,6 +31,13 @@ public class ModelHelper {
         }
     }
 
+    /**
+     * Save or update the given transaction
+     *
+     * @param t    Transaction
+     * @param user User
+     * @return The updated transaction
+     */
     public static Transaction saveOrUpdate(Transaction t, User user) {
         if (!t.dirty) {
             Logger.info("Not saving non-dirty transaction with _id: %s", t._id);

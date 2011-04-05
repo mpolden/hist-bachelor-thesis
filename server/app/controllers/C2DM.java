@@ -13,6 +13,9 @@ import utils.ModelHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This controller handles C2DM communcation
+ */
 public class C2DM extends Controller {
 
     private static final String C2DM_PUSH_TOKEN = Play.configuration.
@@ -20,6 +23,12 @@ public class C2DM extends Controller {
     private static final String C2DM_PUSH_URL = Play.configuration.
             getProperty("c2dm.push.url");
 
+    /**
+     * Notify device of new transactions
+     *
+     * @param registrationId Registration ID of the device
+     * @param json           New transactions
+     */
     public static void c2dm(String registrationId, JsonArray json) {
         if (C2DM_PUSH_TOKEN == null) {
             Logger.error("Missing c2dm.push.token i application.conf");

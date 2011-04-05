@@ -4,6 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 
+/**
+ * This class handles formatting and validation of input and output values
+ */
 public class FmtUtil {
 
     /**

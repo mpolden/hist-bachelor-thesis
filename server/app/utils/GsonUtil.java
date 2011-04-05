@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles parsing of JSON data to native Java types
+ */
 public class GsonUtil {
 
     private static final String PORTABLE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -32,16 +35,34 @@ public class GsonUtil {
         });
     }
 
+    /**
+     * Create JSON representation of the given object
+     *
+     * @param o Object
+     * @return JSON representation
+     */
     public static String makeJSON(Object o) {
         return new GsonBuilder().setDateFormat(PORTABLE_DATE_FORMAT).create().toJson(o);
     }
 
+    /**
+     * Parse transactions from JSON
+     *
+     * @param s JSON
+     * @return List of transactions
+     */
     public static List<Transaction> parseTransactions(String s) {
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
         return builder.create().fromJson(s, listType);
     }
 
+    /**
+     * Parse transactions from JSON array
+     *
+     * @param jsonArray JSON array
+     * @return List of transactions
+     */
     public static List<Transaction> parseTransactions(JsonArray jsonArray) {
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
