@@ -119,11 +119,12 @@ public class OverviewActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_pie_chart:
                 Intent i = new Intent(getApplicationContext(), PieChartActivity.class);
-                i.putExtra("Month", getMonth());
-                i.putExtra("Year", getYear());
+                i.putExtra("month", getMonth());
+                i.putExtra("year", getYear());
                 startActivity(i);
                 break;
         }
