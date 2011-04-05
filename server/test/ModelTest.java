@@ -6,14 +6,23 @@ import org.junit.Test;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
+/**
+ * Test case for model
+ */
 public class ModelTest extends UnitTest {
 
+    /**
+     * Delete all fixtures and import test fixture before tests run
+     */
     @Before
     public void setUp() {
         Fixtures.deleteAll();
         Fixtures.load("fixtures-test.yml");
     }
 
+    /**
+     * Test Transaction fields
+     */
     @Test
     public void testTransactionFields() {
         Transaction t = Transaction.all().first();
@@ -29,6 +38,9 @@ public class ModelTest extends UnitTest {
         assertNotNull(t.user);
     }
 
+    /**
+     * Test TransactionTag fields
+     */
     @Test
     public void testTransactionTagFields() {
         TransactionTag t = TransactionTag.all().first();
@@ -36,6 +48,9 @@ public class ModelTest extends UnitTest {
         assertNotNull(t.name);
     }
 
+    /**
+     * Test User fields
+     */
     @Test
     public void testUserFields() {
         User u = User.all().first();

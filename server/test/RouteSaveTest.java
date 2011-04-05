@@ -9,19 +9,35 @@ import utils.FmtUtil;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Test case for transaction saving routes
+ */
 public class RouteSaveTest extends FunctionalTest {
 
+    /**
+     * Do a simple POST with the given values
+     *
+     * @param url    Internal URL
+     * @param params Params
+     * @return Response
+     */
     private static Http.Response POST(String url, Map<String, String> params) {
         return POST(url, "application/x-www-form-urlencoded",
                 FmtUtil.encode(params));
     }
 
+    /**
+     * Delete all fixtures and import test fixture before tests run
+     */
     @Before
     public void setUp() {
         Fixtures.deleteAll();
         Fixtures.load("fixtures-test.yml");
     }
 
+    /**
+     * Test /transactions/save
+     */
     @Test
     public void testRouteSaveNew() {
         final String json = "[\n" +
@@ -56,6 +72,9 @@ public class RouteSaveTest extends FunctionalTest {
         assertTrue(Transaction.count("_id", 4) == 1);
     }
 
+    /**
+     * Test /transactions/save
+     */
     @Test
     public void testRouteSaveNewNotDirty() {
         final String json = "[\n" +
@@ -90,6 +109,9 @@ public class RouteSaveTest extends FunctionalTest {
         assertTrue(Transaction.count("_id", 5) == 0);
     }
 
+    /**
+     * Test /transactions/save
+     */
     @Test
     public void testRouteSaveExisting() {
         Transaction existing = Transaction.find("_id", 3).first();
@@ -128,6 +150,9 @@ public class RouteSaveTest extends FunctionalTest {
         assertEquals("Annet", t.tag.name);
     }
 
+    /**
+     * Test /transactions/save
+     */
     @Test
     public void testRouteSaveExistingNotDirty() {
         Transaction existing = Transaction.find("_id", 3).first();

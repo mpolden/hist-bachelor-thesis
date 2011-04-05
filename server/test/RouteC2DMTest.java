@@ -4,8 +4,14 @@ import play.test.FunctionalTest;
 
 import java.util.Properties;
 
+/**
+ * Test case for C2DM routes
+ */
 public class RouteC2DMTest extends FunctionalTest {
 
+    /**
+     * Test configuration
+     */
     @Test
     public void testConfiguration() {
         Properties conf = Play.configuration;

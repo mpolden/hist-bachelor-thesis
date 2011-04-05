@@ -4,6 +4,9 @@ import utils.FmtUtil;
 
 import java.util.HashMap;
 
+/**
+ * Test case for FmtUtil
+ */
 public class FmtUtilTest extends UnitTest {
 
     /**
