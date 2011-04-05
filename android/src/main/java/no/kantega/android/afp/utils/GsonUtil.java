@@ -15,6 +15,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * This class handles parsing of JSON data to native Java types
+ */
 public class GsonUtil {
 
     private static final String TAG = GsonUtil.class.getSimpleName();
@@ -97,6 +100,12 @@ public class GsonUtil {
         return Collections.emptyList();
     }
 
+    /**
+     * Parse a generic map from JSON
+     *
+     * @param json JSON
+     * @return Native data
+     */
     public static List<Map<String, String>> parseMap(final String json) {
         final Type listType = new TypeToken<List<Map<String, String>>>() {
         }.getType();

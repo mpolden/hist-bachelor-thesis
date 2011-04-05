@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This class handles formatting and validation of input and output values
+ */
 public class FmtUtil {
 
     /**

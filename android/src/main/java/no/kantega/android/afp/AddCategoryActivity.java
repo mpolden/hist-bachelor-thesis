@@ -82,6 +82,9 @@ public class AddCategoryActivity extends Activity {
         });
     }
 
+    /**
+     * An adapter for the icon list
+     */
     private class IconAdapter extends BaseAdapter {
 
         private final Context context;

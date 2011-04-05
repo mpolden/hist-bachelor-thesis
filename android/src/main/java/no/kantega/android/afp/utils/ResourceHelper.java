@@ -7,6 +7,9 @@ import no.kantega.android.afp.R;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class provides helper methods for resources
+ */
 public class ResourceHelper {
 
     private static final Map<String, Integer> imageIds;
@@ -26,6 +29,13 @@ public class ResourceHelper {
         }};
     }
 
+    /**
+     * Get image for the given tag
+     *
+     * @param context Application context
+     * @param tag     Tag
+     * @return Image for tag
+     */
     public static Drawable getImage(Context context, String tag) {
         final Integer imageId = imageIds.get(tag);
         if (imageId != null) {

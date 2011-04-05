@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class acts as a wrapper for Transaction specific database operations
+ */
 public class Transactions {
 
     private static final String TAG = Transactions.class.getSimpleName();
@@ -24,6 +27,11 @@ public class Transactions {
     private final Dao<Transaction, Integer> transactionDao;
     private final Dao<TransactionTag, Integer> transactionTagDao;
 
+    /**
+     * Create a new instance and initialize DAOs
+     *
+     * @param context Application context
+     */
     public Transactions(Context context) {
         this.helper = new DatabaseHelper(context);
         this.transactionDao = helper.getTransactionDao();
@@ -136,6 +144,14 @@ public class Transactions {
         return null;
     }
 
+    /**
+     * Get transactions by text
+     *
+     * @param text      The text
+     * @param excludeId Id to exclude
+     * @param tagIsNull Wheter to include NULL tags
+     * @return List of transactions
+     */
     public List<Transaction> getByText(final String text, final int excludeId, final boolean tagIsNull) {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
@@ -192,14 +208,13 @@ public class Transactions {
      * @return Cursor
      */
     public Cursor getCursor() {
-        final Cursor cursor = helper.getReadableDatabase().query(
+        return helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
                 new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"}, null,
                 null, null, null,
                 "date DESC, timestamp DESC", null);
-        return cursor;
     }
 
     /**
@@ -212,14 +227,13 @@ public class Transactions {
         String selection = "internal = ? AND timestamp > ?";
         String[] selectionArgs = new String[]{"0",
                 String.valueOf(timestamp)};
-        final Cursor cursor = helper.getReadableDatabase().query(
+        return helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
                 new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"}, selection,
                 selectionArgs, null, null,
                 "date DESC, timestamp DESC", null);
-        return cursor;
     }
 
     /**
@@ -231,26 +245,38 @@ public class Transactions {
      */
     public Cursor getCursorTags(String month, String year) {
         final String dateQuery = String.format("%s-%s-%%", year, month);
-        final Cursor cursor = helper.getReadableDatabase().query(
+        return helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
                 new String[]{"_id", "transactiontags.name AS tag", "SUM(amount) AS sum"},
                 "date LIKE ?", new String[]{dateQuery},
                 "tag", null, "sum DESC, tag DESC", null);
-        return cursor;
     }
 
-    public Cursor getCursorTagsTotal(String month, String year) {
+    /**
+     * Get sum of transactions in the given month and year
+     *
+     * @param month Month to filter on
+     * @param year  Year to filter on
+     * @return Sum of transactions
+     */
+    private Cursor getCursorTagsTotal(String month, String year) {
         final String dateQuery = String.format("%s-%s-%%", year, month);
-        final Cursor cursor = helper.getReadableDatabase().query(
+        return helper.getReadableDatabase().query(
                 "transactions",
                 new String[]{"_id", "SUM(amount) AS sum"},
                 "date LIKE ?", new String[]{dateQuery},
                 null, null, null, "1");
-        return cursor;
     }
 
+    /**
+     * Get a merged cursor for aggregated data for all tags and the sum of all transactions
+     *
+     * @param month Month to filter on
+     * @param year  Year to filter on
+     * @return Aggregated tags and sum of transactions
+     */
     public MergeCursor getMergeCursorTags(String month, String year) {
         return new MergeCursor(new Cursor[]{getCursorTags(month, year), getCursorTagsTotal(month, year)});
     }
@@ -274,13 +300,12 @@ public class Transactions {
             selection = "tag = ? AND date LIKE ?";
             selectionArgs = new String[]{tag, dateQuery};
         }
-        final Cursor cursor = helper.getReadableDatabase().query(
+        return helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
                 new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"},
                 selection, selectionArgs, null, null, "date DESC, timestamp DESC", null);
-        return cursor;
     }
 
     /**
