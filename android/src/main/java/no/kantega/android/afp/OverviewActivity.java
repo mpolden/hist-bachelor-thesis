@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -258,15 +259,20 @@ public class OverviewActivity extends ListActivity {
         private void populateView(Context context, View view, Cursor cursor) {
             final int tagColumnIndex = cursor.getColumnIndex("tag");
             String tag;
-            if (tagColumnIndex > -1) {
-                tag = cursor.getString(tagColumnIndex);
-            } else {
-                tag = getResources().getString(R.string.total);
-            }
             Double consumption = cursor.getDouble(cursor.getColumnIndex("sum"));
             ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
             TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
             TextView tv_consumption = (TextView) view.findViewById(R.id.overview_textview_consumption);
+            if (tagColumnIndex > -1) {
+                tag = cursor.getString(tagColumnIndex);
+                tv_tag.setTypeface(null, Typeface.NORMAL);
+                tv_consumption.setTypeface(null, Typeface.NORMAL);
+            } else {
+                tag = getResources().getString(R.string.total);
+                tv_tag.setTypeface(null, Typeface.BOLD);
+                tv_consumption.setTypeface(null, Typeface.BOLD);
+            }
+
             image.setImageDrawable(null);
             tv_tag.setText(null);
             tv_consumption.setText(null);
