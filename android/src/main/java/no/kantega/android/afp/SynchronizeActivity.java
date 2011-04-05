@@ -28,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * This activity handles synchronization with our external server
+ */
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
@@ -195,6 +198,9 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    /**
+     * This task handles sending and retrieval for transactions
+     */
     private class TransactionsTask
             extends AsyncTask<String, Integer, Boolean> {
 
@@ -295,6 +301,13 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
+    /**
+     * Post values to the given URL with registration ID
+     *
+     * @param url    The URL
+     * @param values Values to include in POST
+     * @return Body of the response
+     */
     private InputStream post(String url, List<NameValuePair> values) {
         values.add(new BasicNameValuePair("registrationId",
                 preferences.getString(Register.REGISTRATION_ID_KEY, null)));

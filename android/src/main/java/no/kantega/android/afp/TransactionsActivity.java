@@ -11,12 +11,27 @@ import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 
+/**
+ * This activity displays a complete list of the transactions
+ */
 public class TransactionsActivity extends ListActivity {
 
-    private static final String TAG = OverviewActivity.class.getSimpleName();
+    private static final String TAG = TransactionsActivity.class.getSimpleName();
     private Transactions db;
     private TransactionsAdapter adapter;
     private Cursor cursor;
+    private final Runnable handler = new Runnable() {
+        @Override
+        public void run() {
+            // Try to change to a fresh cursor
+            if (!cursor.isClosed()) {
+                Log.d(TAG, "Changed to a new cursor");
+                adapter.changeCursor(cursor);
+            } else {
+                onResume();
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,19 +55,6 @@ public class TransactionsActivity extends ListActivity {
             }
         }).start();
     }
-
-    private final Runnable handler = new Runnable() {
-        @Override
-        public void run() {
-            // Try to change to a fresh cursor
-            if (!cursor.isClosed()) {
-                Log.d(TAG, "Changed to a new cursor");
-                adapter.changeCursor(cursor);
-            } else {
-                onResume();
-            }
-        }
-    };
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
