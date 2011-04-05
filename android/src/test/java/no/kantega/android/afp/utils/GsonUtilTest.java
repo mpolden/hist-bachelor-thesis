@@ -14,8 +14,14 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test case for GsonUtil
+ */
 public class GsonUtilTest {
 
+    /**
+     * Test parseTransactions
+     */
     @Test
     public void testParseTransactions() {
         final String json = "[{\"date\":\"2009-04-15 00:00:00\"," +
@@ -50,6 +56,9 @@ public class GsonUtilTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test parseMap
+     */
     @Test
     public void testParseMap() {
         final List<Map<String, String>> expected = new ArrayList<Map<String, String>>() {{

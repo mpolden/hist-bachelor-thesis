@@ -7,8 +7,14 @@ import java.util.Locale;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test case for FmtUtil
+ */
 public class FmtUtilTest {
 
+    /**
+     * Test dateToString
+     */
     @Test
     public void testDateToString() {
         String expected = "2010-01-01 00:00:00";
@@ -17,6 +23,9 @@ public class FmtUtilTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test stringToDate
+     */
     @Test
     public void testStringToDate() {
         Date expected = new Date(1262300400000L);
@@ -25,6 +34,9 @@ public class FmtUtilTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test currency
+     */
     @Test
     public void testCurrency() {
         String expected = "$1,199.49";
@@ -32,6 +44,9 @@ public class FmtUtilTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test trimTransactionText
+     */
     @Test
     public void testTrimTransactionText() {
         String expected;
@@ -64,6 +79,9 @@ public class FmtUtilTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test isNumber
+     */
     @Test
     public void testIsNumber() {
         assertFalse(FmtUtil.isNumber(null));
