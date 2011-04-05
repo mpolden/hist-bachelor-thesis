@@ -60,7 +60,7 @@ public class EditTransactionActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        matchingTransactions = db.getByText(t.getText(), t.get_id(), false);
+                        matchingTransactions = db.getByText(t.getText(), t.get_id(), true);
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
