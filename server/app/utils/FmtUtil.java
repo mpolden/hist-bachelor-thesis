@@ -54,4 +54,20 @@ public class FmtUtil {
         }
         return body.toString();
     }
+
+    /**
+     * Get first word in string split by space
+     *
+     * @param s String
+     * @return First word
+     */
+    public static String firstWord(String s) {
+        if (s != null) {
+            final String[] words = s.split(" ");
+            if (words.length > 0) {
+                return words[0];
+            }
+        }
+        return "";
+    }
 }
