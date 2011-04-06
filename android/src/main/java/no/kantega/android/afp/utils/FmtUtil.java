@@ -1,5 +1,6 @@
 package no.kantega.android.afp.utils;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -49,18 +50,28 @@ public class FmtUtil {
     }
 
     /**
-     * Format currency without prefix
+     * Format currency without prefix using the default locale
      *
-     * @param number
+     * @param number Number to format
      * @return Formatted currency
      */
     public static String currencyWithoutPrefix(double number) {
-        /*NumberFormat df = DecimalFormat.getInstance();
+        return currencyWithoutPrefix(number, Locale.getDefault());
+    }
+
+    /**
+     * Format currency according to the given locale
+     *
+     * @param number Number to format
+     * @param locale Locale to use when formatting
+     * @return Formatted currency
+     */
+    public static String currencyWithoutPrefix(double number, Locale locale) {
+        NumberFormat df = DecimalFormat.getInstance(locale);
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
         df.setRoundingMode(RoundingMode.HALF_UP);
-        return df.format(number);*/
-        return new DecimalFormat("0.00").format(number);
+        return df.format(number);
     }
 
     /**
