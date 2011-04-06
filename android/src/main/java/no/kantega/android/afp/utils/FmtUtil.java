@@ -1,5 +1,7 @@
 package no.kantega.android.afp.utils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +47,20 @@ public class FmtUtil {
         nf.setMinimumFractionDigits(2);
         nf.setMaximumFractionDigits(2);
         return nf.format(number);
+    }
+
+    /**
+     * Format currency without prefix
+     *
+     * @param number
+     * @return Formatted currency
+     */
+    public static String currencyWithoutPrefix(double number) {
+        NumberFormat df = DecimalFormat.getInstance();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(2);
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        return df.format(number);
     }
 
     /**
