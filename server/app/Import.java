@@ -15,6 +15,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This job handles the inital import of transactions from CSV
+ */
 @OnApplicationStart
 public class Import extends Job {
 
@@ -27,17 +30,24 @@ public class Import extends Job {
     private static final int FIELD_IDX_AMOUNT = 5;
     private static final int FIELD_IDX_TAG = 7;
 
+    @Override
     public void doJob() {
         loadUsersFromFixture();
         loadTransactionsFromCsv();
     }
 
+    /**
+     * Load users from fixture
+     */
     private void loadUsersFromFixture() {
         if (User.count() == 0) {
             Fixtures.load(FIXTURES);
         }
     }
 
+    /**
+     * Parse and load transactions from CSV
+     */
     private void loadTransactionsFromCsv() {
         if (Transaction.count() == 0) {
             File f = VirtualFile.fromRelativePath(FIXTURES_CSV).getRealFile();
@@ -61,6 +71,12 @@ public class Import extends Job {
         }
     }
 
+    /**
+     * Parse transaction from line
+     *
+     * @param line Line
+     * @return Transaction or null if parsing error occurs
+     */
     private Transaction saveTransaction(String line) {
         final String[] s = line.split(FIELD_SEPARATOR);
         final double amount = Double.parseDouble(s[FIELD_IDX_AMOUNT]);
@@ -82,6 +98,12 @@ public class Import extends Job {
         return t;
     }
 
+    /**
+     * Parse date
+     *
+     * @param s String to parse
+     * @return Parsed date or the current date on parse error
+     */
     private Date parseDate(String s) {
         try {
             return dateFormat.parse(s);

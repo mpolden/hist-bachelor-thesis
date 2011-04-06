@@ -5,6 +5,9 @@ import play.db.jpa.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+/**
+ * This model class represents a user
+ */
 @Entity
 public class User extends Model {
 

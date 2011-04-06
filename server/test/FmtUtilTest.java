@@ -4,8 +4,14 @@ import utils.FmtUtil;
 
 import java.util.HashMap;
 
+/**
+ * Test case for FmtUtil
+ */
 public class FmtUtilTest extends UnitTest {
 
+    /**
+     * Test trimTransactionText
+     */
     @Test
     public void testTrimTransactionText() {
         String expected;
@@ -38,6 +44,9 @@ public class FmtUtilTest extends UnitTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test encode
+     */
     @Test
     public void testEncode() {
         String expected = "theKey=this+is+some+key&otherKey=this+is+some+other+key";
@@ -45,6 +54,27 @@ public class FmtUtilTest extends UnitTest {
             put("otherKey", "this is some other key");
             put("theKey", "this is some key");
         }});
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test firstWord
+     */
+    @Test
+    public void firstWord() {
+        String expected;
+        String actual;
+        expected = "hello";
+        actual = FmtUtil.firstWord("hello world");
+        assertEquals(expected, actual);
+        expected = "hello";
+        actual = FmtUtil.firstWord("hello");
+        assertEquals(expected, actual);
+        expected = "";
+        actual = FmtUtil.firstWord("");
+        assertEquals(expected, actual);
+        expected = "";
+        actual = FmtUtil.firstWord(null);
         assertEquals(expected, actual);
     }
 }

@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -17,6 +18,9 @@ import no.kantega.android.afp.utils.ResourceHelper;
 
 import java.util.Calendar;
 
+/**
+ * This activity displays a general overview of the current transactions
+ */
 public class OverviewActivity extends ListActivity {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
@@ -98,8 +102,10 @@ public class OverviewActivity extends ListActivity {
         Register.handleRegistration(getApplicationContext());
     }
 
+    /**
+     * Update the selected datef
+     */
     private void updateDisplay() {
-        //pickDate.setText("Test");
         pickDate.setText(monthName[pickMonth] + " " + pickYear);
         onResume();
     }
@@ -114,11 +120,12 @@ public class OverviewActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_pie_chart:
                 Intent i = new Intent(getApplicationContext(), PieChartActivity.class);
-                i.putExtra("Month", getMonth());
-                i.putExtra("Year", getYear());
+                i.putExtra("month", getMonth());
+                i.putExtra("year", getYear());
                 startActivity(i);
                 break;
         }
@@ -145,6 +152,11 @@ public class OverviewActivity extends ListActivity {
         }
     }
 
+    /**
+     * The currently selected month
+     *
+     * @return Month
+     */
     private String getMonth() {
         String month = String.valueOf(pickMonth + 1);
         if (month.length() < 2) {
@@ -153,9 +165,13 @@ public class OverviewActivity extends ListActivity {
         return month;
     }
 
+    /**
+     * The currently selected year
+     *
+     * @return Year
+     */
     private String getYear() {
-        String year = String.valueOf(pickYear);
-        return year;
+        return String.valueOf(pickYear);
     }
 
     @Override
@@ -205,8 +221,17 @@ public class OverviewActivity extends ListActivity {
         }
     }
 
+    /**
+     * This adapter handles binding of views from the given cursor
+     */
     private class CategoryAdapter extends CursorAdapter {
 
+        /**
+         * Construct a new adapter in the given application context
+         *
+         * @param context The application context
+         * @param cursor  The cursorf
+         */
         public CategoryAdapter(Context context, Cursor cursor) {
             super(context, cursor);
         }
@@ -224,18 +249,30 @@ public class OverviewActivity extends ListActivity {
             populateView(context, view, cursor);
         }
 
+        /**
+         * Populate the view
+         *
+         * @param context Application context
+         * @param view    The view
+         * @param cursor  The cursor
+         */
         private void populateView(Context context, View view, Cursor cursor) {
             final int tagColumnIndex = cursor.getColumnIndex("tag");
             String tag;
-            if (tagColumnIndex > -1) {
-                tag = cursor.getString(tagColumnIndex);
-            } else {
-                tag = getResources().getString(R.string.total);
-            }
             Double consumption = cursor.getDouble(cursor.getColumnIndex("sum"));
             ImageView image = (ImageView) view.findViewById(R.id.overview_imageview_category);
             TextView tv_tag = (TextView) view.findViewById(R.id.overview_textview_tag);
             TextView tv_consumption = (TextView) view.findViewById(R.id.overview_textview_consumption);
+            if (tagColumnIndex > -1) {
+                tag = cursor.getString(tagColumnIndex);
+                tv_tag.setTypeface(null, Typeface.NORMAL);
+                tv_consumption.setTypeface(null, Typeface.NORMAL);
+            } else {
+                tag = getResources().getString(R.string.total);
+                tv_tag.setTypeface(null, Typeface.BOLD);
+                tv_consumption.setTypeface(null, Typeface.BOLD);
+            }
+
             image.setImageDrawable(null);
             tv_tag.setText(null);
             tv_consumption.setText(null);

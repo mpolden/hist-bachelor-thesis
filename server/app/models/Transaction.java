@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
+/**
+ * This model class represents a transaction
+ */
 @Entity
 @Indexed
 public class Transaction extends Model {

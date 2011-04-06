@@ -16,8 +16,17 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This controller provides methods for retrieving and adding/updated transactions
+ */
 public class Transactions extends Controller {
 
+    /**
+     * Get a suggested tag for the given text
+     *
+     * @param text Text to suggest by
+     * @return Suggested tag
+     */
     @SuppressWarnings("unchecked")
     private static TransactionTag getSuggestedTag(String text) {
         if (text == null) {
@@ -38,6 +47,11 @@ public class Transactions extends Controller {
         return !result.isEmpty() ? ModelHelper.saveOrUpdate(new TransactionTag(result.get(0))) : null;
     }
 
+    /**
+     * Retrieve all transactions for a device
+     *
+     * @param registrationId C2DM registration ID of the device
+     */
     public static void all(String registrationId) {
         final List<Transaction> transactions = Transaction.
                 find("user.deviceId = ? " +
@@ -63,6 +77,12 @@ public class Transactions extends Controller {
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
+    /**
+     * Retrieve all transactions that were created after the given timestamp
+     *
+     * @param timestamp      Only retrieve transactions after this timestamp
+     * @param registrationId C2DM registration ID of the device
+     */
     public static void after(Long timestamp, String registrationId) {
         final List<Transaction> transactions = Transaction.find(
                 "timestamp > ? " +
@@ -76,6 +96,12 @@ public class Transactions extends Controller {
         renderJSON(GsonUtil.makeJSON(transactions));
     }
 
+    /**
+     * Save or update the given transactions for a device
+     *
+     * @param registrationId C2DM registration ID of the device
+     * @param json           Transactions
+     */
     public static void save(String registrationId, JsonArray json) {
         final List<Transaction> transactions = GsonUtil.parseTransactions(json);
         final List<Transaction> updated = new ArrayList<Transaction>();

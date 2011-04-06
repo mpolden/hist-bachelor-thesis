@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import com.google.android.c2dm.C2DMessaging;
 
+/**
+ * This class provides helper methods for C2DM registration
+ */
 public class Register {
 
     private static final String TAG = Register.class.getSimpleName();
@@ -31,7 +34,7 @@ public class Register {
      * @param registrationId Registration ID for this device
      */
     public static void registerWithServer(String registrationId) {
-        throw new IllegalStateException("Not implemented");
+        throw new RuntimeException("Stub!");
     }
 
     /**
@@ -40,6 +43,6 @@ public class Register {
      * @param registrationId Registration ID for this device
      */
     public static void unregisterFromServer(String registrationId) {
-        throw new IllegalStateException("Not implemented");
+        throw new RuntimeException("Stub!");
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This activity displays a fine pie chart for the given month and year
+ */
 public class PieChartActivity extends Activity {
 
     private List<PieItem> PieData = new ArrayList<PieItem>();
@@ -40,7 +42,7 @@ public class PieChartActivity extends Activity {
         PieChart pieChart = new PieChart(this);
         pieChart.setLayoutParams(new ViewGroup.LayoutParams(size, size));
         pieChart.setGeometry(size, size, 5, 5, 5, 5, overlayId);
-        pieChart.setSkinParams(bgColor);
+        pieChart.setBgColor(bgColor);
         pieChart.setData(PieData, maxCount);
         pieChart.invalidate();
         pieChart.draw(new Canvas(backgroundImage));
@@ -52,11 +54,14 @@ public class PieChartActivity extends Activity {
         targetPieView.addView(imageView);
     }
 
+    /**
+     * Create a pie char from the cursor
+     */
     private void createPieDataFromCursor() {
         PieItem item;
         Random numGen = new Random();
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             item = new PieItem();
             item.setCount((int) cursor.getDouble(cursor.getColumnIndex("sum")));
             String tag = cursor.getString(cursor.getColumnIndex("tag"));
@@ -78,6 +83,9 @@ public class PieChartActivity extends Activity {
         db.close();
     }
 
+    /**
+     * A custom pie chart view
+     */
     private class PieChart extends View {
 
         private static final int WAIT = 0;
@@ -107,12 +115,13 @@ public class PieChartActivity extends Activity {
         private int maxConnection;
         private List<PieItem> dataArray;
 
+        /**
+         * Create a pie chart in the given context
+         *
+         * @param context Application context
+         */
         public PieChart(Context context) {
             super(context);
-        }
-
-        public PieChart(Context context, AttributeSet attrs) {
-            super(context, attrs);
         }
 
         @Override
@@ -190,6 +199,17 @@ public class PieChartActivity extends Activity {
             state = IS_DRAW;
         }
 
+        /**
+         * Set geometry
+         *
+         * @param width     Width
+         * @param height    Height
+         * @param gapLeft   Gap left
+         * @param gapRight  Gap right
+         * @param gapTop    Gap top
+         * @param gapBottom Gap bottom
+         * @param overlayId Id of overlay
+         */
         public void setGeometry(int width, int height, int gapLeft, int gapRight, int gapTop, int gapBottom, int overlayId) {
             this.width = width;
             this.height = height;
@@ -200,58 +220,87 @@ public class PieChartActivity extends Activity {
             this.overlayId = overlayId;
         }
 
-        public void setSkinParams(int bgColor) {
+        /**
+         * Set background color
+         *
+         * @param bgColor The background color
+         */
+        public void setBgColor(int bgColor) {
             this.bgColor = bgColor;
         }
 
+        /**
+         * Set data
+         *
+         * @param data          Pie items
+         * @param maxConnection Sum of values
+         */
         public void setData(List<PieItem> data, int maxConnection) {
             dataArray = data;
             this.maxConnection = maxConnection;
             state = IS_READY_TO_DRAW;
         }
-
-        public void setState(int state) {
-            this.state = state;
-        }
-
-        public int getColorValue(int index) {
-            if (dataArray == null) return 0;
-            if (index < 0) {
-                return dataArray.get(0).getColor();
-            } else if (index >= dataArray.size()) {
-                return dataArray.get(dataArray.size() - 1).getColor();
-            } else {
-                return dataArray.get(dataArray.size() - 1).getColor();
-            }
-        }
     }
 
+    /**
+     * Represents a single pie ite
+     */
     private class PieItem {
 
         private int count;
         private String label;
         private int color;
 
+        /**
+         * Get item label
+         *
+         * @return The label
+         */
         public String getLabel() {
             return label;
         }
 
+        /**
+         * Set item label
+         *
+         * @param label The label to set
+         */
         public void setLabel(String label) {
             this.label = label;
         }
 
+        /**
+         * Get color
+         *
+         * @return The color
+         */
         public int getColor() {
             return color;
         }
 
+        /**
+         * Set color
+         *
+         * @param color The color to set
+         */
         public void setColor(int color) {
             this.color = color;
         }
 
+        /**
+         * Get count
+         *
+         * @return The count
+         */
         public int getCount() {
             return count;
         }
 
+        /**
+         * Set count
+         *
+         * @param count The count to set
+         */
         public void setCount(int count) {
             this.count = count;
         }

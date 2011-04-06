@@ -4,8 +4,16 @@ import models.User;
 import play.Logger;
 import play.mvc.Controller;
 
+/**
+ * This controller handles registration of new users
+ */
 public class Users extends Controller {
 
+    /**
+     * Register a new user
+     *
+     * @param registrationId C2DM registration ID of device
+     */
     public static void register(String registrationId) {
         if (registrationId != null) {
             User user = User.find("registrationId", registrationId).first();
@@ -22,6 +30,11 @@ public class Users extends Controller {
         }
     }
 
+    /**
+     * Unregiser a user
+     *
+     * @param registrationId C2DM registration ID of device
+     */
     public static void unregister(String registrationId) {
         if (registrationId != null) {
             User user = User.find("registrationId", registrationId).first();

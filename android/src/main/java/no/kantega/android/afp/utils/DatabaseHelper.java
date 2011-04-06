@@ -13,6 +13,9 @@ import no.kantega.android.afp.models.TransactionTag;
 
 import java.sql.SQLException;
 
+/**
+ * Database helper which handles creation and upgrade of the internal database
+ */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
@@ -21,6 +24,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Transaction, Integer> transactionDao;
     private Dao<TransactionTag, Integer> transactionTagDao;
 
+    /**
+     * Create a database helper for the given application context
+     *
+     * @param context Application context
+     */
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

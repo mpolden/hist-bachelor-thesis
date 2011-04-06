@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity handles editign of an existing transaction
+ */
 public class EditTransactionActivity extends Activity {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -57,7 +60,7 @@ public class EditTransactionActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        matchingTransactions = db.getByText(t.getText(), t.get_id(), false);
+                        matchingTransactions = db.getByText(t.getText(), t.get_id(), true);
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
@@ -77,14 +80,22 @@ public class EditTransactionActivity extends Activity {
                 FmtUtil.trimTransactionText(t.getText()));
     }
 
-    private void updateSpinnerPosition(TransactionTag t) {
-        if (t == null) {
+    /**
+     * Update spinner position according to the selected tag
+     *
+     * @param tag The selected tag
+     */
+    private void updateSpinnerPosition(TransactionTag tag) {
+        if (tag == null) {
             category.setSelection(adapter.getPosition(untagged));
         } else {
-            category.setSelection(adapter.getPosition(t));
+            category.setSelection(adapter.getPosition(tag));
         }
     }
 
+    /**
+     * Setup views
+     */
     private void setupViews() {
         text = (EditText) findViewById(R.id.edittransaction_edittext_text);
         date = (Button) findViewById(R.id.edittransaction_button_pickDate);
@@ -125,6 +136,9 @@ public class EditTransactionActivity extends Activity {
         });
     }
 
+    /**
+     * This task handles batch updates of tags
+     */
     private class UpdateTask extends AsyncTask<TransactionTag, Integer, Boolean> {
 
         @Override
@@ -159,6 +173,11 @@ public class EditTransactionActivity extends Activity {
         }
     }
 
+    /**
+     * Save transaction
+     *
+     * @param autoTag Set to true if other transactions with equal text should be tagged
+     */
     private void saveTransaction(final boolean autoTag) {
         TransactionTag tag = null;
         if (!selectedTag.equals(untagged)) {
@@ -263,6 +282,9 @@ public class EditTransactionActivity extends Activity {
         }
     };
 
+    /**
+     * Update selected date
+     */
     private void updateDisplay() {
         date.setText(FmtUtil.dateToString(DATE_FORMAT, FmtUtil.stringToDate(DATE_FORMAT, String.format("%s-%s-%s",
                 pickYear, pickMonth, pickDay))));
@@ -281,6 +303,9 @@ public class EditTransactionActivity extends Activity {
         }
     };
 
+    /**
+     * This task handles retrieval of tag suggestions
+     */
     private class SuggestionsTask extends AsyncTask<String, Integer, String> {
 
         @Override

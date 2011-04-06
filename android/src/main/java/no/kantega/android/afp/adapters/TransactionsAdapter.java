@@ -14,8 +14,17 @@ import no.kantega.android.afp.utils.ResourceHelper;
 
 import java.util.Date;
 
+/**
+ * This class is the default adapter for various transaction lists
+ */
 public class TransactionsAdapter extends CursorAdapter {
 
+    /**
+     * Initialize the adapter
+     *
+     * @param context Application context
+     * @param c       Cursor
+     */
     public TransactionsAdapter(Context context, Cursor c) {
         super(context, c);
     }
@@ -33,6 +42,13 @@ public class TransactionsAdapter extends CursorAdapter {
         populateView(context, view, getCursor());
     }
 
+    /**
+     * Populate view
+     *
+     * @param context Application context
+     * @param view    View
+     * @param cursor  Cursor
+     */
     private void populateView(Context context, View view, Cursor cursor) {
         String date = cursor.getString(cursor.getColumnIndex("date"));
         String text = cursor.getString(cursor.getColumnIndex("text"));
@@ -63,5 +79,4 @@ public class TransactionsAdapter extends CursorAdapter {
             tv_amount.setText(FmtUtil.currency(amount));
         }
     }
-
 }

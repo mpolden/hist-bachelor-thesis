@@ -13,6 +13,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This activity handles adding of new categories
+ */
 public class AddCategoryActivity extends Activity {
 
     private Transactions db;
@@ -46,6 +49,9 @@ public class AddCategoryActivity extends Activity {
         setupViews();
     }
 
+    /**
+     * Fill list with icon IDs
+     */
     private void setupIconList() {
         Field[] drawables = R.drawable.class.getFields();
         iconIds = new ArrayList<Integer>();
@@ -60,6 +66,9 @@ public class AddCategoryActivity extends Activity {
         }
     }
 
+    /**
+     * Setup category view with icon selector
+     */
     private void setupViews() {
         category_name = (EditText) findViewById(R.id.edittext_categoryname);
         category_icon = (ImageView) findViewById(R.id.imageview_newcategory_icon);
@@ -73,10 +82,18 @@ public class AddCategoryActivity extends Activity {
         });
     }
 
+    /**
+     * An adapter for the icon list
+     */
     private class IconAdapter extends BaseAdapter {
 
         private final Context context;
 
+        /**
+         * Initialize an IconAdapter for the given context
+         *
+         * @param c Application context
+         */
         public IconAdapter(Context c) {
             this.context = c;
         }

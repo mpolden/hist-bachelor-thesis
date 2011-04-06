@@ -10,8 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Test case for GsonUtil
+ */
 public class GsonUtilTest extends UnitTest {
 
+    /**
+     * Test makeJSON
+     */
     @Test
     public void testMakeJSON() {
         String expected = "\"2010-01-01 00:00:00\"";
@@ -19,6 +25,9 @@ public class GsonUtilTest extends UnitTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test parseTransactions
+     */
     @Test
     public void testParseTransactions() {
         final String json = "[{\"date\":\"2009-04-15 00:00:00\"," +

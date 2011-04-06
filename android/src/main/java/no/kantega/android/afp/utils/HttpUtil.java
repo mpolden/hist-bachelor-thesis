@@ -14,10 +14,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * This class handles HTTP communication
+ */
 public class HttpUtil {
 
     private static final String TAG = HttpUtil.class.getSimpleName();
 
+    /**
+     * Post values to the given URL
+     *
+     * @param url    URL
+     * @param values The values to post
+     * @return Body of response
+     */
     public static InputStream post(String url, List<NameValuePair> values) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
@@ -31,6 +41,14 @@ public class HttpUtil {
         return null;
     }
 
+    /**
+     * Post a string to the given url with the given content type
+     *
+     * @param url         URL
+     * @param s           Value to post
+     * @param contentType Content type to use
+     * @return Body of response
+     */
     public static String post(String url, String s, String contentType) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
