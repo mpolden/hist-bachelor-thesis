@@ -17,22 +17,21 @@ the sprint number and Z is the day number in that sprint.
 Git branches
 ------------
 When implementing major components, we usually create a new branch with an
-appropiate name, like 'sqlite' or 'ormlite'.
+appropiate name, like 'experimental' or 'ormlite'.
 
 Building the project
 --------------------
 We use Maven to build the entire project, including both the Android app and
 the server. To build it, do the following:
 
-    cd code
     ANDROID_HOME=/path/to/android-sdk mvn package
 
 Building only the Android app
 -----------------------------
-The source for the Android app is located in code/android.
+The source for the Android app is located in android.
 To build it, do the following:
 
-    cd code/android
+    cd android
     ANDROID_HOME=/path/to/android-sdk mvn package
 
 Building and running the server
@@ -47,24 +46,24 @@ You will need the following play modules:
 
 To run the server:
 
-    cd code/server
+    cd server
     play run
 
 Setting values for development
 ------------------------------
 When running in development mode, a few custom values need to be set, such as
 the application server URLs and your Android C2DM device ID. The device ID can
-be found by launching the app and looking for "Registered: <the_id>" or
+be found by launching the app and looking for "New device ID: <the_id>" or
 "Existing device ID: <the_id>" in the emulator log.
 
-* Edit code/android/src/main/android/assets/url.properties to contain the following:
+* Edit android/src/main/android/assets/url.properties to contain the following:
 
-    suggestTags = http://<your_ip>:9000/tags/suggest
+    suggestTag = http://<your_ip>:9000/tags/suggest
     newTransactions = http://<your_ip>:9000/transactions/%s
     allTransactions = http://<your_ip>:9000/transactions/all
     saveTransactions = http://<your_ip>:9000/transactions/save
 
-* Edit code/server/conf/fixtures-local.yml to contain the following:
+* Edit server/conf/fixtures-local.yml to contain the following:
 
       User(user):
         deviceId: <your_device_id>
@@ -89,8 +88,7 @@ to be run as root, use the following commands for a quick fix:
 
 The best solution is however to use a udev rule, like this:
 
-    echo 'SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666"' | \
-        sudo tee -a /etc/udev/rules.d/51-android.rules.
+    echo 'SUBSYSTEM=="usb", SYSFS{idVendor}=="0bb4", MODE="0666"' | sudo tee -a /etc/udev/rules.d/51-android.rules.
 
 The '0bb4' is the vendor ID for HTC, if you're using a different brand use the
 lsusb command to find it.
@@ -113,7 +111,7 @@ do the following:
 * Navigate to Modules
 * Select your Android module
 * Click the Dependencies tab
-* Move Android 2.3.3 Platform above all the Maven dependencies (except jUnit)
+* Move Android 2.3.3 Platform above all the Maven dependencies, except jUnit
 
 IntelliJ IDEA, Play Framework and Javadoc
 -----------------------------------------
@@ -141,5 +139,5 @@ IntelliJ IDEA not displaying Git branch
 
 Testing C2DM messages
 ---------------------
-Use the included bash script (code/c2dm-test.sh) to test C2DM messages. You
+Use the included bash script (c2dm-test.sh) to test C2DM messages. You
 will need the device ID and a message for the transaction.
