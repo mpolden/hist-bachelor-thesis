@@ -1,4 +1,4 @@
-package no.kantega.android.afp.utils;
+package no.kantega.android.afp;
 
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.runners.model.InitializationError;
