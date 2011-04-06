@@ -35,6 +35,7 @@
             <groupId>com.pivotallabs</groupId>
             <artifactId>robolectric</artifactId>
             <version>0.9.8</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
