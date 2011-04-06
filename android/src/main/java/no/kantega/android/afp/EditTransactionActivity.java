@@ -46,6 +46,7 @@ public class EditTransactionActivity extends Activity {
     private TransactionTag untagged;
     private ProgressDialog progressDialog;
     private List<Transaction> matchingTransactions;
+    private List<Transaction> similarTransactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,9 @@ public class EditTransactionActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        matchingTransactions = db.getByText(t.getText(), t.get_id(), true);
+                        matchingTransactions = db.getByText(t.getText(), t.get_id());
+                        similarTransactions = db.getSimilarByText(String.format("%s %%",
+                                FmtUtil.firstWord(t.getText())), t.getId());
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
@@ -225,18 +228,27 @@ public class EditTransactionActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("")
                         .setCancelable(false)
-                        .setPositiveButton(R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        saveTransaction(true);
-                                        dialog.dismiss();
-                                    }
-                                })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.tag_exact, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                saveTransaction(true);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(R.string.tag_single, new DialogInterface.OnClickListener() {
+                            @Override
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 saveTransaction(false);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNeutralButton(R.string.tag_all, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                // XXX: Find similar transactions and start activity
+                                saveTransaction(true);
                                 dialog.dismiss();
                             }
                         });
