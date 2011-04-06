@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:padding="6dip">
     <LinearLayout android:layout_height="fill_parent" android:layout_width="34dip">
-        <CheckBox id="@+id/checkbox_similartransaction" android:layout_width="wrap_content"
+        <CheckBox android:id="@+id/checkbox_similartransaction" android:layout_width="wrap_content"
                   android:layout_height="wrap_content" android:layout_marginRight="6dip"></CheckBox>
     </LinearLayout>
     <LinearLayout android:orientation="vertical"
