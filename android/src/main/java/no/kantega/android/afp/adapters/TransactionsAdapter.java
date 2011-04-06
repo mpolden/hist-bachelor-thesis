@@ -19,20 +19,24 @@ import java.util.Date;
  */
 public class TransactionsAdapter extends CursorAdapter {
 
+    private final int layoutId;
+
     /**
      * Initialize the adapter
      *
-     * @param context Application context
-     * @param c       Cursor
+     * @param context  Application context
+     * @param c        Cursor
+     * @param layoutId Id of the layout to use for views
      */
-    public TransactionsAdapter(Context context, Cursor c) {
+    public TransactionsAdapter(Context context, Cursor c, int layoutId) {
         super(context, c);
+        this.layoutId = layoutId;
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.transactionrow, parent, false);
+        final View view = inflater.inflate(layoutId, parent, false);
         populateView(context, view, getCursor());
         return view;
     }
