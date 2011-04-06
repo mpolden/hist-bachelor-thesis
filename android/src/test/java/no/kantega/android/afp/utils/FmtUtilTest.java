@@ -123,16 +123,16 @@ public class FmtUtilTest {
         String expected;
         String actual;
         expected = "123.45";
-        actual = FmtUtil.currencyWithoutPrefix(123.4534);
+        actual = FmtUtil.currencyWithoutPrefix(123.4534, Locale.US);
         assertEquals(expected, actual);
         expected = "123.46";
-        actual = FmtUtil.currencyWithoutPrefix(123.4567);
+        actual = FmtUtil.currencyWithoutPrefix(123.4567, Locale.US);
         assertEquals(expected, actual);
         expected = "123.00";
-        actual = FmtUtil.currencyWithoutPrefix(123);
+        actual = FmtUtil.currencyWithoutPrefix(123, Locale.US);
         assertEquals(expected, actual);
         expected = "123.10";
-        actual = FmtUtil.currencyWithoutPrefix(123.1);
+        actual = FmtUtil.currencyWithoutPrefix(123.1, Locale.US);
         assertEquals(expected, actual);
     }
 }
