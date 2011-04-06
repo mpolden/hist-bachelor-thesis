@@ -2,6 +2,7 @@ package no.kantega.android.afp;
 
 import android.app.*;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -248,7 +249,11 @@ public class EditTransactionActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
                                 // XXX: Find similar transactions and start activity
-                                saveTransaction(true);
+                                //saveTransaction(true);
+                                Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
+                                intent.putExtra("text", t.getText());
+                                intent.putExtra("excludeId", t.get_id());
+                                startActivity(intent);
                                 dialog.dismiss();
                             }
                         });

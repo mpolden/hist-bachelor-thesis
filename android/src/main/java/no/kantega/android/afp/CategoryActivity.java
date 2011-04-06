@@ -33,7 +33,7 @@ public class CategoryActivity extends ListActivity {
         this.year = getIntent().getExtras().getString("year");
         this.db = new Transactions(getApplicationContext());
         this.cursor = db.getCursorTransactions(tag, month, year);
-        this.adapter = new TransactionsAdapter(this, cursor);
+        this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
     }
 
