@@ -43,10 +43,12 @@
     <string name="confirm">OK</string>
     <string name="notification">You have %s new transaction(s)</string>
     <string name="not_tagged">Ukategorisert</string>
-    <string name="auto_tag">There are %s other transaction(s) that matches this one. Do you want to tag them aswell?
+    <string name="auto_tag" formatted="false">There %s other exact matches for this transaction and %s similar ones.
+        Which ones do you want to tag in addition to this one?
     </string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="tag_exact">Exact matches</string>
+    <string name="tag_all">Exact and similar matches</string>
+    <string name="tag_single">Only this one</string>
     <string-array name="months">
         <item>January</item>
         <item>February</item>
