@@ -38,6 +38,12 @@ public class Transactions {
         this.transactionTagDao = helper.getTransactionTagDao();
     }
 
+    public Transactions(Context context, DatabaseHelper helper) {
+        this.helper = helper;
+        this.transactionDao = helper.getTransactionDao();
+        this.transactionTagDao = helper.getTransactionTagDao();
+    }
+
     /**
      * Add a new transaction tag
      *
