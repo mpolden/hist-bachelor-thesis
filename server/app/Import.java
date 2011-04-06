@@ -86,7 +86,7 @@ public class Import extends Job {
         try {
             return dateFormat.parse(s);
         } catch (ParseException e) {
-            Logger.warn(e, "Failed to parse date: %s", e);
+            Logger.warn(e, "Failed to parse date: %s", s);
         }
         return new Date();
     }
