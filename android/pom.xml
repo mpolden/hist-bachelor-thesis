@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.kantega.android</groupId>
+    <groupId>no.kantega.android.afp</groupId>
     <artifactId>afp</artifactId>
     <version>0.1</version>
     <packaging>apk</packaging>
@@ -30,6 +30,11 @@
             <artifactId>android</artifactId>
             <version>2.3.3</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.pivotallabs</groupId>
+            <artifactId>robolectric</artifactId>
+            <version>0.9.8</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
