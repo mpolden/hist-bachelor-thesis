@@ -43,10 +43,12 @@
     <string name="confirm">OK</string>
     <string name="notification">Du har %s ny(e) transaksjon(er)</string>
     <string name="not_tagged">Ukategorisert</string>
-    <string name="auto_tag">Det er %s andre transaksjon(er) som matcher denne. Vil du kategorisere disse også?
+    <string name="auto_tag" formatted="false">Det er %s andre transaksjoner nøyaktig lik denne og %s lignende.
+        Hvilke vil du kategorisere i tillegg til denne?
     </string>
-    <string name="yes">Ja</string>
-    <string name="no">Nei</string>
+    <string name="tag_exact">De som er like</string>
+    <string name="tag_all">Like og lignende</string>
+    <string name="tag_single">Kun denne</string>
     <string-array name="months">
         <item>Januar</item>
         <item>Februar</item>
