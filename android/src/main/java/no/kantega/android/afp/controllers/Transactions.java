@@ -149,17 +149,41 @@ public class Transactions {
      *
      * @param text      The text
      * @param excludeId Id to exclude
-     * @param tagIsNull Only select where tag IS NULL
      * @return List of transactions
      */
-    public List<Transaction> getByText(final String text, final int excludeId, final boolean tagIsNull) {
+    public List<Transaction> getByText(final String text, final int excludeId) {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
         try {
-            Where<Transaction, Integer> where = queryBuilder.where().eq("text", text).and().ne("_id", excludeId);
-            if (tagIsNull) {
-                where = where.and().isNull("tag_id");
-            }
+            Where<Transaction, Integer> where = queryBuilder.
+                    where().
+                    eq("text", text).and().
+                    ne("_id", excludeId).and().
+                    isNull("tag_id");
+            queryBuilder.setWhere(where);
+            return getAll(queryBuilder);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to find transactions by text", e);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Get similar transactions by text
+     *
+     * @param text
+     * @param excludeId
+     * @return
+     */
+    public List<Transaction> getSimilarByText(final String text, final int excludeId) {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
+                queryBuilder();
+        try {
+            Where<Transaction, Integer> where = queryBuilder.
+                    where().
+                    like("text", text).and().
+                    ne("_id", excludeId).and().
+                    isNull("tag_id");
             queryBuilder.setWhere(where);
             return getAll(queryBuilder);
         } catch (SQLException e) {
