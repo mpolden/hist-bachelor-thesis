@@ -39,7 +39,7 @@ public class TransactionsActivity extends ListActivity {
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
         this.cursor = db.getCursor();
-        this.adapter = new TransactionsAdapter(this, cursor);
+        this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
     }
 

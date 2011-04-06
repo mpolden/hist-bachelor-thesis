@@ -73,10 +73,12 @@ public class TransactionsAdapter extends CursorAdapter {
         }
         if (tag != null) {
             tv_tag.setText(tag);
-            image.setImageDrawable(ResourceHelper.getImage(context, tag));
+        } else {
+            tv_tag.setText(R.string.not_tagged);
         }
+        image.setImageDrawable(ResourceHelper.getImage(context, tag));
         if (amount != null) {
-            tv_amount.setText(FmtUtil.currency(amount));
+            tv_amount.setText(FmtUtil.currencyWithoutPrefix(amount));
         }
     }
 }
