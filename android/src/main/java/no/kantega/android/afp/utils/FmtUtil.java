@@ -1,6 +1,5 @@
 package no.kantega.android.afp.utils;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -56,11 +55,12 @@ public class FmtUtil {
      * @return Formatted currency
      */
     public static String currencyWithoutPrefix(double number) {
-        NumberFormat df = DecimalFormat.getInstance();
+        /*NumberFormat df = DecimalFormat.getInstance();
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(2);
         df.setRoundingMode(RoundingMode.HALF_UP);
-        return df.format(number);
+        return df.format(number);*/
+        return new DecimalFormat("0.00").format(number);
     }
 
     /**
@@ -108,5 +108,21 @@ public class FmtUtil {
      */
     public static boolean isNumber(String s) {
         return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
+    }
+
+    /**
+     * Get first word in string split by space
+     *
+     * @param s String
+     * @return First word
+     */
+    public static String firstWord(String s) {
+        if (s != null) {
+            final String[] words = s.split(" ");
+            if (words.length > 0) {
+                return words[0];
+            }
+        }
+        return "";
     }
 }

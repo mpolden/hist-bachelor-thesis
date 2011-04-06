@@ -93,4 +93,46 @@ public class FmtUtilTest {
         assertTrue(FmtUtil.isNumber("123,45"));
         assertTrue(FmtUtil.isNumber("123.45"));
     }
+
+    /**
+     * Test firstWord
+     */
+    @Test
+    public void firstWord() {
+        String expected;
+        String actual;
+        expected = "hello";
+        actual = FmtUtil.firstWord("hello world");
+        assertEquals(expected, actual);
+        expected = "hello";
+        actual = FmtUtil.firstWord("hello");
+        assertEquals(expected, actual);
+        expected = "";
+        actual = FmtUtil.firstWord("");
+        assertEquals(expected, actual);
+        expected = "";
+        actual = FmtUtil.firstWord(null);
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test currencyWithoutPrefix
+     */
+    @Test
+    public void testCurrencyWithoutPrefix() {
+        String expected;
+        String actual;
+        expected = "123.45";
+        actual = FmtUtil.currencyWithoutPrefix(123.4534);
+        assertEquals(expected, actual);
+        expected = "123.46";
+        actual = FmtUtil.currencyWithoutPrefix(123.4567);
+        assertEquals(expected, actual);
+        expected = "123.00";
+        actual = FmtUtil.currencyWithoutPrefix(123);
+        assertEquals(expected, actual);
+        expected = "123.10";
+        actual = FmtUtil.currencyWithoutPrefix(123.1);
+        assertEquals(expected, actual);
+    }
 }
