@@ -3,9 +3,10 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:padding="6dip">
-    <LinearLayout android:layout_height="fill_parent" android:layout_width="34dip">
+    <LinearLayout android:layout_height="fill_parent" android:layout_width="wrap_content">
         <CheckBox android:id="@+id/checkbox_similartransaction" android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" android:layout_marginRight="6dip"></CheckBox>
+                  android:layout_height="wrap_content" android:layout_marginRight="6dip"
+                  android:checked="true"></CheckBox>
     </LinearLayout>
     <LinearLayout android:orientation="vertical"
                   android:layout_width="0dip" android:layout_weight="1"

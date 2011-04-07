@@ -81,6 +81,8 @@ public class SimilarTransactionsActivity extends ListActivity {
                 TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
                 TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
                 TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
+                CheckBox bCheck = (CheckBox) v.findViewById(R.id.checkbox_similartransaction);
+                bCheck.setOnClickListener(this);
                 tv_date.setText(null);
                 tv_text.setText(null);
                 tv_tag.setText(null);
