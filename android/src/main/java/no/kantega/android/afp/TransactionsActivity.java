@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
@@ -33,12 +32,7 @@ public class TransactionsActivity extends ListActivity {
             }
         }
     };
-    private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
 
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,8 +42,7 @@ public class TransactionsActivity extends ListActivity {
         this.cursor = db.getCursor();
         this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
-        Button saveButton = (Button) findViewById(R.id.button_save_transactions);
-        saveButton.setOnClickListener(saveTransactionsButtonListener);
+
     }
 
     @Override

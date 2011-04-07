@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
@@ -28,6 +25,12 @@ public class SimilarTransactionsActivity extends ListActivity {
     private SimilarTransactionAdapter adapter;
     private List<Transaction> similarTransactions;
     private ArrayList<CheckBox> cBoxes = new ArrayList<CheckBox>();
+    private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
 
     @Override
@@ -42,6 +45,8 @@ public class SimilarTransactionsActivity extends ListActivity {
                 transactionText, excludeId);
         this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions, cBoxes);
         setListAdapter(adapter);
+        Button saveButton = (Button) findViewById(R.id.button_save_transactions);
+        saveButton.setOnClickListener(saveTransactionsButtonListener);
     }
 
     @Override
