@@ -1,17 +1,23 @@
 package no.kantega.android.afp;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.*;
+import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
+import no.kantega.android.afp.utils.ResourceHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,13 +51,22 @@ public class SimilarTransactionsActivity extends ListActivity {
         db.close();
     }
 
-    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
-
+    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> implements View.OnClickListener {
         private List<Transaction> items;
 
         public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
             super(context, textViewResourceId, items);
             this.items = items;
+        }
+
+        @Override
+        public void onClick(View v) {
+            CheckBox cBox = (CheckBox) v;
+            if(cBox.isChecked()) {
+                cBox.setChecked(false);
+            } else {
+                cBox.setChecked(true);
+            }
         }
 
         @Override
@@ -67,6 +82,8 @@ public class SimilarTransactionsActivity extends ListActivity {
                 TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
                 TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
                 TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
+                CheckBox bCheck = (CheckBox) v.findViewById(R.id.checkbox_similartransaction);
+                bCheck.setOnClickListener(this);
                 tv_date.setText(null);
                 tv_text.setText(null);
                 tv_tag.setText(null);
@@ -86,8 +103,11 @@ public class SimilarTransactionsActivity extends ListActivity {
                 if (t.getAmount() != 0) {
                     tv_amount.setText(FmtUtil.currencyWithoutPrefix(t.getAmount()));
                 }
+
             }
+
             return v;
         }
+
     }
 }
