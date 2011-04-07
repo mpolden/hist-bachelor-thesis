@@ -36,7 +36,6 @@ public class SynchronizeActivity extends Activity {
     private static final int ALERT_DIALOG_ID = 2;
     private Transactions db;
     private SharedPreferences preferences;
-    private ProgressDialog fetchProgressDialog;
     private ProgressDialog updateProgressDialog;
     private TextView lastSynchronized;
     private TextView transactionCount;
@@ -153,7 +152,7 @@ public class SynchronizeActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case FETCH_PROGRESS_DIALOG_ID: {
-                fetchProgressDialog = new ProgressDialog(this);
+                ProgressDialog fetchProgressDialog = new ProgressDialog(this);
                 fetchProgressDialog.setMessage(getResources().getString(R.string.fetching_transactions));
                 fetchProgressDialog.setCancelable(false);
                 fetchProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
