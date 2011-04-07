@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
-import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new UpdateTask().execute(null);
+            new UpdateTask().execute(new Object[0]);
         }
     };
 
@@ -100,7 +99,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     /**
      * This task handles batch updates of tags
      */
-    private class UpdateTask extends AsyncTask<TransactionTag, Integer, Boolean> {
+    private class UpdateTask extends AsyncTask<Object, Integer, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -108,7 +107,7 @@ public class SimilarTransactionsActivity extends ListActivity {
         }
 
         @Override
-        protected Boolean doInBackground(TransactionTag... tags) {
+        protected Boolean doInBackground(Object... objects) {
             final List<Transaction> changed = new ArrayList<Transaction>();
             for (Transaction transaction : similarTransactions) {
                 if (transaction.isChecked()) {
@@ -136,6 +135,7 @@ public class SimilarTransactionsActivity extends ListActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             dismissDialog(PROGRESS_DIALOG_ID);
+            setResult(RESULT_OK);
             finish();
         }
     }

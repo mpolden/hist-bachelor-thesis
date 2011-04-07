@@ -182,10 +182,18 @@ public class EditTransactionActivity extends Activity {
             if (tagSimilar) {
                 Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
                 intent.putExtra("transaction", t);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             } else {
                 finish();
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            finish();
         }
     }
 
