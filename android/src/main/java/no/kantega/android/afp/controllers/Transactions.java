@@ -437,4 +437,16 @@ public class Transactions {
             Log.d(TAG, "Closed database connection");
         }
     }
+
+    /**
+     * Close cursor silently
+     *
+     * @param cursor Cursor (can be null)
+     */
+    public void closeCursor(Cursor cursor) {
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+            Log.d(TAG, "Closed cursor");
+        }
+    }
 }
