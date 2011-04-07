@@ -219,7 +219,7 @@ public class SynchronizeActivity extends Activity {
                             add(new BasicNameValuePair("json", json));
                         }});
                 if (in == null) {
-                    return Collections.emptyList();
+                    return null;
                 }
                 return GsonUtil.parseTransactions(in);
             }
@@ -243,7 +243,7 @@ public class SynchronizeActivity extends Activity {
                 in = post(urlAll, new ArrayList<NameValuePair>());
             }
             if (in == null) {
-                return Collections.emptyList();
+                return null;
             }
             return GsonUtil.parseTransactions(in);
         }
@@ -251,7 +251,9 @@ public class SynchronizeActivity extends Activity {
         @Override
         protected void onPostExecute(Object object) {
             dismissDialog(FETCH_PROGRESS_DIALOG_ID);
-            if (!freshTransactions.isEmpty() || !dirtyTransactions.isEmpty()) {
+            if (freshTransactions == null || dirtyTransactions == null) {
+                showDialog(ALERT_DIALOG_ID);
+            } else if (!freshTransactions.isEmpty() || !dirtyTransactions.isEmpty()) {
                 new UpdateTask().execute(freshTransactions, dirtyTransactions);
             }
         }
