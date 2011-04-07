@@ -57,7 +57,7 @@ public class TransactionsPerTagActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
+                db.closeCursor(cursor);
                 cursor = db.getCursorTransactions(tag, month, year);
                 runOnUiThread(handler);
             }

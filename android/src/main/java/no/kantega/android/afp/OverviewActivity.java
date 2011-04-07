@@ -180,6 +180,7 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                db.closeCursor(cursor);
                 cursor = db.getMergeCursorTags(getMonth(), getYear());
                 runOnUiThread(handler);
             }
@@ -189,13 +190,8 @@ public class OverviewActivity extends ListActivity {
     private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            // Try to change to a fresh cursor
-            if (!cursor.isClosed()) {
-                adapter.changeCursor(cursor);
-                Log.d(TAG, "Changed to a new cursor");
-            } else {
-                onResume();
-            }
+            adapter.changeCursor(cursor);
+            Log.d(TAG, "Changed to a new cursor");
         }
     };
 

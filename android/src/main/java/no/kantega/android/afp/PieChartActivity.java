@@ -77,9 +77,7 @@ public class PieChartActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        db.closeCursor(cursor);
         db.close();
     }
 

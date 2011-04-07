@@ -85,6 +85,7 @@ public class NotificationsActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                db.closeCursor(cursor);
                 cursor = db.getCursorAfterTimestamp(latestTimestamp);
                 runOnUiThread(adapterHandler);
             }

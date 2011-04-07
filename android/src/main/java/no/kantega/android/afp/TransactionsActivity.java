@@ -23,13 +23,8 @@ public class TransactionsActivity extends ListActivity {
     private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            // Try to change to a fresh cursor
-            if (!cursor.isClosed()) {
-                Log.d(TAG, "Changed to a new cursor");
-                adapter.changeCursor(cursor);
-            } else {
-                onResume();
-            }
+            Log.d(TAG, "Changed to a new cursor");
+            adapter.changeCursor(cursor);
         }
     };
 
@@ -51,7 +46,7 @@ public class TransactionsActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Retrieve a new cursor in a thread, then do the actual swap on the UiThread
+                db.closeCursor(cursor);
                 cursor = db.getCursor();
                 runOnUiThread(handler);
             }
