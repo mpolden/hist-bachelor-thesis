@@ -30,7 +30,7 @@ public class Transaction implements Serializable {
     private long timestamp;
     @DatabaseField(index = true)
     private boolean dirty;
-    private boolean checked;
+    private boolean checked = true;
 
     /**
      * Empty constructor to satisfy ORMLite
