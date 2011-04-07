@@ -256,14 +256,6 @@ public class EditTransactionActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("")
                         .setCancelable(false)
-                        .setPositiveButton(R.string.tag_exact, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                saveTransaction(true, false);
-                                dialog.dismiss();
-                            }
-                        })
                         .setNegativeButton(R.string.tag_single, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
@@ -272,15 +264,27 @@ public class EditTransactionActivity extends Activity {
                                 dialog.dismiss();
                             }
                         });
-                if (!similarTransactions.isEmpty()) {
-                    builder = builder.setNeutralButton(R.string.tag_all, new DialogInterface.OnClickListener() {
+                if (!matchingTransactions.isEmpty()) {
+                    builder = builder.setPositiveButton(R.string.tag_exact, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            // XXX: Find similar transactions and start activity
-                            saveTransaction(true, true);
+                        public void onClick(DialogInterface dialog,
+                                            int id) {
+                            saveTransaction(true, false);
                             dialog.dismiss();
                         }
                     });
+                }
+                if (!similarTransactions.isEmpty()) {
+                    builder = builder.setNeutralButton(
+                            matchingTransactions.isEmpty() ? R.string.tag_similar : R.string.tag_all,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    // XXX: Find similar transactions and start activity
+                                    saveTransaction(true, true);
+                                    dialog.dismiss();
+                                }
+                            });
                 }
                 return builder.create();
             }
@@ -307,12 +311,15 @@ public class EditTransactionActivity extends Activity {
                 break;
             }
             case ALERT_DIALOG_ID: {
-                if (!similarTransactions.isEmpty()) {
+                if (!matchingTransactions.isEmpty() && !similarTransactions.isEmpty()) {
                     ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag),
                             matchingTransactions.size(), similarTransactions.size()));
-                } else {
+                } else if (!matchingTransactions.isEmpty()) {
                     ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag_exact),
                             matchingTransactions.size()));
+                } else if (!similarTransactions.isEmpty()) {
+                    ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag_similar),
+                            similarTransactions.size()));
                 }
                 break;
             }
