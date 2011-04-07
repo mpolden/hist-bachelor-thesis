@@ -14,9 +14,9 @@ import no.kantega.android.afp.models.Transaction;
 /**
  * This activity displays transactiosn for the given tag in the given period
  */
-public class CategoryActivity extends ListActivity {
+public class TransactionsPerTagActivity extends ListActivity {
 
-    private static final String TAG = CategoryActivity.class.getSimpleName();
+    private static final String TAG = TransactionsPerTagActivity.class.getSimpleName();
     private Transactions db;
     private TransactionsAdapter adapter;
     private Cursor cursor;

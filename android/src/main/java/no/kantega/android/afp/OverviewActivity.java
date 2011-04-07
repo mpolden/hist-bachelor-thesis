@@ -212,7 +212,7 @@ public class OverviewActivity extends ListActivity {
                 intent = new Intent(getApplicationContext(), PieChartActivity.class);
             } else {
                 tag = cursor.getString(cursor.getColumnIndex("tag"));
-                intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent = new Intent(getApplicationContext(), TransactionsPerTagActivity.class);
             }
             intent.putExtra("tag", tag);
             intent.putExtra("year", getYear());
@@ -272,7 +272,6 @@ public class OverviewActivity extends ListActivity {
                 tv_tag.setTypeface(null, Typeface.BOLD);
                 tv_consumption.setTypeface(null, Typeface.BOLD);
             }
-
             image.setImageDrawable(null);
             tv_tag.setText(null);
             tv_consumption.setText(null);
