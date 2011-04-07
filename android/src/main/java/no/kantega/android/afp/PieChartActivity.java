@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public class PieChartActivity extends Activity {
 
-    private List<PieItem> PieData = new ArrayList<PieItem>();
+    private final List<PieItem> PieData = new ArrayList<PieItem>();
     private Transactions db;
     private Cursor cursor;
     private int maxCount = 0;
@@ -92,9 +92,9 @@ public class PieChartActivity extends Activity {
         private static final int IS_READY_TO_DRAW = 1;
         private static final int IS_DRAW = 2;
         private static final float START_INC = 30;
-        private Paint bgPaints = new Paint();
-        private Paint linePaints = new Paint();
-        private Paint textPaints = new Paint();
+        private final Paint bgPaints = new Paint();
+        private final Paint linePaints = new Paint();
+        private final Paint textPaints = new Paint();
         private String tag = null;
         private int overlayId;
         private int width;
@@ -106,9 +106,9 @@ public class PieChartActivity extends Activity {
         private int bgColor;
         private int DESCRIPTION_MARGIN_LEFT = 75;
         private int DESCRIPTION_MARGIN_TOP = 50;
-        private int COLUMN_MARGIN_WIDTH = 150;
-        private int DESCRIPTION_CIRCLE_RADIUS = 10;
-        private int CIRCLE_MARGIN_LEFT = 15;
+        private final int COLUMN_MARGIN_WIDTH = 150;
+        private final int DESCRIPTION_CIRCLE_RADIUS = 10;
+        private final int CIRCLE_MARGIN_LEFT = 15;
         private int state = WAIT;
         private float start;
         private float sweep;

@@ -147,6 +147,11 @@ public class EditTransactionActivity extends Activity {
 
         private final boolean tagSimilar;
 
+        /**
+         * Create a update task
+         *
+         * @param tagSimilar Wheter to tag similar transactions after exact matches are tagged
+         */
         private UpdateTask(boolean tagSimilar) {
             this.tagSimilar = tagSimilar;
         }
@@ -200,7 +205,8 @@ public class EditTransactionActivity extends Activity {
     /**
      * Save transaction
      *
-     * @param autoTag Set to true if other transactions with equal text should be tagged
+     * @param autoTag    Set to true if other transactions with equal text should be tagged
+     * @param tagSimilar Wheter to tag similar transactions
      */
     private void saveTransaction(final boolean autoTag, final boolean tagSimilar) {
         TransactionTag tag = null;
