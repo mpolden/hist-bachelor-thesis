@@ -47,7 +47,9 @@
     <string name="auto_tag" formatted="false">There %s other exact matches for this transaction and %s similar ones.
         Which ones do you want to tag in addition to this one?
     </string>
-    <string name="auto_tag_exact">There %s other exact matches for this transaction. What do you want to do?</string>
+    <string name="auto_tag_exact">There %s other exact matches for this transaction. Which ones do you want to tag in
+        addition to this one?
+    </string>
     <string name="tag_exact">Exact matches</string>
     <string name="tag_all">Exact and similar matches</string>
     <string name="tag_single">Only this one</string>
