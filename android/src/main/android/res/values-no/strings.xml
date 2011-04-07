@@ -68,4 +68,7 @@
     <string name="pie_chart">Kakediagram</string>
     <string name="save">Lagre</string>
     <string name="total">Sum</string>
+    <string name="selected" formatted="false">%s av %s valgt</string>
+    <string name="select_all">Velg alle</string>
+    <string name="unselect_all">Velg ingen</string>
 </resources>

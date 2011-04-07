@@ -68,4 +68,8 @@
     <string name="pie_chart">Pie chart</string>
     <string name="save">Save</string>
     <string name="total">Total</string>
+    <string name="selected" formatted="false">%s of %s selected</string>
+    <string name="select_all">Select all</string>
+    <string name="unselect_all">Unselect all</string>
+
 </resources>

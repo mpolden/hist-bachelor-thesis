@@ -8,9 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
@@ -28,6 +26,8 @@ public class SimilarTransactionsActivity extends ListActivity {
 
     private static final String TAG = SimilarTransactionsActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG_ID = 0;
+    private int selectedCount;
+    private TextView tvSelectedCount;
     private Transactions db;
     private SimilarTransactionAdapter adapter;
     private ProgressDialog progressDialog;
@@ -53,6 +53,12 @@ public class SimilarTransactionsActivity extends ListActivity {
         setListAdapter(adapter);
         Button saveButton = (Button) findViewById(R.id.button_save_transactions);
         saveButton.setOnClickListener(saveTransactionsButtonListener);
+        tvSelectedCount = (TextView) findViewById(R.id.tv_similarselected);
+        this.selectedCount = similarTransactions.size();
+
+        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
+                similarTransactions.size()));
+
     }
 
     @Override
@@ -61,11 +67,62 @@ public class SimilarTransactionsActivity extends ListActivity {
         if (transaction.isChecked()) {
             transaction.setChecked(false);
             transaction.setTag(new TransactionTag(getResources().getString(R.string.not_tagged)));
+            selectedCount--;
         } else {
             transaction.setChecked(true);
             transaction.setTag(t.getTag());
+            selectedCount++;
+        }
+        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
+                similarTransactions.size()));
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.similartransactionsmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.menu_select_all: {
+                selectAll();
+                return true;
+            }
+            case R.id.menu_deselect_all: {
+                unselectAll();
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+
+    }
+
+    private void selectAll() {
+        for (Transaction transaction : similarTransactions) {
+            transaction.setChecked(true);
+        }
+        selectedCount = similarTransactions.size();
+        adapter.notifyDataSetChanged();
+        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
+                similarTransactions.size()));
+    }
+
+    private void unselectAll() {
+        for (Transaction transaction : similarTransactions) {
+            transaction.setChecked(false);
         }
         adapter.notifyDataSetChanged();
+        selectedCount = 0;
+        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
+                similarTransactions.size()));
     }
 
     @Override

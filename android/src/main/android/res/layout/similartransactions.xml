@@ -11,6 +11,10 @@
                   android:layout_width="fill_parent" android:layout_height="fill_parent"
                   android:text="@string/transactions_no_items"/>
     </LinearLayout>
+    <TextView android:id="@+id/tv_similarselected" android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              style="@style/DefaultTextFont" android:textSize="10sp" android:layout_weight="0"
+              android:gravity="center"></TextView>
     <Button android:text="@string/save"
             android:id="@+id/button_save_transactions" android:layout_weight="0"
             android:layout_width="fill_parent"
