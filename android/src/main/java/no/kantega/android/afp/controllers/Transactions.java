@@ -181,13 +181,14 @@ public class Transactions {
      * @param excludeId
      * @return
      */
-    public List<Transaction> getSimilarByText(final String text, final int excludeId) {
+    public List<Transaction> getSimilarByText(final String text, final String skipText, final int excludeId) {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.
                 queryBuilder();
         try {
             Where<Transaction, Integer> where = queryBuilder.
                     where().
                     like("text", text).and().
+                    ne("text", skipText).and().
                     ne("_id", excludeId).and().
                     isNull("tag_id");
             queryBuilder.setWhere(where);

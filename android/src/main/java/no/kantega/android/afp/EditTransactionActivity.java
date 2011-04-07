@@ -64,7 +64,7 @@ public class EditTransactionActivity extends Activity {
                     public void onClick(View v) {
                         matchingTransactions = db.getByText(t.getText(), t.get_id());
                         similarTransactions = db.getSimilarByText(String.format("%s %%",
-                                FmtUtil.firstWord(t.getText())), t.getId());
+                                FmtUtil.firstWord(t.getText())), t.getText(), t.getId());
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
@@ -249,7 +249,7 @@ public class EditTransactionActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
                                 // XXX: Find similar transactions and start activity
-                                //saveTransaction(true);
+                                saveTransaction(true);
                                 Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
                                 intent.putExtra("text", t.getText());
                                 intent.putExtra("excludeId", t.get_id());
@@ -283,7 +283,7 @@ public class EditTransactionActivity extends Activity {
             }
             case ALERT_DIALOG_ID: {
                 ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag),
-                        matchingTransactions.size()));
+                        matchingTransactions.size(), similarTransactions.size()));
                 break;
             }
         }

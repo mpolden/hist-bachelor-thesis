@@ -39,7 +39,7 @@ public class SimilarTransactionsActivity extends ListActivity {
         //this.adapter = new TransactionsAdapter(this, cursor, R.layout.similartransactionrow);
         String transactionText = getIntent().getExtras().getString("text");
         int excludeId = getIntent().getExtras().getInt("excludeId");
-        similarTransactions = db.getSimilarByText(FmtUtil.firstWord(transactionText), excludeId);
+        similarTransactions = db.getSimilarByText(FmtUtil.firstWord(transactionText), transactionText, excludeId);
         this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
         setListAdapter(adapter);
     }
@@ -100,7 +100,7 @@ public class SimilarTransactionsActivity extends ListActivity {
                 if (t.getAmount() != 0) {
                     tv_amount.setText(FmtUtil.currencyWithoutPrefix(t.getAmount()));
                 }
-                
+
             }
 
             return v;
