@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Awesome Finance Planner</string>
+    <string name="overview">Oversikt</string>
+    <string name="synchronize">Synkroniser</string>
+    <string name="transactions">Transaksjoner</string>
+    <string name="categories">Kategorier</string>
+    <string name="category_name">Kategorinavn</string>
+    <string name="category_icon">Ikon</string>
+    <string name="icon">Ikon</string>
+    <string name="transactions_no_items">Ingen transaksjoner å vise</string>
+    <string name="wait">Synkroniserer transaksjoner...</string>
+    <string name="icon_prompt">Velg et ikon</string>
+    <string name="category_prompt">Velg en kategori</string>
+    <string name="last_synchronized">Synkronisert</string>
+    <string name="internal_t_count">Transaksjoner</string>
+    <string name="internal_tag_count">Tags</string>
+    <string name="not_synchronized">Aldri</string>
+    <string name="transaction_text">Tekst</string>
+    <string name="transaction_date">Dato</string>
+    <string name="transaction_amount">Beløp</string>
+    <string name="transaction_change_date">Endre dato</string>
+    <string name="transaction_average">Gjennomsnittlig forbruk</string>
+    <string name="per_day">Per dag</string>
+    <string name="per_week">Per uke</string>
+    <string name="last_transactions">Siste transaksjoner</string>
+    <string name="tagging">Kategoriserer transaksjoner...</string>
+    <string name="category">Kategori</string>
+    <string name="please_wait">Vennligst vent...</string>
+    <string name="retrieving_date">Henter data ...</string>
+    <string name="invalid_amount">Ugyldig beløp</string>
+    <string name="transaction_updated">Transaksjon oppdatert</string>
+    <string name="unsynced_count">Endringer ikke synkronisert</string>
+    <string name="clear_db">Nullstill intern database</string>
+    <string name="db_cleared">Intern database har blitt tømt</string>
+    <string name="untagged_count">Ikke kategorisert</string>
+    <string name="suggested_tag">Foreslått kategori</string>
+    <string name="notification_title">Ny transaksjon!</string>
+    <string name="new_transaction">Ny transaksjon</string>
+    <string name="add_transaction">Legg til transaksjon</string>
+    <string name="server_unavailable">Kunne ikke synkronisere. Serveren er
+        utilgjengelig.
+    </string>
+    <string name="confirm">OK</string>
+    <string name="notification">Du har %s ny(e) transaksjon(er)</string>
+    <string name="not_tagged">Ukategorisert</string>
+    <string name="auto_tag" formatted="false">Det er %s andre transaksjoner nøyaktig lik denne og %s lignende.
+        Hvilke vil du kategorisere i tillegg til denne?
+    </string>
+    <string name="auto_tag_exact">Det finnes %s andre transaksjoner nøyaktig lik denne. Hvilke vil du kategorisere i
+        tillegg til denne?
+    </string>
+    <string name="auto_tag_similar">Det finnes %s lignende transaksjoner. Hvilke vil du kategorisere i tillegg til
+        denne?
+    </string>
+    <string name="tag_exact">De som er like</string>
+    <string name="tag_all">Like og lignende</string>
+    <string name="tag_similar">Lignende</string>
+    <string name="tag_single">Kun denne</string>
+    <string-array name="months">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>Mars</item>
+        <item>April</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Desember</item>
+    </string-array>
+    <string name="invalid_tag_name">Ugyldig kategorinavn</string>
+    <string name="transaction_added">Transaksjon lagt til</string>
+    <string name="pie_chart">Kakediagram</string>
+    <string name="save">Lagre</string>
+    <string name="total">Sum</string>
+    <string name="selected" formatted="false">%s av %s valgt</string>
+    <string name="select_all">Velg alle</string>
+    <string name="unselect_all">Velg ingen</string>
+</resources>
