@@ -65,7 +65,8 @@ public class EditTransactionActivity extends Activity {
                         matchingTransactions = db.getByText(t.getText(), t.get_id());
                         similarTransactions = db.getSimilarByText(String.format("%s %%",
                                 FmtUtil.firstWord(t.getText())), t.getText(), t.get_id());
-                        if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
+                        if (!selectedTag.equals(untagged) && (!matchingTransactions.isEmpty() ||
+                                !similarTransactions.isEmpty())) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
                             saveTransaction(false, false);
