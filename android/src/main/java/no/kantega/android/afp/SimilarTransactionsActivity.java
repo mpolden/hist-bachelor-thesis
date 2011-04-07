@@ -1,14 +1,20 @@
 package no.kantega.android.afp;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -21,17 +27,18 @@ import java.util.List;
 public class SimilarTransactionsActivity extends ListActivity {
 
     private static final String TAG = SimilarTransactionsActivity.class.getSimpleName();
+    private static final int PROGRESS_DIALOG_ID = 0;
     private Transactions db;
     private SimilarTransactionAdapter adapter;
+    private ProgressDialog progressDialog;
+    private Transaction t;
     private List<Transaction> similarTransactions;
-    private ArrayList<CheckBox> cBoxes = new ArrayList<CheckBox>();
     private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            new UpdateTask().execute(null);
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,11 +46,10 @@ public class SimilarTransactionsActivity extends ListActivity {
         setContentView(R.layout.similartransactions);
         this.db = new Transactions(getApplicationContext());
         //this.adapter = new TransactionsAdapter(this, cursor, R.layout.similartransactionrow);
-        String transactionText = getIntent().getExtras().getString("text");
-        int excludeId = getIntent().getExtras().getInt("excludeId");
-        similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(transactionText)),
-                transactionText, excludeId);
-        this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions, cBoxes);
+        this.t = (Transaction) getIntent().getExtras().get("transaction");
+        similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(t.getText())),
+                t.getText(), t.get_id());
+        this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
         setListAdapter(adapter);
         Button saveButton = (Button) findViewById(R.id.button_save_transactions);
         saveButton.setOnClickListener(saveTransactionsButtonListener);
@@ -66,17 +72,81 @@ public class SimilarTransactionsActivity extends ListActivity {
         db.close();
     }
 
-    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
-        private List<Transaction> items;
-        private ArrayList<CheckBox> cBoxes;
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case PROGRESS_DIALOG_ID: {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage(getResources().getString(
+                        R.string.please_wait));
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.
+                        STYLE_HORIZONTAL);
+                return progressDialog;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
 
-        public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items, ArrayList<CheckBox> cBoxes) {
+    private final Handler progressHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.setProgress(msg.arg1);
+        }
+    };
+
+    /**
+     * This task handles batch updates of tags
+     */
+    private class UpdateTask extends AsyncTask<TransactionTag, Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            showDialog(PROGRESS_DIALOG_ID);
+        }
+
+        @Override
+        protected Boolean doInBackground(TransactionTag... tags) {
+            final List<Transaction> changed = new ArrayList<Transaction>();
+            for (Transaction transaction : similarTransactions) {
+                if (transaction.isChecked()) {
+                    changed.add(transaction);
+                }
+            }
+            progressDialog.setMax(changed.size());
+            int i = 0;
+            for (Transaction toUpdate : changed) {
+                toUpdate.setTag(t.getTag());
+                toUpdate.setDirty(true);
+                db.update(toUpdate);
+                publishProgress(++i);
+            }
+            return false;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            final Message msg = progressHandler.obtainMessage();
+            msg.arg1 = values[0];
+            progressHandler.sendMessage(msg);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            dismissDialog(PROGRESS_DIALOG_ID);
+            finish();
+        }
+    }
+
+    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
+
+        private List<Transaction> items;
+
+        public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
             super(context, textViewResourceId, items);
             this.items = items;
-            for (int i = 0; i < items.size(); i++) {
-                items.get(i).setChecked(true);
-            }
-            this.cBoxes = cBoxes;
         }
 
         @Override
@@ -113,11 +183,8 @@ public class SimilarTransactionsActivity extends ListActivity {
                 if (t.getAmount() != 0) {
                     tv_amount.setText(FmtUtil.currencyWithoutPrefix(t.getAmount()));
                 }
-
             }
-
             return v;
         }
-
     }
 }

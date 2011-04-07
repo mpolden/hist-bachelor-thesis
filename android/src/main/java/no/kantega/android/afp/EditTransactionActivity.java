@@ -64,7 +64,7 @@ public class EditTransactionActivity extends Activity {
                     public void onClick(View v) {
                         matchingTransactions = db.getByText(t.getText(), t.get_id());
                         similarTransactions = db.getSimilarByText(String.format("%s %%",
-                                FmtUtil.firstWord(t.getText())), t.getText(), t.getId());
+                                FmtUtil.firstWord(t.getText())), t.getText(), t.get_id());
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
@@ -181,8 +181,7 @@ public class EditTransactionActivity extends Activity {
             dismissDialog(PROGRESS_DIALOG_ID);
             if (tagSimilar) {
                 Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
-                intent.putExtra("text", t.getText());
-                intent.putExtra("excludeId", t.get_id());
+                intent.putExtra("transaction", t);
                 startActivity(intent);
             } else {
                 finish();
