@@ -331,19 +331,22 @@ public class Transactions {
         final String dateQuery = String.format("%s-%s-%%", year, month);
         final String selection;
         final String[] selectionArgs;
+        final String orderBy;
         if (tag == null) {
             selection = "tag IS NULL AND date LIKE ?";
             selectionArgs = new String[]{dateQuery};
+            orderBy = "amount DESC, date DESC, timestamp DESC";
         } else {
             selection = "tag = ? AND date LIKE ?";
             selectionArgs = new String[]{tag, dateQuery};
+            orderBy = "date DESC, timestamp DESC";
         }
         return helper.getReadableDatabase().query(
                 "transactions " +
                         "LEFT JOIN transactiontags " +
                         "ON transactiontags.id = transactions.tag_id",
                 new String[]{"_id", "date", "text", "amount", "transactiontags.name AS tag"},
-                selection, selectionArgs, null, null, "date DESC, timestamp DESC", null);
+                selection, selectionArgs, null, null, orderBy, null);
     }
 
     /**
