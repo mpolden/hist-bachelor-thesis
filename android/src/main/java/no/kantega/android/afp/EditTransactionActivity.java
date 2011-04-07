@@ -68,7 +68,7 @@ public class EditTransactionActivity extends Activity {
                         if (!selectedTag.equals(untagged) && !matchingTransactions.isEmpty()) {
                             showDialog(ALERT_DIALOG_ID);
                         } else {
-                            saveTransaction(false);
+                            saveTransaction(false, false);
                         }
                     }
                 });
@@ -145,6 +145,12 @@ public class EditTransactionActivity extends Activity {
      */
     private class UpdateTask extends AsyncTask<TransactionTag, Integer, Boolean> {
 
+        private final boolean tagSimilar;
+
+        private UpdateTask(boolean tagSimilar) {
+            this.tagSimilar = tagSimilar;
+        }
+
         @Override
         protected void onPreExecute() {
             showDialog(PROGRESS_DIALOG_ID);
@@ -173,7 +179,14 @@ public class EditTransactionActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean result) {
             dismissDialog(PROGRESS_DIALOG_ID);
-            finish();
+            if (tagSimilar) {
+                Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
+                intent.putExtra("text", t.getText());
+                intent.putExtra("excludeId", t.get_id());
+                startActivity(intent);
+            } else {
+                finish();
+            }
         }
     }
 
@@ -182,12 +195,12 @@ public class EditTransactionActivity extends Activity {
      *
      * @param autoTag Set to true if other transactions with equal text should be tagged
      */
-    private void saveTransaction(final boolean autoTag) {
+    private void saveTransaction(final boolean autoTag, final boolean tagSimilar) {
         TransactionTag tag = null;
         if (!selectedTag.equals(untagged)) {
             tag = selectedTag;
             if (autoTag) {
-                new UpdateTask().execute(tag);
+                new UpdateTask(tagSimilar).execute(tag);
             }
         }
         if (t.isInternal()) {
@@ -213,7 +226,7 @@ public class EditTransactionActivity extends Activity {
             t.setDirty(true);
             db.update(t);
         }
-        if (!autoTag) {
+        if (!autoTag && !tagSimilar) {
             finish();
         }
     }
@@ -233,7 +246,7 @@ public class EditTransactionActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int id) {
-                                saveTransaction(true);
+                                saveTransaction(true, false);
                                 dialog.dismiss();
                             }
                         })
@@ -241,7 +254,7 @@ public class EditTransactionActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int id) {
-                                saveTransaction(false);
+                                saveTransaction(false, false);
                                 dialog.dismiss();
                             }
                         })
@@ -249,11 +262,7 @@ public class EditTransactionActivity extends Activity {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
                                 // XXX: Find similar transactions and start activity
-                                saveTransaction(true);
-                                Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
-                                intent.putExtra("text", t.getText());
-                                intent.putExtra("excludeId", t.get_id());
-                                startActivity(intent);
+                                saveTransaction(true, true);
                                 dialog.dismiss();
                             }
                         });
