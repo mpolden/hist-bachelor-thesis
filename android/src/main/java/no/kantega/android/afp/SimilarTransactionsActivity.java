@@ -55,27 +55,51 @@ public class SimilarTransactionsActivity extends ListActivity {
         saveButton.setOnClickListener(saveTransactionsButtonListener);
         tvSelectedCount = (TextView) findViewById(R.id.tv_similarselected);
         this.selectedCount = similarTransactions.size();
-
-        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
-                similarTransactions.size()));
-
+        updateSelectedCount();
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Transaction transaction = (Transaction) l.getItemAtPosition(position);
         if (transaction.isChecked()) {
-            transaction.setChecked(false);
-            transaction.setTag(new TransactionTag(getResources().getString(R.string.not_tagged)));
+            setTransactionChecked(transaction, false);
             selectedCount--;
         } else {
-            transaction.setChecked(true);
-            transaction.setTag(t.getTag());
+            setTransactionChecked(transaction, true);
             selectedCount++;
         }
+        updateSelectedCount();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setTransactionChecked(final Transaction transaction, final boolean checked) {
+        transaction.setChecked(checked);
+        if (checked) {
+            transaction.setTag(t.getTag());
+        } else {
+            transaction.setTag(new TransactionTag(getResources().getString(R.string.not_tagged)));
+        }
+    }
+
+    private void updateSelectedCount() {
         tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
                 similarTransactions.size()));
+    }
+
+    private void selectAll() {
+        for (Transaction transaction : similarTransactions) {
+            setTransactionChecked(transaction, true);
+        }
         adapter.notifyDataSetChanged();
+        selectedCount = similarTransactions.size();
+    }
+
+    private void unselectAll() {
+        for (Transaction transaction : similarTransactions) {
+            setTransactionChecked(transaction, false);
+        }
+        adapter.notifyDataSetChanged();
+        selectedCount = 0;
     }
 
     @Override
@@ -92,37 +116,18 @@ public class SimilarTransactionsActivity extends ListActivity {
         switch (item.getItemId()) {
             case R.id.menu_select_all: {
                 selectAll();
+                updateSelectedCount();
                 return true;
             }
             case R.id.menu_deselect_all: {
                 unselectAll();
+                updateSelectedCount();
                 return true;
             }
             default: {
                 return false;
             }
         }
-
-    }
-
-    private void selectAll() {
-        for (Transaction transaction : similarTransactions) {
-            transaction.setChecked(true);
-        }
-        selectedCount = similarTransactions.size();
-        adapter.notifyDataSetChanged();
-        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
-                similarTransactions.size()));
-    }
-
-    private void unselectAll() {
-        for (Transaction transaction : similarTransactions) {
-            transaction.setChecked(false);
-        }
-        adapter.notifyDataSetChanged();
-        selectedCount = 0;
-        tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
-                similarTransactions.size()));
     }
 
     @Override
