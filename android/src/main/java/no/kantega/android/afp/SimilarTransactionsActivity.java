@@ -1,23 +1,19 @@
 package no.kantega.android.afp;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import no.kantega.android.afp.adapters.TransactionsAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.widget.Toast;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
-import no.kantega.android.afp.utils.ResourceHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,10 +57,12 @@ public class SimilarTransactionsActivity extends ListActivity {
         @Override
         public void onClick(View v) {
             CheckBox cBox = (CheckBox) v;
-            if(cBox.isChecked()) {
+            if (cBox.isChecked()) {
                 cBox.setChecked(false);
+                Toast.makeText(getApplicationContext(), "Unchecked", Toast.LENGTH_SHORT).show();
             } else {
                 cBox.setChecked(true);
+                Toast.makeText(getApplicationContext(), "Checked", Toast.LENGTH_SHORT).show();
             }
         }
 
