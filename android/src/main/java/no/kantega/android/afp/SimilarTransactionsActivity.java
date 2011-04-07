@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 
 import java.util.ArrayList;
@@ -56,11 +57,13 @@ public class SimilarTransactionsActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Transaction t = (Transaction) l.getItemAtPosition(position);
-        if (t.isChecked()) {
-            t.setChecked(false);
+        Transaction transaction = (Transaction) l.getItemAtPosition(position);
+        if (transaction.isChecked()) {
+            transaction.setChecked(false);
+            transaction.setTag(new TransactionTag(getResources().getString(R.string.not_tagged)));
         } else {
-            t.setChecked(true);
+            transaction.setChecked(true);
+            transaction.setTag(t.getTag());
         }
         adapter.notifyDataSetChanged();
     }
@@ -156,32 +159,34 @@ public class SimilarTransactionsActivity extends ListActivity {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(R.layout.similartransactionrow, null);
             }
-            Transaction t = items.get(position);
-            if (t != null) {
+            Transaction transaction = items.get(position);
+            if (transaction != null) {
                 TextView tv_date = (TextView) v.findViewById(R.id.trow_tv_date);
                 TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
                 TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
                 TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
                 CheckBox bCheck = (CheckBox) v.findViewById(R.id.checkbox_similartransaction);
-                bCheck.setChecked(t.isChecked());
+                bCheck.setChecked(transaction.isChecked());
                 tv_date.setText(null);
                 tv_text.setText(null);
                 tv_tag.setText(null);
                 tv_amount.setText(null);
-                if (t.getDate() != null) {
-                    Date d = t.getDate();
+                if (transaction.getDate() != null) {
+                    Date d = transaction.getDate();
                     tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
                 }
-                if (t.getText() != null) {
-                    tv_text.setText(t.getText());
+                if (transaction.getText() != null) {
+                    tv_text.setText(transaction.getText());
                 }
-                if (t.getTag() != null) {
+                if (transaction.getTag() != null) {
+                    tv_tag.setText(transaction.getTag().getName());
+                } else if (bCheck.isChecked()) {
                     tv_tag.setText(t.getTag().getName());
                 } else {
                     tv_tag.setText(R.string.not_tagged);
                 }
-                if (t.getAmount() != 0) {
-                    tv_amount.setText(FmtUtil.currencyWithoutPrefix(t.getAmount()));
+                if (transaction.getAmount() != 0) {
+                    tv_amount.setText(FmtUtil.currencyWithoutPrefix(transaction.getAmount()));
                 }
             }
             return v;
