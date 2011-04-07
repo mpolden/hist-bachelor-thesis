@@ -33,6 +33,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Create a database helper for the given application context
+     *
+     * @param context         Application context
+     * @param databaseName    Name of database file or null for in-memory database
+     * @param databaseVersion Database version
+     */
     public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
     }

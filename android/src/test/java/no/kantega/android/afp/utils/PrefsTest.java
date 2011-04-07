@@ -10,15 +10,24 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Test case for Prefs
+ */
 @RunWith(MavenizedTestRunner.class)
 public class PrefsTest {
 
+    /**
+     * Test get
+     */
     @Test
     public void testGet() {
         SharedPreferences preferences = Prefs.get(new OverviewActivity().getApplicationContext());
         assertNotNull(preferences);
     }
 
+    /**
+     * Test getProperties
+     */
     @Test
     public void testGetProperties() {
         Properties properties = Prefs.getProperties(new OverviewActivity().getApplicationContext());

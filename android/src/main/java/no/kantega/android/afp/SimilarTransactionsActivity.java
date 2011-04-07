@@ -36,7 +36,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new UpdateTask().execute(new Object[0]);
+            new UpdateTask().execute();
         }
     };
 
@@ -72,6 +72,12 @@ public class SimilarTransactionsActivity extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Set check state for a transaction and update the visible tag
+     *
+     * @param transaction The transaction to change
+     * @param checked     True if transaction should be checked
+     */
     private void setTransactionChecked(final Transaction transaction, final boolean checked) {
         transaction.setChecked(checked);
         if (checked) {
@@ -81,11 +87,17 @@ public class SimilarTransactionsActivity extends ListActivity {
         }
     }
 
+    /**
+     * Update selected count
+     */
     private void updateSelectedCount() {
         tvSelectedCount.setText(String.format(getResources().getString(R.string.selected), selectedCount,
                 similarTransactions.size()));
     }
 
+    /**
+     * Select all transactions in list
+     */
     private void selectAll() {
         for (Transaction transaction : similarTransactions) {
             setTransactionChecked(transaction, true);
@@ -94,6 +106,9 @@ public class SimilarTransactionsActivity extends ListActivity {
         selectedCount = similarTransactions.size();
     }
 
+    /**
+     * Unselect all transactions in list
+     */
     private void unselectAll() {
         for (Transaction transaction : similarTransactions) {
             setTransactionChecked(transaction, false);
@@ -205,10 +220,20 @@ public class SimilarTransactionsActivity extends ListActivity {
         }
     }
 
+    /**
+     * Custom adapter for similar transaction with checkbox
+     */
     private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
 
-        private List<Transaction> items;
+        private final List<Transaction> items;
 
+        /**
+         * Create a new adapter for the given items
+         *
+         * @param context            Application context
+         * @param textViewResourceId Resource ID of TextView to use for views
+         * @param items              Transactions
+         */
         public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
             super(context, textViewResourceId, items);
             this.items = items;

@@ -38,6 +38,12 @@ public class Transactions {
         this.transactionTagDao = helper.getTransactionTagDao();
     }
 
+    /**
+     * Create a new instance and initalize DAOs using the given DatabaseHelper
+     *
+     * @param context Application context
+     * @param helper  Database helper
+     */
     public Transactions(Context context, DatabaseHelper helper) {
         this.helper = helper;
         this.transactionDao = helper.getTransactionDao();
@@ -177,9 +183,10 @@ public class Transactions {
     /**
      * Get similar transactions by text
      *
-     * @param text
-     * @param excludeId
-     * @return
+     * @param text      Parameter to filter by, can contain LIKE expressions
+     * @param excludeId Id of transaction to exclude
+     * @param skipText  Transactions with this text will be skipped in the resulting list
+     * @return List of similar transactions
      */
     public List<Transaction> getSimilarByText(final String text, final String skipText, final int excludeId) {
         QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.

@@ -7,11 +7,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertNotNull;
+
+/**
+ * Test case for Transactions
+ */
 @RunWith(MavenizedTestRunner.class)
 public class TransactionsTest {
 
     private Transactions transactions;
 
+    /**
+     * Set up database
+     */
     @Before
     public void setUp() {
         OverviewActivity activity = new OverviewActivity();
@@ -19,8 +27,12 @@ public class TransactionsTest {
                 new DatabaseHelper(activity.getApplicationContext(), null, 1));
     }
 
+    /**
+     * Test add
+     */
     @Test
     public void testAdd() {
+        assertNotNull(transactions);
         // XXX: Not working until Robolectra implements android.database.sqlite.SQLiteDatabase.rawQuery
         /*final Transaction t = new Transaction();
         t.setDate(new Date());
@@ -37,5 +49,4 @@ public class TransactionsTest {
         transactions.add(t);
         assertTrue(transactions.getCount() == 1);*/
     }
-
 }
