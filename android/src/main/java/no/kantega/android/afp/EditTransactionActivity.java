@@ -264,21 +264,23 @@ public class EditTransactionActivity extends Activity {
                                 saveTransaction(false, false);
                                 dialog.dismiss();
                             }
-                        })
-                        .setNeutralButton(R.string.tag_all, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                // XXX: Find similar transactions and start activity
-                                saveTransaction(true, true);
-                                dialog.dismiss();
-                            }
                         });
+                if (!similarTransactions.isEmpty()) {
+                    builder = builder.setNeutralButton(R.string.tag_all, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            // XXX: Find similar transactions and start activity
+                            saveTransaction(true, true);
+                            dialog.dismiss();
+                        }
+                    });
+                }
                 return builder.create();
             }
             case PROGRESS_DIALOG_ID: {
                 progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage(getResources().getString(
-                        R.string.please_wait));
+                        R.string.tagging));
                 progressDialog.setCancelable(false);
                 progressDialog.setProgressStyle(ProgressDialog.
                         STYLE_HORIZONTAL);
@@ -298,8 +300,13 @@ public class EditTransactionActivity extends Activity {
                 break;
             }
             case ALERT_DIALOG_ID: {
-                ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag),
-                        matchingTransactions.size(), similarTransactions.size()));
+                if (!similarTransactions.isEmpty()) {
+                    ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag),
+                            matchingTransactions.size(), similarTransactions.size()));
+                } else {
+                    ((AlertDialog) dialog).setMessage(String.format(getResources().getString(R.string.auto_tag_exact),
+                            matchingTransactions.size()));
+                }
                 break;
             }
         }
