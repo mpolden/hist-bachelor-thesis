@@ -14,6 +14,7 @@ import utils.ModelHelper;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -113,6 +114,7 @@ public class Transactions extends Controller {
             renderJSON(GsonUtil.makeJSON(updated));
         } else {
             Logger.warn("Could not find user with registrationId: %s", registrationId);
+            renderJSON(Collections.<Transaction>emptyList());
         }
     }
 }
