@@ -30,6 +30,7 @@ public class Transaction implements Serializable {
     private long timestamp;
     @DatabaseField(index = true)
     private boolean dirty;
+    private boolean checked;
 
     /**
      * Empty constructor to satisfy ORMLite
@@ -198,6 +199,24 @@ public class Transaction implements Serializable {
      */
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
+    }
+
+    /**
+     * Get checked
+     *
+     * @return True if Transaction is selected
+     */
+    public boolean isChecked() {
+        return checked;
+    }
+
+    /**
+     * Set checked
+     *
+     * @param checked checked
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @Override
