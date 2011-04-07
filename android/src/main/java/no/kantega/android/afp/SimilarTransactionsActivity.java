@@ -50,12 +50,22 @@ public class SimilarTransactionsActivity extends ListActivity {
         db.close();
     }
 
-    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
+    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> implements View.OnClickListener {
         private List<Transaction> items;
 
         public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
             super(context, textViewResourceId, items);
             this.items = items;
+        }
+
+        @Override
+        public void onClick(View v) {
+            CheckBox cBox = (CheckBox) v;
+            if(cBox.isChecked()) {
+                cBox.setChecked(false);
+            } else {
+                cBox.setChecked(true);
+            }
         }
 
         @Override
