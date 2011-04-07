@@ -9,7 +9,8 @@
     <string name="category_icon">Category icon</string>
     <string name="icon">Icon</string>
     <string name="transactions_no_items">No transactions to display</string>
-    <string name="wait">Synchronizing transactions...</string>
+    <string name="fetching_transactions">Synchronizing transactions...</string>
+    <string name="wait">Saving changes...</string>
     <string name="icon_prompt">Choose an icon</string>
     <string name="category_prompt">Choose a category</string>
     <string name="last_synchronized">Synchronized</string>

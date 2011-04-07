@@ -23,10 +23,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * This activity handles synchronization with our external server
@@ -34,11 +31,13 @@ import java.util.Properties;
 public class SynchronizeActivity extends Activity {
 
     private static final String TAG = SynchronizeActivity.class.getSimpleName();
-    private static final int PROGRESS_DIALOG_ID = 0;
-    private static final int ALERT_DIALOG_ID = 1;
+    private static final int FETCH_PROGRESS_DIALOG_ID = 0;
+    private static final int UPDATE_PROGRESS_DIALOG_ID = 1;
+    private static final int ALERT_DIALOG_ID = 2;
     private Transactions db;
     private SharedPreferences preferences;
-    private ProgressDialog progressDialog;
+    private ProgressDialog fetchProgressDialog;
+    private ProgressDialog updateProgressDialog;
     private TextView lastSynchronized;
     private TextView transactionCount;
     private TextView tagCount;
@@ -51,7 +50,7 @@ public class SynchronizeActivity extends Activity {
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.setProgress(msg.arg1);
+            updateProgressDialog.setProgress(msg.arg1);
         }
     };
 
@@ -63,7 +62,7 @@ public class SynchronizeActivity extends Activity {
         syncButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(PROGRESS_DIALOG_ID);
+                synchronizeDatabase();
             }
         });
         Button clearDbButton = (Button) findViewById(R.id.clearDbButton);
@@ -84,6 +83,24 @@ public class SynchronizeActivity extends Activity {
         dirtyCount = (TextView) findViewById(R.id.unsynced_count);
         untaggedCount = (TextView) findViewById(R.id.untagged_count);
         preferences = Prefs.get(getApplicationContext());
+    }
+
+    /**
+     * Read URLs from properties file and start a task that synchronizes the
+     * database
+     */
+    private void synchronizeDatabase() {
+        final Properties properties = Prefs.getProperties(
+                getApplicationContext());
+        final Object urlNew = properties.get("newTransactions");
+        final Object urlAll = properties.get("allTransactions");
+        final Object urlSave = properties.get("saveTransactions");
+        if (urlNew != null && urlAll != null && urlSave != null) {
+            new TransactionTask().execute(urlNew.toString(),
+                    urlAll.toString(), urlSave.toString());
+        } else {
+            Log.e(TAG, "Missing one or more entries in properties file");
+        }
     }
 
     /**
@@ -135,26 +152,30 @@ public class SynchronizeActivity extends Activity {
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case PROGRESS_DIALOG_ID: {
-                progressDialog = new ProgressDialog(this);
-                progressDialog.setMessage(getResources().getString(
-                        R.string.wait));
-                progressDialog.setCancelable(false);
-                progressDialog.setProgressStyle(ProgressDialog.
-                        STYLE_HORIZONTAL);
-                return progressDialog;
+            case FETCH_PROGRESS_DIALOG_ID: {
+                fetchProgressDialog = new ProgressDialog(this);
+                fetchProgressDialog.setMessage(getResources().getString(R.string.fetching_transactions));
+                fetchProgressDialog.setCancelable(false);
+                fetchProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                return fetchProgressDialog;
+            }
+            case UPDATE_PROGRESS_DIALOG_ID: {
+                updateProgressDialog = new ProgressDialog(this);
+                updateProgressDialog.setMessage(getResources().getString(R.string.wait));
+                updateProgressDialog.setCancelable(false);
+                updateProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                return updateProgressDialog;
             }
             case ALERT_DIALOG_ID: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.server_unavailable)
                         .setCancelable(false)
-                        .setPositiveButton(R.string.confirm,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int id) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
                 return builder.create();
             }
             default: {
@@ -164,55 +185,23 @@ public class SynchronizeActivity extends Activity {
     }
 
     /**
-     * Called when preparing the dialog.
-     *
-     * @param id     Dialog ID
-     * @param dialog The Dialog
+     * This task handles retrieval of new transactions and sending of dirty ones
      */
-    @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
-        switch (id) {
-            case PROGRESS_DIALOG_ID: {
-                progressDialog.setProgress(0);
-                synchronizeDatabase();
-                break;
-            }
-        }
-    }
+    private class TransactionTask extends AsyncTask<String, Integer, Object> {
 
-    /**
-     * Read URLs from properties file and start a task that synchronizes the
-     * database
-     */
-    private void synchronizeDatabase() {
-        final Properties properties = Prefs.getProperties(
-                getApplicationContext());
-        final Object urlNew = properties.get("newTransactions");
-        final Object urlAll = properties.get("allTransactions");
-        final Object urlSave = properties.get("saveTransactions");
-        if (urlNew != null && urlAll != null && urlSave != null) {
-            new TransactionsTask().execute(urlNew.toString(),
-                    urlAll.toString(), urlSave.toString());
-        } else {
-            Log.e(TAG, "Missing one or more entries in properties file");
-        }
-    }
-
-    /**
-     * This task handles sending and retrieval for transactions
-     */
-    private class TransactionsTask
-            extends AsyncTask<String, Integer, Boolean> {
+        private List<Transaction> freshTransactions;
+        private List<Transaction> dirtyTransactions;
 
         @Override
         protected void onPreExecute() {
-            progressDialog.show();
+            showDialog(FETCH_PROGRESS_DIALOG_ID);
         }
 
         @Override
-        protected Boolean doInBackground(String... urls) {
-            return getTransactions(urls[0], urls[1]) &&
-                    putTransactions(urls[2]);
+        protected Object doInBackground(String... urls) {
+            this.freshTransactions = getTransactions(urls[0], urls[1]);
+            this.dirtyTransactions = putTransactions(urls[2]);
+            return null;
         }
 
         /**
@@ -221,7 +210,7 @@ public class SynchronizeActivity extends Activity {
          * @param url Save URL
          * @return True if successful
          */
-        private boolean putTransactions(final String url) {
+        private List<Transaction> putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
             if (!dirtyTransactions.isEmpty()) {
                 final String json = GsonUtil.makeJSON(dirtyTransactions);
@@ -230,22 +219,11 @@ public class SynchronizeActivity extends Activity {
                             add(new BasicNameValuePair("json", json));
                         }});
                 if (in == null) {
-                    return false;
+                    return Collections.emptyList();
                 }
-                final List<Transaction> updated = GsonUtil.
-                        parseTransactions(in);
-                if (updated.isEmpty()) {
-                    return false;
-                }
-                progressDialog.setMax(updated.size());
-                int i = 0;
-                for (Transaction t : updated) {
-                    t.setDirty(false);
-                    db.update(t);
-                    publishProgress(++i);
-                }
+                return GsonUtil.parseTransactions(in);
             }
-            return true;
+            return Collections.emptyList();
         }
 
         /**
@@ -255,7 +233,7 @@ public class SynchronizeActivity extends Activity {
          * @param urlAll URL for all transactions
          * @return True if successful
          */
-        private boolean getTransactions(final String url, final String urlAll) {
+        private List<Transaction> getTransactions(final String url, final String urlAll) {
             final Transaction latest = db.getLatestExternal();
             final InputStream in;
             if (latest != null) {
@@ -265,17 +243,46 @@ public class SynchronizeActivity extends Activity {
                 in = post(urlAll, new ArrayList<NameValuePair>());
             }
             if (in == null) {
-                return false;
+                return Collections.emptyList();
             }
-            final List<Transaction> transactions = GsonUtil.
-                    parseTransactions(in);
-            if (transactions.isEmpty()) {
-                return false;
+            return GsonUtil.parseTransactions(in);
+        }
+
+        @Override
+        protected void onPostExecute(Object object) {
+            dismissDialog(FETCH_PROGRESS_DIALOG_ID);
+            if (!freshTransactions.isEmpty() || !dirtyTransactions.isEmpty()) {
+                new UpdateTask().execute(freshTransactions, dirtyTransactions);
             }
-            progressDialog.setMax(transactions.size());
+        }
+    }
+
+
+    /**
+     * This task handles update of transactions
+     */
+    private class UpdateTask extends AsyncTask<List<Transaction>, Integer, Object> {
+
+        @Override
+        protected void onPreExecute() {
+            showDialog(UPDATE_PROGRESS_DIALOG_ID);
+        }
+
+        @Override
+        protected Boolean doInBackground(List<Transaction>... lists) {
+            // Add new transactions
+            updateProgressDialog.setMax(lists[0].size());
             int i = 0;
-            for (Transaction t : transactions) {
+            for (Transaction t : lists[0]) {
                 db.add(t);
+                publishProgress(++i);
+            }
+            // Send dirty transactions
+            updateProgressDialog.setMax(lists[1].size());
+            i = 0;
+            for (Transaction t : lists[1]) {
+                t.setDirty(false);
+                db.update(t);
                 publishProgress(++i);
             }
             return true;
@@ -289,13 +296,8 @@ public class SynchronizeActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
-            progressDialog.setProgress(0);
-            progressDialog.setMax(100);
-            progressDialog.dismiss();
-            if (!success) {
-                showDialog(ALERT_DIALOG_ID);
-            }
+        protected void onPostExecute(Object object) {
+            dismissDialog(UPDATE_PROGRESS_DIALOG_ID);
             saveStats();
             onResume();
         }

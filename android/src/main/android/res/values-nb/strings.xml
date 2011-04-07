@@ -9,12 +9,13 @@
     <string name="category_icon">Ikon</string>
     <string name="icon">Ikon</string>
     <string name="transactions_no_items">Ingen transaksjoner å vise</string>
-    <string name="wait">Synkroniserer transaksjoner...</string>
+    <string name="fetching_transactions">Synkroniserer transaksjoner...</string>
+    <string name="wait">Lagrer endringer...</string>
     <string name="icon_prompt">Velg et ikon</string>
     <string name="category_prompt">Velg en kategori</string>
     <string name="last_synchronized">Synkronisert</string>
     <string name="internal_t_count">Transaksjoner</string>
-    <string name="internal_tag_count">Tags</string>
+    <string name="internal_tag_count">Kategorier</string>
     <string name="not_synchronized">Aldri</string>
     <string name="transaction_text">Tekst</string>
     <string name="transaction_date">Dato</string>
