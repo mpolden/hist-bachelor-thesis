@@ -24,9 +24,10 @@
     <string name="per_day">Per day</string>
     <string name="per_week">Per week</string>
     <string name="last_transactions">Last transactions</string>
+    <string name="tagging">Tagging transactions...</string>
     <string name="category">Category</string>
     <string name="please_wait">Please wait...</string>
-    <string name="retrieving_date">Retrieving data ...</string>
+    <string name="retrieving_date">Retrieving data...</string>
     <string name="invalid_amount">Invalid amount</string>
     <string name="transaction_updated">Transaction updated</string>
     <string name="unsynced_count">Changes not synchronized</string>
@@ -46,6 +47,7 @@
     <string name="auto_tag" formatted="false">There %s other exact matches for this transaction and %s similar ones.
         Which ones do you want to tag in addition to this one?
     </string>
+    <string name="auto_tag_exact">There %s other exact matches for this transaction. What do you want to do?</string>
     <string name="tag_exact">Exact matches</string>
     <string name="tag_all">Exact and similar matches</string>
     <string name="tag_single">Only this one</string>
