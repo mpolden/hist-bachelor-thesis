@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.utils.FmtUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,19 +27,32 @@ public class SimilarTransactionsActivity extends ListActivity {
     private Transactions db;
     private SimilarTransactionAdapter adapter;
     private List<Transaction> similarTransactions;
+    private ArrayList<CheckBox> cBoxes = new ArrayList<CheckBox>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transactions);
+        setContentView(R.layout.similartransactions);
         this.db = new Transactions(getApplicationContext());
         //this.adapter = new TransactionsAdapter(this, cursor, R.layout.similartransactionrow);
         String transactionText = getIntent().getExtras().getString("text");
         int excludeId = getIntent().getExtras().getInt("excludeId");
         similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(transactionText)),
                 transactionText, excludeId);
-        this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
+        this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions, cBoxes);
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Transaction t = (Transaction) l.getItemAtPosition(position);
+        if (t.isChecked()) {
+            t.setChecked(false);
+        } else {
+            t.setChecked(true);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -47,24 +61,17 @@ public class SimilarTransactionsActivity extends ListActivity {
         db.close();
     }
 
-    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> implements View.OnClickListener {
+    private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
         private List<Transaction> items;
+        private ArrayList<CheckBox> cBoxes;
 
-        public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
+        public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items, ArrayList<CheckBox> cBoxes) {
             super(context, textViewResourceId, items);
             this.items = items;
-        }
-
-        @Override
-        public void onClick(View v) {
-            CheckBox cBox = (CheckBox) v;
-            if (cBox.isChecked()) {
-                cBox.setChecked(false);
-                Toast.makeText(getApplicationContext(), "Unchecked", Toast.LENGTH_SHORT).show();
-            } else {
-                cBox.setChecked(true);
-                Toast.makeText(getApplicationContext(), "Checked", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < items.size(); i++) {
+                items.get(i).setChecked(true);
             }
+            this.cBoxes = cBoxes;
         }
 
         @Override
@@ -81,7 +88,7 @@ public class SimilarTransactionsActivity extends ListActivity {
                 TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
                 TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
                 CheckBox bCheck = (CheckBox) v.findViewById(R.id.checkbox_similartransaction);
-                bCheck.setOnClickListener(this);
+                bCheck.setChecked(t.isChecked());
                 tv_date.setText(null);
                 tv_text.setText(null);
                 tv_tag.setText(null);
