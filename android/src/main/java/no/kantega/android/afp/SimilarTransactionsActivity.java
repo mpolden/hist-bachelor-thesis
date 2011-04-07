@@ -35,7 +35,8 @@ public class SimilarTransactionsActivity extends ListActivity {
         //this.adapter = new TransactionsAdapter(this, cursor, R.layout.similartransactionrow);
         String transactionText = getIntent().getExtras().getString("text");
         int excludeId = getIntent().getExtras().getInt("excludeId");
-        similarTransactions = db.getSimilarByText(FmtUtil.firstWord(transactionText), transactionText, excludeId);
+        similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(transactionText)),
+                transactionText, excludeId);
         this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
         setListAdapter(adapter);
     }
