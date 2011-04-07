@@ -85,7 +85,6 @@ public class NotificationsActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db.closeCursor(cursor);
                 cursor = db.getCursorAfterTimestamp(latestTimestamp);
                 runOnUiThread(adapterHandler);
             }
@@ -234,9 +233,7 @@ public class NotificationsActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        db.closeCursor(cursor);
         db.close();
     }
 }

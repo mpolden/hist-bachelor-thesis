@@ -32,7 +32,6 @@ public class TransactionsPerTagActivity extends ListActivity {
         this.month = getIntent().getExtras().getString("month");
         this.year = getIntent().getExtras().getString("year");
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursorTransactions(tag, month, year);
         this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
     }
@@ -57,7 +56,6 @@ public class TransactionsPerTagActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db.closeCursor(cursor);
                 cursor = db.getCursorTransactions(tag, month, year);
                 runOnUiThread(handler);
             }
@@ -67,22 +65,15 @@ public class TransactionsPerTagActivity extends ListActivity {
     private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            // Try to change to a fresh cursor
-            if (!cursor.isClosed()) {
-                adapter.changeCursor(cursor);
-                Log.d(TAG, "Changed to a new cursor");
-            } else {
-                onResume();
-            }
+            adapter.changeCursor(cursor);
+            Log.d(TAG, "Changed to a new cursor");
         }
     };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        db.closeCursor(cursor);
         db.close();
     }
 }

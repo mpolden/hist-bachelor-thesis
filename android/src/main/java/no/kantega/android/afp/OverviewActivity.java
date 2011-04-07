@@ -53,7 +53,6 @@ public class OverviewActivity extends ListActivity {
         this.pickMonth = c.get(Calendar.MONTH);
         this.pickDay = c.get(Calendar.DAY_OF_MONTH);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursorTags(getMonth(), getYear());
         this.adapter = new CategoryAdapter(this, cursor);
         this.monthName = getResources().getStringArray(R.array.months);
         setListAdapter(adapter);
@@ -180,7 +179,6 @@ public class OverviewActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db.closeCursor(cursor);
                 cursor = db.getMergeCursorTags(getMonth(), getYear());
                 runOnUiThread(handler);
             }
@@ -226,7 +224,7 @@ public class OverviewActivity extends ListActivity {
          * Construct a new adapter in the given application context
          *
          * @param context The application context
-         * @param cursor  The cursorf
+         * @param cursor  The cursor
          */
         public CategoryAdapter(Context context, Cursor cursor) {
             super(context, cursor);
@@ -286,9 +284,7 @@ public class OverviewActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        db.closeCursor(cursor);
         db.close();
     }
 }

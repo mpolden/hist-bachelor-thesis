@@ -34,7 +34,6 @@ public class TransactionsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
-        this.cursor = db.getCursor();
         this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
 
@@ -46,7 +45,6 @@ public class TransactionsActivity extends ListActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db.closeCursor(cursor);
                 cursor = db.getCursor();
                 runOnUiThread(handler);
             }
@@ -70,9 +68,7 @@ public class TransactionsActivity extends ListActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        db.closeCursor(cursor);
         db.close();
     }
 }
