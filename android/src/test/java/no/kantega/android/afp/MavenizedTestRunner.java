@@ -18,7 +18,7 @@ public class MavenizedTestRunner extends RobolectricTestRunner {
      * @throws InitializationError Thrown if path doesn't contain required files
      */
     public MavenizedTestRunner(Class testClass) throws InitializationError {
-        super(testClass, new File("./android/src/main/android"));
+        super(testClass, new File("./src/main/android"));
     }
 
     @Override
