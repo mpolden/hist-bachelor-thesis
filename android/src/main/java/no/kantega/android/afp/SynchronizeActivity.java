@@ -248,6 +248,7 @@ public class SynchronizeActivity extends Activity {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void onPostExecute(Object object) {
             dismissDialog(FETCH_PROGRESS_DIALOG_ID);
             if (freshTransactions == null || dirtyTransactions == null) {
