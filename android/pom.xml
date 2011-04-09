@@ -6,24 +6,12 @@
 
     <groupId>no.kantega.android.afp</groupId>
     <artifactId>afp</artifactId>
-    <version>0.1</version>
+    <version>0.4.5</version>
     <packaging>apk</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>gson</id>
-            <url>http://google-gson.googlecode.com/svn/mavenrepo</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
@@ -32,10 +20,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.pivotallabs</groupId>
-            <artifactId>robolectric</artifactId>
-            <version>1.0-RC1</version>
-            <scope>provided</scope>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.6</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -43,15 +31,15 @@
             <version>r09</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>1.6</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.j256.ormlite</groupId>
             <artifactId>ormlite-android</artifactId>
             <version>4.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pivotallabs</groupId>
+            <artifactId>robolectric</artifactId>
+            <version>1.0-RC1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -59,6 +47,7 @@
             <version>4.8.2</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
