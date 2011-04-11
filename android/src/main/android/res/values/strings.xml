@@ -83,4 +83,7 @@
     <string name="menu_suggest">Find tag suggestions</string>
     <string name="fetching_tags">Performing magic...</string>
     <string name="transaction_count" formatted="false">%s transaction(s)</string>
+    <string name="username">Username</string>
+    <string name="settings">Settings</string>
+
 </resources>

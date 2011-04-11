@@ -83,4 +83,7 @@
     <string name="menu_suggest">Finn forslag til kategorier</string>
     <string name="fetching_tags">Utfører magi...</string>
     <string name="transaction_count" formatted="false">%s transaksjon(er)</string>
+    <string name="username">Brukernavn</string>
+    <string name="settings">Innstillinger</string>
+
 </resources>
