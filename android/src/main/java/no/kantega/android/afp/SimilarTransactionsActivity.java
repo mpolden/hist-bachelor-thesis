@@ -15,9 +15,7 @@ import no.kantega.android.afp.models.Transaction;
 import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * This activity handles similar transactions
@@ -33,6 +31,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     private ProgressDialog progressDialog;
     private Transaction t;
     private List<Transaction> similarTransactions;
+    private Map<Integer, TransactionTag> suggestions;
     private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -41,19 +40,34 @@ public class SimilarTransactionsActivity extends ListActivity {
     };
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.similartransactions);
         this.db = new Transactions(getApplicationContext());
-        //this.adapter = new TransactionsAdapter(this, cursor, R.layout.similartransactionrow);
+        this.suggestions = (HashMap<Integer, TransactionTag>) getIntent().getExtras().get("suggestions");
         this.t = (Transaction) getIntent().getExtras().get("transaction");
-        similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(t.getText())),
-                t.getText(), t.get_id());
+        if (this.t != null) {
+            this.similarTransactions = db.getSimilarByText(String.format("%s %%", FmtUtil.firstWord(t.getText())),
+                    t.getText(), t.get_id());
+        } else {
+            final String month = getIntent().getExtras().get("month").toString();
+            final String year = getIntent().getExtras().get("year").toString();
+            this.similarTransactions = db.getUntagged(month, year);
+            // Remove transactions that we didn't find a tag for
+            final List<Transaction> remove = new ArrayList<Transaction>();
+            for (Transaction aTransaction : similarTransactions) {
+                if (!suggestions.containsKey(aTransaction.get_id())) {
+                    remove.add(aTransaction);
+                }
+            }
+            similarTransactions.removeAll(remove);
+        }
         this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
         setListAdapter(adapter);
         Button saveButton = (Button) findViewById(R.id.button_save_transactions);
         saveButton.setOnClickListener(saveTransactionsButtonListener);
-        tvSelectedCount = (TextView) findViewById(R.id.tv_similarselected);
+        this.tvSelectedCount = (TextView) findViewById(R.id.tv_similarselected);
         this.selectedCount = similarTransactions.size();
         updateSelectedCount();
     }
@@ -81,7 +95,11 @@ public class SimilarTransactionsActivity extends ListActivity {
     private void setTransactionChecked(final Transaction transaction, final boolean checked) {
         transaction.setChecked(checked);
         if (checked) {
-            transaction.setTag(t.getTag());
+            if (suggestions != null) {
+                transaction.setTag(suggestions.get(transaction.get_id()));
+            } else {
+                transaction.setTag(t.getTag());
+            }
         } else {
             transaction.setTag(new TransactionTag(getResources().getString(R.string.not_tagged)));
         }
@@ -197,7 +215,11 @@ public class SimilarTransactionsActivity extends ListActivity {
             progressDialog.setMax(changed.size());
             int i = 0;
             for (Transaction toUpdate : changed) {
-                toUpdate.setTag(t.getTag());
+                if (t != null) {
+                    toUpdate.setTag(t.getTag());
+                } else {
+                    toUpdate.setTag(suggestions.get(toUpdate.get_id()));
+                }
                 toUpdate.setDirty(true);
                 db.update(toUpdate);
                 publishProgress(++i);
@@ -268,7 +290,11 @@ public class SimilarTransactionsActivity extends ListActivity {
                 if (transaction.getTag() != null) {
                     tv_tag.setText(transaction.getTag().getName());
                 } else if (bCheck.isChecked()) {
-                    tv_tag.setText(t.getTag().getName());
+                    if (t != null) {
+                        tv_tag.setText(t.getTag().getName());
+                    } else {
+                        tv_tag.setText(suggestions.get(transaction.get_id()).getName());
+                    }
                 } else {
                     tv_tag.setText(R.string.not_tagged);
                 }
