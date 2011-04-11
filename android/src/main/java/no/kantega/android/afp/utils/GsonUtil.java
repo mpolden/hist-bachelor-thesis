@@ -50,8 +50,7 @@ public class GsonUtil {
      * @param in Stream to read from
      * @return List of transactions
      */
-    public static List<Transaction> parseTransactions(
-            final InputStream in) {
+    public static List<Transaction> toList(final InputStream in) {
         List<Transaction> transactions = new ArrayList<Transaction>();
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(
@@ -87,7 +86,7 @@ public class GsonUtil {
      * @param json JSON value
      * @return List of transactions
      */
-    public static List<Transaction> parseTransactions(final String json) {
+    public static List<Transaction> toList(final String json) {
         final Type listType = new TypeToken<List<Transaction>>() {
         }.getType();
         try {
@@ -106,7 +105,7 @@ public class GsonUtil {
      * @param json JSON
      * @return Native data
      */
-    public static List<Map<String, String>> parseMap(final String json) {
+    public static List<Map<String, String>> toMap(final String json) {
         final Type listType = new TypeToken<List<Map<String, String>>>() {
         }.getType();
         try {
@@ -125,7 +124,7 @@ public class GsonUtil {
      * @param o Object which should be serialized
      * @return JSON representation
      */
-    public static String makeJSON(final Object o) {
+    public static String toJson(final Object o) {
         return new GsonBuilder().setDateFormat(PORTABLE_DATE_FORMAT).create().
                 toJson(o);
     }

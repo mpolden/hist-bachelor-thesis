@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class GsonUtilTest {
 
     /**
-     * Test parseTransactions
+     * Test toList
      */
     @Test
     public void testParseTransactions() {
@@ -52,12 +52,12 @@ public class GsonUtilTest {
         List<Transaction> expected = new ArrayList<Transaction>() {{
             add(t);
         }};
-        List<Transaction> actual = GsonUtil.parseTransactions(json);
+        List<Transaction> actual = GsonUtil.toList(json);
         assertEquals(expected, actual);
     }
 
     /**
-     * Test parseMap
+     * Test toMap
      */
     @Test
     public void testParseMap() {
@@ -72,7 +72,7 @@ public class GsonUtilTest {
             }});
         }};
         final String json = "[{\"count\":6,\"tag\":\"Transport\"},{\"count\":1,\"tag\":\"Helse\"}]";
-        final List<Map<String, String>> actual = GsonUtil.parseMap(json);
+        final List<Map<String, String>> actual = GsonUtil.toMap(json);
         assertEquals(expected, actual);
     }
 }

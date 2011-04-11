@@ -370,7 +370,7 @@ public class EditTransactionActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if (s != null) {
-                final List<Map<String, String>> result = GsonUtil.parseMap(s);
+                final List<Map<String, String>> result = GsonUtil.toMap(s);
                 if (result != null && !result.isEmpty()) {
                     final String tag = result.get(0).get("tag");
                     suggestedTag.setText(tag);

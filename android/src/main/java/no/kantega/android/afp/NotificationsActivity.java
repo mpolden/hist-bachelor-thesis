@@ -172,7 +172,7 @@ public class NotificationsActivity extends ListActivity {
                 return false;
             }
             final List<Transaction> transactions = GsonUtil.
-                    parseTransactions(in);
+                    toList(in);
             if (transactions.isEmpty()) {
                 return false;
             }

@@ -212,7 +212,7 @@ public class SynchronizeActivity extends Activity {
         private List<Transaction> putTransactions(final String url) {
             List<Transaction> dirtyTransactions = db.getDirty();
             if (!dirtyTransactions.isEmpty()) {
-                final String json = GsonUtil.makeJSON(dirtyTransactions);
+                final String json = GsonUtil.toJson(dirtyTransactions);
                 final InputStream in = post(url,
                         new ArrayList<NameValuePair>() {{
                             add(new BasicNameValuePair("json", json));
@@ -220,7 +220,7 @@ public class SynchronizeActivity extends Activity {
                 if (in == null) {
                     return null;
                 }
-                return GsonUtil.parseTransactions(in);
+                return GsonUtil.toList(in);
             }
             return Collections.emptyList();
         }
@@ -244,7 +244,7 @@ public class SynchronizeActivity extends Activity {
             if (in == null) {
                 return null;
             }
-            return GsonUtil.parseTransactions(in);
+            return GsonUtil.toList(in);
         }
 
         @Override
@@ -284,7 +284,7 @@ public class SynchronizeActivity extends Activity {
                 db.update(t);
                 publishProgress(++i);
             }
-            return true;
+            return null;
         }
 
         @Override
