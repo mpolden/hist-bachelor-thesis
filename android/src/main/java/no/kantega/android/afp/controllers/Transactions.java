@@ -417,6 +417,28 @@ public class Transactions {
     }
 
     /**
+     * Get untagged transactions for the given month and year
+     *
+     * @param month Month to filter by
+     * @param year  Year to filter by
+     * @return List of transactions
+     */
+    public List<Transaction> getUntagged(String month, String year) {
+        QueryBuilder<Transaction, Integer> queryBuilder = transactionDao.queryBuilder();
+        final String dateQuery = String.format("%s-%s-%%", year, month);
+        try {
+            queryBuilder.setWhere(queryBuilder.where().
+                    like("date", dateQuery).
+                    isNull("tag_id")
+            );
+            return getAll(queryBuilder);
+        } catch (SQLException e) {
+            Log.e(TAG, "Failed to retrieve untagged transactions", e);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Empty all tables
      */
     public void emptyTables() {
