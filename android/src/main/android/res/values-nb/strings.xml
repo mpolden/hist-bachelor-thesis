@@ -28,7 +28,7 @@
     <string name="tagging">Kategoriserer transaksjoner...</string>
     <string name="category">Kategori</string>
     <string name="please_wait">Vennligst vent...</string>
-    <string name="retrieving_date">Henter data ...</string>
+    <string name="retrieving_date">Henter data...</string>
     <string name="invalid_amount">Ugyldig beløp</string>
     <string name="transaction_updated">Transaksjon oppdatert</string>
     <string name="unsynced_count">Endringer ikke synkronisert</string>
@@ -81,5 +81,5 @@
     <string name="select_all">Velg alle</string>
     <string name="unselect_all">Velg ingen</string>
     <string name="menu_suggest">Finn forslag til kategorier</string>
-    <string name="fetching_tags">Henter forslag</string>
+    <string name="fetching_tags">Henter forslag...</string>
 </resources>
