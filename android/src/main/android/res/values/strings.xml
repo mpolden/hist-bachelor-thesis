@@ -80,5 +80,6 @@
     <string name="selected" formatted="false">%s of %s selected</string>
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>
-    <string name="menu_suggest">Find suggestions</string>
+    <string name="menu_suggest">Find tag suggestions</string>
+    <string name="fetching_tags">Retrieving suggestions</string>
 </resources>

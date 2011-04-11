@@ -80,5 +80,5 @@
     <string name="selected" formatted="false">%s av %s valgt</string>
     <string name="select_all">Velg alle</string>
     <string name="unselect_all">Velg ingen</string>
-    <string name="menu_suggest">Find forslag</string>
+    <string name="menu_suggest">Finn forslag til kategorier</string>
 </resources>
