@@ -5,6 +5,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import no.kantega.android.afp.models.Transaction;
+import no.kantega.android.afp.models.TransactionTag;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,10 +88,10 @@ public class GsonUtil {
      * @return List of transactions
      */
     public static List<Transaction> toList(final String json) {
-        final Type listType = new TypeToken<List<Transaction>>() {
+        final Type type = new TypeToken<List<Transaction>>() {
         }.getType();
         try {
-            return gson.fromJson(json, listType);
+            return gson.fromJson(json, type);
         } catch (JsonSyntaxException e) {
             Log.e(TAG, "JsonSyntaxException", e);
         } catch (JsonParseException e) {
@@ -100,16 +101,35 @@ public class GsonUtil {
     }
 
     /**
+     * Parse transaction tags from the given JSON
+     *
+     * @param json JSON value
+     * @return Map of TransactionTags keyed on _id of the Transaction
+     */
+    public static Map<Integer, TransactionTag> toMap(final String json) {
+        final Type type = new TypeToken<Map<Integer, TransactionTag>>() {
+        }.getType();
+        try {
+            return gson.fromJson(json, type);
+        } catch (JsonSyntaxException e) {
+            Log.e(TAG, "JsonSyntaxException", e);
+        } catch (JsonParseException e) {
+            Log.e(TAG, "JsonParseException", e);
+        }
+        return Collections.emptyMap();
+    }
+
+    /**
      * Parse a generic map from JSON
      *
      * @param json JSON
      * @return Native data
      */
-    public static List<Map<String, String>> toMap(final String json) {
-        final Type listType = new TypeToken<List<Map<String, String>>>() {
+    public static List<Map<String, String>> toListOfMap(final String json) {
+        final Type type = new TypeToken<List<Map<String, String>>>() {
         }.getType();
         try {
-            return gson.fromJson(json, listType);
+            return gson.fromJson(json, type);
         } catch (JsonSyntaxException e) {
             Log.e(TAG, "JsonSyntaxException", e);
         } catch (JsonParseException e) {

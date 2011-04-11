@@ -57,7 +57,7 @@ public class GsonUtilTest {
     }
 
     /**
-     * Test toMap
+     * Test toListOfMap
      */
     @Test
     public void testParseMap() {
@@ -72,7 +72,7 @@ public class GsonUtilTest {
             }});
         }};
         final String json = "[{\"count\":6,\"tag\":\"Transport\"},{\"count\":1,\"tag\":\"Helse\"}]";
-        final List<Map<String, String>> actual = GsonUtil.toMap(json);
+        final List<Map<String, String>> actual = GsonUtil.toListOfMap(json);
         assertEquals(expected, actual);
     }
 }
