@@ -14,14 +14,14 @@
                     android:text="&lt;-" android:layout_weight="1"/>
             <Button android:id="@+id/button_overview_pickDate" android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Mars 2011" android:layout_weight="2"/>
+                    android:layout_weight="2"/>
             <Button android:id="@+id/button_overview_plus" android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="-&gt;" android:layout_weight="1"/>
         </LinearLayout>
         <ListView android:id="@id/android:list" android:layout_weight="1" android:layout_width="0dip"
                   android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
-                  android:divider="#FFFFFF" android:dividerHeight="1px"/>
+                  android:divider="#FFFFFF" android:dividerHeight="0px"/>
     </TableLayout>
     <Button android:text="@string/new_transaction"
             android:id="@+id/button_new_transaction" android:layout_weight="0"

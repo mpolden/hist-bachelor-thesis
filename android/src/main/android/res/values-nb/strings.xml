@@ -82,6 +82,8 @@
     <string name="unselect_all">Velg ingen</string>
     <string name="menu_suggest">Finn forslag til kategorier</string>
     <string name="fetching_tags">Henter forslag...</string>
+    <string name="transaction_count" formatted="false">%s transaksjon(er)</string>
     <string name="username">Brukernavn</string>
     <string name="settings">Innstillinger</string>
+
 </resources>
