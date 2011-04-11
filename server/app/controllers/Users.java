@@ -30,20 +30,4 @@ public class Users extends Controller {
             user.save();
         }
     }
-
-    /**
-     * Unregiser a user
-     *
-     * @param registrationId C2DM registration ID of device
-     */
-    public static void unregister(String username, String registrationId) {
-        User user = User.find("username", username).first();
-        if (user != null) {
-            user.deviceId = null;
-            user.save();
-            Logger.info("Removed registration ID for: %s", user.username);
-        } else {
-            Logger.warn("User not found: %s", username);
-        }
-    }
 }

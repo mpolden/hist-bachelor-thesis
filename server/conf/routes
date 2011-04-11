@@ -10,6 +10,5 @@ POST    /transactions/save                      Transactions.save
 POST    /transactions/{timestamp}               Transactions.after
 POST    /tags/suggest                           TransactionTags.suggest
 POST    /users/register                         Users.register
-POST    /users/unregister                       Users.unregister
 POST    /c2dm/put                               C2DM.c2dm
 POST    /tags/suggest/all                       TransactionTags.suggestAll
