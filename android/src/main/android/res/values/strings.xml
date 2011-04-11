@@ -82,4 +82,6 @@
     <string name="unselect_all">Unselect all</string>
     <string name="menu_suggest">Find tag suggestions</string>
     <string name="fetching_tags">Retrieving suggestions...</string>
+    <string name="username">Username</string>
+    <string name="settings">Settings</string>
 </resources>
