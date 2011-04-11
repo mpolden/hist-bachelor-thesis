@@ -14,6 +14,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This job handles the inital import of transactions from CSV
@@ -51,16 +52,18 @@ public class Import extends Job {
     private void loadTransactionsFromCsv() {
         if (Transaction.count() == 0) {
             File f = VirtualFile.fromRelativePath(FIXTURES_CSV).getRealFile();
-            User user = User.all().first();
             BufferedReader reader = null;
             try {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
                 String line;
+                final List<User> allUsers = User.all().fetch();
                 while ((line = reader.readLine()) != null) {
-                    Transaction t = saveTransaction(line);
-                    if (t != null) {
-                        t.user = user;
-                        t.save();
+                    for (User user : allUsers) {
+                        Transaction t = saveTransaction(line);
+                        if (t != null) {
+                            t.user = user;
+                            t.save();
+                        }
                     }
                 }
             } catch (IOException e) {
