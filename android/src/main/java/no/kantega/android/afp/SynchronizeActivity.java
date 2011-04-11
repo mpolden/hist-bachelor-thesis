@@ -259,7 +259,6 @@ public class SynchronizeActivity extends Activity {
         }
     }
 
-
     /**
      * This task handles update of transactions
      */
@@ -271,17 +270,15 @@ public class SynchronizeActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(List<Transaction>... lists) {
+        protected Object doInBackground(List<Transaction>... lists) {
             // Add new transactions
-            updateProgressDialog.setMax(lists[0].size());
+            updateProgressDialog.setMax(lists[0].size() + lists[1].size());
             int i = 0;
             for (Transaction t : lists[0]) {
                 db.add(t);
                 publishProgress(++i);
             }
             // Send dirty transactions
-            updateProgressDialog.setMax(lists[1].size());
-            i = 0;
             for (Transaction t : lists[1]) {
                 t.setDirty(false);
                 db.update(t);
