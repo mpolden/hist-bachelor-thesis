@@ -334,8 +334,8 @@ public class SynchronizeActivity extends Activity {
      * @return Body of the response
      */
     private InputStream post(String url, List<NameValuePair> values) {
-        values.add(new BasicNameValuePair("registrationId",
-                preferences.getString(Register.REGISTRATION_ID_KEY, null)));
+        values.add(new BasicNameValuePair("username",
+                preferences.getString(Register.USERNAME_KEY, null)));
         return HttpUtil.post(url, values);
     }
 
