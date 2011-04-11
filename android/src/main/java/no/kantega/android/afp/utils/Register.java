@@ -32,6 +32,7 @@ public class Register {
             C2DMessaging.register(context, SENDER_ID);
         }
         Log.d(TAG, "Existing Device ID: " + deviceId);
+        registerWithServer(context);
     }
 
     /**
@@ -53,6 +54,7 @@ public class Register {
                                 add(new BasicNameValuePair("username", username));
                                 add(new BasicNameValuePair("deviceId", deviceId));
                             }});
+                    Log.d(TAG, String.format("Registered %s with device ID: %s", username, deviceId));
                 }
             }).start();
         }
