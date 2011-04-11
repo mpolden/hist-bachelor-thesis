@@ -22,7 +22,7 @@ public class Users extends Controller {
             user.deviceId = registrationId;
             user.save();
         } else {
-            Logger.info("User already registered, changed registrationId" +
+            Logger.info("User already registered, updating registrationId" +
                     "\nExisting: %s" +
                     "\nNew: %s",
                     user.deviceId, registrationId);
