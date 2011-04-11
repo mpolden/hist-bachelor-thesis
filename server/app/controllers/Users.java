@@ -10,23 +10,24 @@ import play.mvc.Controller;
 public class Users extends Controller {
 
     /**
-     * Register a new user
+     * Register a new user or update existing registration ID
      *
      * @param registrationId C2DM registration ID of device
      */
-    public static void register(String registrationId) {
-        if (registrationId != null) {
-            User user = User.find("registrationId", registrationId).first();
-            if (user == null) {
-                user = new User();
-                user.deviceId = registrationId;
-                user.save();
-            } else {
-                Logger.warn("User already registered, registrationId: %s",
-                        registrationId);
-            }
+    public static void register(String username, String registrationId) {
+        User user = User.find("username", username).first();
+        if (user == null) {
+            user = new User();
+            user.username = username;
+            user.deviceId = registrationId;
+            user.save();
         } else {
-            Logger.info("Called without registrationId");
+            Logger.info("User already registered, changed registrationId" +
+                    "\nExisting: %s" +
+                    "\nNew: %s",
+                    user.deviceId, registrationId);
+            user.deviceId = registrationId;
+            user.save();
         }
     }
 
@@ -35,17 +36,14 @@ public class Users extends Controller {
      *
      * @param registrationId C2DM registration ID of device
      */
-    public static void unregister(String registrationId) {
-        if (registrationId != null) {
-            User user = User.find("registrationId", registrationId).first();
-            if (user != null) {
-                user = user.delete();
-                Logger.info("Deleted user: %s", user.deviceId);
-            } else {
-                Logger.warn("User not found: %s", registrationId);
-            }
+    public static void unregister(String username, String registrationId) {
+        User user = User.find("username", username).first();
+        if (user != null) {
+            user.deviceId = null;
+            user.save();
+            Logger.info("Removed registration ID for: %s", user.username);
         } else {
-            Logger.info("Called without registrationId");
+            Logger.warn("User not found: %s", username);
         }
     }
 }
