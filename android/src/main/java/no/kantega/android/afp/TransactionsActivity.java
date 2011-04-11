@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
@@ -17,6 +18,7 @@ import no.kantega.android.afp.models.Transaction;
 public class TransactionsActivity extends ListActivity {
 
     private static final String TAG = TransactionsActivity.class.getSimpleName();
+    private TextView transactionsCount;
     private Transactions db;
     private TransactionsAdapter adapter;
     private Cursor cursor;
@@ -33,10 +35,10 @@ public class TransactionsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
+        this.transactionsCount = (TextView) findViewById(R.id.tv_transactioncount);
         this.db = new Transactions(getApplicationContext());
         this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         setListAdapter(adapter);
-
     }
 
     @Override

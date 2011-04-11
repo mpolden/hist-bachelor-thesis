@@ -44,6 +44,7 @@
         <activity android:name=".TransactionsPerTagActivity"/>
         <activity android:name=".PieChartActivity"/>
         <activity android:name=".SimilarTransactionsActivity"/>
+        <activity android:name=".SettingsActivity"/>
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its
