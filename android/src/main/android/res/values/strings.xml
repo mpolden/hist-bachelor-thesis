@@ -81,6 +81,6 @@
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>
     <string name="menu_suggest">Find tag suggestions</string>
-    <string name="fetching_tags">Retrieving suggestions...</string>
+    <string name="fetching_tags">Performing magic...</string>
     <string name="transaction_count" formatted="false">%s transaction(s)</string>
 </resources>
