@@ -36,7 +36,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Register.REGISTRATION_ID_KEY, registrationId);
         editor.commit();
-        //Register.registerWithServer(registrationId);
+        Register.registerWithServer(context);
     }
 
     @Override
