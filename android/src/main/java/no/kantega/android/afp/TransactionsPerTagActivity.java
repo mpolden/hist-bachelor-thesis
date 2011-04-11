@@ -1,8 +1,10 @@
 package no.kantega.android.afp;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -33,6 +35,7 @@ public class TransactionsPerTagActivity extends ListActivity {
 
     private static final String TAG = TransactionsPerTagActivity.class.getSimpleName();
     private static final int PROGRESS_DIALOG_ID = 0;
+    private static final int ALERT_DIALOG_ID = 1;
     private Transactions db;
     private TransactionsAdapter adapter;
     private Cursor cursor;
@@ -88,6 +91,7 @@ public class TransactionsPerTagActivity extends ListActivity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
@@ -111,13 +115,28 @@ public class TransactionsPerTagActivity extends ListActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 return progressDialog;
             }
+            case ALERT_DIALOG_ID: {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.server_unavailable)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                return builder.create();
+            }
             default: {
                 return null;
             }
         }
     }
 
-    private class TransactionTagTask extends AsyncTask<List<Transaction>, Integer, Map<Integer, TransactionTag>> {
+    /**
+     * This task handles retrieval of tag suggestions
+     */
+    private class TransactionTagTask extends AsyncTask<Object, Integer, Map<Integer, TransactionTag>> {
 
         @Override
         protected void onPreExecute() {
@@ -125,7 +144,7 @@ public class TransactionsPerTagActivity extends ListActivity {
         }
 
         @Override
-        protected Map<Integer, TransactionTag> doInBackground(List<Transaction>... lists) {
+        protected Map<Integer, TransactionTag> doInBackground(Object... objects) {
             return findSuggestions(db.getUntagged(month, year));
         }
 
@@ -141,7 +160,7 @@ public class TransactionsPerTagActivity extends ListActivity {
                         add(new BasicNameValuePair("json", GsonUtil.toJson(transactions)));
                     }});
             if (body == null) {
-                return Collections.emptyMap();
+                return null;
             }
             return GsonUtil.toMap(body);
         }
@@ -149,6 +168,10 @@ public class TransactionsPerTagActivity extends ListActivity {
         @Override
         protected void onPostExecute(Map<Integer, TransactionTag> suggestions) {
             dismissDialog(PROGRESS_DIALOG_ID);
+            if (suggestions == null) {
+                showDialog(ALERT_DIALOG_ID);
+                return;
+            }
             final Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
             if (suggestions instanceof HashMap) {
                 intent.putExtra("month", month);
