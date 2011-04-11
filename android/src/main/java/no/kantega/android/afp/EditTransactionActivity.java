@@ -16,11 +16,10 @@ import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.GsonUtil;
 import no.kantega.android.afp.utils.HttpUtil;
 import no.kantega.android.afp.utils.Prefs;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This activity handles editign of an existing transaction
@@ -363,8 +362,10 @@ public class EditTransactionActivity extends Activity {
     private class SuggestionsTask extends AsyncTask<String, Integer, String> {
 
         @Override
-        protected String doInBackground(String... params) {
-            return HttpUtil.post(params[0], params[1], "text/plain");
+        protected String doInBackground(final String... params) {
+            return HttpUtil.postAndReturnString(params[0], new ArrayList<NameValuePair>() {{
+                add(new BasicNameValuePair("", params[1]));
+            }});
         }
 
         @Override

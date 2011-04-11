@@ -5,7 +5,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -44,17 +43,15 @@ public class HttpUtil {
     /**
      * Post a string to the given url with the given content type
      *
-     * @param url         URL
-     * @param s           Value to post
-     * @param contentType Content type to use
+     * @param url    URL
+     * @param values Values to post
      * @return Body of response
      */
-    public static String post(String url, String s, String contentType) {
+    public static String postAndReturnString(String url, List<NameValuePair> values) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost method = new HttpPost(url);
         try {
-            method.setEntity(new StringEntity(s, "UTF-8"));
-            method.setHeader("Content-Type", contentType);
+            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
             HttpResponse response = httpClient.execute(method);
             return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
