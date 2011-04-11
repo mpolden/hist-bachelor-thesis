@@ -49,31 +49,16 @@ public class Transactions extends Controller {
     }
 
     /**
-     * Retrieve all transactions for a device
+     * Retrieve all transactions for a user
      *
-     * @param registrationId C2DM registration ID of the device
+     * @param username Username of user
      */
-    public static void all(String registrationId) {
+    public static void all(String username) {
         final List<Transaction> transactions = Transaction.
-                find("user.deviceId = ? " +
-                        "order by date desc, timestamp desc",
-                        registrationId).fetch();
-        /*if (!transactions.isEmpty()) {
-            for (Transaction t : transactions) {
-                if (t.tag == null) {
-                    TransactionTag suggested = getSuggestedTag(t.text);
-                    if (suggested != null) {
-                        Logger.info("Set suggested tag to %s for transaction text: %s", suggested.name, t.text);
-                        t.tag = suggested;
-                        t.save();
-                    }
-                }
-            }
-        } else {
-            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
-        }*/
+                find("user.username = ? " +
+                        "order by date desc, timestamp desc", username).fetch();
         if (transactions.isEmpty()) {
-            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
+            Logger.warn("Could not find any transactions for user: %s", username);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
@@ -81,18 +66,18 @@ public class Transactions extends Controller {
     /**
      * Retrieve all transactions that were created after the given timestamp
      *
-     * @param timestamp      Only retrieve transactions after this timestamp
-     * @param registrationId C2DM registration ID of the device
+     * @param timestamp Only retrieve transactions after this timestamp
+     * @param username  Username of user
      */
-    public static void after(Long timestamp, String registrationId) {
+    public static void after(Long timestamp, String username) {
         final List<Transaction> transactions = Transaction.find(
                 "timestamp > ? " +
                         "and internal = ? " +
-                        "and user.deviceId = ? " +
+                        "and user.username = ? " +
                         "order by date desc, timestamp desc",
-                timestamp, false, registrationId).fetch();
+                timestamp, false, username).fetch();
         if (transactions.isEmpty()) {
-            Logger.warn("Could not find any transactions for user with registrationId: %s", registrationId);
+            Logger.warn("Could not find any transactions for user: %s", username);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
@@ -100,20 +85,20 @@ public class Transactions extends Controller {
     /**
      * Save or update the given transactions for a device
      *
-     * @param registrationId C2DM registration ID of the device
-     * @param json           Transactions
+     * @param username Username of user
+     * @param json     Transactions
      */
-    public static void save(String registrationId, JsonArray json) {
+    public static void save(String username, JsonArray json) {
         final List<Transaction> transactions = GsonUtil.parseTransactions(json);
         final List<Transaction> updated = new ArrayList<Transaction>();
-        final User user = User.find("deviceId", registrationId).first();
+        final User user = User.find("username", username).first();
         if (user != null) {
             for (Transaction t : transactions) {
                 updated.add(ModelHelper.saveOrUpdate(t, user));
             }
             renderJSON(GsonUtil.makeJSON(updated));
         } else {
-            Logger.warn("Could not find user with registrationId: %s", registrationId);
+            Logger.warn("Could not find user with username: %s", username);
             renderJSON(Collections.<Transaction>emptyList());
         }
     }
