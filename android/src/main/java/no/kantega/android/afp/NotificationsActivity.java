@@ -15,6 +15,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import no.kantega.android.afp.adapters.TransactionsAdapter;
 import no.kantega.android.afp.controllers.Transactions;
 import no.kantega.android.afp.models.Transaction;
@@ -45,12 +46,14 @@ public class NotificationsActivity extends ListActivity {
     private TransactionsAdapter adapter;
     private long latestTimestamp;
     private String url;
+    private TextView transactionsCount;
     private final Runnable adapterHandler = new Runnable() {
         @Override
         public void run() {
-            // Change to a fresh cursor, the old one will be automatically closed
             adapter.changeCursor(cursor);
             Log.d(TAG, "Changed to a new cursor");
+            transactionsCount.setText(String.format(getResources().getString(R.string.transaction_count),
+                    adapter.getCount()));
         }
     };
 
@@ -61,6 +64,7 @@ public class NotificationsActivity extends ListActivity {
         this.db = new Transactions(getApplicationContext());
         this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
         this.latestTimestamp = getLatestExternalTimestamp();
+        this.transactionsCount = (TextView) findViewById(R.id.tv_transactioncount);
         setListAdapter(adapter);
         showDialog(PROGRESS_DIALOG_ID);
     }
@@ -89,6 +93,7 @@ public class NotificationsActivity extends ListActivity {
                 runOnUiThread(adapterHandler);
             }
         }).start();
+        this.transactionsCount.setText(String.valueOf(adapter.getCount()));
     }
 
     @Override

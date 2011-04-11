@@ -25,11 +25,12 @@ public class TransactionsActivity extends ListActivity {
     private final Runnable handler = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "Changed to a new cursor");
             adapter.changeCursor(cursor);
+            Log.d(TAG, "Changed to a new cursor");
+            transactionsCount.setText(String.format(getResources().getString(R.string.transaction_count),
+                    adapter.getCount()));
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
