@@ -428,7 +428,7 @@ public class Transactions {
         final String dateQuery = String.format("%s-%s-%%", year, month);
         try {
             queryBuilder.setWhere(queryBuilder.where().
-                    like("date", dateQuery).
+                    raw(String.format("date LIKE '%s'", dateQuery)).and().
                     isNull("tag_id")
             );
             return getAll(queryBuilder);
