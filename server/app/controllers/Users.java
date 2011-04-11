@@ -15,6 +15,10 @@ public class Users extends Controller {
      * @param registrationId C2DM registration ID of device
      */
     public static void register(String username, String registrationId) {
+        if (registrationId == null) {
+            Logger.warn("Called with missing registrationId");
+            return;
+        }
         User user = User.find("username", username).first();
         if (user == null) {
             user = new User();
