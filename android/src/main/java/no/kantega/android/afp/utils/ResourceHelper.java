@@ -3,8 +3,11 @@ package no.kantega.android.afp.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import no.kantega.android.afp.R;
+import no.kantega.android.afp.models.TransactionTag;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +16,7 @@ import java.util.Map;
 public class ResourceHelper {
 
     private static final Map<String, Integer> imageIds;
+    private static final List<TransactionTag> defaultTags;
 
     static {
         imageIds = new HashMap<String, Integer>() {{
@@ -27,6 +31,18 @@ public class ResourceHelper {
             put("Transport", R.drawable.tag_airplane);
             put("Sparing", R.drawable.tag_piggybank);
             put("Total", R.drawable.tag_linechart);
+        }};
+        defaultTags = new ArrayList<TransactionTag>() {{
+            add(new TransactionTag("Annet"));
+            add(new TransactionTag("Barn"));
+            add(new TransactionTag("Bolig"));
+            add(new TransactionTag("Ferie"));
+            add(new TransactionTag("Fornøyelser"));
+            add(new TransactionTag("Helse"));
+            add(new TransactionTag("Klær"));
+            add(new TransactionTag("Mat"));
+            add(new TransactionTag("Transport"));
+            add(new TransactionTag("Sparing"));
         }};
     }
 
@@ -44,5 +60,14 @@ public class ResourceHelper {
         } else {
             return context.getResources().getDrawable(R.drawable.tag_warning);
         }
+    }
+
+    /**
+     * Get default tags
+     *
+     * @return List of default tags
+     */
+    public static List<TransactionTag> getDefaultTags() {
+        return defaultTags;
     }
 }

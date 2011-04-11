@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import no.kantega.android.afp.controllers.Transactions;
+import no.kantega.android.afp.models.TransactionTag;
 import no.kantega.android.afp.utils.FmtUtil;
 import no.kantega.android.afp.utils.Register;
 import no.kantega.android.afp.utils.ResourceHelper;
@@ -99,6 +100,12 @@ public class OverviewActivity extends ListActivity {
         });
         updateDisplay();
         Register.handleRegistration(getApplicationContext());
+        // Add default tags
+        if (db.getTagCount() == 0) {
+            for (TransactionTag tag : ResourceHelper.getDefaultTags()) {
+                db.add(tag);
+            }
+        }
     }
 
     /**
