@@ -12,7 +12,6 @@ import utils.FmtUtil;
 import utils.GsonUtil;
 
 import javax.persistence.Query;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,19 +38,19 @@ public class TransactionTags extends Controller {
     /**
      * Suggest a tag for the given text
      *
-     * @param body Transaction text
+     * @param text Transaction text
      */
     @SuppressWarnings("unchecked")
-    public static void suggest(String body) {
-        List<Map<String, String>> result = Collections.emptyList();
-        if (body == null || body.isEmpty()) {
-            Logger.warn("Search text (body) is empty");
+    public static void suggest(String text) {
+        List<Map<String, String>> result;
+        if (text == null || text.isEmpty()) {
+            Logger.warn("Missing parameter: text");
             return;
         }
-        play.modules.search.Query q = Search.search(queryBuilder("text", body), Transaction.class);
+        play.modules.search.Query q = Search.search(queryBuilder("text", text), Transaction.class);
         List<Long> ids = q.fetchIds();
         if (ids.isEmpty()) {
-            Logger.warn("Did not find any results for: %s", body);
+            Logger.warn("Did not find any results for: %s", text);
             return;
         }
         Query query = JPA.em().createQuery(
@@ -63,7 +62,7 @@ public class TransactionTags extends Controller {
         query.setParameter("ids", ids);
         result = query.getResultList();
         if (result.isEmpty()) {
-            Logger.warn("Could not find any suggestions for: %s", body);
+            Logger.warn("Could not find any suggestions for: %s", text);
         }
         renderJSON(result);
     }
