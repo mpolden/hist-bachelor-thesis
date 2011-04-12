@@ -30,7 +30,7 @@ public class ResourceHelper {
             put("Mat", R.drawable.tag_forkandknife);
             put("Transport", R.drawable.tag_airplane);
             put("Sparing", R.drawable.tag_piggybank);
-            put("Total", R.drawable.tag_linechart);
+            put("Sum", R.drawable.tag_linechart);
         }};
         defaultTags = new ArrayList<TransactionTag>() {{
             add(new TransactionTag("Annet"));
