@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import no.kantega.android.afp.controllers.Transactions;
@@ -35,13 +37,14 @@ public class PieChartActivity extends Activity {
         this.db = new Transactions(getApplicationContext());
         this.cursor = db.getCursorTags(month, year);
         createPieDataFromCursor();
-        int overlayId = R.drawable.cam_overlay_big;
-        int size = 480;
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int displayWidth = display.getWidth();
+        int size = displayWidth;
         int bgColor = 0xffa1a1a1;
         Bitmap backgroundImage = Bitmap.createBitmap(size, size + 250, Bitmap.Config.RGB_565);
         PieChart pieChart = new PieChart(this);
         pieChart.setLayoutParams(new ViewGroup.LayoutParams(size, size));
-        pieChart.setGeometry(size, size, 5, 5, 5, 5, overlayId);
+        pieChart.setGeometry(size, size, 5, 5, 5, 5);
         pieChart.setBgColor(bgColor);
         pieChart.setData(PieData, maxCount);
         pieChart.invalidate();
@@ -94,7 +97,6 @@ public class PieChartActivity extends Activity {
         private final Paint linePaints = new Paint();
         private final Paint textPaints = new Paint();
         private String tag = null;
-        private int overlayId;
         private int width;
         private int height;
         private int gapLeft;
@@ -173,7 +175,7 @@ public class PieChartActivity extends Activity {
                 canvas.drawCircle(DESCRIPTION_MARGIN_LEFT, height + DESCRIPTION_MARGIN_TOP, DESCRIPTION_CIRCLE_RADIUS, bgPaints);
                 tag = item.getLabel();
                 if (tag == null) {
-                    tag = "Ukategorisert";
+                    tag = getResources().getString(R.string.not_tagged);
                 }
                 if (i % 2 == 0) {
                     canvas.drawText(tag, DESCRIPTION_MARGIN_LEFT + CIRCLE_MARGIN_LEFT, height + DESCRIPTION_MARGIN_TOP, textPaints);
@@ -185,15 +187,7 @@ public class PieChartActivity extends Activity {
                 }
                 start += sweep;
             }
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            Bitmap OverlayBitmap = BitmapFactory.decodeResource(getResources(), overlayId, options);
-            int overlay_width = OverlayBitmap.getWidth();
-            int overlay_height = OverlayBitmap.getHeight();
-            float scaleWidth = (((float) width) / overlay_width) * 0.678899083f;
-            float scaleHeight = (((float) height) / overlay_height) * 0.678899083f;
-            Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);
+
             state = IS_DRAW;
         }
 
@@ -206,16 +200,14 @@ public class PieChartActivity extends Activity {
          * @param gapRight  Gap right
          * @param gapTop    Gap top
          * @param gapBottom Gap bottom
-         * @param overlayId Id of overlay
          */
-        public void setGeometry(int width, int height, int gapLeft, int gapRight, int gapTop, int gapBottom, int overlayId) {
+        public void setGeometry(int width, int height, int gapLeft, int gapRight, int gapTop, int gapBottom) {
             this.width = width;
             this.height = height;
             this.gapLeft = gapLeft;
             this.gapRight = gapRight;
             this.gapTop = gapTop;
             this.gapBottom = gapBottom;
-            this.overlayId = overlayId;
         }
 
         /**
