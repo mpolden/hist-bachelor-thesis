@@ -28,8 +28,8 @@ public class HttpUtil {
      * @return Body of response
      */
     public static InputStream post(String url, List<NameValuePair> values) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpPost method = new HttpPost(url);
+        final DefaultHttpClient httpClient = new DefaultHttpClient();
+        final HttpPost method = new HttpPost(url);
         try {
             method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
             HttpResponse response = httpClient.execute(method);
@@ -41,19 +41,35 @@ public class HttpUtil {
     }
 
     /**
-     * Post a string to the given url with the given content type
+     * Post values to the given URL and return the response
+     *
+     * @param url    URL
+     * @param values Values to post
+     * @return Http response
+     */
+    public static HttpResponse postResponse(String url, List<NameValuePair> values) {
+        final DefaultHttpClient httpClient = new DefaultHttpClient();
+        final HttpPost method = new HttpPost(url);
+        try {
+            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
+            return httpClient.execute(method);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        }
+        return null;
+    }
+
+    /**
+     * Post values to the given URL and return the body of the response
      *
      * @param url    URL
      * @param values Values to post
      * @return Body of response
      */
-    public static String postAndReturnString(String url, List<NameValuePair> values) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpPost method = new HttpPost(url);
+    public static String postString(String url, List<NameValuePair> values) {
+        final HttpResponse response = postResponse(url, values);
         try {
-            method.setEntity(new UrlEncodedFormEntity(values, "UTF-8"));
-            HttpResponse response = httpClient.execute(method);
-            return EntityUtils.toString(response.getEntity());
+            return response != null ? EntityUtils.toString(response.getEntity()) : null;
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
         }
