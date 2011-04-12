@@ -46,7 +46,7 @@ public class Transactions extends Controller {
                         "order by date desc, timestamp desc",
                 timestamp, false, username).fetch();
         if (transactions.isEmpty()) {
-            Logger.warn("Could not find any transactions for user: %s", username);
+            Logger.info("Could not find any new transactions for user: %s", username);
         }
         renderJSON(GsonUtil.makeJSON(transactions));
     }
