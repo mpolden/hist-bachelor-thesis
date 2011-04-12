@@ -85,6 +85,9 @@ public class TransactionsPerTagActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        if (tag != null) {
+            return false;
+        }
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.transactionspertagmenu, menu);
         return true;
@@ -96,9 +99,6 @@ public class TransactionsPerTagActivity extends ListActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_suggest: {
-                if (tag != null) {
-                    return false;
-                }
                 new TransactionTagTask().execute();
                 return true;
             }
