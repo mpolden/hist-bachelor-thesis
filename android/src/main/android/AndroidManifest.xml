@@ -39,7 +39,6 @@
         <activity android:name=".SynchronizeActivity"/>
         <activity android:name=".AddTransactionActivity"/>
         <activity android:name=".EditTransactionActivity"/>
-        <activity android:name=".AddCategoryActivity"/>
         <activity android:name=".NotificationsActivity"/>
         <activity android:name=".TransactionsPerTagActivity"/>
         <activity android:name=".PieChartActivity"/>

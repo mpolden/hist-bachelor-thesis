@@ -4,9 +4,6 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.TabHost;
 
 /**
@@ -19,25 +16,6 @@ public class MenuActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setupTabs();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.optionmenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_categories:
-                Intent i = new Intent(getApplicationContext(), AddCategoryActivity.class);
-                startActivity(i);
-                break;
-        }
-        return true;
     }
 
     /**
