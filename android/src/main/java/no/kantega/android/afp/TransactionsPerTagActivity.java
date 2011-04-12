@@ -96,6 +96,9 @@ public class TransactionsPerTagActivity extends ListActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.menu_suggest: {
+                if (tag != null) {
+                    return false;
+                }
                 new TransactionTagTask().execute();
                 return true;
             }
