@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import com.google.android.c2dm.C2DMessaging;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -48,11 +50,14 @@ public class Register {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    HttpUtil.post(properties.getProperty("register").toString(),
+                    final HttpResponse response = HttpUtil.postResponse(properties.getProperty("register").toString(),
                             new ArrayList<NameValuePair>() {{
                                 add(new BasicNameValuePair("username", username));
                                 add(new BasicNameValuePair("registrationId", deviceId));
                             }});
+                    if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                        Log.e(TAG, "Failed to register wither server");
+                    }
                     Log.d(TAG, String.format("Registered %s with device ID: %s", username, deviceId));
                 }
             }).start();
