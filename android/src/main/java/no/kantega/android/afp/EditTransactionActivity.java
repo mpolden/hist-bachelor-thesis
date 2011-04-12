@@ -22,7 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.*;
 
 /**
- * This activity handles editign of an existing transaction
+ * This activity handles editing of an existing transaction
  */
 public class EditTransactionActivity extends Activity {
 
@@ -363,8 +363,8 @@ public class EditTransactionActivity extends Activity {
 
         @Override
         protected String doInBackground(final String... params) {
-            return HttpUtil.postAndReturnString(params[0], new ArrayList<NameValuePair>() {{
-                add(new BasicNameValuePair("", params[1]));
+            return HttpUtil.postString(params[0], new ArrayList<NameValuePair>() {{
+                add(new BasicNameValuePair("text", params[1]));
             }});
         }
 

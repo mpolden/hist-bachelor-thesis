@@ -155,7 +155,7 @@ public class TransactionsPerTagActivity extends ListActivity {
          * @return Map of TransactionTags keyed on _id of the Transaction it's meant for
          */
         private Map<Integer, TransactionTag> findSuggestions(final List<Transaction> transactions) {
-            final String body = HttpUtil.postAndReturnString(properties.getProperty("suggestTagAll"),
+            final String body = HttpUtil.postString(properties.getProperty("suggestTagAll"),
                     new ArrayList<NameValuePair>() {{
                         add(new BasicNameValuePair("json", GsonUtil.toJson(transactions)));
                     }});
