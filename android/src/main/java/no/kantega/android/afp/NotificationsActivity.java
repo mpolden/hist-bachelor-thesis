@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -45,7 +43,6 @@ public class NotificationsActivity extends ListActivity {
     private Transactions db;
     private TransactionsAdapter adapter;
     private long latestTimestamp;
-    private String url;
     private TextView transactionsCount;
     private final Runnable adapterHandler = new Runnable() {
         @Override
@@ -66,7 +63,9 @@ public class NotificationsActivity extends ListActivity {
         this.latestTimestamp = getLatestExternalTimestamp();
         this.transactionsCount = (TextView) findViewById(R.id.tv_transactioncount);
         setListAdapter(adapter);
-        showDialog(PROGRESS_DIALOG_ID);
+        String url = Prefs.getProperties(getApplicationContext()).
+                getProperty("newTransactions");
+        new TransactionsTask().execute(url);
     }
 
     @Override
@@ -101,11 +100,9 @@ public class NotificationsActivity extends ListActivity {
         switch (id) {
             case PROGRESS_DIALOG_ID: {
                 progressDialog = new ProgressDialog(this);
-                progressDialog.setMessage(getResources().getString(
-                        R.string.wait));
+                progressDialog.setMessage(getResources().getString(R.string.fetching_transactions));
                 progressDialog.setCancelable(false);
-                progressDialog.setProgressStyle(ProgressDialog.
-                        STYLE_HORIZONTAL);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 return progressDialog;
             }
             case ALERT_DIALOG_ID: {
@@ -127,27 +124,6 @@ public class NotificationsActivity extends ListActivity {
         }
     }
 
-    @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
-        switch (id) {
-            case PROGRESS_DIALOG_ID: {
-                progressDialog.setProgress(0);
-                if (url == null) {
-                    url = Prefs.getProperties(getApplicationContext()).
-                            getProperty("newTransactions");
-                }
-                new TransactionsTask().execute(url);
-            }
-        }
-    }
-
-    private final Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            progressDialog.setProgress(msg.arg1);
-        }
-    };
-
     /**
      * This task handles retrieval of new transactions
      */
@@ -156,7 +132,7 @@ public class NotificationsActivity extends ListActivity {
 
         @Override
         protected void onPreExecute() {
-            progressDialog.show();
+            showDialog(PROGRESS_DIALOG_ID);
         }
 
         @Override
@@ -191,17 +167,8 @@ public class NotificationsActivity extends ListActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
-            final Message msg = handler.obtainMessage();
-            msg.arg1 = values[0];
-            handler.sendMessage(msg);
-        }
-
-        @Override
         protected void onPostExecute(Boolean success) {
-            progressDialog.setProgress(0);
-            progressDialog.setMax(100);
-            progressDialog.dismiss();
+            dismissDialog(PROGRESS_DIALOG_ID);
             if (!success) {
                 showDialog(ALERT_DIALOG_ID);
             }
