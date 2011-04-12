@@ -43,7 +43,7 @@ public class RouteRetrieveTest extends FunctionalTest {
     @Test
     public void testRouteTransactions() {
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
         }};
         Response response = POST("/transactions/all", params);
         assertIsOk(response);
@@ -61,7 +61,7 @@ public class RouteRetrieveTest extends FunctionalTest {
     @Test
     public void testRouteTransactionsAfter() {
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
         }};
         Response response = POST("/transactions/0", params);
         assertIsOk(response);

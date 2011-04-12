@@ -61,7 +61,7 @@ public class RouteSaveTest extends FunctionalTest {
                 "    }\n" +
                 "]";
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
             put("json", json);
         }};
         Http.Response response = POST("/transactions/save", params);
@@ -98,7 +98,7 @@ public class RouteSaveTest extends FunctionalTest {
                 "    }\n" +
                 "]";
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
             put("json", json);
         }};
         Http.Response response = POST("/transactions/save", params);
@@ -136,7 +136,7 @@ public class RouteSaveTest extends FunctionalTest {
                 "    }\n" +
                 "]";
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
             put("json", json);
         }};
         Http.Response response = POST("/transactions/save", params);
@@ -177,7 +177,7 @@ public class RouteSaveTest extends FunctionalTest {
                 "    }\n" +
                 "]";
         Map<String, String> params = new HashMap<String, String>() {{
-            put("registrationId", "some_random_id");
+            put("username", "test");
             put("json", json);
         }};
         Http.Response response = POST("/transactions/save", params);
