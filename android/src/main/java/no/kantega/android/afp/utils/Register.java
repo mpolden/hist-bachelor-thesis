@@ -50,7 +50,7 @@ public class Register {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    final HttpResponse response = HttpUtil.postResponse(properties.getProperty("register").toString(),
+                    final HttpResponse response = HttpUtil.postResponse(properties.getProperty("register"),
                             new ArrayList<NameValuePair>() {{
                                 add(new BasicNameValuePair("username", username));
                                 add(new BasicNameValuePair("registrationId", deviceId));

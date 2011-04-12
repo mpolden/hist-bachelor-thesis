@@ -38,7 +38,7 @@ public class TransactionsActivity extends ListActivity {
         setContentView(R.layout.transactions);
         this.transactionsCount = (TextView) findViewById(R.id.tv_transactioncount);
         this.db = new Transactions(getApplicationContext());
-        this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
+        this.adapter = new TransactionsAdapter(this, cursor);
         setListAdapter(adapter);
     }
 

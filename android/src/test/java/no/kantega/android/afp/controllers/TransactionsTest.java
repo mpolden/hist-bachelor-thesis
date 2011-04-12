@@ -23,7 +23,7 @@ public class TransactionsTest {
     @Before
     public void setUp() {
         OverviewActivity activity = new OverviewActivity();
-        this.transactions = new Transactions(activity.getApplicationContext(),
+        this.transactions = new Transactions(
                 new DatabaseHelper(activity.getApplicationContext(), null, 1));
     }
 

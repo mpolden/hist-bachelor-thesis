@@ -24,13 +24,12 @@ public class TransactionsAdapter extends CursorAdapter {
     /**
      * Initialize the adapter
      *
-     * @param context  Application context
-     * @param c        Cursor
-     * @param layoutId Id of the layout to use for views
+     * @param context Application context
+     * @param c       Cursor
      */
-    public TransactionsAdapter(Context context, Cursor c, int layoutId) {
+    public TransactionsAdapter(Context context, Cursor c) {
         super(context, c);
-        this.layoutId = layoutId;
+        this.layoutId = R.layout.transactionrow;
     }
 
     @Override

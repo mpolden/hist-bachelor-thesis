@@ -41,10 +41,9 @@ public class Transactions {
     /**
      * Create a new instance and initalize DAOs using the given DatabaseHelper
      *
-     * @param context Application context
-     * @param helper  Database helper
+     * @param helper Database helper
      */
-    public Transactions(Context context, DatabaseHelper helper) {
+    public Transactions(DatabaseHelper helper) {
         this.helper = helper;
         this.transactionDao = helper.getTransactionDao();
         this.transactionTagDao = helper.getTransactionTagDao();

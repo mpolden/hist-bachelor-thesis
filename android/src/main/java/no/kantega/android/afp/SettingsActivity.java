@@ -9,6 +9,9 @@ import android.widget.EditText;
 import no.kantega.android.afp.utils.Prefs;
 import no.kantega.android.afp.utils.Register;
 
+/**
+ * This activity handles local settings, like username
+ */
 public class SettingsActivity extends Activity {
 
     private EditText inputUsername;

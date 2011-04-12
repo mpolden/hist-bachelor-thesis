@@ -62,7 +62,7 @@ public class NotificationsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transactions);
         this.db = new Transactions(getApplicationContext());
-        this.adapter = new TransactionsAdapter(this, cursor, R.layout.transactionrow);
+        this.adapter = new TransactionsAdapter(this, cursor);
         this.latestTimestamp = getLatestExternalTimestamp();
         this.transactionsCount = (TextView) findViewById(R.id.tv_transactioncount);
         setListAdapter(adapter);

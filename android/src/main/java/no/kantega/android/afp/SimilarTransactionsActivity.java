@@ -63,7 +63,7 @@ public class SimilarTransactionsActivity extends ListActivity {
             }
             similarTransactions.removeAll(remove);
         }
-        this.adapter = new SimilarTransactionAdapter(this, R.layout.transactionrow, similarTransactions);
+        this.adapter = new SimilarTransactionAdapter(this, similarTransactions);
         setListAdapter(adapter);
         Button saveButton = (Button) findViewById(R.id.button_save_transactions);
         saveButton.setOnClickListener(saveTransactionsButtonListener);
@@ -252,12 +252,11 @@ public class SimilarTransactionsActivity extends ListActivity {
         /**
          * Create a new adapter for the given items
          *
-         * @param context            Application context
-         * @param textViewResourceId Resource ID of TextView to use for views
-         * @param items              Transactions
+         * @param context Application context
+         * @param items   Transactions
          */
-        public SimilarTransactionAdapter(Context context, int textViewResourceId, List<Transaction> items) {
-            super(context, textViewResourceId, items);
+        public SimilarTransactionAdapter(Context context, List<Transaction> items) {
+            super(context, R.layout.transactionrow, items);
             this.items = items;
         }
 

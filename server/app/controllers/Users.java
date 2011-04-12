@@ -12,6 +12,7 @@ public class Users extends Controller {
     /**
      * Register a new user or update existing registration ID
      *
+     * @param username       Username of user
      * @param registrationId C2DM registration ID of device
      */
     public static void register(String username, String registrationId) {
