@@ -106,7 +106,8 @@ public class PieChartActivity extends Activity {
         private int bgColor;
         private int DESCRIPTION_MARGIN_LEFT = 75;
         private int DESCRIPTION_MARGIN_TOP = 50;
-        private final int COLUMN_MARGIN_WIDTH = 150;
+        private final int COLUMN_MARGIN_WIDTH = 175;
+        private final int COLUMN_MARGIN_HEIGHT = 40;
         private final int DESCRIPTION_CIRCLE_RADIUS = 10;
         private final int CIRCLE_MARGIN_LEFT = 15;
         private int state = WAIT;
@@ -182,7 +183,7 @@ public class PieChartActivity extends Activity {
                     DESCRIPTION_MARGIN_LEFT += COLUMN_MARGIN_WIDTH;
                 } else {
                     canvas.drawText(tag, DESCRIPTION_MARGIN_LEFT + CIRCLE_MARGIN_LEFT, height + DESCRIPTION_MARGIN_TOP, textPaints);
-                    DESCRIPTION_MARGIN_TOP += 40;
+                    DESCRIPTION_MARGIN_TOP += COLUMN_MARGIN_HEIGHT;
                     DESCRIPTION_MARGIN_LEFT -= COLUMN_MARGIN_WIDTH;
                 }
                 start += sweep;
