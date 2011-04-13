@@ -4,6 +4,7 @@ import models.User;
 import org.apache.commons.io.IOUtils;
 import play.Logger;
 import play.jobs.Job;
+import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
 import play.vfs.VirtualFile;
 import utils.FmtUtil;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * This job handles the inital import of transactions from CSV
  */
-//@OnApplicationStart
+@OnApplicationStart
 public class Import extends Job {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
