@@ -120,7 +120,7 @@ public class TransactionsPerTagActivity extends ListActivity {
             }
             case ALERT_DIALOG_ID: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.server_unavailable)
+                builder.setMessage("")
                         .setCancelable(false)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
@@ -132,6 +132,16 @@ public class TransactionsPerTagActivity extends ListActivity {
             }
             default: {
                 return null;
+            }
+        }
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog, Bundle args) {
+        switch (id) {
+            case ALERT_DIALOG_ID: {
+                ((AlertDialog) dialog).setMessage(args.getString("message"));
+                break;
             }
         }
     }
@@ -172,7 +182,15 @@ public class TransactionsPerTagActivity extends ListActivity {
         protected void onPostExecute(Map<Integer, TransactionTag> suggestions) {
             dismissDialog(PROGRESS_DIALOG_ID);
             if (suggestions == null) {
-                showDialog(ALERT_DIALOG_ID);
+                final Bundle bundle = new Bundle();
+                bundle.putString("message", getResources().getString(R.string.server_unavailable));
+                showDialog(ALERT_DIALOG_ID, bundle);
+                return;
+            }
+            if (suggestions.isEmpty()) {
+                final Bundle bundle = new Bundle();
+                bundle.putString("message", getResources().getString(R.string.suggestions_notfound));
+                showDialog(ALERT_DIALOG_ID, bundle);
                 return;
             }
             final Intent intent = new Intent(getApplicationContext(), SimilarTransactionsActivity.class);
