@@ -63,13 +63,11 @@ public class Transactions {
             QueryBuilder<TransactionTag, Integer> queryBuilder = transactionTagDao.queryBuilder();
             queryBuilder.where().eq("name", tag.getName());
             List<TransactionTag> tags = transactionTagDao.query(queryBuilder.prepare());
-            if (tags.size() > 0) {
-                return tags.get(0);
-            } else {
+            if (tags.isEmpty()) {
                 transactionTagDao.create(tag);
                 tags = transactionTagDao.query(queryBuilder.prepare());
-                return tags.get(0);
             }
+            return !tags.isEmpty() ? tags.get(0) : null;
         } catch (SQLException e) {
             Log.e(TAG, "Failed to add transaction tag", e);
         }
