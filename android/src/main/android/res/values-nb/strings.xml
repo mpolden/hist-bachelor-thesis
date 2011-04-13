@@ -85,5 +85,5 @@
     <string name="transaction_count" formatted="false">%s transaksjon(er)</string>
     <string name="username">Brukernavn</string>
     <string name="settings">Innstillinger</string>
-
+    <string name="suggestions_notfound">Beklager. Fant ingen forslag.</string>
 </resources>
