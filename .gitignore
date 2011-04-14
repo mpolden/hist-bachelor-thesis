@@ -21,3 +21,4 @@ test-result
 local.properties
 url.properties
 fixtures-local.yml
+lib
