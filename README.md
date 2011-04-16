@@ -59,9 +59,11 @@ be found by launching the app and looking for "New device ID: <the_id>" or
 * Edit android/src/main/android/assets/url.properties to contain the following:
 
     suggestTag = http://<your_ip>:9000/tags/suggest
+    suggestTagAll = http://<your_ip>:9000/tags/suggest/all
     newTransactions = http://<your_ip>:9000/transactions/%s
     allTransactions = http://<your_ip>:9000/transactions/all
     saveTransactions = http://<your_ip>:9000/transactions/save
+    register = http://<your_ip>:9000/users/register
 
 * Edit server/conf/fixtures-local.yml to contain the following:
 
