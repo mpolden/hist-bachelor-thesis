@@ -144,7 +144,7 @@ public class RouteSaveTest extends FunctionalTest {
         assertContentType("application/json", response);
         assertCharset("utf-8", response);
         assertTrue(getContent(response).length() > 0);
-        Transaction t = Transaction.findById(existing.id);
+        Transaction t = existing.refresh();
         assertNotNull(t);
         assertNotNull(t.tag);
         assertEquals("Annet", t.tag.name);

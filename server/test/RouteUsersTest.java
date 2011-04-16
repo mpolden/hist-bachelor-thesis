@@ -64,7 +64,7 @@ public class RouteUsersTest extends FunctionalTest {
         assertEquals(existingDeviceId, "some_random_id");
         final Http.Response response = POST("/users/register", params);
         assertIsOk(response);
-        final User updatedUser = User.find("username", "test").first();
+        final User updatedUser = existingUser.refresh();
         assertEquals(updatedUser.deviceId, "some_other_random_id");
     }
 }
