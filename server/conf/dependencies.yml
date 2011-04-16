@@ -2,5 +2,6 @@
 
 require:
     - play
+    - play -> search head
     - com.google.guava -> guava r09
     - postgresql -> postgresql 9.0-801.jdbc4
