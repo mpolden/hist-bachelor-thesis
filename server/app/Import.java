@@ -3,6 +3,7 @@ import models.TransactionTag;
 import models.User;
 import org.apache.commons.io.IOUtils;
 import play.Logger;
+import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
@@ -33,8 +34,10 @@ public class Import extends Job {
 
     @Override
     public void doJob() {
-        loadUsersFromFixture();
-        loadTransactionsFromCsv();
+        if (Play.mode.isProd()) {
+            loadUsersFromFixture();
+            loadTransactionsFromCsv();
+        }
     }
 
     /**
