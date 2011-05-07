@@ -1,6 +1,5 @@
 package no.kantega.android.afp;
 
-import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.runners.model.InitializationError;
 
@@ -19,11 +18,6 @@ public class MavenizedTestRunner extends RobolectricTestRunner {
      */
     public MavenizedTestRunner(Class testClass) throws InitializationError {
         super(testClass, new File("./src/main/android"));
-    }
-
-    @Override
-    protected void bindShadowClasses() {
-        Robolectric.bindShadowClass(ShadowSQLiteDatabase.class);
     }
 }
 

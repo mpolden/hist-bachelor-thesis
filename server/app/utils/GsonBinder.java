@@ -6,6 +6,7 @@ import play.data.binding.Global;
 import play.data.binding.TypeBinder;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 /**
  * This binder automatically binds values to JSON
@@ -14,7 +15,7 @@ import java.lang.annotation.Annotation;
 public class GsonBinder implements TypeBinder<JsonArray> {
 
     @Override
-    public Object bind(String name, Annotation[] antns, String value, Class type) throws Exception {
+    public Object bind(String name, Annotation[] annotations, String value, Class aClass, Type type) throws Exception {
         return new JsonParser().parse(value);
     }
 }

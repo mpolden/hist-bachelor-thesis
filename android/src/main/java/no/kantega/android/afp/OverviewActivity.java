@@ -283,7 +283,7 @@ public class OverviewActivity extends ListActivity {
             }
             image.setImageDrawable(ResourceHelper.getImage(context, tag));
             if (consumption != null) {
-                tv_consumption.setText(FmtUtil.currency(consumption));
+                tv_consumption.setText(FmtUtil.currencyWithoutPrefix(consumption));
             }
         }
     }
