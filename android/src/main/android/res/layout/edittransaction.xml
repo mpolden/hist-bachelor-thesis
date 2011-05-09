@@ -3,74 +3,81 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/background3"
+              android:background="@drawable/background4"
               android:focusable="true" android:focusableInTouchMode="true">
 
-    <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
-                 android:layout_height="wrap_content"
-                 android:stretchColumns="1">
-
-        <TableRow>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:text="@string/transaction_text"/>
-            <EditText android:id="@+id/edittransaction_edittext_text"
-                      android:layout_weight="1" android:layout_width="0dip"
-                      android:layout_height="wrap_content"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:id="@+id/dateDisplay"
-                      android:padding="3dip" android:textStyle="bold"
-                      style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:text="@string/transaction_date"/>
-            <Button android:id="@+id/edittransaction_button_pickDate"
-                    android:layout_weight="1" android:layout_width="0dip"
-                    android:layout_height="wrap_content"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:text="@string/transaction_amount"/>
-            <EditText android:id="@+id/edittransaction_edittext_amount"
-                      android:layout_weight="1" android:layout_width="0dip"
-                      android:layout_height="wrap_content"
-                      android:inputType="numberDecimal"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:text="@string/category_prompt"/>
-            <Spinner android:id="@+id/edittransaction_spinner_category"
-                     android:layout_weight="1" android:layout_width="0dip"
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical" android:layout_weight="1">
+        <TableLayout android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
-                     android:prompt="@string/category_prompt"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:text="@string/suggested_tag"/>
-            <TextView android:layout_weight="1" android:layout_width="0dip"
-                      android:padding="3dip"
-                      android:textStyle="bold" style="@style/DefaultTextFont"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/suggested_tag"/>
-        </TableRow>
-    </TableLayout>
+                     android:background="@drawable/postit"
+                     android:padding="20dip"
+                     android:stretchColumns="1">
+
+            <TableRow>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:padding="3dip"
+                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:text="@string/transaction_text"/>
+                <EditText android:id="@+id/edittransaction_edittext_text"
+                          android:layout_weight="1" android:layout_width="0dip"
+                          android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:id="@+id/dateDisplay"
+                          android:padding="3dip" android:textStyle="bold"
+                          android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:text="@string/transaction_date"/>
+                <Button android:id="@+id/edittransaction_button_pickDate"
+                        android:layout_weight="1" android:layout_width="0dip"
+                        android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:padding="3dip"
+                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:text="@string/transaction_amount"/>
+                <EditText android:id="@+id/edittransaction_edittext_amount"
+                          android:layout_weight="1" android:layout_width="0dip"
+                          android:layout_height="wrap_content"
+                          android:inputType="numberDecimal"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:padding="3dip"
+                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:text="@string/category_prompt"/>
+                <Spinner android:id="@+id/edittransaction_spinner_category"
+                         android:layout_weight="1" android:layout_width="0dip"
+                         android:layout_height="wrap_content"
+                         android:prompt="@string/category_prompt"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:padding="3dip"
+                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:text="@string/suggested_tag"/>
+                <TextView android:layout_weight="1" android:layout_width="0dip"
+                          android:padding="3dip"
+                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/suggested_tag"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
     <Button android:text="@string/save"
+            android:textColor="@android:color/white"
             android:id="@+id/edittransaction_button_edittransaction"
+            android:background="@drawable/button_green"
             android:layout_weight="0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>

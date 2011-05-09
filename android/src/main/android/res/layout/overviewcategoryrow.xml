@@ -12,12 +12,10 @@
                        android:layout_marginRight="6dip"/>
         </LinearLayout>
         <TextView android:id="@+id/overview_textview_tag" android:layout_weight="1"
-                  android:layout_width="0dip" android:padding="3dip"
-                  style="@style/DefaultTextFont" android:text="Category"/>
+                  android:layout_width="0dip" android:layout_height="wrap_content" android:padding="3dip"
+                  android:textColor="@android:color/black" android:text="Category"/>
         <TextView android:id="@+id/overview_textview_consumption" android:layout_weight="1"
-                  android:layout_width="0dip" android:padding="3dip"
-                  style="@style/DefaultTextFont"/>
-        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                   android:src="@drawable/arrowright"/>
+                  android:layout_width="0dip" android:layout_height="wrap_content" android:padding="3dip"
+                  android:textColor="@android:color/black" android:gravity="right"/>
     </LinearLayout>
 </LinearLayout>

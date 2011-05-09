@@ -10,20 +10,28 @@
         <LinearLayout android:layout_height="wrap_content" android:layout_width="0dip"
                       android:orientation="horizontal">
             <Button android:id="@+id/button_overview_minus" android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="&lt;-" android:layout_weight="1"/>
+                    android:layout_width="wrap_content" android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:text="&lt;" android:layout_weight="1"
+                    android:background="@drawable/button_blue"/>
             <Button android:id="@+id/button_overview_pickDate" android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="2"/>
+                    android:layout_width="wrap_content" android:layout_weight="2"
+                    android:textColor="@android:color/white" android:textStyle="bold"
+                    android:background="@drawable/button_blue"/>
             <Button android:id="@+id/button_overview_plus" android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="-&gt;" android:layout_weight="1"/>
+                    android:layout_width="wrap_content" android:textStyle="bold"
+                    android:text="&gt;" android:layout_weight="1" android:textColor="@android:color/white"
+                    android:background="@drawable/button_blue"/>
         </LinearLayout>
         <ListView android:id="@id/android:list" android:layout_weight="1" android:layout_width="0dip"
                   android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
-                  android:divider="#FFFFFF" android:dividerHeight="0px"/>
+                  android:divider="#FFFFFF" android:dividerHeight="0px" android:background="@drawable/postit"
+                  android:padding="20dip"/>
     </TableLayout>
     <Button android:text="@string/new_transaction"
+            android:textColor="@android:color/white"
+            android:textSize="24dip"
+            android:background="@drawable/button_green"
             android:id="@+id/button_new_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>

@@ -23,7 +23,7 @@ public class MenuActivity extends TabActivity {
      */
     private void setupTabs() {
         Resources res = getResources();
-        TabHost tabHost = getTabHost();
+        final TabHost tabHost = getTabHost();
         TabHost.TabSpec spec;
         Intent intent;
         intent = new Intent().setClass(this, OverviewActivity.class);
@@ -42,5 +42,19 @@ public class MenuActivity extends TabActivity {
                 res.getDrawable(R.drawable.tab_synchronize)).setContent(intent);
         tabHost.addTab(spec);
         tabHost.setCurrentTab(0);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                setTabColors(tabHost);
+            }
+        });
+    }
+
+    public static void setTabColors(TabHost tabHost) {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+
+            //tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.LTGRAY);
+        }
+        //tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundColor(Color.RED);
     }
 }
