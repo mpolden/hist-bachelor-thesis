@@ -3,7 +3,9 @@
               android:orientation="vertical" android:layout_width="fill_parent"
               android:layout_height="fill_parent" android:background="@drawable/background4">
     <LinearLayout android:layout_width="fill_parent" android:layout_weight="1"
-                  android:layout_height="wrap_content">
+                  android:layout_height="wrap_content"
+                  android:padding="20dip"
+                  android:background="@drawable/postit">
         <ListView android:id="@id/android:list" android:layout_width="fill_parent"
                   android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
                   android:divider="#FFFFFF" android:dividerHeight="0px"/>
@@ -14,9 +16,12 @@
     <TextView android:id="@+id/tv_similarselected" android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               style="@style/DefaultTextFont" android:textSize="10sp" android:layout_weight="0"
-              android:gravity="center"></TextView>
+              android:gravity="center"/>
     <Button android:text="@string/save"
             android:id="@+id/button_save_transactions" android:layout_weight="0"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_green"/>
 </LinearLayout>

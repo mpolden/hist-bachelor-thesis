@@ -8,10 +8,12 @@
               android:focusable="true" android:focusableInTouchMode="true">
     <TableLayout android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 android:layout_weight="1">
+                 android:layout_weight="1"
+                 android:padding="20dip"
+                 android:background="@drawable/postit">
         <TableRow>
             <TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="0dip"
-                      android:text="@string/username" android:textStyle="bold" style="@style/DefaultTextFont"
+                      android:text="@string/username" android:textStyle="bold" android:textColor="@android:color/black"
                       android:padding="3dip"/>
             <EditText android:id="@+id/et_username" android:layout_height="wrap_content"
                       android:layout_weight="1" android:layout_width="0dip"/>
@@ -22,6 +24,8 @@
             android:id="@+id/button_settings_save"
             android:layout_weight="0"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_green"/>
 </LinearLayout>
