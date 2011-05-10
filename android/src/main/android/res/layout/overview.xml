@@ -30,10 +30,10 @@
     </TableLayout>
     <Button android:text="@string/new_transaction"
             android:textColor="@android:color/white"
-            android:textSize="24dip"
             android:background="@drawable/button_green"
             android:id="@+id/button_new_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
+            android:textStyle="bold"
             android:layout_height="wrap_content"/>
 
 </LinearLayout>

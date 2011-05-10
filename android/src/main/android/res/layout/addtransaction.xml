@@ -67,5 +67,6 @@
             android:id="@+id/button_add_transaction" android:layout_weight="0"
             android:background="@drawable/button_green"
             android:layout_width="fill_parent"
+            android:textStyle="bold"
             android:layout_height="wrap_content"/>
 </LinearLayout>
