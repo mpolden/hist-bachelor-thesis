@@ -55,8 +55,9 @@ public class Register {
                                 add(new BasicNameValuePair("username", username));
                                 add(new BasicNameValuePair("registrationId", deviceId));
                             }});
-                    if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    if (response == null || response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                         Log.e(TAG, "Failed to register wither server");
+                        return;
                     }
                     Log.d(TAG, String.format("Registered %s with device ID: %s", username, deviceId));
                 }
