@@ -33,7 +33,7 @@ public class AddTransactionActivity extends Activity {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             pickYear = year;
-            pickMonth = monthOfYear + 1; // Month starts at 0
+            pickMonth = monthOfYear;
             pickDay = dayOfMonth;
             updateDisplay();
         }
@@ -110,7 +110,7 @@ public class AddTransactionActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, dateSetListener, pickYear, pickMonth,
+                return new DatePickerDialog(this, dateSetListener, pickYear, pickMonth - 1,
                         pickDay);
         }
         return null;
