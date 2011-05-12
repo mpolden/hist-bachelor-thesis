@@ -3,24 +3,25 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        style="@style/default_bg_color">
     <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content"
-                 android:stretchColumns="1" android:background="@drawable/postit"
+                 android:stretchColumns="1"
                  android:padding="20dip">
 
         <TableRow>
             <TextView android:layout_weight="0.5"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:text="@string/last_synchronized">
             </TextView>
             <TextView android:layout_weight="1"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:id="@+id/last_synchronized">
@@ -30,14 +31,14 @@
             <TextView android:layout_weight="0.5"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:text="@string/internal_t_count">
             </TextView>
             <TextView android:layout_weight="1"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:id="@+id/internal_t_count">
@@ -47,14 +48,14 @@
             <TextView android:layout_weight="0.5"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:text="@string/internal_tag_count">
             </TextView>
             <TextView android:layout_weight="1"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:id="@+id/internal_tag_count">
@@ -64,14 +65,14 @@
             <TextView android:layout_weight="0.5"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:text="@string/unsynced_count">
             </TextView>
             <TextView android:layout_weight="1"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:id="@+id/unsynced_count">
@@ -81,14 +82,14 @@
             <TextView android:layout_weight="0.5"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:text="@string/untagged_count">
             </TextView>
             <TextView android:layout_weight="1"
                       android:layout_width="wrap_content"
                       android:padding="3dip"
-                      android:textStyle="bold" android:textColor="@android:color/black"
+                      android:textStyle="bold" style="@style/status_fg_color"
                       android:layout_height="wrap_content"
                       android:gravity="right"
                       android:id="@+id/untagged_count">
@@ -97,7 +98,7 @@
     </TableLayout>
     <Button android:id="@+id/clearDbButton"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dip"
             android:text="@string/clear_db"
             android:textStyle="bold"
             android:textColor="@android:color/white"
@@ -106,7 +107,7 @@
     </Button>
     <Button android:id="@+id/syncButton"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dip"
             android:text="@string/synchronize"
             android:textStyle="bold"
             android:textColor="@android:color/white"

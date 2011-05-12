@@ -3,21 +3,23 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/background4"
+              style="@style/default_bg_color"
               android:focusable="true" android:focusableInTouchMode="true">
+    <ImageView android:background="@drawable/bg_bar_02"
+               android:layout_height="wrap_content"
+               android:layout_width="fill_parent"/>
 
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:orientation="vertical" android:layout_weight="1">
         <TableLayout android:layout_width="fill_parent"
                      android:layout_height="wrap_content"
-                     android:background="@drawable/postit"
                      android:padding="20dip"
                      android:stretchColumns="1">
 
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:textStyle="bold" style="@style/status_fg_color"
                           android:layout_height="wrap_content"
                           android:text="@string/transaction_text"/>
                 <EditText android:id="@+id/edittransaction_edittext_text"
@@ -29,7 +31,7 @@
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:id="@+id/dateDisplay"
                           android:padding="3dip" android:textStyle="bold"
-                          android:textColor="@android:color/black"
+                          android:textColor="@android:color/white"
                           android:layout_height="wrap_content"
                           android:text="@string/transaction_date"/>
                 <Button android:id="@+id/edittransaction_button_pickDate"
@@ -40,7 +42,7 @@
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:textStyle="bold" android:textColor="@android:color/white"
                           android:layout_height="wrap_content"
                           android:text="@string/transaction_amount"/>
                 <EditText android:id="@+id/edittransaction_edittext_amount"
@@ -52,7 +54,7 @@
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:textStyle="bold" android:textColor="@android:color/white"
                           android:layout_height="wrap_content"
                           android:text="@string/category_prompt"/>
                 <Spinner android:id="@+id/edittransaction_spinner_category"
@@ -63,12 +65,12 @@
             <TableRow>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:textStyle="bold" android:textColor="@android:color/white"
                           android:layout_height="wrap_content"
                           android:text="@string/suggested_tag"/>
                 <TextView android:layout_weight="1" android:layout_width="0dip"
                           android:padding="3dip"
-                          android:textStyle="bold" android:textColor="@android:color/black"
+                          android:textStyle="bold" android:textColor="@android:color/white"
                           android:layout_height="wrap_content"
                           android:id="@+id/suggested_tag"/>
             </TableRow>
@@ -81,5 +83,5 @@
             android:layout_weight="0"
             android:layout_width="fill_parent"
             android:textStyle="bold"
-            android:layout_height="wrap_content"/>
+            android:layout_height="50dip"/>
 </LinearLayout>

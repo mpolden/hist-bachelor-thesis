@@ -2,15 +2,15 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true"
-          android:drawable="@drawable/button_green_pressed">
+          android:drawable="@drawable/button_green_selected2">
     </item>
 
     <item android:state_focused="true"
-          android:drawable="@drawable/button_green_focused">
+          android:drawable="@drawable/button_green_selected2">
     </item>
 
     <item
-            android:drawable="@drawable/button_green_normal">
+            android:drawable="@drawable/button_green_normal2">
     </item>
 
 </selector>
