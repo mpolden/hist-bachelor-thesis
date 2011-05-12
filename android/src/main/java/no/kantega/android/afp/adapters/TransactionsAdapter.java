@@ -20,6 +20,7 @@ import java.util.Date;
 public class TransactionsAdapter extends CursorAdapter {
 
     private final int layoutId;
+    private final int[] colors;
 
     /**
      * Initialize the adapter
@@ -30,6 +31,8 @@ public class TransactionsAdapter extends CursorAdapter {
     public TransactionsAdapter(Context context, Cursor c) {
         super(context, c);
         this.layoutId = R.layout.transactionrow;
+        this.colors = new int[]{context.getResources().getColor(R.color.row_bg_even),
+                context.getResources().getColor(R.color.row_bg_odd)};
     }
 
     @Override
@@ -53,6 +56,7 @@ public class TransactionsAdapter extends CursorAdapter {
      * @param cursor  Cursor
      */
     private void populateView(Context context, View view, Cursor cursor) {
+        view.setBackgroundColor(colors[cursor.getPosition() % colors.length]);
         String date = cursor.getString(cursor.getColumnIndex("date"));
         String text = cursor.getString(cursor.getColumnIndex("text"));
         String tag = cursor.getString(cursor.getColumnIndex("tag"));
