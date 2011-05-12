@@ -73,7 +73,7 @@ public class TransactionsAdapter extends CursorAdapter {
         tv_amount.setText(null);
         if (date != null) {
             Date d = FmtUtil.stringToDate("yyyy-MM-dd HH:mm:ss", date);
-            tv_date.setText(FmtUtil.dateToString("yyyy-MM-dd", d));
+            tv_date.setText(FmtUtil.dateToString("dd. MMM, yyyy", d));
         }
         if (text != null) {
             tv_text.setText(text);
