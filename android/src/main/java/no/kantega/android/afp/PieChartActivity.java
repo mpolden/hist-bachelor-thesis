@@ -41,7 +41,7 @@ public class PieChartActivity extends Activity {
         int displayWidth = display.getWidth();
         int size = displayWidth;
         int bgColor = 0xffa1a1a1;
-        Bitmap backgroundImage = Bitmap.createBitmap(size, size + 250, Bitmap.Config.RGB_565);
+        Bitmap backgroundImage = Bitmap.createBitmap(size, display.getHeight(), Bitmap.Config.RGB_565);
         PieChart pieChart = new PieChart(this);
         pieChart.setLayoutParams(new ViewGroup.LayoutParams(size, size));
         pieChart.setGeometry(size, size, 5, 5, 5, 5);
