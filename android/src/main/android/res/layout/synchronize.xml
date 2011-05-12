@@ -5,6 +5,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         style="@style/default_bg_color">
+    <ImageView android:background="@drawable/bg_bar_02"
+               android:layout_height="wrap_content"
+               android:layout_width="fill_parent"/>
     <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content"
                  android:stretchColumns="1"
