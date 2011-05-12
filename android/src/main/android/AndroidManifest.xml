@@ -62,6 +62,9 @@
                   android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".SettingsActivity"
                   android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".StatsActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar"/>
 
         <!-- In order to use the c2dm library, an
              application must declare a class with the name C2DMReceiver, in its

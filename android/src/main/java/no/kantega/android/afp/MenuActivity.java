@@ -36,7 +36,7 @@ public class MenuActivity extends TabActivity {
         String transactions = "1";
         spec = tabHost.newTabSpec(transactions).setIndicator("").setContent(intent);
         tabHost.addTab(spec);
-        intent = new Intent().setClass(this, OverviewActivity.class);
+        intent = new Intent().setClass(this, StatsActivity.class);
         String charts = "2";
         spec = tabHost.newTabSpec(charts).setIndicator("").setContent(intent);
         tabHost.addTab(spec);
