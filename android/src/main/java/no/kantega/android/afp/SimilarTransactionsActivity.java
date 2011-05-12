@@ -248,6 +248,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     private class SimilarTransactionAdapter extends ArrayAdapter<Transaction> {
 
         private final List<Transaction> items;
+        private final int[] colors;
 
         /**
          * Create a new adapter for the given items
@@ -258,22 +259,24 @@ public class SimilarTransactionsActivity extends ListActivity {
         public SimilarTransactionAdapter(Context context, List<Transaction> items) {
             super(context, R.layout.transactionrow, items);
             this.items = items;
+            this.colors = new int[]{context.getResources().getColor(R.color.row_bg_even),
+                    context.getResources().getColor(R.color.row_bg_odd)};
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if (v == null) {
+        public View getView(int position, View view, ViewGroup parent) {
+            if (view == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.similartransactionrow, null);
+                view = vi.inflate(R.layout.similartransactionrow, null);
             }
+            view.setBackgroundColor(colors[position % colors.length]);
             Transaction transaction = items.get(position);
             if (transaction != null) {
-                TextView tv_date = (TextView) v.findViewById(R.id.trow_tv_date);
-                TextView tv_text = (TextView) v.findViewById(R.id.trow_tv_text);
-                TextView tv_tag = (TextView) v.findViewById(R.id.trow_tv_category);
-                TextView tv_amount = (TextView) v.findViewById(R.id.trow_tv_amount);
-                CheckBox bCheck = (CheckBox) v.findViewById(R.id.checkbox_similartransaction);
+                TextView tv_date = (TextView) view.findViewById(R.id.trow_tv_date);
+                TextView tv_text = (TextView) view.findViewById(R.id.trow_tv_text);
+                TextView tv_tag = (TextView) view.findViewById(R.id.trow_tv_category);
+                TextView tv_amount = (TextView) view.findViewById(R.id.trow_tv_amount);
+                CheckBox bCheck = (CheckBox) view.findViewById(R.id.checkbox_similartransaction);
                 bCheck.setChecked(transaction.isChecked());
                 tv_date.setText(null);
                 tv_text.setText(null);
@@ -301,7 +304,7 @@ public class SimilarTransactionsActivity extends ListActivity {
                     tv_amount.setText(FmtUtil.currencyWithoutPrefix(transaction.getAmount()));
                 }
             }
-            return v;
+            return view;
         }
     }
 }

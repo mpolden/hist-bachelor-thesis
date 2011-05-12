@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical" android:layout_width="fill_parent"
-              android:layout_height="fill_parent" android:background="@drawable/background4">
-    <LinearLayout android:layout_width="fill_parent" android:layout_weight="1"
-                  android:layout_height="wrap_content"
-                  android:padding="20dip"
-                  android:background="@drawable/postit">
-        <ListView android:id="@id/android:list" android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent"
-                  android:divider="#FFFFFF" android:dividerHeight="0px"/>
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              style="@style/default_bg_color">
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_weight="1"
+                  android:layout_height="wrap_content">
+        <ListView android:id="@id/android:list"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:cacheColorHint="@android:color/transparent"
+                  android:divider="@android:color/transparent"
+                  android:dividerHeight="0px"/>
         <TextView android:id="@id/android:empty"
-                  android:layout_width="fill_parent" android:layout_height="fill_parent"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
                   android:text="@string/transactions_no_items"/>
     </LinearLayout>
-    <TextView android:id="@+id/tv_similarselected" android:layout_width="fill_parent"
+    <TextView android:id="@+id/tv_similarselected"
+              android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              style="@style/status_fg_color" android:textSize="10sp" android:layout_weight="0"
+              style="@style/status_fg_color"
+              android:textSize="10sp"
+              android:layout_weight="0"
               android:gravity="center"/>
     <Button android:text="@string/save"
-            android:id="@+id/button_save_transactions" android:layout_weight="0"
+            android:id="@+id/button_save_transactions"
+            android:layout_weight="0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"

@@ -40,7 +40,7 @@ public class PieChartActivity extends Activity {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int displayWidth = display.getWidth();
         int size = displayWidth;
-        int bgColor = 0xffa1a1a1;
+        int bgColor = getResources().getColor(R.color.pie_bg_color);
         Bitmap backgroundImage = Bitmap.createBitmap(size, display.getHeight(), Bitmap.Config.RGB_565);
         PieChart pieChart = new PieChart(this);
         pieChart.setLayoutParams(new ViewGroup.LayoutParams(size, size));
@@ -132,7 +132,7 @@ public class PieChartActivity extends Activity {
             canvas.drawColor(bgColor);
             bgPaints.setAntiAlias(true);
             bgPaints.setStyle(Paint.Style.FILL);
-            bgPaints.setColor(0x88FF0000);
+            //bgPaints.setColor(getResources().getColor(R.color.pie_bg_color));
             bgPaints.setStrokeWidth(0.5f);
             linePaints.setAntiAlias(true);
             linePaints.setStyle(Paint.Style.STROKE);
@@ -142,7 +142,7 @@ public class PieChartActivity extends Activity {
             textPaints.setAntiAlias(true);
             textPaints.setStyle(Paint.Style.FILL_AND_STROKE);
             textPaints.setStrokeWidth(0.5f);
-            textPaints.setColor(Color.BLACK);
+            textPaints.setColor(getResources().getColor(R.color.pie_fg_color));
             textPaints.setTextSize(20);
             RectF ovals = new RectF(gapLeft, gapTop, width - gapRight, height - gapBottom);
             start = START_INC;
@@ -188,7 +188,6 @@ public class PieChartActivity extends Activity {
                 }
                 start += sweep;
             }
-
             state = IS_DRAW;
         }
 

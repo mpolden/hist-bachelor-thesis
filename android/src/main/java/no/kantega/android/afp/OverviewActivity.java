@@ -227,6 +227,8 @@ public class OverviewActivity extends ListActivity {
      */
     private class CategoryAdapter extends CursorAdapter {
 
+        private final int[] colors;
+
         /**
          * Construct a new adapter in the given application context
          *
@@ -235,6 +237,8 @@ public class OverviewActivity extends ListActivity {
          */
         public CategoryAdapter(Context context, Cursor cursor) {
             super(context, cursor);
+            this.colors = new int[]{context.getResources().getColor(R.color.row_bg_even),
+                    context.getResources().getColor(R.color.row_bg_odd)};
         }
 
         @Override
@@ -258,6 +262,7 @@ public class OverviewActivity extends ListActivity {
          * @param cursor  The cursor
          */
         private void populateView(Context context, View view, Cursor cursor) {
+            view.setBackgroundColor(colors[cursor.getPosition() % colors.length]);
             final int tagColumnIndex = cursor.getColumnIndex("tag");
             String tag;
             Double consumption = cursor.getDouble(cursor.getColumnIndex("sum"));
