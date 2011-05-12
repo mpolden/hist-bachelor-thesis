@@ -19,13 +19,12 @@
                           android:layout_weight="1" android:layout_width="0dip"
                           android:padding="0dip"
                           android:textStyle="bold"
-                          android:textSize="15sp"
+                          android:textSize="16sp"
                           android:textColor="#303030"/>
                 <TextView android:id="@+id/trow_tv_amount"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:paddingLeft="3dip"
-                          android:textStyle="bold"
-                          android:textSize="15sp"
+                          android:textSize="19sp"
                           android:gravity="right"
                           android:textColor="#303030"/>
             </TableRow>
@@ -33,12 +32,12 @@
                 <TextView android:id="@+id/trow_tv_text"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:paddingLeft="0dip"
-                          android:textSize="10sp"
+                          android:textSize="12sp"
                           android:textColor="#303030"/>
                 <TextView android:id="@+id/trow_tv_date"
                           android:layout_weight="1" android:layout_width="0dip"
                           android:paddingLeft="3dip"
-                          android:textSize="10sp"
+                          android:textSize="12sp"
                           android:gravity="right"
                           android:textColor="#303030"/>
             </TableRow>
