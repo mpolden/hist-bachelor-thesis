@@ -39,5 +39,6 @@
             android:id="@+id/button_new_transaction" android:layout_weight="0"
             android:layout_width="fill_parent"
             android:textStyle="bold"
+            android:layout_marginTop="2dip"
             android:layout_height="50dip"/>
 </LinearLayout>
