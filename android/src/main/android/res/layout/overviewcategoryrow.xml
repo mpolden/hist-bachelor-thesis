@@ -19,15 +19,13 @@
                   android:layout_width="0dip"
                   android:layout_height="wrap_content"
                   android:padding="3dip"
-                  android:textSize="14sp"
-                  style="@style/list_fg_color"/>
+                  style="@style/list_fg_tag"/>
         <TextView android:id="@+id/overview_textview_consumption"
                   android:layout_weight="1"
                   android:layout_width="0dip"
                   android:layout_height="wrap_content"
                   android:padding="3dip"
                   android:gravity="right"
-                  android:textSize="14sp"
-                  style="@style/list_fg_color"/>
+                  style="@style/list_fg_amount"/>
     </LinearLayout>
 </LinearLayout>

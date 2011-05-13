@@ -6,7 +6,6 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -271,12 +270,8 @@ public class OverviewActivity extends ListActivity {
             TextView tv_consumption = (TextView) view.findViewById(R.id.overview_textview_consumption);
             if (tagColumnIndex > -1) {
                 tag = cursor.getString(tagColumnIndex);
-                tv_tag.setTypeface(null, Typeface.NORMAL);
-                tv_consumption.setTypeface(null, Typeface.NORMAL);
             } else {
                 tag = getResources().getString(R.string.total);
-                tv_tag.setTypeface(null, Typeface.BOLD);
-                tv_consumption.setTypeface(null, Typeface.BOLD);
             }
             image.setImageDrawable(null);
             tv_tag.setText(null);
