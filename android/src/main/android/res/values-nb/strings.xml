@@ -32,7 +32,7 @@
     <string name="invalid_amount">Ugyldig beløp</string>
     <string name="transaction_updated">Transaksjon oppdatert</string>
     <string name="unsynced_count">Endringer ikke synkronisert</string>
-    <string name="clear_db">Nullstill intern database</string>
+    <string name="clear_db">Nullstill database</string>
     <string name="db_cleared">Intern database har blitt tømt</string>
     <string name="untagged_count">Ikke kategorisert</string>
     <string name="suggested_tag">Foreslått kategori</string>
