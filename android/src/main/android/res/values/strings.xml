@@ -38,6 +38,7 @@
     <string name="suggested_tag">Suggested tag</string>
     <string name="notification_title">New transaction!</string>
     <string name="new_transaction">New transaction</string>
+    <string name="edit_transaction">Edit transaction</string>
     <string name="add_transaction">Add transaction</string>
     <string name="server_unavailable">Could not synchronize. Server is
         unavailable.

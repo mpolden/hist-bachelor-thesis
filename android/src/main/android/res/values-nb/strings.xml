@@ -38,6 +38,7 @@
     <string name="suggested_tag">Foreslått kategori</string>
     <string name="notification_title">Ny transaksjon!</string>
     <string name="new_transaction">Ny transaksjon</string>
+    <string name="edit_transaction">Rediger transaksjon</string>
     <string name="add_transaction">Legg til transaksjon</string>
     <string name="server_unavailable">Kunne ikke synkronisere. Serveren er
         utilgjengelig.
