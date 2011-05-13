@@ -5,10 +5,13 @@
               android:orientation="vertical"
               style="@style/default_bg_color"
               android:focusable="true" android:focusableInTouchMode="true">
-    <ImageView android:background="@drawable/bg_bar_02"
-               android:layout_height="wrap_content"
-               android:layout_width="fill_parent"/>
-
+    <TextView android:background="@drawable/bg_bar_02"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:gravity="center"
+              android:paddingTop="2dip"
+              android:text="@string/edit_transaction"
+              style="@style/title_text"/>
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:orientation="vertical" android:layout_weight="1">
         <TableLayout android:layout_width="fill_parent"

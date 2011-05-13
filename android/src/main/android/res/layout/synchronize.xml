@@ -5,9 +5,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         style="@style/default_bg_color">
-    <ImageView android:background="@drawable/bg_bar_02"
-               android:layout_height="wrap_content"
-               android:layout_width="fill_parent"/>
+    <TextView android:background="@drawable/bg_bar_02"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:gravity="center"
+              android:paddingTop="2dip"
+              android:text="@string/synchronize"
+              style="@style/title_text"/>
     <TableLayout android:layout_width="fill_parent" android:layout_weight="1"
                  android:layout_height="wrap_content"
                  android:stretchColumns="1"
