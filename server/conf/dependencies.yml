@@ -4,6 +4,6 @@ require:
     - play
     - play -> search head
     - com.google.guava -> guava r09
-    - postgresql -> postgresql 9.0-801.jdbc4
+    - postgresql -> postgresql 8.4-702.jdbc4
     - com.google.code.gson -> gson 1.7.1:
         force: true
