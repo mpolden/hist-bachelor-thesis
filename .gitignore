@@ -19,7 +19,6 @@ target
 tmp
 test-result
 local.properties
-url.properties
 fixtures-local.yml
 server/lib
 server/modules
