@@ -1,5 +1,7 @@
 package no.kantega.android.afp.utils;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,7 +76,7 @@ public class FmtUtil {
      * @param text Text to trim
      * @return Trimmed text
      */
-    public static String trimTransactionText(String text) {
+    public static String trimTransactionText(@Nullable String text) {
         final String pattern = "(^\\d{16}\\s)?" +
                 "(\\d{2}\\.\\d{2}\\s)?" +
                 "([A-Z]{3}\\s\\d+,\\d+\\s)?" +
@@ -111,7 +113,7 @@ public class FmtUtil {
      * @param s String to check
      * @return True if string contains one or more numbers
      */
-    public static boolean isNumber(String s) {
+    public static boolean isNumber(@Nullable String s) {
         return s != null && s.matches("^\\d+([,\\.]\\d+)?$");
     }
 
@@ -121,7 +123,7 @@ public class FmtUtil {
      * @param s String
      * @return First word
      */
-    public static String firstWord(String s) {
+    public static String firstWord(@Nullable String s) {
         if (s != null) {
             final String[] words = s.split(" ");
             if (words.length > 0) {

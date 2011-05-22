@@ -2,7 +2,6 @@ package no.kantega.android.afp;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.TabHost;
@@ -11,7 +10,6 @@ import android.widget.TabHost;
  * This activity handles the bottom navigation panel (tabs)
  */
 public class MenuActivity extends TabActivity {
-    private String uri = "drawable/menubar_0";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +22,6 @@ public class MenuActivity extends TabActivity {
      * Configure the tab menu
      */
     private void setupTabs() {
-        Resources res = getResources();
         final TabHost tabHost = getTabHost();
         TabHost.TabSpec spec;
         Intent intent;
@@ -55,6 +52,7 @@ public class MenuActivity extends TabActivity {
     }
 
     private void setTabColors(TabHost tabHost, String tabId) {
+        String uri = "drawable/menubar_0";
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
             int imageResource = getApplicationContext().getResources().getIdentifier(uri + i, null, getPackageName());
             Drawable image = getResources().getDrawable(imageResource);

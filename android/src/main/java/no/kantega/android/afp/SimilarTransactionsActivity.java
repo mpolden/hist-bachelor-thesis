@@ -35,7 +35,7 @@ public class SimilarTransactionsActivity extends ListActivity {
     private final View.OnClickListener saveTransactionsButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new UpdateTask().execute();
+            new UpdateTask().execute(null);
         }
     };
 

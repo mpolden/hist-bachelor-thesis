@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import no.kantega.android.afp.R;
 import no.kantega.android.afp.models.TransactionTag;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class ResourceHelper {
      * @param tag     Tag
      * @return Image for tag
      */
-    public static Drawable getImage(Context context, String tag) {
+    public static Drawable getImage(Context context, @Nullable String tag) {
         final Integer imageId = imageIds.get(tag);
         if (imageId != null) {
             return context.getResources().getDrawable(imageId);

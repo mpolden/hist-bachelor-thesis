@@ -169,8 +169,8 @@ public class PieChartActivity extends Activity {
                 // Get Label width and height in pixels
                 linePaints.getTextBounds(LblPercent, 0, LblPercent.length(), bounds);
                 // Claculate final coords for Label
-                lblX = (float) ((float) CenterOffset + Radius * Math.cos(Conv * (start + sweep / 2))) - bounds.width() / 2;
-                lblY = (float) ((float) CenterOffset + Radius * Math.sin(Conv * (start + sweep / 2))) + bounds.height() / 2;
+                lblX = (float) (CenterOffset + Radius * Math.cos(Conv * (start + sweep / 2))) - bounds.width() / 2;
+                lblY = (float) (CenterOffset + Radius * Math.sin(Conv * (start + sweep / 2))) + bounds.height() / 2;
                 // Dwraw Label on Canvas
                 canvas.drawText(LblPercent, lblX, lblY, textPaints);
                 canvas.drawCircle(DESCRIPTION_MARGIN_LEFT, height + DESCRIPTION_MARGIN_TOP, DESCRIPTION_CIRCLE_RADIUS, bgPaints);
