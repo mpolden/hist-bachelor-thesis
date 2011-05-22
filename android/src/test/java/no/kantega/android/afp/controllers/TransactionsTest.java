@@ -33,20 +33,5 @@ public class TransactionsTest {
     @Test
     public void testAdd() {
         assertNotNull(transactions);
-        // XXX: Not working until Robolectra implements android.database.sqlite.SQLiteDatabase.rawQuery
-        /*final Transaction t = new Transaction();
-        t.setDate(new Date());
-        t.setAmount(133.7);
-        t.setText("Test");
-        t.setId(1);
-        final TransactionTag tag = new TransactionTag();
-        tag.setId(1);
-        tag.setName("Test");
-        t.setTag(tag);
-        t.setTimestamp(t.getDate().getTime());
-        t.setInternal(false);
-        t.setDirty(true);
-        transactions.add(t);
-        assertTrue(transactions.getCount() == 1);*/
     }
 }
